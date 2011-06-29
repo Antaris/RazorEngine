@@ -1,0 +1,12 @@
+*.[Rr]e[Ss]harper*
+*.csproj.user
+*.sln.cache
+*.suo
+*.user
+.DS_Store
+build/
+[Bb]in/
+[Dd]ebug/
+[Oo]bj/
+[Rr]elease/
+_[Rr]e[Ss]harper.*/
