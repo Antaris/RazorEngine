@@ -5,22 +5,48 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>c11064c2-11b8-420b-81f0-4c6477cb5931</ProjectGuid>
+    <ProjectGuid>{D268F86D-2DAB-4329-A75F-3BCF6D5BCDC4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RazorEngine.Core</RootNamespace>
-    <AssemblyName>RazorEngine.Core</AssemblyName>
+    <RootNamespace>RazorEngine</RootNamespace>
+    <AssemblyName>RazorEngine</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile>..\..\baseline.xml</CodeContractsBaseLineFile>
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <DocumentationFile>bin\Debug\RazorEngine.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,9 +56,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>RazorEngine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Libraries\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,9 +75,64 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="..\..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Compilation\CompilerServiceBase.cs" />
+    <Compile Include="Compilation\CompilerServiceBuilder.cs" />
+    <Compile Include="Compilation\CompilerServicesUtility.cs" />
+    <Compile Include="Compilation\CSharp\CSharpDirectCompilerService.cs" />
+    <Compile Include="Compilation\CSharp\CSharpRazorCodeGenerator.cs" />
+    <Compile Include="Compilation\CSharp\CSharpRazorCodeLanguage.cs" />
+    <Compile Include="Compilation\DefaultCompilerServiceFactory.cs" />
+    <Compile Include="Compilation\DirectCompilerServiceBase.cs" />
+    <Compile Include="Compilation\HasDynamicModelAttribute.cs" />
+    <Compile Include="Compilation\ICompilerService.cs" />
+    <Compile Include="Compilation\ICompilerServiceFactory.cs" />
+    <Compile Include="Compilation\RazorDynamicObject.cs" />
+    <Compile Include="Compilation\TypeContext.cs" />
+    <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />
+    <Compile Include="Compilation\VisualBasic\VBRazorCodeGenerator.cs" />
+    <Compile Include="Compilation\VisualBasic\VBRazorCodeLanguage.cs" />
+    <Compile Include="Encoding.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Parsing\CodeSpanParserBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templating\CachedTemplateItem.cs" />
+    <Compile Include="Templating\DefaultActivator.cs" />
+    <Compile Include="Templating\DefaultAppDomainFactory.cs" />
+    <Compile Include="Templating\DelegateActivator.cs" />
+    <Compile Include="Templating\DelegateAppDomainFactory.cs" />
+    <Compile Include="Templating\IActivator.cs" />
+    <Compile Include="Templating\IAppDomainFactory.cs" />
+    <Compile Include="Templating\InstanceContext.cs" />
+    <Compile Include="Templating\Parallel\DefaultParallelQueryPlan.cs" />
+    <Compile Include="Templating\Parallel\IParallelQueryPlan.cs" />
+    <Compile Include="Templating\IsolatedTemplateService.cs" />
+    <Compile Include="Templating\ITemplate.cs" />
+    <Compile Include="Templating\ITemplateOfT.cs" />
+    <Compile Include="Templating\ITemplateService.cs" />
+    <Compile Include="Templating\RequireNamespacesAttribute.cs" />
+    <Compile Include="Parsing\ICodeSpanParser.cs" />
+    <Compile Include="Templating\TemplateBase.cs" />
+    <Compile Include="Templating\TemplateBaseOfT.cs" />
+    <Compile Include="Templating\TemplateCompilationException.cs" />
+    <Compile Include="Templating\TypeLoader.cs" />
+    <Compile Include="Templating\TemplateParsingException.cs" />
+    <Compile Include="Templating\TemplateService.cs" />
+    <Compile Include="Templating\TemplateWriter.cs" />
+    <Compile Include="Text\HtmlEncodedString.cs" />
+    <Compile Include="Text\HtmlEncodedStringFactory.cs" />
+    <Compile Include="Text\IEncodedString.cs" />
+    <Compile Include="Text\IEncodedStringFactory.cs" />
+    <Compile Include="Text\RawString.cs" />
+    <Compile Include="Text\RawStringFactory.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="RazorEngine.snk" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
