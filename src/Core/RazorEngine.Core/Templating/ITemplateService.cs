@@ -213,7 +213,7 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel);
+        IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false);
         #endregion
     }
 }

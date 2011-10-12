@@ -40,6 +40,11 @@
         public RazorCodeLanguage CodeLanguage { get; private set; }
 
         /// <summary>
+        /// Gets or sets whether the compiler service is operating in debug mode.
+        /// </summary>
+        public bool Debug { get; set; }
+
+        /// <summary>
         /// Gets the markup parser.
         /// </summary>
         public Func<MarkupParser> MarkupParserFactory { get; private set; }
@@ -96,6 +101,7 @@
         {
             var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory)
                            {
+                               DefaultBaseTemplateType = templateType,
                                DefaultBaseClass = BuildTypeName(templateType, modelType),
                                DefaultClassName = className,
                                DefaultNamespace = "CompiledRazorTemplates.Dynamic",

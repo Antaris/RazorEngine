@@ -19,11 +19,15 @@
         /// Initialises a new instance of <see cref="TemplateCompilationException"/>.
         /// </summary>
         /// <param name="errors">The set of compiler errors.</param>
-        internal TemplateCompilationException(CompilerErrorCollection errors)
+        /// <param name="sourceCode">The source code that wasn't compiled.</param>
+        /// <param name="template">The source template that wasn't compiled.</param>
+        internal TemplateCompilationException(CompilerErrorCollection errors, string sourceCode, string template)
             : base("Unable to compile template. " + errors[0].ErrorText + "\n\nOther compilation errors may have occurred. Check the Errors property for more information.")
         {
             var list = errors.Cast<CompilerError>().ToList();
             Errors = new ReadOnlyCollection<CompilerError>(list);
+            SourceCode = sourceCode;
+            Template = template;
         }
 
         /// <summary>
@@ -44,6 +48,9 @@
             }
 
             Errors = new ReadOnlyCollection<CompilerError>(list);
+
+            SourceCode = info.GetString("SourceCode");
+            Template = info.GetString("Template");
         }
         #endregion
 
@@ -52,6 +59,16 @@
         /// Gets the set of compiler errors.
         /// </summary>
         public ReadOnlyCollection<CompilerError> Errors { get; private set; }
+
+        /// <summary>
+        /// Gets the source code that wasn't compiled.
+        /// </summary>
+        public string SourceCode { get; private set; }
+
+        /// <summary>
+        /// Gets the source template that wasn't compiled.
+        /// </summary>
+        public string Template { get; private set; }
         #endregion
 
         #region Methods
@@ -67,7 +84,10 @@
             info.AddValue("Count", Errors.Count);
 
             for (int i = 0; i < Errors.Count; i++)
-                info.AddValue("Error[" + i + "]", Errors[i]);
+                info.AddValue("Errors[" + i + "]", Errors[i]);
+
+            info.AddValue("SourceCode", SourceCode ?? string.Empty);
+            info.AddValue("Template", Template ?? string.Empty);
         }
         #endregion
     }

@@ -9,6 +9,13 @@
     /// </summary>
     public interface ICompilerService
     {
+        #region Properties
+        /// <summary>
+        /// Gets or sets whether the compiler service is operating in debug mode.
+        /// </summary>
+        bool Debug { get; set; }
+        #endregion
+
         #region Methods
         /// <summary>
         /// Builds a type name for the specified template type and model type.

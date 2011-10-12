@@ -64,6 +64,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\Libraries\System.Web.Razor.dll</HintPath>
@@ -81,6 +83,7 @@
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
     <Compile Include="Compilation\CompilerServicesUtility.cs" />
+    <Compile Include="Compilation\CSharp\CSharpCodeParser.cs" />
     <Compile Include="Compilation\CSharp\CSharpDirectCompilerService.cs" />
     <Compile Include="Compilation\CSharp\CSharpRazorCodeGenerator.cs" />
     <Compile Include="Compilation\CSharp\CSharpRazorCodeLanguage.cs" />
@@ -90,15 +93,23 @@
     <Compile Include="Compilation\ICompilerService.cs" />
     <Compile Include="Compilation\ICompilerServiceFactory.cs" />
     <Compile Include="Compilation\RazorDynamicObject.cs" />
+    <Compile Include="Compilation\RazorEngineHost.cs" />
     <Compile Include="Compilation\TypeContext.cs" />
+    <Compile Include="Compilation\VisualBasic\VBCodeParser.cs" />
     <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />
     <Compile Include="Compilation\VisualBasic\VBRazorCodeGenerator.cs" />
     <Compile Include="Compilation\VisualBasic\VBRazorCodeLanguage.cs" />
+    <Compile Include="Configuration\DefaultTemplateServiceConfiguration.cs" />
+    <Compile Include="Configuration\Fluent\FluentConfigurationBuilder.cs" />
+    <Compile Include="Configuration\Fluent\FluentTemplateServiceConfiguration.cs" />
+    <Compile Include="Configuration\Fluent\IConfigurationBuilder.cs" />
+    <Compile Include="Configuration\ITemplateServiceConfiguration.cs" />
+    <Compile Include="Configuration\RazorEngineConfigurationSection.cs" />
     <Compile Include="Encoding.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Language.cs" />
-    <Compile Include="Parsing\CodeSpanParserBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spans\ModelSpan.cs" />
     <Compile Include="Templating\CachedTemplateItem.cs" />
     <Compile Include="Templating\DefaultActivator.cs" />
     <Compile Include="Templating\DefaultAppDomainFactory.cs" />
@@ -114,10 +125,10 @@
     <Compile Include="Templating\ITemplateOfT.cs" />
     <Compile Include="Templating\ITemplateService.cs" />
     <Compile Include="Templating\RequireNamespacesAttribute.cs" />
-    <Compile Include="Parsing\ICodeSpanParser.cs" />
     <Compile Include="Templating\TemplateBase.cs" />
     <Compile Include="Templating\TemplateBaseOfT.cs" />
     <Compile Include="Templating\TemplateCompilationException.cs" />
+    <Compile Include="Templating\TemplateServiceFactory.cs" />
     <Compile Include="Templating\TypeLoader.cs" />
     <Compile Include="Templating\TemplateParsingException.cs" />
     <Compile Include="Templating\TemplateService.cs" />
@@ -130,6 +141,7 @@
     <Compile Include="Text\RawStringFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="RazorEngine.snk" />
   </ItemGroup>
   <ItemGroup />

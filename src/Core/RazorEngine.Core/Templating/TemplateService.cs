@@ -8,6 +8,7 @@
     using System.Reflection;
 
     using Compilation;
+    using Configuration;
     using Parallel;
     using Text;
 
@@ -17,143 +18,50 @@
     public class TemplateService : MarshalByRefObject, ITemplateService
     {
         #region Fields
-        private readonly IActivator _activator;
-        private readonly Func<ICompilerService> _compilerService;
-        private readonly IEncodedStringFactory _stringFactory;
+        private readonly ITemplateServiceConfiguration _config;
 
         private readonly ConcurrentDictionary<string, CachedTemplateItem> _cache = new ConcurrentDictionary<string, CachedTemplateItem>();
         private readonly ConcurrentBag<Assembly> _assemblies = new ConcurrentBag<Assembly>();
         
-        private readonly ISet<string> _namespaces = new HashSet<string>();
         private readonly TypeLoader _loader;
+        private static readonly Type _objectType = typeof(object);
 
         private bool disposed;
-        private readonly object sync = new object();
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
+        /// Initialises a new instance of <see cref="TemplateService"/>
         /// </summary>
-        /// <param name="compilerService">The compiler service.</param>
-        /// <param name="activator">The activator used to create template instances.</param>
-        /// <param name="stringFactory">The factory used to create encoded strings.</param>
-        public TemplateService(Func<ICompilerService> compilerService, IActivator activator, IEncodedStringFactory stringFactory)
+        /// <param name="config">The template service configuration.</param>
+        public TemplateService(ITemplateServiceConfiguration config)
         {
-            Contract.Requires(compilerService != null);
+            Contract.Requires(config != null);
 
-            _compilerService = compilerService;
-            _activator = activator ?? new DefaultActivator();
-            _stringFactory = stringFactory ?? new HtmlEncodedStringFactory();
-
-            _namespaces.Add("System");
-            _namespaces.Add("System.Collections.Generic");
-            _namespaces.Add("System.Linq");
-
+            _config = config;
             _loader = new TypeLoader(AppDomain.CurrentDomain, _assemblies);
         }
 
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateService"/>.
         /// </summary>
-        /// <param name="compilerService">The compiler service.</param>
-        /// <param name="activator">The activator used to create template instances.</param>
-        /// <param name="encoding">The string encoding to use.</param>
-        public TemplateService(Func<ICompilerService> compilerService, IActivator activator, Encoding encoding)
-            : this(compilerService, activator, GetEncodedStringFactory(encoding)) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="compilerService">The compiler service.</param>
-        /// <param name="stringFactory">The factory used to create encoded strings.</param>
-        public TemplateService(Func<ICompilerService> compilerService, IEncodedStringFactory stringFactory)
-            : this(compilerService, null, stringFactory) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="compilerService">The compiler service.</param>
-        /// <param name="encoding">The string encoding to use.</param>
-        public TemplateService(Func<ICompilerService> compilerService, Encoding encoding)
-            : this(compilerService, null, GetEncodedStringFactory(encoding)) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="compilerService">The compiler service.</param>
-        /// <param name="activator">The activator used to create template instances.</param>
-        public TemplateService(Func<ICompilerService> compilerService, IActivator activator)
-            : this(compilerService, activator, null) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="compilerService">The compiler service.</param>
-        public TemplateService(Func<ICompilerService> compilerService)
-            : this(compilerService, null, null) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
         public TemplateService()
-            : this(Language.CSharp, null, null) { }
+            : this(new DefaultTemplateServiceConfiguration()) { }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
+        /// Initialises a new instance of <see cref="TemplateService"/>
         /// </summary>
         /// <param name="language">The code language.</param>
-        /// <param name="activator">The activator used to create template instances.</param>
-        /// <param name="stringFactory">The factory used to create encoded strings.</param>
-        public TemplateService(Language language, IActivator activator, IEncodedStringFactory stringFactory)
-            : this(() => CompilerServiceBuilder.GetCompilerService(language), null, stringFactory) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        /// <param name="activator">The activator used to create template instances.</param>
-        /// <param name="encoding">The string encoding to use.</param>
-        public TemplateService(Language language, IActivator activator, Encoding encoding)
-            : this(() => CompilerServiceBuilder.GetCompilerService(language), activator, GetEncodedStringFactory(encoding)) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        /// <param name="stringFactory">The factory used to create encoded strings.</param>
-        public TemplateService(Language language, IEncodedStringFactory stringFactory)
-            : this(() => CompilerServiceBuilder.GetCompilerService(language), null, stringFactory) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        /// <param name="encoding">The string encoding to use.</param>
-        public TemplateService(Language language, Encoding encoding)
-            : this(() => CompilerServiceBuilder.GetCompilerService(language), GetEncodedStringFactory(encoding)) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        /// <param name="activator">The activator used to create template instances.</param>
-        public TemplateService(Language language, IActivator activator)
-            : this(() => CompilerServiceBuilder.GetCompilerService(language), activator, null) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        public TemplateService(Language language)
-            : this(() => CompilerServiceBuilder.GetCompilerService(language), null, null) { }
+        /// <param name="encoding">the encoding.</param>
+        internal TemplateService(Language language, Encoding encoding)
+            : this(new DefaultTemplateServiceConfiguration() { Language = language, EncodedStringFactory = GetEncodedStringFactory(encoding) }) { }
         #endregion
 
         #region Properties
         /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
-        public IEncodedStringFactory EncodedStringFactory { get { return _stringFactory; } }
+        public IEncodedStringFactory EncodedStringFactory { get { return _config.EncodedStringFactory; } }
         #endregion
 
         #region Methods
@@ -163,7 +71,7 @@
         /// <param name="ns">The namespace to be imported.</param>
         public void AddNamespace(string ns)
         {
-            _namespaces.Add(ns);
+            _config.Namespaces.Add(ns);
         }
 
         /// <summary>
@@ -200,10 +108,7 @@
         [Pure]
         public virtual ITemplate CreateTemplate(string razorTemplate, object model)
         {
-            Contract.Requires(model != null);
-
-            var modelType = model.GetType();
-            var type = CreateTemplateType(razorTemplate, modelType);
+            var type = CreateTemplateType(razorTemplate, _objectType);
 
             var instance = CreateTemplate(type, model);
             return instance;
@@ -218,7 +123,7 @@
         protected virtual ITemplate CreateTemplate(Type templateType)
         {
             var context = CreateInstanceContext(templateType);
-            var instance = _activator.CreateInstance(context);
+            var instance = _config.Activator.CreateInstance(context);
             instance.TemplateService = this;
 
             return instance;
@@ -367,10 +272,19 @@
                                   TemplateType = (modelType == null) ? typeof(TemplateBase) : typeof(TemplateBase<>)
                               };
 
-            foreach (string ns in _namespaces)
+            if (_config.BaseTemplateType != null)
+                context.TemplateType = _config.BaseTemplateType;
+
+            foreach (string ns in _config.Namespaces)
                 context.Namespaces.Add(ns);
 
-            var result = _compilerService().CompileType(context);
+            var service = _config
+                .CompilerServiceFactory
+                .CreateCompilerService(_config.Language);
+            service.Debug = _config.Debug;
+
+            var result = service.CompileType(context);
+
             _assemblies.Add(result.Item2);
 
             return result.Item1;
@@ -504,8 +418,6 @@
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
         public virtual ITemplate GetTemplate(string razorTemplate, object model, string name)
         {
-            Contract.Requires(model != null);
-
             if (razorTemplate == null)
                 throw new ArgumentNullException("razorTemplate");
 
@@ -736,9 +648,10 @@
             if (parallel)
                 return GetParallelQueryPlan<string>()
                     .CreateQuery(razorTemplates)
-                    .Select(t => Parse(t));
+                    .Select(t => Parse(t))
+                    .ToArray();
 
-            return razorTemplates.Select(t => Parse(t));
+            return razorTemplates.Select(t => Parse(t)).ToArray();
         }
 
         /// <summary>
@@ -759,9 +672,10 @@
             if (parallel)
                 return GetParallelQueryPlan<string>()
                     .CreateQuery(razorTemplates)
-                    .Select((t, i) => Parse(t, namesList[i]));
+                    .Select((t, i) => Parse(t, namesList[i]))
+                    .ToArray();
 
-            return razorTemplates.Select((t, i) => Parse(t, namesList[i]));
+            return razorTemplates.Select((t, i) => Parse(t, namesList[i])).ToArray();
         }
 
         /// <summary>
@@ -786,14 +700,16 @@
                 return new[] { Parse(razorTemplate, models.First()) };
 
             var modelType = models.First().GetType();
+            // Compile the type just the once, and reuse that for each model.
             var type = CreateTemplateType(razorTemplate, modelType);
 
             if (parallel)
                 return GetParallelQueryPlan<object>()
                     .CreateQuery(models)
-                    .Select(m => CreateTemplate(type, m).Run());
+                    .Select(m => CreateTemplate(type, m).Run())
+                    .ToArray();
 
-            return models.Select(m => CreateTemplate(type, m).Run());
+            return models.Select(m => CreateTemplate(type, m).Run()).ToArray();
         }
 
         /// <summary>
@@ -815,9 +731,10 @@
             if (parallel)
                 return GetParallelQueryPlan<T>()
                     .CreateQuery(models)
-                    .Select(m => CreateTemplate(type, m).Run());
+                    .Select(m => CreateTemplate(type, m).Run())
+                    .ToArray();
 
-            return models.Select(m => CreateTemplate(type, m).Run());
+            return models.Select(m => CreateTemplate(type, m).Run()).ToArray();
         }
 
         /// <summary>
@@ -839,9 +756,10 @@
             if (parallel)
                 return GetParallelQueryPlan<string>()
                     .CreateQuery(razorTemplates)
-                    .Select((t, i) => Parse(t, modelList[i]));
+                    .Select((t, i) => Parse(t, modelList[i]))
+                    .ToArray();
 
-            return razorTemplates.Select((t, i) => Parse(t, modelList[i]));
+            return razorTemplates.Select((t, i) => Parse(t, modelList[i])).ToArray();
         }
 
         /// <summary>
@@ -864,9 +782,10 @@
             if (parallel)
                 return GetParallelQueryPlan<string>()
                     .CreateQuery(razorTemplates)
-                    .Select((t, i) => Parse(t, modelList[i]));
+                    .Select((t, i) => Parse(t, modelList[i]))
+                    .ToArray();
 
-            return razorTemplates.Select((t, i) => Parse(t, modelList[i]));
+            return razorTemplates.Select((t, i) => Parse(t, modelList[i])).ToArray();
         }
 
         /// <summary>
@@ -878,7 +797,7 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
         /// <returns>The set of parsed template results.</returns>
-        public virtual IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel)
+        public virtual IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false)
         {
             Contract.Requires(razorTemplates != null);
             Contract.Requires(names != null);
@@ -893,9 +812,10 @@
             if (parallel)
                 return GetParallelQueryPlan<string>()
                     .CreateQuery(razorTemplates)
-                    .Select((t, i) => Parse(t, modelList[i], nameList[i]));
+                    .Select((t, i) => Parse(t, modelList[i], nameList[i]))
+                    .ToArray();
 
-            return razorTemplates.Select((t, i) => Parse(t, modelList[i], nameList[i]));
+            return razorTemplates.Select((t, i) => Parse(t, modelList[i], nameList[i])).ToArray();
         }
 
         /// <summary>
@@ -921,6 +841,11 @@
         /// <summary>
         /// Sets the model for the template.
         /// </summary>
+        /// <remarks>
+        /// This method uses reflection to set the model property. As we can't guaruntee that we know
+        /// what model type they will be using, we have to do the hard graft. The preference would be
+        /// to use the generic <see cref="SetModel{T}"/> method instead.
+        /// </remarks>
         /// <param name="template">The template instance.</param>
         /// <param name="model">The model instance.</param>
         private static void SetModelExplicit(ITemplate template, object model)

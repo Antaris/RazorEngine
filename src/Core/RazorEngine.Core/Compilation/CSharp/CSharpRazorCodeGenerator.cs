@@ -1,8 +1,11 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
+    using System;
+    using System.CodeDom;
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
 
+    using Spans;
     using Templating;
 
     /// <summary>
@@ -35,6 +38,31 @@
 
         #region Methods
         /// <summary>
+        /// Sets the model type.
+        /// </summary>
+        /// <param name="modelTypeName">The model type.</param>
+        private void SetModelType(string modelTypeName)
+        {
+            var host = (Compilation.RazorEngineHost)Host;
+            var type = host.DefaultBaseTemplateType;
+
+            string baseName = string.Format("{0}.{1}<{2}>", type.Namespace, type.Name.Substring(0, type.Name.IndexOf('`')), modelTypeName);
+            var baseType = new CodeTypeReference(baseName);
+            GeneratedClass.BaseTypes.Clear();
+            GeneratedClass.BaseTypes.Add(baseType);
+        }
+
+        /// <summary>
+        /// Visits any specialised spans used to introduce custom logic.
+        /// </summary>
+        /// <param name="span">The current span.</param>
+        /// <returns>True if additional spans were matched, otherwise false.</returns>
+        protected override bool TryVisitSpecialSpan(Span span)
+        {
+            return TryVisit<ModelSpan>(span, VisitModelSpan);
+        }
+
+        /// <summary>
         /// Visits an error generated through parsing.
         /// </summary>
         /// <param name="err">The error that was generated.</param>
@@ -42,6 +70,18 @@
         {
             if (StrictMode)
                 throw new TemplateParsingException(err);
+        }
+
+        /// <summary>
+        /// Visits a model span.
+        /// </summary>
+        /// <param name="span">The model span.</param>
+        private void VisitModelSpan(ModelSpan span)
+        {
+            SetModelType(span.ModelTypeName);
+
+            if (DesignTimeMode)
+                WriteHelperVariable(span.Content, "__modelHelper");
         }
         #endregion
     }

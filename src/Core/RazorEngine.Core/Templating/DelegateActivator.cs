@@ -25,6 +25,13 @@
         }
         #endregion
 
+        #region Properties
+        /// <summary>
+        /// Gets the activator.
+        /// </summary>
+        internal Func<InstanceContext, ITemplate> Activator { get { return _activator; } }
+        #endregion
+
         #region Methods
         /// <summary>
         /// Creates an instance of the specifed template.

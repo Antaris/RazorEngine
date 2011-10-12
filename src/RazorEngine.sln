@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Core", "Core\Ra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3BBC422C-2720-487E-B46E-BFED47165373}"
 	ProjectSection(SolutionItems) = preProject
+		Shared\RazorEngine.Public.snk = Shared\RazorEngine.Public.snk
 		Shared\RazorEngine.snk = Shared\RazorEngine.snk
 		Shared\SharedAssemblyInfo.cs = Shared\SharedAssemblyInfo.cs
 	EndProjectSection
@@ -88,5 +89,8 @@ Global
 		{F4F5AB5F-BF81-4C0C-8F2E-68AB02160C4E} = {736162F9-990C-4DDA-BDC6-7FBDEC0AA857}
 		{BE202D69-7947-4E28-B43D-5E1FAFA8EDFB} = {31645D9C-55C6-43F4-A3EB-380DD82B338E}
 		{878A8554-ACF1-4A0B-9BFC-6BD5FC5048C4} = {8DA86295-C17B-4D67-8F94-E2463AD45459}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

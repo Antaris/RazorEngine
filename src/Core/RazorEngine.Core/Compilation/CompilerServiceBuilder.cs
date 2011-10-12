@@ -2,6 +2,8 @@
 {
     using System.Diagnostics.Contracts;
 
+    using Configuration;
+
     /// <summary>
     /// Manages creation of <see cref="ICompilerService"/> instances.
     /// </summary>
@@ -10,6 +12,16 @@
         #region Fields
         private static ICompilerServiceFactory _factory;
         private static readonly object sync = new object();
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Initialises the <see cref="CompilerServiceBuilder"/> type.
+        /// </summary>
+        static CompilerServiceBuilder()
+        {
+            _factory = new DefaultCompilerServiceFactory();
+        }
         #endregion
 
         #region Methods
@@ -38,6 +50,19 @@
             {
                 return _factory.CreateCompilerService(language);
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ICompilerService"/> for the default <see cref="Language"/>.
+        /// </summary>
+        /// <returns>The compiler service instance.</returns>
+        public static ICompilerService GetDefaultCompilerService()
+        {
+            var config = RazorEngineConfigurationSection.GetConfiguration();
+            if (config == null)
+                return GetCompilerService(Language.CSharp);
+
+            return GetCompilerService(config.DefaultLanguage);
         }
         #endregion
     }

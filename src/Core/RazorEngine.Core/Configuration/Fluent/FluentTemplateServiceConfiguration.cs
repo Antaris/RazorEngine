@@ -1,0 +1,91 @@
+﻿namespace RazorEngine.Configuration
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+
+    using Compilation;
+    using Templating;
+    using Text;
+
+    /// <summary>
+    /// Defines a fluent template service configuration
+    /// </summary>
+    public class FluentTemplateServiceConfiguration : ITemplateServiceConfiguration
+    {
+        #region Fields
+        private readonly DefaultTemplateServiceConfiguration _innerConfig = new DefaultTemplateServiceConfiguration();
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Initialises a new instance of <see cref="FluentTemplateServiceConfiguration"/>.
+        /// </summary>
+        /// <param name="config">The delegate used to create the configuration.</param>
+        public FluentTemplateServiceConfiguration(Action<IConfigurationBuilder> config)
+        {
+            Contract.Requires(config != null);
+
+            config(new FluentConfigurationBuilder(_innerConfig));
+        }
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Gets or sets the activator.
+        /// </summary>
+        public IActivator Activator
+        {
+            get { return _innerConfig.Activator; }
+        }
+
+        /// <summary>
+        /// Gets the base template type.
+        /// </summary>
+        public Type BaseTemplateType
+        {
+            get { return _innerConfig.BaseTemplateType; }
+        }
+
+        /// <summary>
+        /// Gets or sets the compiler service factory.
+        /// </summary>
+        public ICompilerServiceFactory CompilerServiceFactory
+        {
+            get { return _innerConfig.CompilerServiceFactory; }
+        }
+
+        /// <summary>
+        /// Gets whether the template service is operating in debug mode.
+        /// </summary>
+        public bool Debug
+        {
+            get { return _innerConfig.Debug; }
+        }
+
+        /// <summary>
+        /// Gets or sets the encoded string factory.
+        /// </summary>
+        public IEncodedStringFactory EncodedStringFactory
+        {
+            get { return _innerConfig.EncodedStringFactory; }
+        }
+
+        /// <summary>
+        /// Gets or sets the language.
+        /// </summary>
+        public Language Language
+        {
+            get { return _innerConfig.Language; }
+        }
+
+        /// <summary>
+        /// Gets or sets the collection of namespaces.
+        /// </summary>
+        public ISet<string> Namespaces
+        {
+            get { return _innerConfig.Namespaces; }
+        }
+        #endregion
+    }
+}

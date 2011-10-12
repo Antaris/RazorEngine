@@ -2,10 +2,13 @@
 {
     using System;
     using System.CodeDom.Compiler;
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Security;
+    using System.IO;
     using System.Reflection;
+    using System.Security;
+    using System.Text;
     using System.Web.Razor;
     using System.Web.Razor.Parser;
 
@@ -42,7 +45,7 @@
         /// <param name="context">The type context.</param>
         /// <returns>The compiler results.</returns>
         [Pure]
-        private CompilerResults Compile(TypeContext context)
+        private Tuple<CompilerResults, string> Compile(TypeContext context)
         {
             if (disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -66,11 +69,23 @@
             var includeAssemblies = (IncludeAssemblies() ?? Enumerable.Empty<string>());
             assemblies = assemblies.Concat(includeAssemblies)
                 .Select(a => a.ToUpperInvariant())
+                .Where(a => !string.IsNullOrWhiteSpace(a))
                 .Distinct();
 
             @params.ReferencedAssemblies.AddRange(assemblies.ToArray());
 
-            return CodeDomProvider.CompileAssemblyFromDom(@params, compileUnit);
+            string sourceCode = null;
+            if (Debug)
+            {
+                var builder = new StringBuilder();
+                using (var writer = new StringWriter(builder))
+                {
+                    CodeDomProvider.GenerateCodeFromCompileUnit(compileUnit, writer, new CodeGeneratorOptions());
+                    sourceCode = builder.ToString();
+                }
+            }
+
+            return Tuple.Create(CodeDomProvider.CompileAssemblyFromDom(@params, compileUnit), sourceCode);
         }
 
         /// <summary>
@@ -84,14 +99,15 @@
             if (context == null)
                 throw new ArgumentNullException("context");
 
-            var results = Compile(context);
+            var result = Compile(context);
+            var compileResult = result.Item1;
 
-            if (results.Errors != null && results.Errors.Count > 0)
-                throw new TemplateCompilationException(results.Errors);
+            if (compileResult.Errors != null && compileResult.Errors.Count > 0)
+                throw new TemplateCompilationException(compileResult.Errors, result.Item2, context.TemplateContent);
 
             return Tuple.Create(
-                results.CompiledAssembly.GetType("CompiledRazorTemplates.Dynamic." + context.ClassName), 
-                results.CompiledAssembly);
+                compileResult.CompiledAssembly.GetType("CompiledRazorTemplates.Dynamic." + context.ClassName),
+                compileResult.CompiledAssembly);
         }
 
         /// <summary>

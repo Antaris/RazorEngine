@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Reflection;
+    using System.Linq;
 
     using Compilation;
     using Text;
@@ -24,36 +25,44 @@
         /// <summary>
         /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
         /// </summary>
-        public IsolatedTemplateService() 
-            : this(Language.CSharp, (IAppDomainFactory)null) { }
+        public IsolatedTemplateService()
+            : this(Language.CSharp, Encoding.Html, (IAppDomainFactory)null) { }
 
         /// <summary>
         /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
         /// </summary>
         /// <param name="language">The code language.</param>
-        public IsolatedTemplateService(Language language) 
-            : this(language, (IAppDomainFactory)null) { }
+        public IsolatedTemplateService(Language language)
+            : this(language, Encoding.Html, (IAppDomainFactory)null) { }
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
+        /// </summary>
+        /// <param name="encoding">The encoding.</param>
+        public IsolatedTemplateService(Encoding encoding)
+            : this(Language.CSharp, encoding, (IAppDomainFactory)null) { }
 
         /// <summary>
         /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
         /// </summary>
         /// <param name="appDomainFactory">The application domain factory.</param>
-        public IsolatedTemplateService(IAppDomainFactory appDomainFactory) 
-            : this(Language.CSharp, appDomainFactory) { }
+        public IsolatedTemplateService(IAppDomainFactory appDomainFactory)
+            : this(Language.CSharp, Encoding.Html, appDomainFactory) { }
 
         /// <summary>
         /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
         /// </summary>
         /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
         public IsolatedTemplateService(Func<AppDomain> appDomainFactory) 
-            : this(Language.CSharp, appDomainFactory) { }
+            : this(Language.CSharp, Encoding.Html, appDomainFactory) { }
 
         /// <summary>
         /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
         /// </summary>
         /// <param name="language">The code language.</param>
+        /// <param name="encoding">The encoding.</param>
         /// <param name="appDomainFactory">The application domain factory.</param>
-        public IsolatedTemplateService(Language language, IAppDomainFactory appDomainFactory)
+        public IsolatedTemplateService(Language language, Encoding encoding, IAppDomainFactory appDomainFactory)
         {
             _appDomain = CreateAppDomain(appDomainFactory ?? new DefaultAppDomainFactory());
 
@@ -61,8 +70,8 @@
             string typeName = TemplateServiceType.FullName;
 
             _proxy = (ITemplateService)_appDomain.CreateInstance(
-                assemblyName, typeName, false, BindingFlags.Public | BindingFlags.Instance,
-                null, new object[] { language }, CultureInfo.CurrentCulture, null).Unwrap();
+                assemblyName, typeName, false, BindingFlags.NonPublic | BindingFlags.Instance,
+                null, new object[] { language, encoding }, CultureInfo.CurrentCulture, null).Unwrap();
         }
 
         /// <summary>
@@ -71,7 +80,24 @@
         /// <param name="language">The code language.</param>
         /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
         public IsolatedTemplateService(Language language, Func<AppDomain> appDomainFactory)
-            : this(language, new DelegateAppDomainFactory(appDomainFactory)) { }
+            : this(language, Encoding.Html, new DelegateAppDomainFactory(appDomainFactory)) { }
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
+        /// </summary>
+        /// <param name="language">The code language.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
+        public IsolatedTemplateService(Language language, Encoding encoding, Func<AppDomain> appDomainFactory)
+            : this(language, encoding, new DelegateAppDomainFactory(appDomainFactory)) { }
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
+        /// </summary>
+        /// <param name="encoding">The encoding.</param>
+        /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
+        public IsolatedTemplateService(Encoding encoding, Func<AppDomain> appDomainFactory)
+            : this(Language.CSharp, encoding, new DelegateAppDomainFactory(appDomainFactory)) { }
         #endregion
 
         #region Properties
@@ -404,12 +430,26 @@
         /// <param name="razorTemplates">The set of string templates to partse.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        public IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, bool parallel = false)
+        IEnumerable<string> ITemplateService.ParseMany(IEnumerable<string> razorTemplates, bool parallel)
         {
             if (disposed)
                 throw new ObjectDisposedException("IsolatedTemplateService");
 
             return _proxy.ParseMany(razorTemplates, parallel);
+        }
+
+        /// <summary>
+        /// Parses the specified array of templates.
+        /// </summary>
+        /// <param name="razorTemplates">The array of string templates to partse.</param>
+        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
+        /// <returns>The array of parsed template results.</returns>
+        public string[] ParseMany(string[] razorTemplates, bool parallel = false)
+        {
+            if (disposed)
+                throw new ObjectDisposedException("IsolatedTemplateService");
+
+            return _proxy.ParseMany(razorTemplates, parallel).ToArray();
         }
 
         /// <summary>
@@ -419,12 +459,24 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        public IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel = false)
+        IEnumerable<string> ITemplateService.ParseMany(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel)
+        {
+            return ParseMany(razorTemplates.ToArray(), names.ToArray(), parallel);
+        }
+
+        /// <summary>
+        /// Parses the specified array of templates.
+        /// </summary>
+        /// <param name="razorTemplates">The array of string templates to partse.</param>
+        /// <param name="names">The array of cache names.</param>
+        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
+        /// <returns>The array of parsed template results.</returns>
+        public string[] ParseMany(string[] razorTemplates, string[] names, bool parallel = false)
         {
             if (disposed)
                 throw new ObjectDisposedException("IsolatedTemplateService");
 
-            return _proxy.ParseMany(razorTemplates, names, parallel);
+            return _proxy.ParseMany(razorTemplates, names, parallel).ToArray();
         }
 
         /// <summary>
@@ -435,9 +487,22 @@
         /// <param name="models">The set of models.</param>
         /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
         /// <returns>The set of parsed template results.</returns>
-        public IEnumerable<string> ParseMany<T>(string razorTemplate, IEnumerable<T> models, bool parallel)
+        IEnumerable<string> ITemplateService.ParseMany<T>(string razorTemplate, IEnumerable<T> models, bool parallel)
         {
-            return _proxy.ParseMany(razorTemplate, models, parallel);
+            return ParseMany(razorTemplate, models.ToArray(), parallel);
+        }
+
+        /// <summary>
+        /// Parses the template and merges with the many models provided.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="razorTemplate">The razor template.</param>
+        /// <param name="models">The array of models.</param>
+        /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
+        /// <returns>The array of parsed template results.</returns>
+        public string[] ParseMany<T>(string razorTemplate, T[] models, bool parallel = false)
+        {
+            return _proxy.ParseMany(razorTemplate, models, parallel).ToArray();
         }
 
         /// <summary>
@@ -448,7 +513,20 @@
         /// <param name="models">The set of models.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        public IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
+        IEnumerable<string> ITemplateService.ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel)
+        {
+            return ParseMany(razorTemplates.ToArray(), models.ToArray(), parallel);
+        }
+
+        /// <summary>
+        /// Parses the specified array of templates.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="razorTemplates">The array of string templates to partse.</param>
+        /// <param name="models">The array of models.</param>
+        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
+        /// <returns>The array of parsed template results.</returns>
+        public string[] ParseMany<T>(string[] razorTemplates, T[] models, bool parallel = false)
         {
             if (disposed)
                 throw new ObjectDisposedException("IsolatedTemplateService");
@@ -456,7 +534,7 @@
             if (CompilerServicesUtility.IsDynamicType(typeof(T)))
                 throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
 
-            return _proxy.ParseMany(razorTemplates, models, parallel);
+            return _proxy.ParseMany(razorTemplates, models, parallel).ToArray();
         }
 
         /// <summary>
@@ -468,7 +546,21 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        public IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel)
+        IEnumerable<string> ITemplateService.ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel)
+        {
+            return ParseMany(razorTemplates.ToArray(), models.ToArray(), names.ToArray(), parallel);
+        }
+
+        /// <summary>
+        /// Parses the specified array of templates.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="razorTemplates">The array of string templates to partse.</param>
+        /// <param name="models">The array of models.</param>
+        /// <param name="names">The array of cache names.</param>
+        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
+        /// <returns>The array of parsed template results.</returns>
+        public string[] ParseMany<T>(string[] razorTemplates, T[] models, string[] names, bool parallel = false)
         {
             if (disposed)
                 throw new ObjectDisposedException("IsolatedTemplateService");
@@ -476,7 +568,7 @@
             if (CompilerServicesUtility.IsDynamicType(typeof(T)))
                 throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
 
-            return _proxy.ParseMany(razorTemplates, models, names, parallel);
+            return _proxy.ParseMany(razorTemplates, models, names, parallel).ToArray(); 
         }
         #endregion
     }
