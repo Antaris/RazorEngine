@@ -149,8 +149,10 @@
                 throw new ArgumentException("The name of the section to render must be specified.");
 
             var action = _context.GetSectionDelegate(name);
-            if (name == null && isRequired)
+            if (action == null && isRequired)
                 throw new ArgumentException("No section has been defined with name '" + name + "'");
+
+            if (action == null) action = () => { };
 
             return new TemplateWriter(tw => action());
         }
