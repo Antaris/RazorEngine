@@ -40,6 +40,15 @@
                 return writer.ToString();
             }
         }
+
+        /// <summary>
+        /// Writes the helper result of the specified text writer.
+        /// </summary>
+        /// <param name="writer">The text writer to write the helper result to.</param>
+        public void WriteTo(TextWriter writer)
+        {
+            writerDelegate(writer);
+        }
         #endregion
     }
 }

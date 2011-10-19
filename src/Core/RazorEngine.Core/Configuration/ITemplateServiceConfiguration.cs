@@ -47,6 +47,11 @@
         /// Gets the namespaces.
         /// </summary>
         ISet<string> Namespaces { get; }
+
+        /// <summary>
+        /// Gets the template resolver.
+        /// </summary>
+        ITemplateResolver Resolver { get; }
         #endregion
     }
 }

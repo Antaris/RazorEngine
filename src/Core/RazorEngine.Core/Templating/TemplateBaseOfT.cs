@@ -1,8 +1,10 @@
 ﻿namespace RazorEngine.Templating
 {
+    using System;
     using System.Dynamic;
 
     using Compilation;
+    using Text;
 
     /// <summary>
     /// Provides a base implementation of a template with a model.
@@ -44,6 +46,22 @@
                 else
                     model = value;
             }
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Includes the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template to include.</param>
+        /// <returns>The template writer helper.</returns>
+        public override TemplateWriter Include(string name)
+        {
+            var instance = TemplateService.Resolve(name, Model);
+            if (instance == null)
+                throw new ArgumentException("No template could be resolved with name '" + name + "'");
+
+            return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext())));
         }
         #endregion
     }

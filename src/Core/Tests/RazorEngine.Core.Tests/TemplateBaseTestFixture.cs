@@ -39,6 +39,103 @@
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
+
+        /// <summary>
+        /// Tests that a template can support a layout.
+        /// </summary>
+        [Test]
+        public void TemplateBase_CanRenderWithLayout_WithSimpleLayout()
+        {
+            using (var service = new TemplateService())
+            {
+                const string parent = @"<div>@RenderSection(""TestSection"")</div>@RenderBody()";
+                const string template = @"@{_Layout = ""Parent"";}@section TestSection {<span>Hello</span>}<h1>Hello World</h1>";
+                const string expected = "<div><span>Hello</span></div><h1>Hello World</h1>";
+
+                /* GetTemplate is the simplest method for compiling and caching a template without using a 
+                 * resolver to locate the layout template at a later time in exection. */
+                service.GetTemplate(parent, "Parent");
+                string result = service.Parse(template);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that a template can support a layout. This test uses multiple layout templates in the template hierachy,
+        /// and the end result should put child content in both the outer layout (grandparent), and in the inner layout (parent).
+        /// </summary>
+        /// <remarks>
+        /// Outer layout (grandparent):
+        ///     &lt;div&gt;Message from Child Template (section): @RenderSection("ChildMessage")&lt;/div&gt;
+        ///     &lt;div&gt;Message from Parent Template (section): @RenderSection("ParentMessage")&lt;/div&gt;
+        ///     &lt;div&gt;Content from Parent Template (body): @RenderBody()&lt;/div&gt;
+        /// 
+        /// Inner layout (parent):
+        ///     @{
+        ///         _Layout = "GrandParent";
+        ///     }
+        ///     @section ParentMessage {
+        ///         &lt;span&gt;Hello from Parent&lt;/span&gt;
+        ///     }
+        ///     &lt;p&gt;Child content: @RenderBody()&lt;/p&gt;
+        /// 
+        /// Template (child):
+        ///     @{
+        ///         _Layout = "Parent";
+        ///     }
+        ///     @section ChildMessage {
+        ///         &lt;span&gt;Hello from Child&lt;/span&gt;
+        ///     }
+        ///     &lt;p&gt;This is child content&lt;/p&gt;
+        /// 
+        /// Expected result:
+        ///     &lt;div&gt;Message from Child Template (section):
+        ///         &lt;span&gt;Hello from Child&lt;/span&gt;
+        ///     &lt;/div&gt;
+        ///     &lt;div&gt;Message from Parent Template (section):
+        ///         &lt;span&gt;Hello from Parent&lt;/span&gt;
+        ///     &lt;/div&gt;
+        ///     &lt;div&gt;Content from Parent Template (body):
+        ///         &lt;p&gt;Child content: &lt;p&gt;This is child content&lt;/p&gt;&lt;/p&gt;
+        ///     &lt;/div&gt;
+        /// </remarks>
+        [Test]
+        public void TemplateBase_CanRenderWithLayout_WithComplexLayout()
+        {
+            using (var service = new TemplateService())
+            {
+                const string grandparent = @"<div>Message from Child Template (section): @RenderSection(""ChildMessage"")</div><div>Message from Parent Template (section): @RenderSection(""ParentMessage"")</div><div>Content from Parent Template (body): @RenderBody()</div>";
+                const string parent = @"@{_Layout = ""GrandParent"";}@section ParentMessage {<span>Hello from Parent</span>}<p>Child content: @RenderBody()</p>";
+                const string template = @"@{_Layout = ""Parent"";}@section ChildMessage {<span>Hello from Child</span>}<p>This is child content</p>";
+                const string expected = "<div>Message from Child Template (section): <span>Hello from Child</span></div><div>Message from Parent Template (section): <span>Hello from Parent</span></div><div>Content from Parent Template (body): <p>Child content: <p>This is child content</p></p></div>";
+
+                service.GetTemplate(parent, "Parent");
+                service.GetTemplate(grandparent, "GrandParent");
+                string result = service.Parse(template);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that a template service can include another template.
+        /// </summary>
+        [Test]
+        public void TemplateBase_CanRenderWithInclude_SimpleInclude()
+        {
+            using (var service = new TemplateService())
+            {
+                const string child = "<div>Content from child</div>";
+                const string template = "@Include(\"Child\")";
+                const string expected = "<div>Content from child</div>";
+
+                service.GetTemplate(child, "Child");
+                string result = service.Parse(template);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
         #endregion
     }
 }

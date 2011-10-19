@@ -86,6 +86,14 @@
         {
             get { return _innerConfig.Namespaces; }
         }
+
+        /// <summary>
+        /// Gets the resolver.
+        /// </summary>
+        public ITemplateResolver Resolver
+        {
+            get { return _innerConfig.Resolver; }
+        }
         #endregion
     }
 }

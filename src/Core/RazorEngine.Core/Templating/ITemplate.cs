@@ -7,11 +7,6 @@
     {
         #region Properties
         /// <summary>
-        /// Gets the result.
-        /// </summary>
-        string Result { get; }
-
-        /// <summary>
         /// Sets the template service.
         /// </summary>
         ITemplateService TemplateService { set; }
@@ -26,8 +21,9 @@
         /// <summary>
         /// Runs the template and returns the result.
         /// </summary>
+        /// <param name="context">The current execution context.</param>
         /// <returns>The merged result of the template.</returns>
-        string Run();
+        string Run(ExecuteContext context);
 
         /// <summary>
         /// Writes the specified object to the result.

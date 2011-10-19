@@ -4,6 +4,7 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -558,8 +559,7 @@
         public virtual string Parse(string razorTemplate)
         {
             var instance = CreateTemplate(razorTemplate);
-
-            return instance.Run();
+            return Run(instance);
         }
 
         /// <summary>
@@ -572,8 +572,7 @@
         public virtual string Parse(string razorTemplate, string name)
         {
             var instance = GetTemplate(razorTemplate, name);
-
-            return instance.Run();
+            return Run(instance);
         }
 
         /// <summary>
@@ -586,8 +585,7 @@
         public virtual string Parse(string razorTemplate, object model)
         {
             var instance = CreateTemplate(razorTemplate, model);
-
-            return instance.Run();
+            return Run(instance);
         }
 
         /// <summary>
@@ -601,8 +599,7 @@
         public virtual string Parse<T>(string razorTemplate, T model)
         {
             var instance = CreateTemplate(razorTemplate, model);
-
-            return instance.Run();
+            return Run(instance);
         }
 
         /// <summary>
@@ -615,8 +612,7 @@
         public virtual string Parse(string razorTemplate, object model, string name)
         {
             var instance = GetTemplate(razorTemplate, model, name);
-
-            return instance.Run();
+            return Run(instance);
         }
 
         /// <summary>
@@ -630,8 +626,7 @@
         public virtual string Parse<T>(string razorTemplate, T model, string name)
         {
             var instance = GetTemplate(razorTemplate, model, name);
-
-            return instance.Run();
+            return Run(instance);
         }
 
         /// <summary>
@@ -706,10 +701,10 @@
             if (parallel)
                 return GetParallelQueryPlan<object>()
                     .CreateQuery(models)
-                    .Select(m => CreateTemplate(type, m).Run())
+                    .Select(m => Run(CreateTemplate(type, m)))
                     .ToArray();
 
-            return models.Select(m => CreateTemplate(type, m).Run()).ToArray();
+            return models.Select(m => Run(CreateTemplate(type, m))).ToArray();
         }
 
         /// <summary>
@@ -731,10 +726,10 @@
             if (parallel)
                 return GetParallelQueryPlan<T>()
                     .CreateQuery(models)
-                    .Select(m => CreateTemplate(type, m).Run())
+                    .Select(m => Run(CreateTemplate(type, m)))
                     .ToArray();
 
-            return models.Select(m => CreateTemplate(type, m).Run()).ToArray();
+            return models.Select(m => Run(CreateTemplate(type, m))).ToArray();
         }
 
         /// <summary>
@@ -816,6 +811,85 @@
                     .ToArray();
 
             return razorTemplates.Select((t, i) => Parse(t, modelList[i], nameList[i])).ToArray();
+        }
+
+        /// <summary>
+        /// Runs the specified template and returns the result.
+        /// </summary>
+        /// <param name="template">The template to run.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Run(ITemplate template)
+        {
+            return template.Run(new ExecuteContext());
+        }
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>The resolved template.</returns>
+        public ITemplate Resolve(string name)
+        {
+            CachedTemplateItem cachedItem;
+            ITemplate instance = null;
+            if (_cache.TryGetValue(name, out cachedItem))
+                instance = CreateTemplate(cachedItem.TemplateType);
+
+            if (instance == null && _config.Resolver != null)
+            {
+                string template = _config.Resolver.Resolve(name);
+                if (!string.IsNullOrWhiteSpace(template))
+                    instance = GetTemplate(template, name);
+            }
+
+            return instance;
+        }
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model for the template.</param>
+        /// <returns>The resolved template.</returns>
+        public ITemplate Resolve(string name, object model)
+        {
+            CachedTemplateItem cachedItem;
+            ITemplate instance = null;
+            if (_cache.TryGetValue(name, out cachedItem))
+                instance = CreateTemplate(cachedItem.TemplateType, model);
+
+            if (instance == null && _config.Resolver != null)
+            {
+                string template = _config.Resolver.Resolve(name);
+                if (!string.IsNullOrWhiteSpace(template))
+                    instance = GetTemplate(template, model, name);
+            }
+
+            return instance;
+        }
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model for the template.</param>
+        /// <returns>The resolved template.</returns>
+        public ITemplate Resolve<T>(string name, T model)
+        {
+            CachedTemplateItem cachedItem;
+            ITemplate instance = null;
+            if (_cache.TryGetValue(name, out cachedItem))
+                instance = CreateTemplate(cachedItem.TemplateType, model);
+
+            if (instance == null && _config.Resolver != null)
+            {
+                string template = _config.Resolver.Resolve(name);
+                if (!string.IsNullOrWhiteSpace(template))
+                    instance = GetTemplate(template, model, name);
+            }
+
+            return instance;
         }
 
         /// <summary>

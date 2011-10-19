@@ -130,6 +130,43 @@
         }
 
         /// <summary>
+        /// Sets the resolve used to locate unknown templates.
+        /// </summary>
+        /// <typeparam name="TResolver">The resolve type.</typeparam>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder ResolveUsing<TResolver>() where TResolver : ITemplateResolver, new()
+        {
+            _config.Resolver = new TResolver();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resolver used to locate unknown templates.
+        /// </summary>
+        /// <param name="resolver">The resolver instance to use.</param>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder ResolveUsing(ITemplateResolver resolver)
+        {
+            Contract.Requires(resolver != null);
+
+            _config.Resolver = resolver;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resolver delegate used to locate unknown templates.
+        /// </summary>
+        /// <param name="resolver">The resolver delegate to use.</param>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder ResolveUsing(Func<string, string> resolver)
+        {
+            Contract.Requires(resolver != null);
+
+            _config.Resolver = new DelegateTemplateResolver(resolver);
+            return this;
+        }
+
+        /// <summary>
         /// Sets the default activator.
         /// </summary>
         /// <returns>The current configuration builder.</returns>

@@ -107,7 +107,8 @@
                                DefaultNamespace = "CompiledRazorTemplates.Dynamic",
                                GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
                                                                                  "WriteTo", "WriteLiteralTo",
-                                                                                 "RazorEngine.Templating.TemplateWriter")
+                                                                                 "RazorEngine.Templating.TemplateWriter",
+                                                                                 "DefineSection")
                            };
 
             return host;

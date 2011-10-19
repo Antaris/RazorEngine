@@ -214,6 +214,30 @@
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
         IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false);
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>The resolved template.</returns>
+        ITemplate Resolve(string name);
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model for the template.</param>
+        /// <returns>The resolved template.</returns>
+        ITemplate Resolve(string name, object model);
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model for the template.</param>
+        /// <returns>The resolved template.</returns>
+        ITemplate Resolve<T>(string name, T model);
         #endregion
     }
 }

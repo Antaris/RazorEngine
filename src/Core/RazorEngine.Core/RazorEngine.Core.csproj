@@ -115,9 +115,12 @@
     <Compile Include="Templating\DefaultAppDomainFactory.cs" />
     <Compile Include="Templating\DelegateActivator.cs" />
     <Compile Include="Templating\DelegateAppDomainFactory.cs" />
+    <Compile Include="Templating\DelegateTemplateResolver.cs" />
+    <Compile Include="Templating\ExecuteContext.cs" />
     <Compile Include="Templating\IActivator.cs" />
     <Compile Include="Templating\IAppDomainFactory.cs" />
     <Compile Include="Templating\InstanceContext.cs" />
+    <Compile Include="Templating\ITemplateResolver.cs" />
     <Compile Include="Templating\Parallel\DefaultParallelQueryPlan.cs" />
     <Compile Include="Templating\Parallel\IParallelQueryPlan.cs" />
     <Compile Include="Templating\IsolatedTemplateService.cs" />

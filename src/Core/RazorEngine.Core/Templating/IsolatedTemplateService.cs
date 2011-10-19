@@ -570,6 +570,39 @@
 
             return _proxy.ParseMany(razorTemplates, models, names, parallel).ToArray(); 
         }
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>The resolved template.</returns>
+        ITemplate ITemplateService.Resolve(string name)
+        {
+            return _proxy.Resolve(name);
+        }
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model for the template.</param>
+        /// <returns>The resolved template.</returns>
+        ITemplate ITemplateService.Resolve(string name, object model)
+        {
+            return _proxy.Resolve(name, model);
+        }
+
+        /// <summary>
+        /// Resolves the template with the specified name.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model for the template.</param>
+        /// <returns>The resolved template.</returns>
+        ITemplate ITemplateService.Resolve<T>(string name, T model)
+        {
+            return _proxy.Resolve(name, model);
+        }
         #endregion
     }
 }

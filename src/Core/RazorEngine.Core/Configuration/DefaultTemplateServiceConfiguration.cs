@@ -71,6 +71,11 @@
         /// Gets or sets the collection of namespaces.
         /// </summary>
         public ISet<string> Namespaces { get; set; }
+
+        /// <summary>
+        /// Gets or sets the template resolver.
+        /// </summary>
+        public ITemplateResolver Resolver { get; set; }
         #endregion
     }
 }
