@@ -118,10 +118,8 @@
             var builder = new StringBuilder();
             using (var writer = new StringWriter(builder))
             {
-                //_context.PushWriter(writer);
                 _context.CurrentWriter = writer;
                 Execute();
-                //_context.PopWriter();
                 _context.CurrentWriter = null;
             }
 

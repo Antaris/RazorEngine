@@ -4,12 +4,19 @@
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Inspectors;
+
     /// <summary>
     /// Defines the required contract for implementing a compiler service.
     /// </summary>
     public interface ICompilerService
     {
         #region Properties
+        /// <summary>
+        /// Gets or sets the set of code inspectors.
+        /// </summary>
+        IEnumerable<ICodeInspector> CodeInspectors { get; set; }
+
         /// <summary>
         /// Gets or sets whether the compiler service is operating in debug mode.
         /// </summary>

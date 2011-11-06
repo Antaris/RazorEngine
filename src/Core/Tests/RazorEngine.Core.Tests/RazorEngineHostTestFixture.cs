@@ -53,7 +53,7 @@
         [Test]
         public void RazorEngineHost_SupportsModelSpan_UsingVBCodeParser()
         {
-            var config = new DefaultTemplateServiceConfiguration
+            var config = new TemplateServiceConfiguration
                              {
                                  Language = Language.VisualBasic
                              };

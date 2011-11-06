@@ -2,7 +2,6 @@
 {
     using System;
     using System.CodeDom.Compiler;
-    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.IO;
@@ -20,8 +19,8 @@
     public abstract class DirectCompilerServiceBase : CompilerServiceBase, IDisposable
     {
         #region Fields
-        private readonly CodeDomProvider CodeDomProvider;
-        private bool disposed;
+        private readonly CodeDomProvider _codeDomProvider;
+        private bool _disposed;
         #endregion
 
         #region Constructor
@@ -34,7 +33,7 @@
         protected DirectCompilerServiceBase(RazorCodeLanguage codeLanguage, CodeDomProvider codeDomProvider, Func<MarkupParser> markupParserFactory)
             : base(codeLanguage, markupParserFactory)
         {
-            CodeDomProvider = codeDomProvider;
+            _codeDomProvider = codeDomProvider;
         }
         #endregion
 
@@ -47,11 +46,13 @@
         [Pure]
         private Tuple<CompilerResults, string> Compile(TypeContext context)
         {
-            if (disposed)
+            if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             var compileUnit = GetCodeCompileUnit(context.ClassName, context.TemplateContent, context.Namespaces,
                                                  context.TemplateType, context.ModelType);
+
+            Inspect(compileUnit);
 
             var @params = new CompilerParameters
             {
@@ -80,12 +81,12 @@
                 var builder = new StringBuilder();
                 using (var writer = new StringWriter(builder))
                 {
-                    CodeDomProvider.GenerateCodeFromCompileUnit(compileUnit, writer, new CodeGeneratorOptions());
+                    _codeDomProvider.GenerateCodeFromCompileUnit(compileUnit, writer, new CodeGeneratorOptions());
                     sourceCode = builder.ToString();
                 }
             }
 
-            return Tuple.Create(CodeDomProvider.CompileAssemblyFromDom(@params, compileUnit), sourceCode);
+            return Tuple.Create(_codeDomProvider.CompileAssemblyFromDom(@params, compileUnit), sourceCode);
         }
 
         /// <summary>
@@ -125,10 +126,10 @@
         /// <param name="disposing">Are we explicily disposing of this instance?</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && !disposed)
+            if (disposing && !_disposed)
             {
-                CodeDomProvider.Dispose();
-                disposed = true;
+                _codeDomProvider.Dispose();
+                _disposed = true;
             }
         }
         #endregion

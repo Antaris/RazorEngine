@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivatorTestFixture.cs" />
+    <Compile Include="CodeInspectorTestFixture.cs" />
     <Compile Include="ConfigurationTestFixture.cs" />
     <Compile Include="IsolatedTemplateServiceTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="TestTypes\Activation\UnityTemplateActivator.cs" />
     <Compile Include="TestTypes\Animal.cs" />
     <Compile Include="TestTypes\Activation\CustomTemplateBase.cs" />
+    <Compile Include="TestTypes\Inspectors\ThrowExceptionCodeInspector.cs" />
     <Compile Include="TestTypes\ThreadPoolItem.cs" />
     <Compile Include="TestTypes\ValueObject.cs" />
     <Compile Include="TestTypes\Person.cs" />
@@ -100,6 +102,7 @@
       <Name>RazorEngine.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

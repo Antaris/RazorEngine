@@ -11,6 +11,7 @@
     using System.Web.Razor.Generator;
     using System.Web.Razor.Parser;
 
+    using Inspectors;
     using Templating;
 
     /// <summary>
@@ -34,6 +35,11 @@
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the set of code inspectors.
+        /// </summary>
+        public IEnumerable<ICodeInspector> CodeInspectors { get; set; }
+
         /// <summary>
         /// Gets the code language.
         /// </summary>
@@ -183,6 +189,9 @@
             // Generate any constructors required by the base template type.
             GenerateConstructors(CompilerServicesUtility.GetConstructors(templateType), type);
 
+            // Despatch any inspectors
+            Inspect(result.GeneratedCode);
+
             return result.GeneratedCode;
         }
 
@@ -226,6 +235,20 @@
         public virtual IEnumerable<string> IncludeAssemblies()
         {
             return Enumerable.Empty<string>();
+        }
+
+        /// <summary>
+        /// Inspects the generated code compile unit.
+        /// </summary>
+        /// <param name="unit">The code compile unit.</param>
+        protected virtual void Inspect(CodeCompileUnit unit)
+        {
+            var ns = unit.Namespaces[0];
+            var type = ns.Types[0];
+            var executeMethod = type.Members.OfType<CodeMemberMethod>().Where(m => m.Name.Equals("Execute")).Single();
+
+            foreach (var inspector in CodeInspectors)
+                inspector.Inspect(unit, ns, type, executeMethod);
         }
         #endregion
     }

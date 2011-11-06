@@ -4,6 +4,7 @@
     using System.Diagnostics.Contracts;
 
     using Compilation;
+    using Compilation.Inspectors;
     using Templating;
     using Text;
 
@@ -13,7 +14,7 @@
     internal class FluentConfigurationBuilder : IConfigurationBuilder
     {
         #region Fields
-        private readonly DefaultTemplateServiceConfiguration _config;
+        private readonly TemplateServiceConfiguration _config;
         #endregion
 
         #region Constructor
@@ -21,7 +22,7 @@
         /// Initialises a new instance of <see cref="FluentConfigurationBuilder"/>.
         /// </summary>
         /// <param name="config">The default configuration that we build a new configuration from.</param>
-        public FluentConfigurationBuilder(DefaultTemplateServiceConfiguration config)
+        public FluentConfigurationBuilder(TemplateServiceConfiguration config)
         {
             Contract.Requires(config != null);
 
@@ -63,6 +64,29 @@
             Contract.Requires(activator != null);
 
             _config.Activator = new DelegateActivator(activator);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified code inspector.
+        /// </summary>
+        /// <typeparam name="TInspector">The code inspector type.</typeparam>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder AddInspector<TInspector>() where TInspector : ICodeInspector, new()
+        {
+            return AddInspector(new TInspector());
+        }
+
+        /// <summary>
+        /// Adds the specified code inspector.
+        /// </summary>
+        /// <param name="inspector">The code inspector.</param>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder AddInspector(ICodeInspector inspector)
+        {
+            Contract.Requires(inspector != null);
+
+            _config.CodeInspectors.Add(inspector);
             return this;
         }
 

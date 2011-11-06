@@ -5,6 +5,7 @@
     using System.Diagnostics.Contracts;
 
     using Compilation;
+    using Compilation.Inspectors;
     using Templating;
     using Text;
 
@@ -14,7 +15,7 @@
     public class FluentTemplateServiceConfiguration : ITemplateServiceConfiguration
     {
         #region Fields
-        private readonly DefaultTemplateServiceConfiguration _innerConfig = new DefaultTemplateServiceConfiguration();
+        private readonly TemplateServiceConfiguration _innerConfig = new TemplateServiceConfiguration();
         #endregion
 
         #region Constructor
@@ -45,6 +46,14 @@
         public Type BaseTemplateType
         {
             get { return _innerConfig.BaseTemplateType; }
+        }
+
+        /// <summary>
+        /// Gets the set of code inspectors.
+        /// </summary>
+        public IEnumerable<ICodeInspector> CodeInspectors
+        {
+            get { return _innerConfig.CodeInspectors; }
         }
 
         /// <summary>

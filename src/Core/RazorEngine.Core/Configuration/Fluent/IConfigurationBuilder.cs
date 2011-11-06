@@ -3,6 +3,7 @@
     using System;
 
     using Compilation;
+    using Compilation.Inspectors;
     using Templating;
     using Text;
 
@@ -32,6 +33,20 @@
         /// <param name="activator">The activator delegate.</param>
         /// <returns>The current configuration builder.</returns>
         IConfigurationBuilder ActivateUsing(Func<InstanceContext, ITemplate> activator);
+
+        /// <summary>
+        /// Adds the specified code inspector.
+        /// </summary>
+        /// <typeparam name="TInspector">The code inspector type.</typeparam>
+        /// <returns>The current configuration builder.</returns>
+        IConfigurationBuilder AddInspector<TInspector>() where TInspector : ICodeInspector, new();
+
+        /// <summary>
+        /// Adds the specified code inspector.
+        /// </summary>
+        /// <param name="inspector">The code inspector.</param>
+        /// <returns>The current configuration builder.</returns>
+        IConfigurationBuilder AddInspector(ICodeInspector inspector);
 
         /// <summary>
         /// Sets the compiler service factory.

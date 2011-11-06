@@ -90,6 +90,7 @@
     <Compile Include="Compilation\DefaultCompilerServiceFactory.cs" />
     <Compile Include="Compilation\DirectCompilerServiceBase.cs" />
     <Compile Include="Compilation\HasDynamicModelAttribute.cs" />
+    <Compile Include="Compilation\Inspectors\ICodeInspector.cs" />
     <Compile Include="Compilation\ICompilerService.cs" />
     <Compile Include="Compilation\ICompilerServiceFactory.cs" />
     <Compile Include="Compilation\RazorDynamicObject.cs" />
@@ -99,7 +100,7 @@
     <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />
     <Compile Include="Compilation\VisualBasic\VBRazorCodeGenerator.cs" />
     <Compile Include="Compilation\VisualBasic\VBRazorCodeLanguage.cs" />
-    <Compile Include="Configuration\DefaultTemplateServiceConfiguration.cs" />
+    <Compile Include="Configuration\TemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationBuilder.cs" />
     <Compile Include="Configuration\Fluent\FluentTemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\Fluent\IConfigurationBuilder.cs" />

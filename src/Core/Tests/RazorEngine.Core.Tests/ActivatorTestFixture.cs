@@ -31,7 +31,7 @@
             var container = new UnityContainer();
             container.RegisterType(typeof(ITextFormatter), typeof(ReverseTextFormatter));
 
-            var config = new DefaultTemplateServiceConfiguration
+            var config = new TemplateServiceConfiguration
                              {
                                  Activator = new UnityTemplateActivator(container),
                                  BaseTemplateType = typeof(CustomTemplateBase<>)

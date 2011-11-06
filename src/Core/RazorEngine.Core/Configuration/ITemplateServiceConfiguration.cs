@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using Compilation;
+    using Compilation.Inspectors;
     using Templating;
     using Text;
 
@@ -24,6 +25,11 @@
         Type BaseTemplateType { get; }
 
         /// <summary>
+        /// Gets the code inspectors.
+        /// </summary>
+        IEnumerable<ICodeInspector> CodeInspectors { get; }
+
+        /// <summary>
         /// Gets the compiler service factory.
         /// </summary>
         ICompilerServiceFactory CompilerServiceFactory { get; }
@@ -37,7 +43,7 @@
         /// Gets the encoded string factory.
         /// </summary>
         IEncodedStringFactory EncodedStringFactory { get; }
-
+            
         /// <summary>
         /// Gets the language.
         /// </summary>

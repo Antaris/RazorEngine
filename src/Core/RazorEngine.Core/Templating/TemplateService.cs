@@ -4,11 +4,11 @@
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
 
     using Compilation;
+    using Compilation.Inspectors;
     using Configuration;
     using Parallel;
     using Text;
@@ -47,7 +47,7 @@
         /// Initialises a new instance of <see cref="TemplateService"/>.
         /// </summary>
         public TemplateService()
-            : this(new DefaultTemplateServiceConfiguration()) { }
+            : this(new TemplateServiceConfiguration()) { }
 
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateService"/>
@@ -55,7 +55,7 @@
         /// <param name="language">The code language.</param>
         /// <param name="encoding">the encoding.</param>
         internal TemplateService(Language language, Encoding encoding)
-            : this(new DefaultTemplateServiceConfiguration() { Language = language, EncodedStringFactory = GetEncodedStringFactory(encoding) }) { }
+            : this(new TemplateServiceConfiguration() { Language = language, EncodedStringFactory = GetEncodedStringFactory(encoding) }) { }
         #endregion
 
         #region Properties
@@ -283,6 +283,7 @@
                 .CompilerServiceFactory
                 .CreateCompilerService(_config.Language);
             service.Debug = _config.Debug;
+            service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
 
             var result = service.CompileType(context);
 

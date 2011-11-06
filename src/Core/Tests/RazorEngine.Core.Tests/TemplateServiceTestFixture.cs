@@ -145,7 +145,7 @@
         [Test]
         public void TemplateService_CanParseSimpleTemplate_UsingRawEncoding()
         {
-            var config = new DefaultTemplateServiceConfiguration()
+            var config = new TemplateServiceConfiguration()
             {
                 EncodedStringFactory = new RawStringFactory()
             };
