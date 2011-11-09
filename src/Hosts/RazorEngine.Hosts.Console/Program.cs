@@ -14,7 +14,7 @@ namespace RazorEngine.Hosts.Console
         {
             CompilerServiceBuilder.SetCompilerServiceFactory(new DefaultCompilerServiceFactory());
 
-            using (var service = new TemplateService(Language.CSharp, Encoding.Raw))
+            using (var service = new TemplateService())
             {
                 const string template = "<h1>Age: @Model.Age</h1>";
                 var expected = Enumerable.Range(1, 10).Select(i => string.Format("<h1>Age: {0}</h1>", i)).ToList();
