@@ -1,5 +1,6 @@
 ﻿namespace RazorEngine.Compilation.VisualBasic
 {
+    using System.Diagnostics.Contracts;
     using System.Web.Razor.Parser;
     using System.Web.Razor.Parser.SyntaxTree;
     using System.Web.Razor.Text;
@@ -48,6 +49,8 @@
         /// <param name="block">The code block.</param>
         public bool ParseModelTypeStatement(CodeBlockInfo block)
         {
+            Contract.Requires(block != null);
+
             using (StartBlock(BlockType.Directive))
             {
                 block.ResumeSpans(Context);

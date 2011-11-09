@@ -243,6 +243,8 @@
         /// <param name="unit">The code compile unit.</param>
         protected virtual void Inspect(CodeCompileUnit unit)
         {
+            Contract.Requires(unit != null);
+
             var ns = unit.Namespaces[0];
             var type = ns.Types[0];
             var executeMethod = type.Members.OfType<CodeMemberMethod>().Where(m => m.Name.Equals("Execute")).Single();

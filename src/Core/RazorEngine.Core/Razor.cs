@@ -12,18 +12,8 @@
     public static class Razor
     {
         #region Fields
-        private static ITemplateService _service;
+        private static ITemplateService _service = new TemplateService();
         private static readonly object _sync = new object();
-        #endregion
-
-        #region Constructor
-        /// <summary>
-        /// Initialises the <see cref="Razor"/> type.
-        /// </summary>
-        static Razor()
-        {
-            _service = new TemplateService();
-        }
         #endregion
 
         #region Properties
@@ -69,6 +59,7 @@
         /// <param name="razorTemplates">The set of templates to create <see cref="ITemplate"/> instances for.</param>
         /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
         /// <returns>The enumerable set of template instances.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, bool parallel = false)
         {
             return TemplateService.CreateTemplates(razorTemplates, parallel);
@@ -82,6 +73,7 @@
         /// <param name="models">The set of models used to assign to templates.</param>
         /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
         /// <returns>The enumerable set of template instances.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> CreateTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
         {
             return TemplateService.CreateTemplates(razorTemplates, models, parallel);
@@ -114,6 +106,7 @@
         /// <param name="razorTemplates">The set of templates to create <see cref="Type"/> instances for.</param>
         /// <param name="parallel">Flag to determine whether to create template types in parallel.</param>
         /// <returns>The set of <see cref="Type"/> instances.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, bool parallel = false)
         {
             return TemplateService.CreateTemplateTypes(razorTemplates, parallel);
@@ -126,6 +119,7 @@
         /// <param name="modelType">The model type.</param>
         /// <param name="parallel">Flag to determine whether to create template types in parallel.</param>
         /// <returns>The set of <see cref="Type"/> instances.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, Type modelType, bool parallel = false)
         {
             return TemplateService.CreateTemplateTypes(razorTemplates, modelType, parallel);
@@ -165,6 +159,7 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel = false)
         {
             return TemplateService.GetTemplates(razorTemplates, names, parallel);
@@ -180,6 +175,7 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> GetTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false)
         {
             return TemplateService.GetTemplates(razorTemplates, models, names, parallel);
@@ -238,6 +234,7 @@
         /// <param name="razorTemplates">The set of string templates to partse.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, parallel);
@@ -250,6 +247,7 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, names, parallel);
@@ -263,6 +261,7 @@
         /// <param name="models">The set of models.</param>
         /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
         /// <returns>The set of parsed template results.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany<T>(string razorTemplate, IEnumerable<T> models, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplate, models, parallel);
@@ -276,6 +275,7 @@
         /// <param name="models">The set of models.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, models, parallel);
@@ -290,6 +290,7 @@
         /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, models, names, parallel);

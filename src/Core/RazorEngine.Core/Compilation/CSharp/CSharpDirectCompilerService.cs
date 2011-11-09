@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="strictMode">Specifies whether the strict mode parsing is enabled.</param>
         /// <param name="markupParserFactory">The markup parser factory to use.</param>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed in base class: DirectCompilerServiceBase")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed"), SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed in base class: DirectCompilerServiceBase")]
         public CSharpDirectCompilerService(bool strictMode = true, Func<MarkupParser> markupParserFactory = null)
             : base(
                 new CSharpRazorCodeLanguage(strictMode),

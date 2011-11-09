@@ -10,18 +10,8 @@
     public static class CompilerServiceBuilder
     {
         #region Fields
-        private static ICompilerServiceFactory _factory;
+        private static ICompilerServiceFactory _factory = new DefaultCompilerServiceFactory();
         private static readonly object sync = new object();
-        #endregion
-
-        #region Constructor
-        /// <summary>
-        /// Initialises the <see cref="CompilerServiceBuilder"/> type.
-        /// </summary>
-        static CompilerServiceBuilder()
-        {
-            _factory = new DefaultCompilerServiceFactory();
-        }
         #endregion
 
         #region Methods
@@ -56,6 +46,7 @@
         /// Gets the <see cref="ICompilerService"/> for the default <see cref="Language"/>.
         /// </summary>
         /// <returns>The compiler service instance.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static ICompilerService GetDefaultCompilerService()
         {
             var config = RazorEngineConfigurationSection.GetConfiguration();

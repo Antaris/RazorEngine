@@ -3,8 +3,9 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Diagnostics.Contracts;
-    using System.Linq;
+    using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Security;
     using System.Text;
@@ -79,7 +80,7 @@
             if (Debug)
             {
                 var builder = new StringBuilder();
-                using (var writer = new StringWriter(builder))
+                using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))
                 {
                     _codeDomProvider.GenerateCodeFromCompileUnit(compileUnit, writer, new CodeGeneratorOptions());
                     sourceCode = builder.ToString();
