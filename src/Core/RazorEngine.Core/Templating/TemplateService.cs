@@ -76,6 +76,46 @@
         }
 
         /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="name">The name of the template.</param>
+        public void Compile(string razorTemplate, string name)
+        {
+            Compile(razorTemplate, null, name);
+        }
+
+        /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <param name="name">The name of the template.</param>
+        public void Compile(string razorTemplate, Type modelType, string name)
+        {
+            Contract.Requires(razorTemplate != null);
+            Contract.Requires(name != null);
+
+            int hashCode = razorTemplate.GetHashCode();
+
+            Type type = CreateTemplateType(razorTemplate, modelType);
+            var item = new CachedTemplateItem(hashCode, type);
+
+            _cache.AddOrUpdate(name, item, (n, i) => item);
+        }
+
+        /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="name">The name of the template.</param>
+        public void Compile<T>(string razorTemplate, string name)
+        {
+            Compile(razorTemplate, typeof(T), name);
+        }
+
+        /// <summary>
         /// Creates a new <see cref="InstanceContext"/> for creating template instances.
         /// </summary>
         /// <param name="templateType">The template type.</param>
@@ -891,6 +931,60 @@
             }
 
             return instance;
+        }
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Run(string name)
+        {
+            Contract.Requires(name != null);
+
+            CachedTemplateItem item;
+            if (!(_cache.TryGetValue(name, out item)))
+                throw new InvalidOperationException("No template exists with name '" + name + "'");
+
+            var template = CreateTemplate(item.TemplateType);
+            return template.Run(new ExecuteContext());
+        }
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Run(string name, object model)
+        {
+            Contract.Requires(name != null);
+
+            CachedTemplateItem item;
+            if (!(_cache.TryGetValue(name, out item)))
+                throw new InvalidOperationException("No template exists with name '" + name + "'");
+
+            var template = CreateTemplate(item.TemplateType, model);
+            return template.Run(new ExecuteContext());
+        }
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Run<T>(string name, T model)
+        {
+            Contract.Requires(name != null);
+
+            CachedTemplateItem item;
+            if (!(_cache.TryGetValue(name, out item)))
+                throw new InvalidOperationException("No template exists with name '" + name + "'");
+
+            var template = CreateTemplate(item.TemplateType, model);
+            return template.Run(new ExecuteContext());
         }
 
         /// <summary>

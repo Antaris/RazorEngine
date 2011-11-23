@@ -25,6 +25,29 @@
         void AddNamespace(string ns);
 
         /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="name">The name of the template.</param>
+        void Compile(string razorTemplate, string name);
+
+        /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <param name="name">The name of the template.</param>
+        void Compile(string razorTemplate, Type modelType, string name);
+
+        /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="name">The name of the template.</param>
+        void Compile<T>(string razorTemplate, string name);
+
+        /// <summary>
         /// Creates an instance of <see cref="ITemplate"/> from the specified string template.
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
@@ -238,6 +261,30 @@
         /// <param name="model">The model for the template.</param>
         /// <returns>The resolved template.</returns>
         ITemplate Resolve<T>(string name, T model);
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>The string result of the template.</returns>
+        string Run(string name);
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The string result of the template.</returns>
+        string Run(string name, object model);
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The string result of the template.</returns>
+        string Run<T>(string name, T model);
         #endregion
     }
 }

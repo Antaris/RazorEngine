@@ -32,6 +32,38 @@
 
         #region Methods
         /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="name">The name of the template.</param>
+        public static void Compile(string razorTemplate, string name)
+        {
+            TemplateService.Compile(razorTemplate, name);
+        }
+
+        /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <param name="name">The name of the template.</param>
+        public static void Compile(string razorTemplate, Type modelType, string name)
+        {
+            TemplateService.Compile(razorTemplate, modelType, name);
+        }
+
+        /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="name">The name of the template.</param>
+        public static void Compile<T>(string razorTemplate, string name)
+        {
+            TemplateService.Compile(razorTemplate, name);
+        }
+
+        /// <summary>
         /// Creates an instance of <see cref="ITemplate"/> from the specified string template.
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
@@ -327,6 +359,39 @@
         public static ITemplate Resolve<T>(string name, T model)
         {
             return TemplateService.Resolve(name, model);
+        }
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>The string result of the template.</returns>
+        public static string Run(string name)
+        {
+            return TemplateService.Run(name);
+        }
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The string result of the template.</returns>
+        public static string Run(string name, object model)
+        {
+            return TemplateService.Run(name, model);
+        }
+
+        /// <summary>
+        /// Runs the template with the specified name.
+        /// </summary>
+        /// <typeparam name="T">The model type.</typeparam>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The string result of the template.</returns>
+        public static string Run<T>(string name, T model)
+        {
+            return TemplateService.Run(name, model);
         }
 
         /// <summary>

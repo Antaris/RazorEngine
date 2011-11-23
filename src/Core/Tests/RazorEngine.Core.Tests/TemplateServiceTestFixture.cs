@@ -351,6 +351,46 @@
 
             service.Dispose();
         }
+
+        /// <summary>
+        /// Tests that a template service can precompile a template for later execution.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanPrecompileTemplate_WithNoModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "Hello World";
+                const string expected = "Hello World";
+
+                service.Compile(template, "test");
+
+                string result = service.Run("test");
+
+                Assert.That(result == expected, "Result does not match expected.");
+            }
+        }
+
+        /// <summary>
+        /// Tests that a template service can precompile a template for later execution.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanPrecompileTemplate_WithSimpleModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "Hello @Model.Forename";
+                const string expected = "Hello Matt";
+
+                var model = new Person { Forename = "Matt" };
+
+                service.Compile<Person>(template, "test");
+
+                string result = service.Run("test", model);
+
+                Assert.That(result == expected, "Result does not match expected.");
+            }
+        }
         #endregion
     }
 }

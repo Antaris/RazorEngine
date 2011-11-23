@@ -53,8 +53,6 @@
             var compileUnit = GetCodeCompileUnit(context.ClassName, context.TemplateContent, context.Namespaces,
                                                  context.TemplateType, context.ModelType);
 
-            Inspect(compileUnit);
-
             var @params = new CompilerParameters
             {
                 GenerateInMemory = true,
