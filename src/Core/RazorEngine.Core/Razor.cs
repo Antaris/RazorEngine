@@ -58,9 +58,10 @@
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="name">The name of the template.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "We already provide a non-generic alternative.")]
         public static void Compile<T>(string razorTemplate, string name)
         {
-            TemplateService.Compile(razorTemplate, name);
+            TemplateService.Compile(razorTemplate, typeof(T), name);
         }
 
         /// <summary>

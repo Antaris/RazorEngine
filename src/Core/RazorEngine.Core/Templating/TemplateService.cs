@@ -855,16 +855,6 @@
         }
 
         /// <summary>
-        /// Runs the specified template and returns the result.
-        /// </summary>
-        /// <param name="template">The template to run.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Run(ITemplate template)
-        {
-            return template.Run(new ExecuteContext());
-        }
-
-        /// <summary>
         /// Resolves the template with the specified name.
         /// </summary>
         /// <param name="name">The name of the template.</param>
@@ -934,13 +924,27 @@
         }
 
         /// <summary>
+        /// Runs the specified template and returns the result.
+        /// </summary>
+        /// <param name="template">The template to run.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Run(ITemplate template)
+        {
+            if (template == null)
+                throw new ArgumentNullException("template");
+
+            return template.Run(new ExecuteContext());
+        }
+
+        /// <summary>
         /// Runs the template with the specified name.
         /// </summary>
         /// <param name="name">The name of the template.</param>
         /// <returns>The string result of the template.</returns>
         public string Run(string name)
         {
-            Contract.Requires(name != null);
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("'name' is a required parameter.");
 
             CachedTemplateItem item;
             if (!(_cache.TryGetValue(name, out item)))
@@ -958,7 +962,8 @@
         /// <returns>The string result of the template.</returns>
         public string Run(string name, object model)
         {
-            Contract.Requires(name != null);
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("'name' is a required parameter.");
 
             CachedTemplateItem item;
             if (!(_cache.TryGetValue(name, out item)))
@@ -977,7 +982,8 @@
         /// <returns>The string result of the template.</returns>
         public string Run<T>(string name, T model)
         {
-            Contract.Requires(name != null);
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("'name' is a required parameter.");
 
             CachedTemplateItem item;
             if (!(_cache.TryGetValue(name, out item)))

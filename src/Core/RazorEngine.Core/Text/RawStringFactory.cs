@@ -21,11 +21,11 @@
         /// </summary>
         /// <param name="obj">The object instance.</param>
         /// <returns>An instance of <see cref="IEncodedString"/>.</returns>
-        public IEncodedString CreateEncodedString(object obj)
+        public IEncodedString CreateEncodedString(object value)
         {
-            return (obj == null) 
-                ? new RawString(string.Empty) 
-                : new RawString(obj.ToString());
+            return (value == null) 
+                ? new RawString(string.Empty)
+                : new RawString(value.ToString());
         }
         #endregion
     }

@@ -38,7 +38,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder ActivateUsing(IActivator activator)
         {
-            Contract.Requires(activator != null);
+            if (activator == null)
+                throw new ArgumentNullException("activator");
 
             _config.Activator = activator;
             return this;
@@ -61,7 +62,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder ActivateUsing(Func<InstanceContext, ITemplate> activator)
         {
-            Contract.Requires(activator != null);
+            if (activator == null)
+                throw new ArgumentNullException("activator");
 
             _config.Activator = new DelegateActivator(activator);
             return this;
@@ -84,7 +86,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder AddInspector(ICodeInspector inspector)
         {
-            Contract.Requires(inspector != null);
+            if (inspector == null)
+                throw new ArgumentNullException("inspector");
 
             _config.CodeInspectors.Add(inspector);
             return this;
@@ -97,7 +100,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder CompileUsing(ICompilerServiceFactory factory)
         {
-            Contract.Requires(factory != null);
+            if (factory == null)
+                throw new ArgumentNullException("factory");
 
             _config.CompilerServiceFactory = factory;
             return this;
@@ -121,7 +125,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder EncodeUsing(IEncodedStringFactory factory)
         {
-            Contract.Requires(factory != null);
+            if (factory == null)
+                throw new ArgumentNullException("factory");
 
             _config.EncodedStringFactory = factory;
             return this;
@@ -145,7 +150,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder IncludeNamespaces(params string[] namespaces)
         {
-            Contract.Requires(namespaces != null);
+            if (namespaces == null)
+                throw new ArgumentNullException("namespaces");
 
             foreach (string ns in namespaces)
                 _config.Namespaces.Add(ns);

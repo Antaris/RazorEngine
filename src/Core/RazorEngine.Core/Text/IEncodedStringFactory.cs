@@ -9,9 +9,9 @@
         /// <summary>
         /// Creates a <see cref="IEncodedString"/> instance for the specified raw string.
         /// </summary>
-        /// <param name="rawString">The raw string.</param>
+        /// <param name="value">The raw string.</param>
         /// <returns>An instance of <see cref="IEncodedString"/>.</returns>
-        IEncodedString CreateEncodedString(string rawString);
+        IEncodedString CreateEncodedString(string value);
 
         /// <summary>
         /// Creates a <see cref="IEncodedString"/> instance for the specified object instance.

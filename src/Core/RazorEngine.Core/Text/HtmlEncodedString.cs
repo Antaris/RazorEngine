@@ -15,11 +15,11 @@
         /// <summary>
         /// Initialises a new instance of <see cref="HtmlEncodedString"/>
         /// </summary>
-        /// <param name="rawString">The raw string to be encoded.</param>
-        public HtmlEncodedString(string rawString)
+        /// <param name="value">The raw string to be encoded.</param>
+        public HtmlEncodedString(string value)
         {
-            if (!string.IsNullOrWhiteSpace(rawString))
-                _encodedString = WebUtility.HtmlEncode(rawString);
+            if (!string.IsNullOrWhiteSpace(value))
+                _encodedString = WebUtility.HtmlEncode(value);
         }
         #endregion
 

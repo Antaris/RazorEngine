@@ -6,7 +6,7 @@
     public class RawString : IEncodedString
     {
         #region Fields
-        private readonly string _string;
+        private readonly string _value;
         #endregion
 
         #region Constructor
@@ -14,9 +14,9 @@
         /// Initialises a new instance of <see cref="RawString"/>
         /// </summary>
         /// <param name="rawString">The raw string.</param>
-        public RawString(string rawString)
+        public RawString(string value)
         {
-            _string = rawString;
+            _value = value;
         }
         #endregion
 
@@ -27,7 +27,7 @@
         /// <returns>The encoded string.</returns>
         public string ToEncodedString()
         {
-            return _string ?? string.Empty;
+            return _value ?? string.Empty;
         }
 
         /// <summary>

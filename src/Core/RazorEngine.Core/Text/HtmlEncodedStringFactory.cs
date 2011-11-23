@@ -19,18 +19,18 @@
         /// <summary>
         /// Creates a <see cref="IEncodedString"/> instance for the specified object instance.
         /// </summary>
-        /// <param name="obj">The object instance.</param>
+        /// <param name="value">The object instance.</param>
         /// <returns>An instance of <see cref="IEncodedString"/>.</returns>
-        public IEncodedString CreateEncodedString(object obj)
+        public IEncodedString CreateEncodedString(object value)
         {
-            if (obj == null)
+            if (value == null)
                 return new HtmlEncodedString(string.Empty);
 
-            var htmlString = obj as HtmlEncodedString;
+            var htmlString = value as HtmlEncodedString;
             if (htmlString != null)
                 return htmlString;
 
-            return new HtmlEncodedString(obj.ToString());
+            return new HtmlEncodedString(value.ToString());
         }
         #endregion
     }
