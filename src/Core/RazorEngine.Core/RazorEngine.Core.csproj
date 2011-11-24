@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS, CONTRACTS_FULL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -105,6 +105,11 @@
     <Compile Include="Configuration\Fluent\IConfigurationBuilder.cs" />
     <Compile Include="Configuration\ITemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\RazorEngineConfigurationSection.cs" />
+    <Compile Include="Configuration\Xml\NamespaceConfigurationElement.cs" />
+    <Compile Include="Configuration\Xml\NamespaceConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\Xml\TemplateServiceConfigurationElement.cs" />
+    <Compile Include="Configuration\Xml\TemplateServiceConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\Xml\XmlTemplateServiceConfiguration.cs" />
     <Compile Include="Encoding.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Language.cs" />
@@ -148,9 +153,7 @@
     <None Include="ClassDiagram.cd" />
     <None Include="RazorEngine.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\Xml\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

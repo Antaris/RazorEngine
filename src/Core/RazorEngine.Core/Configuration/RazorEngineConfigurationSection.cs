@@ -2,27 +2,40 @@
 {
     using System.Configuration;
 
+    using Xml;
+
     /// <summary>
     /// Defines the main configuration section for the RazorEngine.
     /// </summary>
     public class RazorEngineConfigurationSection : ConfigurationSection
     {
         #region Fields
-        private const string ActivatorAttribute = "activator";
+        private const string ActivatorAttribute = "activatorType";
+        private const string CompilerServiceFactoryAttribute = "compilerServiceFactoryType";
         private const string DefaultLanguageAttribute = "defaultLanguage";
-        private const string FactoryAttribute = "factory";
+        private const string NamespacesElement = "namespaces";
         private const string SectionPath = "razorEngine";
+        private const string TemplateResolverAttribute = "templateResolverType";
+        private const string TemplateServicesElement = "templateServices";
         #endregion
 
         #region Properties
         /// <summary>
-        /// Gets or sets the activator type.
+        /// Gets the activator type.
         /// </summary>
         [ConfigurationProperty(ActivatorAttribute, IsRequired = false)]
         public string ActivatorType
         {
             get { return (string)this[ActivatorAttribute]; }
-            set { this[ActivatorAttribute] = value; }
+        }
+
+        /// <summary>
+        /// Gets the compiler service factory type.
+        /// </summary>
+        [ConfigurationProperty(CompilerServiceFactoryAttribute, IsRequired = false)]
+        public string CompilerServiceFactoryType
+        {
+            get { return (string)this[CompilerServiceFactoryAttribute]; }
         }
 
         /// <summary>
@@ -36,13 +49,30 @@
         }
 
         /// <summary>
-        /// Gets or sets the factory type.
+        /// Gets the collection of namespaces.
         /// </summary>
-        [ConfigurationProperty(FactoryAttribute, IsRequired = false)]
-        public string FactoryType
+        [ConfigurationProperty(NamespacesElement, IsRequired = false)]
+        public NamespaceConfigurationElementCollection Namespaces
         {
-            get { return (string)this[FactoryAttribute]; }
-            set { this[FactoryAttribute] = value; }
+            get { return (NamespaceConfigurationElementCollection)this[NamespacesElement]; }
+        }
+
+        /// <summary>
+        /// Gets the template resolver type.
+        /// </summary>
+        [ConfigurationProperty(TemplateResolverAttribute, IsRequired = false)]
+        public string TemplateResolverType
+        {
+            get { return (string)this[TemplateResolverAttribute]; }
+        }
+
+        /// <summary>
+        /// Gets the collection of template service configurations.
+        /// </summary>
+        [ConfigurationProperty(TemplateServicesElement, IsRequired = false)]
+        public TemplateServiceConfigurationElementCollection TemplateServices
+        {
+            get { return (TemplateServiceConfigurationElementCollection)this[TemplateServicesElement]; }
         }
         #endregion
 
