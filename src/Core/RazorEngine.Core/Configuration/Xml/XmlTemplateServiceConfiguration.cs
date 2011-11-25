@@ -25,9 +25,9 @@
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("'name' is a required parameter.", "name");
 
-            InitialiseConfiguration(name);
-
             Namespaces = new HashSet<string>();
+
+            InitialiseConfiguration(name);
         }
         #endregion
 
