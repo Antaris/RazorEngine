@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>

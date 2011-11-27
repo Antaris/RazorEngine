@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.IO;
 
     /// <summary>
@@ -12,6 +13,7 @@
         #region Fields
         private readonly IDictionary<string, Action> _definedSections = new Dictionary<string, Action>();
         private readonly Stack<TemplateWriter> _bodyWriters = new Stack<TemplateWriter>();
+        private readonly dynamic _viewBag = new ExpandoObject(); 
         #endregion
 
         #region Properties
@@ -20,6 +22,11 @@
         /// </summary>
         //internal TextWriter CurrentWriter { get { return _writers.Peek(); } }
         internal TextWriter CurrentWriter { get; set; }
+
+        /// <summary>
+        /// Gets the viewbag that allows sharing state.
+        /// </summary>
+        public dynamic ViewBag { get { return _viewBag; } }
         #endregion
 
         #region Methods

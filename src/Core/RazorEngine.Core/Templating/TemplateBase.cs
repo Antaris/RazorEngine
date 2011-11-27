@@ -33,6 +33,11 @@
         /// Gets or sets the template service.
         /// </summary>
         public ITemplateService TemplateService { get; set; }
+
+        /// <summary>
+        /// Gets the viewbag that allows sharing state between layout and child templates.
+        /// </summary>
+        public dynamic ViewBag { get { return _context.ViewBag; } }
         #endregion
 
         #region Methods
