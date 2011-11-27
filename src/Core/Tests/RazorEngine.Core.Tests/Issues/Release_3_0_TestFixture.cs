@@ -16,6 +16,35 @@
     {
         #region Tests
         /// <summary>
+        /// When using a template layout, the model needs to be passed to the layout template from the child.
+        /// 
+        /// Issue 6: https://github.com/Antaris/RazorEngine/issues/6
+        /// </summary>
+        [Test]
+        public void Issue6_ModelShouldBePassedToLayout()
+        {
+            using (var service = new TemplateService())
+            {
+                const string layoutTemplate = "<h1>@Model.PageTitle</h1> @RenderSection(\"Child\")";
+                const string childTemplate = "@{ _Layout = \"Parent\"; }@section Child {<h2>@Model.PageDescription</h2>}";
+                const string expected = "<h1>Test Page</h1> <h2>Test Page Description</h2>";
+
+                var model = new {
+                                    PageTitle = "Test Page",
+                                    PageDescription = "Test Page Description"
+                                };
+
+                var type = model.GetType();
+
+                service.Compile(layoutTemplate, type, "Parent");
+
+                string result = service.Parse(childTemplate, model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
         /// A viewbag property is an easy way to share state between layout templates and the rendering template. The ViewBag property
         /// needs to persist from layouts and child templates.
         /// 

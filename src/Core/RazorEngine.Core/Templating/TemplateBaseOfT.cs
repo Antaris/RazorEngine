@@ -14,6 +14,7 @@
     {
         #region Fields
         private object model;
+        private readonly Type _modelType = typeof(T);
         #endregion
 
         #region Constructor
@@ -62,6 +63,16 @@
                 throw new ArgumentException("No template could be resolved with name '" + name + "'");
 
             return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext())));
+        }
+
+        /// <summary>
+        /// Resolves the layout template.
+        /// </summary>
+        /// <param name="name">The name of the layout template.</param>
+        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
+        protected override ITemplate ResolveLayout(string name)
+        {
+            return TemplateService.Resolve(name, (T)model);
         }
         #endregion
     }

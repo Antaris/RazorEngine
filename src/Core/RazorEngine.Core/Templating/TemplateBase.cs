@@ -112,6 +112,16 @@
         }
 
         /// <summary>
+        /// Resolves the layout template.
+        /// </summary>
+        /// <param name="name">The name of the layout template.</param>
+        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
+        protected virtual ITemplate ResolveLayout(string name)
+        {
+            return TemplateService.Resolve(name);
+        }
+
+        /// <summary>
         /// Runs the template and returns the result.
         /// </summary>
         /// <param name="context">The current execution context.</param>
@@ -121,7 +131,7 @@
             _context = context;
 
             var builder = new StringBuilder();
-            using (var writer = new StringWriter(builder))
+            using (var writer = new StringWriter(builder)) 
             {
                 _context.CurrentWriter = writer;
                 Execute();
@@ -130,7 +140,10 @@
 
             if (_Layout != null)
             {
-                var layout = TemplateService.Resolve(_Layout);
+                // Get the layout template.
+                var layout = ResolveLayout(_Layout);
+
+                // Push the current body instance onto the stack for later execution.
                 var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
                 context.PushBody(body);
 
