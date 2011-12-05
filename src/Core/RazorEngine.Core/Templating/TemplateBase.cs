@@ -71,7 +71,7 @@
         /// <param name="name">The name of the template to include.</param>
         /// <param name="model">The model to pass to the template.</param>
         /// <returns>The template writer helper.</returns>
-        public TemplateWriter Include(string name, object model)
+        public virtual TemplateWriter Include(string name, object model)
         {
             var instance = TemplateService.Resolve(name, model);
             if (instance == null)
@@ -87,7 +87,7 @@
         /// <param name="name">The name of the template to include.</param>
         /// <param name="model">The model to pass to the template.</param>
         /// <returns>The template writer helper.</returns>
-        public TemplateWriter Include<T>(string name, T model)
+        public virtual TemplateWriter Include<T>(string name, T model)
         {
             var instance = TemplateService.Resolve(name, model);
             if (instance == null)
