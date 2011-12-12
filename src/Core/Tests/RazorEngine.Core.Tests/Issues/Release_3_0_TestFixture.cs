@@ -118,6 +118,22 @@ End Code
                 });
             }
         }
+
+        /// <summary>
+        /// The template service should have the ability to compile a template with out a model.
+        /// 
+        /// Issue 11: https://github.com/Antaris/RazorEngine/issues/11
+        /// </summary>
+        [Test]
+        public void Issue11_TemplateServiceShouldCompileModellessTemplate()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>Hello World</h1>";
+
+                service.Compile(template, "issue11");
+            }
+        }
         #endregion
     }
 }
