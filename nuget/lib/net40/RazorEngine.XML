@@ -1413,14 +1413,14 @@
             <summary>
             Creates a <see cref="T:RazorEngine.Text.IEncodedString"/> instance for the specified raw string.
             </summary>
-            <param name="rawString">The raw string.</param>
+            <param name="value">Thevalue.</param>
             <returns>An instance of <see cref="T:RazorEngine.Text.IEncodedString"/>.</returns>
         </member>
         <member name="M:RazorEngine.Text.RawStringFactory.CreateEncodedString(System.Object)">
             <summary>
             Creates a <see cref="T:RazorEngine.Text.IEncodedString"/> instance for the specified object instance.
             </summary>
-            <param name="obj">The object instance.</param>
+            <param name="value">The value.</param>
             <returns>An instance of <see cref="T:RazorEngine.Text.IEncodedString"/>.</returns>
         </member>
         <member name="T:RazorEngine.Templating.TypeLoader">
@@ -1645,7 +1645,7 @@
             <summary>
             Initialises a new instance of <see cref="T:RazorEngine.Text.RawString"/>
             </summary>
-            <param name="rawString">The raw string.</param>
+            <param name="value">The value</param>
         </member>
         <member name="M:RazorEngine.Text.RawString.ToEncodedString">
             <summary>

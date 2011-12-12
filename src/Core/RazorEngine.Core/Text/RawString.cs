@@ -13,7 +13,7 @@
         /// <summary>
         /// Initialises a new instance of <see cref="RawString"/>
         /// </summary>
-        /// <param name="rawString">The raw string.</param>
+        /// <param name="value">The value</param>
         public RawString(string value)
         {
             _value = value;
