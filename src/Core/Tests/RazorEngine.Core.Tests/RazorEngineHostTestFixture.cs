@@ -42,6 +42,23 @@
             }
         }
 
+        [Test]
+        public void RazorEngineHost_SupportsModelSpan_WithBaseType_NotGeneric_UsingCSharpCodeParser()
+        {
+            var config = new TemplateServiceConfiguration();
+            config.BaseTemplateType = typeof(TemplateBase);
+            using (var service = new TemplateService(config))
+            {
+                const string template = "@model RazorEngine.Tests.TestTypes.Person\n@Model.Forename";
+                const string expected = "Matt";
+
+                var model = new Person {Forename = "Matt"};
+                string result = service.Parse(template, (object) model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
         /// <summary>
         /// Tests that the <see cref="RazorEngineHost"/> supports the @ModelType directive.
         /// </summary>
