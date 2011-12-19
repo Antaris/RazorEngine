@@ -86,6 +86,25 @@
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
+
+        [Test]
+        public void RazorEngineHost_SupportsModelSpan_WithBaseType_NotGeneric_UsingVBCodeParser()
+        {
+            var config = new TemplateServiceConfiguration();
+            config.BaseTemplateType = typeof(TemplateBase);
+            config.Language = Language.VisualBasic;
+
+            using (var service = new TemplateService(config))
+            {
+                const string template = "@ModelType List(Of RazorEngine.Tests.TestTypes.Person)\n@Model.Count";
+                const string expected = "1";
+
+                var model = new List<Person> { new Person() { Forename = "Matt", Age = 27 } };
+                string result = service.Parse(template, (object)model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
         #endregion
     }
 }
