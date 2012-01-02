@@ -42,6 +42,23 @@
             }
         }
 
+        [Test]
+        public void RazorEngineHost_SupportsModelSpan_WithBaseType_NotGeneric_UsingCSharpCodeParser()
+        {
+            var config = new TemplateServiceConfiguration();
+            config.BaseTemplateType = typeof(TemplateBase);
+            using (var service = new TemplateService(config))
+            {
+                const string template = "@model RazorEngine.Tests.TestTypes.Person\n@Model.Forename";
+                const string expected = "Matt";
+
+                var model = new Person {Forename = "Matt"};
+                string result = service.Parse(template, (object) model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
         /// <summary>
         /// Tests that the <see cref="RazorEngineHost"/> supports the @ModelType directive.
         /// </summary>
@@ -57,6 +74,25 @@
                              {
                                  Language = Language.VisualBasic
                              };
+
+            using (var service = new TemplateService(config))
+            {
+                const string template = "@ModelType List(Of RazorEngine.Tests.TestTypes.Person)\n@Model.Count";
+                const string expected = "1";
+
+                var model = new List<Person> { new Person() { Forename = "Matt", Age = 27 } };
+                string result = service.Parse(template, (object)model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        [Test]
+        public void RazorEngineHost_SupportsModelSpan_WithBaseType_NotGeneric_UsingVBCodeParser()
+        {
+            var config = new TemplateServiceConfiguration();
+            config.BaseTemplateType = typeof(TemplateBase);
+            config.Language = Language.VisualBasic;
 
             using (var service = new TemplateService(config))
             {

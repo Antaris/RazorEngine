@@ -44,8 +44,12 @@
         {
             var host = (Compilation.RazorEngineHost)Host;
             var type = host.DefaultBaseTemplateType;
+            var className = type.Name;
 
-            string baseName = string.Format("{0}.{1}(Of {2})", type.Namespace, type.Name.Substring(0, type.Name.IndexOf('`')), modelTypeName);
+            if (className.Contains("`"))
+                className = className.Substring(0, className.IndexOf('`'));
+
+            string baseName = string.Format("{0}.{1}(Of {2})", type.Namespace, className, modelTypeName);
             var baseType = new CodeTypeReference(baseName);
             GeneratedClass.BaseTypes.Clear();
             GeneratedClass.BaseTypes.Add(baseType);
