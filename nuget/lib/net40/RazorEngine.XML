@@ -605,6 +605,14 @@
             <param name="name">The name of the cached template type.</param>
             <returns>The string result of the template.</returns>
         </member>
+        <member name="M:RazorEngine.Templating.ITemplateService.Parse(System.String,System.Object)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <returns>The string result of the template.</returns>
+        </member>
         <member name="M:RazorEngine.Templating.ITemplateService.Parse``1(System.String,``0)">
             <summary>
             Parses and returns the result of the specified string template.
@@ -619,6 +627,15 @@
             Parses and returns the result of the specified string template.
             </summary>
             <typeparam name="T">The model type.</typeparam>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <param name="name">The name of the template type in the cache.</param>
+            <returns>The string result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.ITemplateService.Parse(System.String,System.Object,System.String)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance.</param>
             <param name="name">The name of the template type in the cache.</param>
@@ -723,6 +740,34 @@
         <member name="P:RazorEngine.Templating.ITemplateService.EncodedStringFactory">
             <summary>
             Gets the encoded string factory.
+            </summary>
+        </member>
+        <member name="T:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElementCollection">
+            <summary>
+            Defines a collection of <see cref="T:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement"/> instances.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElementCollection.CreateNewElement">
+            <summary>
+            Creates a new <see cref="T:System.Configuration.ConfigurationElement"/> for use with the collection.
+            </summary>
+            <returns>The <see cref="T:System.Configuration.ConfigurationElement"/> instance.</returns>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElementCollection.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            Gets a unique key for the specified element.
+            </summary>
+            <param name="element">The configuration element.</param>
+            <returns>The key for the element.</returns>
+        </member>
+        <member name="T:RazorEngine.Configuration.Xml.NamespaceConfigurationElement">
+            <summary>
+            Defines a configuration of a namespace.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.NamespaceConfigurationElement.Namespace">
+            <summary>
+            Gets the namespace.
             </summary>
         </member>
         <member name="T:RazorEngine.Compilation.RazorEngineHost">
@@ -998,6 +1043,14 @@
             <param name="name">The name of the cached template type.</param>
             <returns>The string result of the template.</returns>
         </member>
+        <member name="M:RazorEngine.Templating.IsolatedTemplateService.Parse(System.String,System.Object)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <returns>The string result of the template.</returns>
+        </member>
         <member name="M:RazorEngine.Templating.IsolatedTemplateService.Parse``1(System.String,``0)">
             <summary>
             Parses and returns the result of the specified string template.
@@ -1012,6 +1065,15 @@
             Parses and returns the result of the specified string template.
             </summary>
             <typeparam name="T">The model type.</typeparam>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <param name="name">The name of the template type in the cache.</param>
+            <returns>The string result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.IsolatedTemplateService.Parse(System.String,System.Object,System.String)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance.</param>
             <param name="name">The name of the template type in the cache.</param>
@@ -1784,6 +1846,47 @@
             Gets the model type name.
             </summary>
         </member>
+        <member name="T:RazorEngine.Configuration.RazorEngineConfigurationSection">
+            <summary>
+            Defines the main configuration section for the RazorEngine.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Configuration.RazorEngineConfigurationSection.GetConfiguration">
+            <summary>
+            Gets an instance of <see cref="T:RazorEngine.Configuration.RazorEngineConfigurationSection"/> that represents the current configuration.
+            </summary>
+            <returns>An instance of <see cref="T:RazorEngine.Configuration.RazorEngineConfigurationSection"/>, or null if no configuration is specified.</returns>
+        </member>
+        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.ActivatorType">
+            <summary>
+            Gets the activator type.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.CompilerServiceFactoryType">
+            <summary>
+            Gets the compiler service factory type.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.DefaultLanguage">
+            <summary>
+            Gets or sets the default language.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.Namespaces">
+            <summary>
+            Gets the collection of namespaces.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.TemplateResolverType">
+            <summary>
+            Gets the template resolver type.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.TemplateServices">
+            <summary>
+            Gets the collection of template service configurations.
+            </summary>
+        </member>
         <member name="T:RazorEngine.Compilation.VisualBasic.VBCodeParser">
             <summary>
             Defines a code parser that supports the VB syntax.
@@ -2337,6 +2440,59 @@
             Gets the activator.
             </summary>
         </member>
+        <member name="T:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement">
+            <summary>
+            Defines a configuration of a template service.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.BaseTemplateType">
+            <summary>
+            Gets the base template type.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Debug">
+            <summary>
+            Gets whether the template service is in debug mode.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.EncodedStringFactoryType">
+            <summary>
+            Gets the encoded string factory type.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Language">
+            <summary>
+            Gets the language.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Name">
+            <summary>
+            Gets the name of the template service.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Namespaces">
+            <summary>
+            Gets the collection of namespaces.
+            </summary>
+        </member>
+        <member name="T:RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection">
+            <summary>
+            Defines a collection of <see cref="T:RazorEngine.Configuration.Xml.NamespaceConfigurationElement"/> instances.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection.CreateNewElement">
+            <summary>
+            Creates a new <see cref="T:System.Configuration.ConfigurationElement"/> for use with the collection.
+            </summary>
+            <returns>The <see cref="T:System.Configuration.ConfigurationElement"/> instance.</returns>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            Gets a unique key for the specified element.
+            </summary>
+            <param name="element">The configuration element.</param>
+            <returns>The key for the element.</returns>
+        </member>
         <member name="T:RazorEngine.Templating.TemplateParsingException">
             <summary>
             Defines an exception that occurs during template parsing.
@@ -2385,6 +2541,126 @@
         <member name="F:RazorEngine.Encoding.Raw">
             <summary>
             Use raw text (no encoding)
+            </summary>
+        </member>
+        <member name="T:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration">
+            <summary>
+            Represents a template service configuration that supports the xml configuration mechanism.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.#ctor(System.String)">
+            <summary>
+            Initialises a new instance of <see cref="T:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration"/>.
+            </summary>
+            <param name="name">The name of the template service configuration.</param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.AddNamespaces(RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection)">
+            <summary>
+            Adds the namespaces from the specified collection.
+            </summary>
+            <param name="namespaces">The set of namespace configurations.</param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.GetInstance``1(System.Type)">
+            <summary>
+            Gets an instance of the specified type.
+            </summary>
+            <typeparam name="T">The expected instance type.</typeparam>
+            <param name="type">The type.</param>
+            <returns>The instance.</returns>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.GetType(System.String)">
+            <summary>
+            Gets the type with the specified name.
+            </summary>
+            <param name="typeName">The type name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.InitialiseConfiguration(System.String)">
+            <summary>
+            Initialises the configuration.
+            </summary>
+            <param name="name">The name of the template service configuration.</param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.InitialiseConfiguration(RazorEngine.Configuration.RazorEngineConfigurationSection,RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement)">
+            <summary>
+            Initialises the configuration.
+            </summary>
+            <param name="config">The core configuration.</param>
+            <param name="serviceConfig">The service configuration.</param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetActivator(System.String)">
+            <summary>
+            Sets the activator.
+            </summary>
+            <param name="activatorType">The activator type.</param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetBaseTemplateType(System.String)">
+            <summary>
+            Sets the base template type.
+            </summary>
+            <param name="baseTemplateType">The base template type.</param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetCompilerServiceFactory(System.String)">
+            <summary>
+            Sets the compiler service factory.
+            </summary>
+            <param name="compilerServiceFactoryType">The compiler service factory type.</param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetEncodedStringFactory(System.String)">
+            <summary>
+            Sets the encoded string factory.
+            </summary>
+            <param name="encodedStringFactoryType"></param>
+        </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetTemplateResolver(System.String)">
+            <summary>
+            Sets the template resolver.
+            </summary>
+            <param name="templateResolverType">The template resolver type.</param>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Activator">
+            <summary>
+            Gets the activator.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.BaseTemplateType">
+            <summary>
+            Gets the base template type.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.CodeInspectors">
+            <summary>
+            Gets the code inspectors.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.CompilerServiceFactory">
+            <summary>
+            Gets the compiler service factory.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Debug">
+            <summary>
+            Gets whether the template service is operating in debug mode.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.EncodedStringFactory">
+            <summary>
+            Gets the encoded string factory.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Language">
+            <summary>
+            Gets the language.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Namespaces">
+            <summary>
+            Gets the namespaces.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Resolver">
+            <summary>
+            Gets the template resolver.
             </summary>
         </member>
         <member name="T:RazorEngine.Compilation.CSharp.CSharpRazorCodeGenerator">
@@ -2601,6 +2877,14 @@
             <param name="name">The name of the cached template type.</param>
             <returns>The string result of the template.</returns>
         </member>
+        <member name="M:RazorEngine.Razor.Parse(System.String,System.Object)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <returns>The string result of the template.</returns>
+        </member>
         <member name="M:RazorEngine.Razor.Parse``1(System.String,``0)">
             <summary>
             Parses and returns the result of the specified string template.
@@ -2615,6 +2899,15 @@
             Parses and returns the result of the specified string template.
             </summary>
             <typeparam name="T">The model type.</typeparam>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <param name="name">The name of the template type in the cache.</param>
+            <returns>The string result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.Parse(System.String,System.Object,System.String)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance.</param>
             <param name="name">The name of the template type in the cache.</param>
@@ -3251,248 +3544,6 @@
             </summary>
             <param name="encoding">The encoding.</param>
             <returns>The current configuration builder.</returns>
-        </member>
-        <member name="T:RazorEngine.Configuration.RazorEngineConfigurationSection">
-            <summary>
-            Defines the main configuration section for the RazorEngine.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Configuration.RazorEngineConfigurationSection.GetConfiguration">
-            <summary>
-            Gets an instance of <see cref="T:RazorEngine.Configuration.RazorEngineConfigurationSection"/> that represents the current configuration.
-            </summary>
-            <returns>An instance of <see cref="T:RazorEngine.Configuration.RazorEngineConfigurationSection"/>, or null if no configuration is specified.</returns>
-        </member>
-        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.ActivatorType">
-            <summary>
-            Gets the activator type.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.CompilerServiceFactoryType">
-            <summary>
-            Gets the compiler service factory type.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.DefaultLanguage">
-            <summary>
-            Gets or sets the default language.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.Namespaces">
-            <summary>
-            Gets the collection of namespaces.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.TemplateResolverType">
-            <summary>
-            Gets the template resolver type.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.TemplateServices">
-            <summary>
-            Gets the collection of template service configurations.
-            </summary>
-        </member>
-        <member name="T:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement">
-            <summary>
-            Defines a configuration of a template service.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.BaseTemplateType">
-            <summary>
-            Gets the base template type.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Debug">
-            <summary>
-            Gets whether the template service is in debug mode.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.EncodedStringFactoryType">
-            <summary>
-            Gets the encoded string factory type.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Language">
-            <summary>
-            Gets the language.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Name">
-            <summary>
-            Gets the name of the template service.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement.Namespaces">
-            <summary>
-            Gets the collection of namespaces.
-            </summary>
-        </member>
-        <member name="T:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElementCollection">
-            <summary>
-            Defines a collection of <see cref="T:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement"/> instances.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElementCollection.CreateNewElement">
-            <summary>
-            Creates a new <see cref="T:System.Configuration.ConfigurationElement"/> for use with the collection.
-            </summary>
-            <returns>The <see cref="T:System.Configuration.ConfigurationElement"/> instance.</returns>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.TemplateServiceConfigurationElementCollection.GetElementKey(System.Configuration.ConfigurationElement)">
-            <summary>
-            Gets a unique key for the specified element.
-            </summary>
-            <param name="element">The configuration element.</param>
-            <returns>The key for the element.</returns>
-        </member>
-        <member name="T:RazorEngine.Configuration.Xml.NamespaceConfigurationElement">
-            <summary>
-            Defines a configuration of a namespace.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.NamespaceConfigurationElement.Namespace">
-            <summary>
-            Gets the namespace.
-            </summary>
-        </member>
-        <member name="T:RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection">
-            <summary>
-            Defines a collection of <see cref="T:RazorEngine.Configuration.Xml.NamespaceConfigurationElement"/> instances.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection.CreateNewElement">
-            <summary>
-            Creates a new <see cref="T:System.Configuration.ConfigurationElement"/> for use with the collection.
-            </summary>
-            <returns>The <see cref="T:System.Configuration.ConfigurationElement"/> instance.</returns>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection.GetElementKey(System.Configuration.ConfigurationElement)">
-            <summary>
-            Gets a unique key for the specified element.
-            </summary>
-            <param name="element">The configuration element.</param>
-            <returns>The key for the element.</returns>
-        </member>
-        <member name="T:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration">
-            <summary>
-            Represents a template service configuration that supports the xml configuration mechanism.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.#ctor(System.String)">
-            <summary>
-            Initialises a new instance of <see cref="T:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration"/>.
-            </summary>
-            <param name="name">The name of the template service configuration.</param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.AddNamespaces(RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection)">
-            <summary>
-            Adds the namespaces from the specified collection.
-            </summary>
-            <param name="namespaces">The set of namespace configurations.</param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.GetInstance``1(System.Type)">
-            <summary>
-            Gets an instance of the specified type.
-            </summary>
-            <typeparam name="T">The expected instance type.</typeparam>
-            <param name="type">The type.</param>
-            <returns>The instance.</returns>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.GetType(System.String)">
-            <summary>
-            Gets the type with the specified name.
-            </summary>
-            <param name="typeName">The type name.</param>
-            <returns></returns>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.InitialiseConfiguration(System.String)">
-            <summary>
-            Initialises the configuration.
-            </summary>
-            <param name="name">The name of the template service configuration.</param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.InitialiseConfiguration(RazorEngine.Configuration.RazorEngineConfigurationSection,RazorEngine.Configuration.Xml.TemplateServiceConfigurationElement)">
-            <summary>
-            Initialises the configuration.
-            </summary>
-            <param name="config">The core configuration.</param>
-            <param name="serviceConfig">The service configuration.</param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetActivator(System.String)">
-            <summary>
-            Sets the activator.
-            </summary>
-            <param name="activatorType">The activator type.</param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetBaseTemplateType(System.String)">
-            <summary>
-            Sets the base template type.
-            </summary>
-            <param name="baseTemplateType">The base template type.</param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetCompilerServiceFactory(System.String)">
-            <summary>
-            Sets the compiler service factory.
-            </summary>
-            <param name="compilerServiceFactoryType">The compiler service factory type.</param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetEncodedStringFactory(System.String)">
-            <summary>
-            Sets the encoded string factory.
-            </summary>
-            <param name="encodedStringFactoryType"></param>
-        </member>
-        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetTemplateResolver(System.String)">
-            <summary>
-            Sets the template resolver.
-            </summary>
-            <param name="templateResolverType">The template resolver type.</param>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Activator">
-            <summary>
-            Gets the activator.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.BaseTemplateType">
-            <summary>
-            Gets the base template type.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.CodeInspectors">
-            <summary>
-            Gets the code inspectors.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.CompilerServiceFactory">
-            <summary>
-            Gets the compiler service factory.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Debug">
-            <summary>
-            Gets whether the template service is operating in debug mode.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.EncodedStringFactory">
-            <summary>
-            Gets the encoded string factory.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Language">
-            <summary>
-            Gets the language.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Namespaces">
-            <summary>
-            Gets the namespaces.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Resolver">
-            <summary>
-            Gets the template resolver.
-            </summary>
         </member>
     </members>
 </doc>

@@ -422,6 +422,23 @@
         /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="model">The model instance.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Parse(string razorTemplate, object model)
+        {
+            if (disposed)
+                throw new ObjectDisposedException("IsolatedTemplateService");
+
+            if (CompilerServicesUtility.IsDynamicType(model.GetType()))
+                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+
+            return _proxy.Parse(razorTemplate, model);
+        }
+
+        /// <summary>
+        /// Parses and returns the result of the specified string template.
+        /// </summary>
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="model">The model instance.</param>
@@ -451,6 +468,24 @@
                 throw new ObjectDisposedException("IsolatedTemplateService");
 
             if (CompilerServicesUtility.IsDynamicType(typeof(T)))
+                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+
+            return _proxy.Parse(razorTemplate, model, name);
+        }
+
+        /// <summary>
+        /// Parses and returns the result of the specified string template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="model">The model instance.</param>
+        /// <param name="name">The name of the template type in the cache.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Parse(string razorTemplate, object model, string name)
+        {
+            if (disposed)
+                throw new ObjectDisposedException("IsolatedTemplateService");
+
+            if (CompilerServicesUtility.IsDynamicType(model.GetType()))
                 throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
 
             return _proxy.Parse(razorTemplate, model, name);
