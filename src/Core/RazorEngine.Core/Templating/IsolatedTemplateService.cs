@@ -392,6 +392,16 @@
         }
 
         /// <summary>
+        /// Returns whether or not a template by the specified name has been created already.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>Whether or not the template has been created.</returns>
+        public bool HasTemplate(string name)
+        {
+            return _proxy.HasTemplate(name);
+        }
+
+        /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
