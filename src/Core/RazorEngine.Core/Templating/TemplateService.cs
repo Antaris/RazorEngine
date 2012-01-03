@@ -855,6 +855,16 @@
         }
 
         /// <summary>
+        /// Returns whether or not a template by the specified name has been created already.
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <returns>Whether or not the template has been created.</returns>
+        public bool HasTemplate(string name)
+        {
+            return _cache.ContainsKey(name);
+        }
+
+        /// <summary>
         /// Resolves the template with the specified name.
         /// </summary>
         /// <param name="name">The name of the template.</param>
