@@ -313,6 +313,13 @@
             <param name="model">The model to pass to the template.</param>
             <returns>The template writer helper.</returns>
         </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.IsSectionDefined(System.String)">
+            <summary>
+            Determines if the section with the specified name has been defined.
+            </summary>
+            <param name="name">The section name.</param>
+            <returns></returns>
+        </member>
         <member name="M:RazorEngine.Templating.TemplateBase.Execute">
             <summary>
             Executes the compiled template.
@@ -588,6 +595,13 @@
             <param name="names">The set of cache names.</param>
             <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
             <returns>The set of <see cref="T:RazorEngine.Templating.ITemplate"/> instances.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.ITemplateService.HasTemplate(System.String)">
+            <summary>
+            Returns whether or not a template by the specified name has been created already.
+            </summary>
+            <param name="name">The name of the template.</param>
+            <returns>Whether or not the template has been created.</returns>
         </member>
         <member name="M:RazorEngine.Templating.ITemplateService.Parse(System.String)">
             <summary>
@@ -1026,6 +1040,13 @@
             <param name="names">The set of cache names.</param>
             <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
             <returns>The set of <see cref="T:RazorEngine.Templating.ITemplate"/> instances.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.IsolatedTemplateService.HasTemplate(System.String)">
+            <summary>
+            Returns whether or not a template by the specified name has been created already.
+            </summary>
+            <param name="name">The name of the template.</param>
+            <returns>Whether or not the template has been created.</returns>
         </member>
         <member name="M:RazorEngine.Templating.IsolatedTemplateService.Parse(System.String)">
             <summary>
@@ -2018,6 +2039,15 @@
             <param name="model">The model instance.</param>
             <returns>An instance of <see cref="T:RazorEngine.Templating.ITemplate"/>.</returns>
         </member>
+        <member name="M:RazorEngine.Templating.TemplateService.CreateTemplate(System.String,System.Type,System.Object)">
+            <summary>
+            Creates an instance of <see cref="T:RazorEngine.Templating.ITemplate"/> from the specified string template.
+            </summary>
+            <param name="razorTemplate">The string template.</param>
+            <param name="modelType">The expected model type.</param>
+            <param name="model">The model instance.</param>
+            <returns>An instance of <see cref="T:RazorEngine.Templating.ITemplate"/>.</returns>
+        </member>
         <member name="M:RazorEngine.Templating.TemplateService.CreateTemplate(System.Type)">
             <summary>
             Creates an instance of an <see cref="T:RazorEngine.Templating.ITemplate"/> for the specified <see cref="T:System.Type"/>.
@@ -2222,6 +2252,15 @@
             <param name="model">The model instance.</param>
             <returns>The string result of the template.</returns>
         </member>
+        <member name="M:RazorEngine.Templating.TemplateService.Parse(System.String,System.Type,System.Object)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
+            <param name="razorTemplate">The string template.</param>
+            <param name="modelType">The expected model type.</param>
+            <param name="model">The model instance.</param>
+            <returns>The string result of the template.</returns>
+        </member>
         <member name="M:RazorEngine.Templating.TemplateService.Parse``1(System.String,``0)">
             <summary>
             Parses and returns the result of the specified string template.
@@ -2280,6 +2319,20 @@
             <param name="parallel">Flag to determine whether parsing in parallel.</param>
             <returns>The set of parsed template results.</returns>
         </member>
+        <member name="M:RazorEngine.Templating.TemplateService.ParseMany(System.String,System.Type,System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Parses the template and merges with the many models provided.
+            </summary>
+            <remarks>
+            This method makes assumptions that all models are of the same type, or have a common base type. This is done
+            by using the first model's GetType() method to resolve what type it should be. Feels dirty.
+            </remarks>
+            <param name="razorTemplate">The razor template.</param>
+            <param name="modelType">The expected model type.</param>
+            <param name="models">The set of models.</param>
+            <param name="parallel">Flag to determine whether parsing in parallel.</param>
+            <returns>The set of parsed template results.</returns>
+        </member>
         <member name="M:RazorEngine.Templating.TemplateService.ParseMany``1(System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean)">
             <summary>
             Parses the template and merges with the many models provided.
@@ -2295,6 +2348,16 @@
             Parses the specified set of templates.
             </summary>
             <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="models">The set of models.</param>
+            <param name="parallel">Flag to determine whether parsing in parallel.</param>
+            <returns>The set of parsed template results.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateService.ParseMany(System.Collections.Generic.IEnumerable{System.String},System.Type,System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Parses the specified set of templates.
+            </summary>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="modelType">The expected model type.</param>
             <param name="models">The set of models.</param>
             <param name="parallel">Flag to determine whether parsing in parallel.</param>
             <returns>The set of parsed template results.</returns>
@@ -2319,6 +2382,13 @@
             <param name="names">The set of cache names.</param>
             <param name="parallel">Flag to determine whether parsing in parallel.</param>
             <returns>The set of parsed template results.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateService.HasTemplate(System.String)">
+            <summary>
+            Returns whether or not a template by the specified name has been created already.
+            </summary>
+            <param name="name">The name of the template.</param>
+            <returns>Whether or not the template has been created.</returns>
         </member>
         <member name="M:RazorEngine.Templating.TemplateService.Resolve(System.String)">
             <summary>
@@ -3544,6 +3614,33 @@
             </summary>
             <param name="encoding">The encoding.</param>
             <returns>The current configuration builder.</returns>
+        </member>
+        <member name="T:RazorEngine.Templating.DynamicViewBag">
+            <summary>
+            Defines a dynamic view bag.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.DynamicViewBag.GetDynamicMemberNames">
+            <summary>
+            Gets the set of dynamic member names.
+            </summary>
+            <returns>An instance of <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.DynamicViewBag.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
+            <summary>
+            Attempts to read a dynamic member from the object.
+            </summary>
+            <param name="binder">The binder.</param>
+            <param name="result">The result instance.</param>
+            <returns>True, always.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.DynamicViewBag.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">
+            <summary>
+            Attempts to set a value on the object.
+            </summary>
+            <param name="binder">The binder.</param>
+            <param name="value">The value to set.</param>
+            <returns>True, always.</returns>
         </member>
     </members>
 </doc>
