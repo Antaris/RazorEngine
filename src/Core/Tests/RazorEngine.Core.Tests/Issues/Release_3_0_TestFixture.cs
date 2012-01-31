@@ -179,6 +179,27 @@ End Code
         }
 
         /// <summary>
+        /// We should support nullable value types in expressions. I think this will work because of the
+        /// change made for Issue 16.
+        /// 
+        /// Issue 18: https://github.com/Antaris/RazorEngine/issues/18
+        /// </summary>
+        [Test]
+        public void TemplateService_ShouldEnableNullableValueTypes()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>Hello @Model.Number</h1>";
+                const string expected = "<h1>Hello </h1>";
+
+                var model = new { Number = (int?)null };
+                string result = service.Parse(template, model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
         /// Subclassed models should be supported in layouts (and also partials).
         /// 
         /// Issue 21: https://github.com/Antaris/RazorEngine/issues/21
