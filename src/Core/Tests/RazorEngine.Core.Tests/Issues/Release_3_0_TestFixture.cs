@@ -144,15 +144,35 @@ End Code
         [Test]
         public void Issue16_LastNullValueShouldReturnEmptyString()
         {
-            var config = new TemplateServiceConfiguration() { Debug = true };
-
-            using (var service = new TemplateService(config))
+            using (var service = new TemplateService())
             {
                 const string template = "<h1>Hello @Model.Person.Forename</h1>";
                 const string expected = "<h1>Hello </h1>";
 
                 var model = new { Person = new Person { Forename = null } };
                 string result = service.Parse(template, model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// We should support overriding the model type for templates that do not specify @model.
+        /// 
+        /// Issue 17: https://github.com/Antaris/RazorEngine/issues/17
+        /// </summary>
+        [Test]
+        public void TemplateService_ShouldAllowTypeOverrideForNonGenericCompile()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "@Model.Name";
+                const string expected = "Matt";
+
+                object model = new { Name = "Matt" };
+                Type modelType = model.GetType();
+
+                string result = service.Parse(template, modelType, model);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }

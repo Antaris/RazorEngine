@@ -149,7 +149,20 @@
         [Pure]
         public virtual ITemplate CreateTemplate(string razorTemplate, object model)
         {
-            var type = CreateTemplateType(razorTemplate, _objectType);
+            return CreateTemplate(razorTemplate, _objectType, model);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="ITemplate"/> from the specified string template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="modelType">The expected model type.</param>
+        /// <param name="model">The model instance.</param>
+        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
+        [Pure]
+        public virtual ITemplate CreateTemplate(string razorTemplate, Type modelType, object model)
+        {
+            var type = CreateTemplateType(razorTemplate, modelType);
 
             var instance = CreateTemplate(type, model);
             return instance;
@@ -632,6 +645,20 @@
         /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="modelType">The expected model type.</param>
+        /// <param name="model">The model instance.</param>
+        /// <returns>The string result of the template.</returns>
+        [Pure]
+        public virtual string Parse(string razorTemplate, Type modelType, object model)
+        {
+            var instance = CreateTemplate(razorTemplate, modelType, model);
+            return Run(instance);
+        }
+
+        /// <summary>
+        /// Parses and returns the result of the specified string template.
+        /// </summary>
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="model">The model instance.</param>
@@ -728,14 +755,32 @@
         [Pure]
         public virtual IEnumerable<string> ParseMany(string razorTemplate, IEnumerable<object> models, bool parallel = false)
         {
+            return ParseMany(razorTemplate, _objectType, models, parallel);
+        }
+
+        /// <summary>
+        /// Parses the template and merges with the many models provided.
+        /// </summary>
+        /// <remarks>
+        /// This method makes assumptions that all models are of the same type, or have a common base type. This is done
+        /// by using the first model's GetType() method to resolve what type it should be. Feels dirty.
+        /// </remarks>
+        /// <param name="razorTemplate">The razor template.</param>
+        /// <param name="modelType">The expected model type.</param>
+        /// <param name="models">The set of models.</param>
+        /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
+        /// <returns>The set of parsed template results.</returns>
+        [Pure]
+        public virtual IEnumerable<string> ParseMany(string razorTemplate, Type modelType, IEnumerable<object> models, bool parallel = false)
+        {
             Contract.Requires(razorTemplate != null);
+            Contract.Requires(modelType != null);
             Contract.Requires(models != null);
 
             // If we only have one model, leave early and process singular.
             if (models.Count() == 1)
-                return new[] { Parse(razorTemplate, models.First()) };
+                return new[] { Parse(razorTemplate, modelType, models.First()) };
 
-            var modelType = models.First().GetType();
             // Compile the type just the once, and reuse that for each model.
             var type = CreateTemplateType(razorTemplate, modelType);
 
@@ -745,7 +790,7 @@
                     .Select(m => Run(CreateTemplate(type, m)))
                     .ToArray();
 
-            return models.Select(m => Run(CreateTemplate(type, m))).ToArray();
+            return models.Select(m => Run(CreateTemplate(type, m))).ToArray(); 
         }
 
         /// <summary>
@@ -783,7 +828,22 @@
         [Pure]
         public virtual IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, bool parallel = false)
         {
+            return ParseMany(razorTemplates, _objectType, models, parallel);
+        }
+
+        /// <summary>
+        /// Parses the specified set of templates.
+        /// </summary>
+        /// <param name="razorTemplates">The set of string templates to parse.</param>
+        /// <param name="modelType">The expected model type.</param>
+        /// <param name="models">The set of models.</param>
+        /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
+        /// <returns>The set of parsed template results.</returns>
+        [Pure]
+        public virtual IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, Type modelType, IEnumerable<object> models, bool parallel = false)
+        {
             Contract.Requires(razorTemplates != null);
+            Contract.Requires(modelType != null);
             Contract.Requires(models != null);
             Contract.Requires(razorTemplates.Count() == models.Count(), "Expected same number of models as templates to be processed.");
 
@@ -792,10 +852,10 @@
             if (parallel)
                 return GetParallelQueryPlan<string>()
                     .CreateQuery(razorTemplates)
-                    .Select((t, i) => Parse(t, modelList[i]))
+                    .Select((t, i) => Parse(t, modelType, modelList[i]))
                     .ToArray();
 
-            return razorTemplates.Select((t, i) => Parse(t, modelList[i])).ToArray();
+            return razorTemplates.Select((t, i) => Parse(t, modelList[i])).ToArray(); 
         }
 
         /// <summary>
