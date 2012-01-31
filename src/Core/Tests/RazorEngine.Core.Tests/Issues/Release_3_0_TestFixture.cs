@@ -136,6 +136,29 @@ End Code
         }
 
         /// <summary>
+        /// The last property/method result in an expression, which returns a null value
+        /// should not write to the template.
+        /// 
+        /// Issue 16: https://github.com/Antaris/RazorEngine/issues/16
+        /// </summary>
+        [Test]
+        public void Issue16_LastNullValueShouldReturnEmptyString()
+        {
+            var config = new TemplateServiceConfiguration() { Debug = true };
+
+            using (var service = new TemplateService(config))
+            {
+                const string template = "<h1>Hello @Model.Person.Forename</h1>";
+                const string expected = "<h1>Hello </h1>";
+
+                var model = new { Person = new Person { Forename = null } };
+                string result = service.Parse(template, model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
         /// Subclassed models should be supported in layouts (and also partials).
         /// 
         /// Issue 21: https://github.com/Antaris/RazorEngine/issues/21

@@ -208,6 +208,9 @@
         /// <param name="helper">The template writer helper.</param>
         public virtual void Write(TemplateWriter helper)
         {
+            if (helper == null)
+                return;
+
             helper.WriteTo(_context.CurrentWriter);
         }
 
