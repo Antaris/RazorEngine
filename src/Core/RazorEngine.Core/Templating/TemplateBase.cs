@@ -97,6 +97,19 @@
         }
 
         /// <summary>
+        /// Determines if the section with the specified name has been defined.
+        /// </summary>
+        /// <param name="name">The section name.</param>
+        /// <returns></returns>
+        public virtual bool IsSectionDefined(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("The name of the section to render must be specified.");
+
+            return (_context.GetSectionDelegate(name) != null);
+        }
+
+        /// <summary>
         /// Executes the compiled template.
         /// </summary>
         public virtual void Execute() { }

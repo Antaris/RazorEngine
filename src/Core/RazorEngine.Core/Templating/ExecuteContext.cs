@@ -13,7 +13,7 @@
         #region Fields
         private readonly IDictionary<string, Action> _definedSections = new Dictionary<string, Action>();
         private readonly Stack<TemplateWriter> _bodyWriters = new Stack<TemplateWriter>();
-        private readonly dynamic _viewBag = new ExpandoObject(); 
+        private readonly dynamic _viewBag = new DynamicViewBag(); 
         #endregion
 
         #region Properties

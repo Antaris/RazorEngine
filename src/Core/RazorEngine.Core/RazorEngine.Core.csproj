@@ -123,6 +123,7 @@
     <Compile Include="Templating\DelegateActivator.cs" />
     <Compile Include="Templating\DelegateAppDomainFactory.cs" />
     <Compile Include="Templating\DelegateTemplateResolver.cs" />
+    <Compile Include="Templating\DynamicViewBag.cs" />
     <Compile Include="Templating\ExecuteContext.cs" />
     <Compile Include="Templating\IActivator.cs" />
     <Compile Include="Templating\IAppDomainFactory.cs" />
