@@ -87,6 +87,7 @@
     <Compile Include="TestTypes\Activation\UnityTemplateActivator.cs" />
     <Compile Include="TestTypes\Animal.cs" />
     <Compile Include="TestTypes\Activation\CustomTemplateBase.cs" />
+    <Compile Include="TestTypes\Employee.cs" />
     <Compile Include="TestTypes\Inspectors\ThrowExceptionCodeInspector.cs" />
     <Compile Include="Issues\Release_3_0_TestFixture.cs" />
     <Compile Include="TestTypes\ThreadPoolItem.cs" />

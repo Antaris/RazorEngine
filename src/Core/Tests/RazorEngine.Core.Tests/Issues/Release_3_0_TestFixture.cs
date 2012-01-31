@@ -134,6 +134,36 @@ End Code
                 service.Compile(template, "issue11");
             }
         }
+
+        /// <summary>
+        /// Subclassed models should be supported in layouts (and also partials).
+        /// 
+        /// Issue 21: https://github.com/Antaris/RazorEngine/issues/21
+        /// </summary>
+        [Test]
+        public void Issue21_SubclassModelShouldBeSupportedInLayout()
+        {
+            using (var service = new TemplateService())
+            {
+                const string parent = "@model RazorEngine.Tests.TestTypes.Person\n<h1>@Model.Forename</h1>@RenderSection(\"Child\")";
+                service.Compile(parent, "Parent");
+
+                const string child = "@{ _Layout = \"Parent\"; }\n@section Child { <h2>@Model.Department</h2> }";
+                const string expected = "<h1>Matt</h1> <h2>IT</h2> ";
+
+                var model = new Employee
+                {
+                    Age = 27,
+                    Department = "IT",
+                    Forename = "Matt",
+                    Surname = "Abbott"
+                };
+
+                string result = service.Parse(child, model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
         #endregion
     }
 }

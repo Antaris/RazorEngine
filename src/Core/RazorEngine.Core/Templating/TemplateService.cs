@@ -1020,7 +1020,12 @@
 
             var staticModel = template as ITemplate<T>;
             if (staticModel != null)
+            {
                 staticModel.Model = model;
+                return;
+            }
+
+            SetModelExplicit(template, model);
         }
 
         /// <summary>
