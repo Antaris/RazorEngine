@@ -10,10 +10,34 @@
     /// </summary>
     public class ExecuteContext
     {
+        #region Constructors
+
+        /// <summary>
+        /// Creates a new instance of ExecuteContext with an empty ViewBag.
+        /// </summary>
+        public ExecuteContext()
+        {
+            _viewBag = new DynamicViewBag();
+        }
+
+        /// <summary>
+        /// Creates a new instance of DynamicViewBag, setting initial values in the ViewBag.
+        /// </summary>
+        /// <param name="viewBag">The initial view bag data or NULL for an empty ViewBag.</param>
+        public ExecuteContext(DynamicViewBag viewBag)
+        {
+            if (viewBag == null)
+                _viewBag = new DynamicViewBag();
+            else
+                _viewBag = viewBag;
+        }
+
+        #endregion
+
         #region Fields
         private readonly IDictionary<string, Action> _definedSections = new Dictionary<string, Action>();
         private readonly Stack<TemplateWriter> _bodyWriters = new Stack<TemplateWriter>();
-        private readonly dynamic _viewBag = new DynamicViewBag(); 
+        private readonly dynamic _viewBag; 
         #endregion
 
         #region Properties

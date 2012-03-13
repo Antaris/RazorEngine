@@ -49,31 +49,5 @@
             }
         }
         #endregion
-
-        #region Methods
-        /// <summary>
-        /// Includes the template with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the template to include.</param>
-        /// <returns>The template writer helper.</returns>
-        public override TemplateWriter Include(string name)
-        {
-            var instance = TemplateService.Resolve(name, Model);
-            if (instance == null)
-                throw new ArgumentException("No template could be resolved with name '" + name + "'");
-
-            return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext())));
-        }
-
-        /// <summary>
-        /// Resolves the layout template.
-        /// </summary>
-        /// <param name="name">The name of the layout template.</param>
-        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
-        protected override ITemplate ResolveLayout(string name)
-        {
-            return TemplateService.Resolve(name, (T)model);
-        }
-        #endregion
     }
 }
