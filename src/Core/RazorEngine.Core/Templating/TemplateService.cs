@@ -408,7 +408,7 @@
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="model">The model instance or NULL if no model exists.</param>
-        /// <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
         /// <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
         /// <returns>The string result of the template.</returns>
         [Pure]
@@ -549,7 +549,7 @@
         /// Runs the specified template and returns the result.
         /// </summary>
         /// <param name="template">The template to run.</param>
-        /// <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
         /// <returns>The string result of the template.</returns>
         public string Run(ITemplate template, DynamicViewBag viewBag)
         {

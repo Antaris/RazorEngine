@@ -427,7 +427,7 @@
             </summary>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance or NULL if no model exists.</param>
-            <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
             <returns>The string result of the template.</returns>
         </member>
@@ -435,7 +435,7 @@
             <summary>
             Parses the specified set of templates.
             </summary>
-            <param name="razorTemplates">The set of string templates to partse.</param>
+            <param name="razorTemplates">The set of string templates to parse.</param>
             <param name="models">
             The set of models or NULL if no models exist for all templates.
             Individual elements in this set may be NULL if no model exists for a specific template.
@@ -473,7 +473,7 @@
             Runs the specified template.
             </summary>
             <param name="template">The template to run.</param>
-            <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="P:RazorEngine.Templating.ITemplateService.EncodedStringFactory">
@@ -668,7 +668,7 @@
             </summary>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance or NULL if no model exists.</param>
-            <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
             <returns>The string result of the template.</returns>
         </member>
@@ -676,7 +676,7 @@
             <summary>
             Parses the specified set of templates.
             </summary>
-            <param name="razorTemplates">The set of string templates to partse.</param>
+            <param name="razorTemplates">The set of string templates to parse.</param>
             <param name="models">
             The set of models or NULL if no models exist for all templates.
             Individual elements in this set may be NULL if no model exists for a specific template.
@@ -714,7 +714,7 @@
             Runs the template with the specified name.
             </summary>
             <param name="template">The template to run.</param>
-            <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="P:RazorEngine.Templating.IsolatedTemplateService.RazorEngine#Templating#ITemplateService#EncodedStringFactory">
@@ -854,7 +854,7 @@
             and if they do not exist, new types will be created and instantiated.
             </summary>
             <param name="razorTemplates">The set of templates to create.</param>
-            <param name="names">The set of cache names.</param>
+            <param name="cacheNames">The set of cache names.</param>
             <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
             <returns>The set of <see cref="T:RazorEngine.Templating.ITemplate"/> instances.</returns>
         </member>
@@ -883,7 +883,7 @@
             This method will provide a cache check to see if the compiled template type already exists and is valid.
             </summary>
             <param name="razorTemplate">The string template.</param>
-            <param name="cacheName">The name of the cached template type.</param>
+            <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="M:RazorEngine.Razor.Parse(System.String,System.Object)">
@@ -910,7 +910,18 @@
             <typeparam name="T">The model type.</typeparam>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance.</param>
-            <param name="cacheName">The name of the template type in the cache.</param>
+            <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
+            <returns>The string result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.Parse``1(System.String,``0,RazorEngine.Templating.DynamicViewBag,System.String)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
+            <typeparam name="T">The model type.</typeparam>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="M:RazorEngine.Razor.Parse(System.String,System.Object,System.String)">
@@ -919,14 +930,47 @@
             </summary>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance.</param>
-            <param name="cacheName">The name of the template type in the cache.</param>
+            <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
             <returns>The string result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.Parse(System.String,System.Object,RazorEngine.Templating.DynamicViewBag,System.String)">
+            <summary>
+            Parses and returns the result of the specified string template.
+            </summary>
+            <param name="razorTemplate">The string template.</param>
+            <param name="model">The model instance.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
+            <returns>The string result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.ParseMany(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Parses the template and merges with the many models provided.
+            </summary>
+            <param name="razorTemplate">The razor template.</param>
+            <param name="models">
+            The set of models (must contain at least one model).
+            </param>
+            <param name="parallel">Flag to determine whether parsing in parallel.</param>
+            <returns>The set of parsed template results.</returns>
         </member>
         <member name="M:RazorEngine.Razor.ParseMany(System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
             <summary>
             Parses the specified set of templates.
             </summary>
-            <param name="razorTemplates">The set of string templates to partse.</param>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="parallel">Flag to determine whether parsing in templates.</param>
+            <returns>The set of parsed template results.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.ParseMany(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Parses the specified set of templates.
+            </summary>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="models">
+            The set of models or NULL if no models exist for all templates.
+            Individual elements in this set may be NULL if no model exists for a specific template.
+            </param>
             <param name="parallel">Flag to determine whether parsing in templates.</param>
             <returns>The set of parsed template results.</returns>
         </member>
@@ -934,8 +978,47 @@
             <summary>
             Parses the specified set of templates.
             </summary>
-            <param name="razorTemplates">The set of string templates to partse.</param>
-            <param name="cacheNames">The set of cache names.</param>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="cacheNames">
+            The set of cache names or NULL if no caching is desired for templates.
+            Individual elements in this set may be NULL if caching is not desired for a specific template.
+            </param>
+            <param name="parallel">Flag to determine whether parsing in templates.</param>
+            <returns>The set of parsed template results.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.ParseMany(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Parses the specified set of templates.
+            </summary>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="models">
+            The set of models or NULL if no models exist for all templates.
+            Individual elements in this set may be NULL if no model exists for a specific template.
+            </param>
+            <param name="cacheNames">
+            The set of cache names or NULL if no caching is desired for templates.
+            Individual elements in this set may be NULL if caching is not desired for a specific template.
+            </param>
+            <param name="parallel">Flag to determine whether parsing in templates.</param>
+            <returns>The set of parsed template results.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.ParseMany(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{RazorEngine.Templating.DynamicViewBag},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Parses the specified set of templates.
+            </summary>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="models">
+            The set of models or NULL if no models exist for all templates.
+            Individual elements in this set may be NULL if no model exists for a specific template.
+            </param>
+            <param name="viewBags">
+            The set of initial ViewBag contents or NULL for an initially empty ViewBag for all templates.
+            Individual elements in this set may be NULL if an initially empty ViewBag is desired for a specific template.
+            </param>
+            <param name="cacheNames">
+            The set of cache names or NULL if no caching is desired for templates.
+            Individual elements in this set may be NULL if caching is not desired for a specific template.
+            </param>
             <param name="parallel">Flag to determine whether parsing in templates.</param>
             <returns>The set of parsed template results.</returns>
         </member>
@@ -945,7 +1028,9 @@
             </summary>
             <typeparam name="T">The model type.</typeparam>
             <param name="razorTemplate">The razor template.</param>
-            <param name="models">The set of models.</param>
+            <param name="models">
+            The set of models (must contain at least one model).
+            </param>
             <param name="parallel">Flag to determine whether parsing in parallel.</param>
             <returns>The set of parsed template results.</returns>
         </member>
@@ -954,8 +1039,11 @@
             Parses the specified set of templates.
             </summary>
             <typeparam name="T">The model type.</typeparam>
-            <param name="razorTemplates">The set of string templates to partse.</param>
-            <param name="models">The set of models.</param>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="models">
+            The set of models or NULL if no models exist for all templates.
+            Individual elements in this set may be NULL if no model exists for a specific template.
+            </param>
             <param name="parallel">Flag to determine whether parsing in templates.</param>
             <returns>The set of parsed template results.</returns>
         </member>
@@ -964,9 +1052,36 @@
             Parses the specified set of templates.
             </summary>
             <typeparam name="T">The model type.</typeparam>
-            <param name="razorTemplates">The set of string templates to partse.</param>
-            <param name="models">The set of models.</param>
-            <param name="names">The set of cache names.</param>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="models">
+            The set of models or NULL if no models exist for all templates.
+            Individual elements in this set may be NULL if no model exists for a specific template.
+            </param>
+            <param name="cacheNames">
+            The set of cache names or NULL if no caching is desired for templates.
+            Individual elements in this set may be NULL if caching is not desired for a specific template.
+            </param>
+            <param name="parallel">Flag to determine whether parsing in templates.</param>
+            <returns>The set of parsed template results.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.ParseMany``1(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{RazorEngine.Templating.DynamicViewBag},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Parses the specified set of templates.
+            </summary>
+            <typeparam name="T">The model type.</typeparam>
+            <param name="razorTemplates">The set of string templates to parse.</param>
+            <param name="models">
+            The set of models or NULL if no models exist for all templates.
+            Individual elements in this set may be NULL if no model exists for a specific template.
+            </param>
+            <param name="viewBags">
+            The set of initial ViewBag contents or NULL for an initially empty ViewBag for all templates.
+            Individual elements in this set may be NULL if an initially empty ViewBag is desired for a specific template.
+            </param>
+            <param name="cacheNames">
+            The set of cache names or NULL if no caching is desired for templates.
+            Individual elements in this set may be NULL if caching is not desired for a specific template.
+            </param>
             <param name="parallel">Flag to determine whether parsing in templates.</param>
             <returns>The set of parsed template results.</returns>
         </member>
@@ -1009,6 +1124,15 @@
             <param name="model">The model.</param>
             <returns>The string result of the template.</returns>
         </member>
+        <member name="M:RazorEngine.Razor.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag)">
+            <summary>
+            Runs the template with the specified name.
+            </summary>
+            <param name="cacheName">The name of the template type in cache.</param>
+            <param name="model">The model.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <returns>The string result of the template.</returns>
+        </member>
         <member name="M:RazorEngine.Razor.Run``1(System.String,``0)">
             <summary>
             Runs the template with the specified name.
@@ -1016,6 +1140,16 @@
             <typeparam name="T">The model type.</typeparam>
             <param name="cacheName">The name of the template type in cache.</param>
             <param name="model">The model.</param>
+            <returns>The string result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Razor.Run``1(System.String,``0,RazorEngine.Templating.DynamicViewBag)">
+            <summary>
+            Runs the template with the specified name.
+            </summary>
+            <typeparam name="T">The model type.</typeparam>
+            <param name="cacheName">The name of the template type in cache.</param>
+            <param name="model">The model.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="M:RazorEngine.Razor.SetTemplateService(RazorEngine.Templating.ITemplateService)">
@@ -2665,7 +2799,7 @@
             </summary>
             <param name="razorTemplate">The string template.</param>
             <param name="model">The model instance or NULL if no model exists.</param>
-            <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
             <returns>The string result of the template.</returns>
         </member>
@@ -2718,7 +2852,7 @@
             Runs the specified template and returns the result.
             </summary>
             <param name="template">The template to run.</param>
-            <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+            <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="M:RazorEngine.Templating.TemplateService.SetModel``1(RazorEngine.Templating.ITemplate,``0)">

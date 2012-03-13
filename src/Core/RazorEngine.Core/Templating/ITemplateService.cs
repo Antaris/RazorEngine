@@ -124,7 +124,7 @@
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="model">The model instance or NULL if no model exists.</param>
-        /// <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
         /// <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
         /// <returns>The string result of the template.</returns>
         string Parse(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName);
@@ -132,7 +132,7 @@
         /// <summary>
         /// Parses the specified set of templates.
         /// </summary>
-        /// <param name="razorTemplates">The set of string templates to partse.</param>
+        /// <param name="razorTemplates">The set of string templates to parse.</param>
         /// <param name="models">
         /// The set of models or NULL if no models exist for all templates.
         /// Individual elements in this set may be NULL if no model exists for a specific template.
@@ -170,7 +170,7 @@
         /// Runs the specified template.
         /// </summary>
         /// <param name="template">The template to run.</param>
-        /// <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
+        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
         /// <returns>The string result of the template.</returns>
         string Run(ITemplate template, DynamicViewBag viewBag);
 
