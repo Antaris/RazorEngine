@@ -21,7 +21,7 @@ namespace RazorEngine.Hosts.Console
                 var templates = Enumerable.Repeat(template, 10).ToList();
                 var models = Enumerable.Range(1, 10).Select(i => new Person { Age = i });
 
-                var results = service.ParseMany(templates, models, true).ToList();
+                var results = service.ParseMany(templates, models, null, null, true).ToList();
 
                 for (int i = 0; i < 10; i++)
                 {

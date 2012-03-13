@@ -1,6 +1,7 @@
 ﻿namespace RazorEngine.Tests.TestTypes.Issues
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.CSharp.RuntimeBinder;
 
     using NUnit.Framework;
@@ -38,7 +39,7 @@
 
                 service.Compile(layoutTemplate, type, "Parent");
 
-                string result = service.Parse(childTemplate, model);
+                string result = service.Parse(childTemplate, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -58,9 +59,9 @@
                 const string layoutTemplate = "<h1>@ViewBag.Title</h1>@RenderSection(\"Child\")";
                 const string childTemplate = "@{ _Layout =  \"Parent\"; ViewBag.Title = \"Test\"; }@section Child {}";
 
-                service.Compile(layoutTemplate, "Parent");
+                service.Compile(layoutTemplate, null, "Parent");
 
-                string result = service.Parse(childTemplate);
+                string result = service.Parse(childTemplate, null, null, null);
 
                 Assert.That(result.StartsWith("<h1>Test</h1>"));
             }
@@ -137,7 +138,7 @@
             {
                 const string template = "<h1>Hello World</h1>";
 
-                service.Compile(template, "issue11");
+                service.Compile(template, null, "issue11");
             }
         }
 
@@ -156,7 +157,7 @@
                 const string expected = "<h1>Hello </h1>";
 
                 var model = new { Person = new Person { Forename = null } };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -176,9 +177,8 @@
                 const string expected = "Matt";
 
                 object model = new { Name = "Matt" };
-                Type modelType = model.GetType();
 
-                string result = service.Parse(template, modelType, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -199,7 +199,7 @@
                 const string expected = "<h1>Hello </h1>";
 
                 var model = new { Number = (int?)null };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -216,7 +216,7 @@
             using (var service = new TemplateService())
             {
                 const string parent = "@model RazorEngine.Tests.TestTypes.Person\n<h1>@Model.Forename</h1>@RenderSection(\"Child\")";
-                service.Compile(parent, "Parent");
+                service.Compile(parent, null, "Parent");
 
                 const string child = "@{ _Layout = \"Parent\"; }\n@section Child { <h2>@Model.Department</h2> }";
                 const string expected = "<h1>Matt</h1> <h2>IT</h2> ";
@@ -229,9 +229,103 @@
                     Surname = "Abbott"
                 };
 
-                string result = service.Parse(child, model);
+                string result = service.Parse(child, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// ViewBag initialization not possible outside of template.
+        /// 
+        /// Issue 26: https://github.com/Antaris/RazorEngine/issues/26
+        /// </summary>
+        [Test]
+        public void Issue26_ViewBagInitializationOutsideOfTemplate()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "@ViewBag.TestValue";
+                const string expected = "This is a test";
+
+                DynamicViewBag viewBag = new DynamicViewBag();
+                viewBag.AddValue("TestValue", "This is a test");
+
+                string result = service.Parse(template, null, viewBag, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// StreamLining the ITemplateServiceAPI.
+        /// 
+        /// Issue 27: https://github.com/Antaris/RazorEngine/issues/27
+        /// </summary>
+        /// <remarks>
+        /// Streamlining the interface did not change funcionality - it just consolidated
+        /// overloads into a single methods to simplify Interface implementation.
+        /// <br/><br/>
+        /// There is one exception - the CreateTemplates() method.
+        /// This was enhanced to:<br/>
+        ///     1) Allow a NULL razorTemplates parameter if templateTypes are specified.<br/>
+        ///     2) Allow a NULL templateTypes parameter if razorTemplates are specified.<br/>
+        ///     3) Allow both razorTemplates / templateTypes to be specified and have some templates and some templates dynamically compiled.
+        /// <br/><br/>
+        /// This test case tests for success and exception conditions in features 1-3.
+        /// </remarks>
+        [Test]
+        public void Issue27_StreamLiningTheITemplateServiceApi_CreateTemplates()
+        {
+            string[] razorTemplates;
+            Type[] templateTypes;
+            int index;
+
+            using (var service = new TemplateService())
+            {
+                // Success case
+                razorTemplates = new string[] { "Template1", "Template2", "Template3" };
+                templateTypes = new Type[] { null, null, null };
+                IEnumerable<ITemplate> instances = service.CreateTemplates(razorTemplates, templateTypes, null, false);
+
+                index = 0;
+                foreach (ITemplate instance in instances)
+                {
+                    string expected = razorTemplates[index];
+                    string result = service.Run(instance, null);
+                    Assert.That(result == expected, "Result does not match expected: " + result);
+                    index++;
+                }
+
+                // No razorTemplates or templateTypes provided
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    service.CreateTemplates(null, null, null, false);
+                });
+
+                // Unbalanced razorTemplates/templateTypes (templateTypes to small)
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    razorTemplates = new string[] { "Template1", "Template2", "Template3" };
+                    templateTypes = new Type[] { null, null };
+                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
+                });
+
+                // Unbalanced razorTemplates/templateTypes (templateTypes too large)
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    razorTemplates = new string[] { "Template1", "Template2", "Template3" };
+                    templateTypes = new Type[] { null, null, null, null };
+                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
+                });
+
+                // Unbalanced razorTemplates/templateTypes (razorTemplates and templateTypes are NULL)
+                Assert.Throws<ArgumentException>(() =>
+                {
+                    razorTemplates = new string[] { "Template1", "Template2", null };
+                    templateTypes = new Type[] { null, null, null };
+                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
+                });
             }
         }
         #endregion

@@ -54,44 +54,14 @@
         /// <summary>
         /// Includes the template with the specified name.
         /// </summary>
-        /// <param name="name">The name of the template to include.</param>
+        /// <param name="cacheName">The name of the template type in cache.</param>
+        /// <param name="model">The model or NULL if there is no model for the template.</param>
         /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter Include(string name)
+        public virtual TemplateWriter Include(string cacheName, object model)
         {
-            var instance = TemplateService.Resolve(name);
+            var instance = TemplateService.Resolve(cacheName, model);
             if (instance == null)
-                throw new ArgumentException("No template could be resolved with name '" + name + "'");
-
-            return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext())));
-        }
-
-        /// <summary>
-        /// Includes the template with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the template to include.</param>
-        /// <param name="model">The model to pass to the template.</param>
-        /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter Include(string name, object model)
-        {
-            var instance = TemplateService.Resolve(name, model);
-            if (instance == null)
-                throw new ArgumentException("No template could be resolved with name '" + name + "'");
-
-            return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext())));
-        }
-
-        /// <summary>
-        /// Includes the template with the specified name.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="name">The name of the template to include.</param>
-        /// <param name="model">The model to pass to the template.</param>
-        /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter Include<T>(string name, T model)
-        {
-            var instance = TemplateService.Resolve(name, model);
-            if (instance == null)
-                throw new ArgumentException("No template could be resolved with name '" + name + "'");
+                throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
 
             return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext())));
         }
@@ -131,7 +101,7 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected virtual ITemplate ResolveLayout(string name)
         {
-            return TemplateService.Resolve(name);
+            return TemplateService.Resolve(name, null);
         }
 
         /// <summary>

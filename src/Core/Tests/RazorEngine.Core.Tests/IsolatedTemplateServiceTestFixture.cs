@@ -30,7 +30,7 @@
                 const string template = "<h1>Hello World</h1>";
                 const string expected = template;
 
-                string result = service.Parse(template);
+                string result = service.Parse(template, null, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -40,7 +40,7 @@
         /// Tests that a simple template with a model can be parsed.
         /// </summary>
         [Test]
-        public void IsolatedTemplateService_CanParseSimpleTemplate_WithComplexSerialisableModel()
+        public void IsolatedTemplateService_CanParseSimpleTemplate_WithComplexSerializableModel()
         {
             using (var service = new IsolatedTemplateService())
             {
@@ -48,17 +48,17 @@
                 const string expected = "<h1>Hello Matt</h1>";
 
                 var model = new Person { Forename = "Matt" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
 
         /// <summary>
-        /// Tests that a simple template with a non-serialisable model cannot be parsed.
+        /// Tests that a simple template with a non-serializable model cannot be parsed.
         /// </summary>
         [Test] 
-        public void IsolatedTemplateService_CannotParseSimpleTemplate_WithComplexNonSerialisableModel()
+        public void IsolatedTemplateService_CannotParseSimpleTemplate_WithComplexNonSerializableModel()
         {
             using (var service = new IsolatedTemplateService())
             {
@@ -67,7 +67,7 @@
                 Assert.Throws<SerializationException>(() =>
                 {
                     var model = new Animal { Type = "Cat" };
-                    service.Parse(template, model);
+                    service.Parse(template, model, null, null);
                 });
             }
         }
@@ -91,7 +91,7 @@
                 Assert.Throws<ArgumentException>(() =>
                 {
                     var model = new { Type = "Cat" };
-                    service.Parse(template, model);
+                    service.Parse(template, model, null, null);
                 });
             }
         }
@@ -116,7 +116,7 @@
                 {
                     dynamic model = new ExpandoObject();
                     model.Type = "Cat";
-                    service.Parse(template, model);
+                    service.Parse(template, model, null, null);
                 });
             }
         }
@@ -140,7 +140,7 @@
                 Assert.Throws<ArgumentException>(() =>
                 {
                     dynamic model = new ValueObject(new Dictionary<string, object> { { "Type", "Cat" } });
-                    service.Parse(template, model);
+                    service.Parse(template, model, null, null);
                 });
             }
         }
@@ -201,7 +201,7 @@
                 const string expected = "<h1>Hello Matt &amp; World</h1>";
 
                 var model = new Person { Forename = "Matt & World" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -224,7 +224,7 @@
                 const string expected = "<h1>Hello Matt & World</h1>";
 
                 var model = new Person { Forename = "Matt & World" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -241,7 +241,7 @@
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10).ToArray();
 
-                var results = service.ParseMany(templates, false);
+                var results = service.ParseMany(templates, null, null, null, false);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected.");
             }
@@ -258,7 +258,7 @@
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10).ToArray();
 
-                var results = service.ParseMany(templates, true);
+                var results = service.ParseMany(templates, null, null, null, true);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected.");
             }
@@ -279,7 +279,7 @@
                 var templates = Enumerable.Repeat(template, maxTemplates).ToArray();
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
 
-                var results = service.ParseMany(templates, models, false);
+                var results = service.ParseMany(templates, models, null, null, false);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -299,47 +299,7 @@
                 var templates = Enumerable.Repeat(template, maxTemplates).ToArray();
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
 
-                var results = service.ParseMany(templates, models, true);
-                Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
-            }
-        }
-
-        /// <summary>
-        /// Tests that the template service can parse and run multiple templates based off a single source template.
-        /// This is processed in parallel.
-        /// </summary>
-        [Test]
-        public void IsolatedTemplateService_CanParseSingleTemplateInParallel_WithMultipleModels()
-        {
-            const int maxTemplates = 10;
-
-            using (var service = new IsolatedTemplateService())
-            {
-                const string template = "<h1>Age: @Model.Age</h1>";
-                var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
-                var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
-
-                var results = service.ParseMany(template, models, true /* Parallel */);
-                Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
-            }
-        }
-
-        /// <summary>
-        /// Tests that the template service can parse and run multiple templates based off a single source template.
-        /// This is processed in sequence.
-        /// </summary>
-        [Test]
-        public void IsolatedTemplateService_CanParseSingleTemplateInSequence_WithMultipleModels()
-        {
-            const int maxTemplates = 10;
-
-            using (var service = new IsolatedTemplateService())
-            {
-                const string template = "<h1>Age: @Model.Age</h1>";
-                var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
-                var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
-
-                var results = service.ParseMany(template, models, false /* Sequence */);
+                var results = service.ParseMany(templates, models, null, null, true);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }

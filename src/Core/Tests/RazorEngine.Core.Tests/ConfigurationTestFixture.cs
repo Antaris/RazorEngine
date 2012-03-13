@@ -43,7 +43,7 @@
                 const string template = "@Directory.GetFiles(\"C:\\\\\", \"*.*\").Length";
 
                 int expected = Directory.GetFiles(@"C:\", "*.*").Length;
-                string result = service.Parse(template);
+                string result = service.Parse(template, null, null, null);
 
                 Assert.That(expected == int.Parse(result));
             }
@@ -75,7 +75,7 @@
                 const string template = "@Code Dim name = \"Matt\" End Code\n@name";
                 const string expected = "\nMatt";
 
-                string result = service.Parse(template);
+                string result = service.Parse(template, null, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -96,7 +96,7 @@
                 const string expected = "<h1>Hello Matt & World</h1>";
 
                 var model = new { String = "Matt & World" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
