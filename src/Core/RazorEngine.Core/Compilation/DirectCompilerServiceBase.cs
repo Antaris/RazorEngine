@@ -68,7 +68,7 @@
 
             var includeAssemblies = (IncludeAssemblies() ?? Enumerable.Empty<string>());
             assemblies = assemblies.Concat(includeAssemblies)
-                .Select(a => a.ToUpperInvariant())
+                .Select(a => a.ToString())
                 .Where(a => !string.IsNullOrWhiteSpace(a))
                 .Distinct();
 
