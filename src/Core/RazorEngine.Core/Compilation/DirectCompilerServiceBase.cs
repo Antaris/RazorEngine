@@ -68,9 +68,8 @@
 
             var includeAssemblies = (IncludeAssemblies() ?? Enumerable.Empty<string>());
             assemblies = assemblies.Concat(includeAssemblies)
-                .Select(a => a.ToUpperInvariant())
                 .Where(a => !string.IsNullOrWhiteSpace(a))
-                .Distinct();
+                .Distinct(StringComparer.InvariantCultureIgnoreCase);
 
             @params.ReferencedAssemblies.AddRange(assemblies.ToArray());
 
