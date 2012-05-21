@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Compilation
+﻿//-----------------------------------------------------------------------------
+// <copyright file="CompilerServiceBase.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation
 {
     using System;
     using System.CodeDom;
@@ -10,7 +15,6 @@
     using System.Web.Razor;
     using System.Web.Razor.Generator;
     using System.Web.Razor.Parser;
-
     using Inspectors;
     using Templating;
 
@@ -20,21 +24,26 @@
     public abstract class CompilerServiceBase : MarshalByRefObject, ICompilerService
     {
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="CompilerServiceBase"/>
+        /// Initializes a new instance of the <see cref="CompilerServiceBase"/> class.
         /// </summary>
         /// <param name="codeLanguage">The code language.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
         protected CompilerServiceBase(RazorCodeLanguage codeLanguage, Func<MarkupParser> markupParserFactory)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(codeLanguage != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            CodeLanguage = codeLanguage;
-            MarkupParserFactory = markupParserFactory ?? (() => new HtmlMarkupParser());
+            this.CodeLanguage = codeLanguage;
+            this.MarkupParserFactory = markupParserFactory ?? (() => new HtmlMarkupParser());
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the set of code inspectors.
         /// </summary>
@@ -46,7 +55,7 @@
         public RazorCodeLanguage CodeLanguage { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether the compiler service is operating in debug mode.
+        /// Gets or sets a value indicating whether the compiler service is operating in debug mode.
         /// </summary>
         public bool Debug { get; set; }
 
@@ -54,6 +63,7 @@
         /// Gets the markup parser.
         /// </summary>
         public Func<MarkupParser> MarkupParserFactory { get; private set; }
+
         #endregion
 
         #region Methods
@@ -67,18 +77,25 @@
         public virtual string BuildTypeName(Type templateType, Type modelType)
         {
             if (templateType == null)
+            {
                 throw new ArgumentNullException("templateType");
+            }
 
             if (!templateType.IsGenericTypeDefinition && !templateType.IsGenericType)
+            {
                 return templateType.FullName;
+            }
 
             if (modelType == null)
-                throw new ArgumentException("The template type is a generic defintion, and no model type has been supplied.");
+            {
+                throw new ArgumentException(
+                    "The template type is a generic defintion, and no model type has been supplied.");
+            }
 
             bool @dynamic = CompilerServicesUtility.IsDynamicType(modelType);
             Type genericType = templateType.MakeGenericType(modelType);
 
-            return BuildTypeNameInternal(genericType, @dynamic);
+            return this.BuildTypeNameInternal(genericType, @dynamic);
         }
 
         /// <summary>
@@ -86,7 +103,7 @@
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="isDynamic">Is the model type dynamic?</param>
-        /// <returns>The string typename (including namespace and generic type parameters).</returns>
+        /// <returns>The string type name (including namespace and generic type parameters).</returns>
         public abstract string BuildTypeNameInternal(Type type, bool isDynamic);
 
         /// <summary>
@@ -97,48 +114,118 @@
         public abstract Tuple<Type, Assembly> CompileType(TypeContext context);
 
         /// <summary>
-        /// Creates a <see cref="RazorEngineHost"/> used for class generation.
+        /// Gets the code compile unit used to compile a type.
         /// </summary>
-        /// <param name="templateType">The template base type.</param>
-        /// <param name="modelType">The model type.</param>
         /// <param name="className">The class name.</param>
-        /// <returns>An instance of <see cref="RazorEngineHost"/>.</returns>
-        private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
+        /// <param name="template">The template to compile.</param>
+        /// <param name="namespaceImports">The set of namespace imports.</param>
+        /// <param name="templateType">The template type.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <returns>
+        /// A <see cref="CodeCompileUnit"/> used to compile a type.
+        /// </returns>
+        [Pure]
+        public CodeCompileUnit GetCodeCompileUnit(string className, string template, ISet<string> namespaceImports, Type templateType, Type modelType)
         {
-            var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory)
-                           {
-                               DefaultBaseTemplateType = templateType,
-                               DefaultBaseClass = BuildTypeName(templateType, modelType),
-                               DefaultClassName = className,
-                               DefaultNamespace = "CompiledRazorTemplates.Dynamic",
-                               GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
-                                                                                 "WriteTo", "WriteLiteralTo",
-                                                                                 "RazorEngine.Templating.TemplateWriter",
-                                                                                 "DefineSection")
-                           };
+            if (string.IsNullOrEmpty(className))
+            {
+                throw new ArgumentException("Class name is required.");
+            }
 
-            return host;
+            if (string.IsNullOrEmpty(template))
+            {
+                throw new ArgumentException("Template is required.");
+            }
+
+            namespaceImports = namespaceImports ?? new HashSet<string>();
+            templateType = templateType ?? ((modelType == null) ? typeof(TemplateBase) : typeof(TemplateBase<>));
+
+            // Create the RazorEngineHost
+            var host = this.CreateHost(templateType, modelType, className);
+
+            // Add any required namespace imports
+            foreach (string ns in GetNamespaces(templateType, namespaceImports))
+            {
+                host.NamespaceImports.Add(ns);
+            }
+
+            // Gets the generator result.
+            GeneratorResults result = GetGeneratorResult(host, template);
+
+            // Add the dynamic model attribute if the type is an anonymous type.
+            var type = result.GeneratedCode.Namespaces[0].Types[0];
+            if (modelType != null && CompilerServicesUtility.IsAnonymousType(modelType))
+            {
+                type.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(HasDynamicModelAttribute))));
+            }
+
+            // Generate any constructors required by the base template type.
+            GenerateConstructors(CompilerServicesUtility.GetConstructors(templateType), type);
+
+            // Dispatch any inspectors
+            this.Inspect(result.GeneratedCode);
+
+            return result.GeneratedCode;
         }
 
         /// <summary>
-        /// Generates any required contructors for the specified type.
+        /// Returns a set of assemblies that must be referenced by the compiled template.
+        /// </summary>
+        /// <returns>The set of assemblies.</returns>
+        public virtual IEnumerable<string> IncludeAssemblies()
+        {
+            return Enumerable.Empty<string>();
+        }
+
+        /// <summary>
+        /// Inspects the generated code compile unit.
+        /// </summary>
+        /// <param name="unit">The code compile unit.</param>
+        protected virtual void Inspect(CodeCompileUnit unit)
+        {
+            /* ReSharper disable InvocationIsSkipped */
+            Contract.Requires(unit != null);
+            /* ReSharper restore InvocationIsSkipped */
+
+            var ns = unit.Namespaces[0];
+            var type = ns.Types[0];
+            var executeMethod = type.Members.OfType<CodeMemberMethod>().Single(m => m.Name.Equals("Execute"));
+
+            foreach (var inspector in this.CodeInspectors)
+            {
+                inspector.Inspect(unit, ns, type, executeMethod);
+            }
+        }
+
+        /// <summary>
+        /// Generates any required constructors for the specified type.
         /// </summary>
         /// <param name="constructors">The set of constructors.</param>
         /// <param name="codeType">The code type declaration.</param>
         [Pure]
         private static void GenerateConstructors(IEnumerable<ConstructorInfo> constructors, CodeTypeDeclaration codeType)
         {
-            if (constructors == null || !constructors.Any())
+            if (constructors == null)
+            {
                 return;
+            }
+
+            var constructorcollection = constructors.ToArray();
+
+            if (constructorcollection.Length == 0)
+            {
+                return;
+            }
 
             var existingConstructors = codeType.Members.OfType<CodeConstructor>().ToArray();
             foreach (var existingConstructor in existingConstructors)
-                codeType.Members.Remove(existingConstructor);
-
-            foreach (var constructor in constructors)
             {
-                var ctor = new CodeConstructor();
-                ctor.Attributes = MemberAttributes.Public;
+                codeType.Members.Remove(existingConstructor);
+            }
+
+            foreach (var constructor in constructorcollection)
+            {
+                var ctor = new CodeConstructor { Attributes = MemberAttributes.Public };
 
                 foreach (var param in constructor.GetParameters())
                 {
@@ -151,62 +238,21 @@
         }
 
         /// <summary>
-        /// Gets the code compile unit used to compile a type.
-        /// </summary>
-        /// <param name="className">The class name.</param>
-        /// <param name="template">The template to compile.</param>
-        /// <param name="namespaceImports">The set of namespace imports.</param>
-        /// <param name="templateType">The template type.</param>
-        /// <param name="modelType">The model type.</param>
-        /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
-        [Pure]
-        public CodeCompileUnit GetCodeCompileUnit(string className, string template, ISet<string> namespaceImports, Type templateType, Type modelType)
-        {
-            if (string.IsNullOrEmpty(className))
-                throw new ArgumentException("Class name is required.");
-
-            if (string.IsNullOrEmpty(template))
-                throw new ArgumentException("Template is required.");
-
-            namespaceImports = namespaceImports ?? new HashSet<string>();
-            templateType = templateType ?? ((modelType == null) ? typeof(TemplateBase) : typeof(TemplateBase<>));
-
-            // Create the RazorEngineHost
-            var host = CreateHost(templateType, modelType, className);
-
-            // Add any required namespace imports
-            foreach (string ns in GetNamespaces(templateType, namespaceImports))
-                host.NamespaceImports.Add(ns);
-
-            // Gets the generator result.
-            GeneratorResults result = GetGeneratorResult(host, template);
-
-            // Add the dynamic model attribute if the type is an anonymous type.
-            var type = result.GeneratedCode.Namespaces[0].Types[0];
-            if (modelType != null && CompilerServicesUtility.IsAnonymousType(modelType))
-                type.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(HasDynamicModelAttribute))));
-
-            // Generate any constructors required by the base template type.
-            GenerateConstructors(CompilerServicesUtility.GetConstructors(templateType), type);
-
-            // Despatch any inspectors
-            Inspect(result.GeneratedCode);
-
-            return result.GeneratedCode;
-        }
-
-        /// <summary>
         /// Gets the generator result.
         /// </summary>
         /// <param name="host">The razor engine host.</param>
         /// <param name="template">The template.</param>
-        /// <returns>The generator result.</returns>
+        /// <returns>
+        /// The generator result.
+        /// </returns>
         private static GeneratorResults GetGeneratorResult(RazorEngineHost host, string template)
         {
             var engine = new RazorTemplateEngine(host);
             GeneratorResults result;
             using (var reader = new StringReader(template))
+            {
                 result = engine.GenerateCode(reader);
+            }
 
             return result;
         }
@@ -229,29 +275,34 @@
         }
 
         /// <summary>
-        /// Returns a set of assemblies that must be referenced by the compiled template.
+        /// Creates a <see cref="RazorEngineHost"/> used for class generation.
         /// </summary>
-        /// <returns>The set of assemblies.</returns>
-        public virtual IEnumerable<string> IncludeAssemblies()
+        /// <param name="templateType">The template base type.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <param name="className">The class name.</param>
+        /// <returns>An instance of <see cref="RazorEngineHost"/>.</returns>
+        private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
         {
-            return Enumerable.Empty<string>();
+            var host = new RazorEngineHost(this.CodeLanguage, this.MarkupParserFactory)
+            {
+                DefaultBaseTemplateType = templateType,
+                DefaultBaseClass = this.BuildTypeName(templateType, modelType),
+                DefaultClassName = className,
+                DefaultNamespace = "CompiledRazorTemplates.Dynamic",
+                GeneratedClassContext =
+                    new GeneratedClassContext(
+                    "Execute",
+                    "Write",
+                    "WriteLiteral",
+                    "WriteTo",
+                    "WriteLiteralTo",
+                    "RazorEngine.Templating.TemplateWriter",
+                    "DefineSection")
+            };
+
+            return host;
         }
 
-        /// <summary>
-        /// Inspects the generated code compile unit.
-        /// </summary>
-        /// <param name="unit">The code compile unit.</param>
-        protected virtual void Inspect(CodeCompileUnit unit)
-        {
-            Contract.Requires(unit != null);
-
-            var ns = unit.Namespaces[0];
-            var type = ns.Types[0];
-            var executeMethod = type.Members.OfType<CodeMemberMethod>().Where(m => m.Name.Equals("Execute")).Single();
-
-            foreach (var inspector in CodeInspectors)
-                inspector.Inspect(unit, ns, type, executeMethod);
-        }
         #endregion
     }
 }

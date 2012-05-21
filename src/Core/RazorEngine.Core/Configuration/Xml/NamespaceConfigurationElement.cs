@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Configuration.Xml
+﻿//-----------------------------------------------------------------------------
+// <copyright file="NamespaceConfigurationElement.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration.Xml
 {
     using System.Configuration;
 
@@ -8,10 +13,16 @@
     public class NamespaceConfigurationElement : ConfigurationElement
     {
         #region Fields
+
+        /// <summary>
+        /// The resource string
+        /// </summary>
         private const string NamespaceAttribute = "namespace";
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the namespace.
         /// </summary>
@@ -20,6 +31,7 @@
         {
             get { return (string)this[NamespaceAttribute]; }
         }
+
         #endregion
     }
 }

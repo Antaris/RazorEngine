@@ -1,8 +1,12 @@
-﻿namespace RazorEngine.Configuration
+﻿//-----------------------------------------------------------------------------
+// <copyright file="FluentConfigurationBuilder.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration
 {
     using System;
     using System.Diagnostics.Contracts;
-
     using Compilation;
     using Compilation.Inspectors;
     using Templating;
@@ -14,19 +18,25 @@
     internal class FluentConfigurationBuilder : IConfigurationBuilder
     {
         #region Fields
-        private readonly TemplateServiceConfiguration _config;
+
+        /// <summary>
+        /// The Template Service configuration
+        /// </summary>
+        private readonly TemplateServiceConfiguration configuration;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="FluentConfigurationBuilder"/>.
+        /// Initializes a new instance of the <see cref="FluentConfigurationBuilder"/> class.
         /// </summary>
         /// <param name="config">The default configuration that we build a new configuration from.</param>
         public FluentConfigurationBuilder(TemplateServiceConfiguration config)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(config != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            _config = config;
+            this.configuration = config;
         }
         #endregion
 
@@ -39,9 +49,12 @@
         public IConfigurationBuilder ActivateUsing(IActivator activator)
         {
             if (activator == null)
+            {
                 throw new ArgumentNullException("activator");
+            }
 
-            _config.Activator = activator;
+            this.configuration.Activator = activator;
+
             return this;
         }
 
@@ -52,7 +65,7 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder ActivateUsing<TActivator>() where TActivator : IActivator, new()
         {
-            return ActivateUsing(new TActivator());
+            return this.ActivateUsing(new TActivator());
         }
 
         /// <summary>
@@ -63,9 +76,12 @@
         public IConfigurationBuilder ActivateUsing(Func<InstanceContext, ITemplate> activator)
         {
             if (activator == null)
+            {
                 throw new ArgumentNullException("activator");
+            }
 
-            _config.Activator = new DelegateActivator(activator);
+            this.configuration.Activator = new DelegateActivator(activator);
+
             return this;
         }
 
@@ -87,9 +103,12 @@
         public IConfigurationBuilder AddInspector(ICodeInspector inspector)
         {
             if (inspector == null)
+            {
                 throw new ArgumentNullException("inspector");
+            }
 
-            _config.CodeInspectors.Add(inspector);
+            this.configuration.CodeInspectors.Add(inspector);
+
             return this;
         }
 
@@ -101,9 +120,12 @@
         public IConfigurationBuilder CompileUsing(ICompilerServiceFactory factory)
         {
             if (factory == null)
+            {
                 throw new ArgumentNullException("factory");
+            }
 
-            _config.CompilerServiceFactory = factory;
+            this.configuration.CompilerServiceFactory = factory;
+
             return this;
         }
 
@@ -115,7 +137,7 @@
         public IConfigurationBuilder CompileUsing<TCompilerServiceFactory>()
             where TCompilerServiceFactory : ICompilerServiceFactory, new()
         {
-            return CompileUsing(new TCompilerServiceFactory());
+            return this.CompileUsing(new TCompilerServiceFactory());
         }
 
         /// <summary>
@@ -126,9 +148,12 @@
         public IConfigurationBuilder EncodeUsing(IEncodedStringFactory factory)
         {
             if (factory == null)
+            {
                 throw new ArgumentNullException("factory");
+            }
 
-            _config.EncodedStringFactory = factory;
+            this.configuration.EncodedStringFactory = factory;
+
             return this;
         }
 
@@ -140,7 +165,7 @@
         public IConfigurationBuilder EncodeUsing<TEncodedStringFactory>()
             where TEncodedStringFactory : IEncodedStringFactory, new()
         {
-            return EncodeUsing(new TEncodedStringFactory());
+            return this.EncodeUsing(new TEncodedStringFactory());
         }
 
         /// <summary>
@@ -151,10 +176,14 @@
         public IConfigurationBuilder IncludeNamespaces(params string[] namespaces)
         {
             if (namespaces == null)
+            {
                 throw new ArgumentNullException("namespaces");
+            }
 
             foreach (string ns in namespaces)
-                _config.Namespaces.Add(ns);
+            {
+                this.configuration.Namespaces.Add(ns);
+            }
 
             return this;
         }
@@ -166,7 +195,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder ResolveUsing<TResolver>() where TResolver : ITemplateResolver, new()
         {
-            _config.Resolver = new TResolver();
+            this.configuration.Resolver = new TResolver();
+
             return this;
         }
 
@@ -177,9 +207,12 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder ResolveUsing(ITemplateResolver resolver)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(resolver != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            _config.Resolver = resolver;
+            this.configuration.Resolver = resolver;
+
             return this;
         }
 
@@ -190,9 +223,12 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder ResolveUsing(Func<string, string> resolver)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(resolver != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            _config.Resolver = new DelegateTemplateResolver(resolver);
+            this.configuration.Resolver = new DelegateTemplateResolver(resolver);
+
             return this;
         }
 
@@ -202,7 +238,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder UseDefaultActivator()
         {
-            _config.Activator = new DefaultActivator();
+            this.configuration.Activator = new DefaultActivator();
+
             return this;
         }
 
@@ -212,7 +249,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder UseDefaultCompilerServiceFactory()
         {
-            _config.CompilerServiceFactory = new DefaultCompilerServiceFactory();
+            this.configuration.CompilerServiceFactory = new DefaultCompilerServiceFactory();
+
             return this;
         }
 
@@ -222,7 +260,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder UseDefaultEncodedStringFactory()
         {
-            _config.EncodedStringFactory = new HtmlEncodedStringFactory();
+            this.configuration.EncodedStringFactory = new HtmlEncodedStringFactory();
+
             return this;
         }
 
@@ -233,7 +272,8 @@
         /// <returns>The current configuration builder/.</returns>
         public IConfigurationBuilder WithBaseTemplateType(Type baseTemplateType)
         {
-            _config.BaseTemplateType = baseTemplateType;
+            this.configuration.BaseTemplateType = baseTemplateType;
+
             return this;
         }
 
@@ -244,7 +284,8 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder WithCodeLanguage(Language language)
         {
-            _config.Language = language;
+            this.configuration.Language = language;
+
             return this;
         }
 
@@ -258,10 +299,10 @@
             switch (encoding)
             {
                 case Encoding.Html:
-                    _config.EncodedStringFactory = new HtmlEncodedStringFactory();
+                    this.configuration.EncodedStringFactory = new HtmlEncodedStringFactory();
                     break;
                 case Encoding.Raw:
-                    _config.EncodedStringFactory = new RawStringFactory();
+                    this.configuration.EncodedStringFactory = new RawStringFactory();
                     break;
                 default:
                     throw new ArgumentException("Unsupported encoding: " + encoding);

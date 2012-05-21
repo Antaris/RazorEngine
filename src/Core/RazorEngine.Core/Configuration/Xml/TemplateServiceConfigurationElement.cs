@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Configuration.Xml
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateServiceConfigurationElement.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration.Xml
 {
     using System.Configuration;
 
@@ -8,13 +13,42 @@
     public class TemplateServiceConfigurationElement : ConfigurationElement
     {
         #region Fields
+
+        /// <summary>
+        /// The string constant
+        /// </summary>
         private const string BaseTemplateTypeAttribute = "baseTemplateType";
+
+        /// <summary>
+        /// The string constant
+        /// </summary>
         private const string CodeInspectorsElement = "codeInspectors";
+
+        /// <summary>
+        /// The string constant
+        /// </summary>
         private const string DebugAttribute = "debug";
+
+        /// <summary>
+        /// The string constant
+        /// </summary>
         private const string EncodedStringFactoryAttribute = "encodedStringFactoryType";
+
+        /// <summary>
+        /// The string constant
+        /// </summary>
         private const string LanguageAttribute = "language";
+
+        /// <summary>
+        /// The string constant
+        /// </summary>
         private const string NameAttribute = "name";
+
+        /// <summary>
+        /// The string constant
+        /// </summary>
         private const string NamespacesElement = "namespaces";
+
         #endregion
 
         #region Properties
@@ -28,7 +62,7 @@
         }
 
         /// <summary>
-        /// Gets whether the template service is in debug mode.
+        /// Gets a value indicating whether the template service is in debug mode.
         /// </summary>
         [ConfigurationProperty(DebugAttribute, IsRequired = false, DefaultValue = false)]
         public bool Debug
@@ -71,6 +105,7 @@
         {
             get { return (NamespaceConfigurationElementCollection)this[NamespacesElement]; }
         }
+
         #endregion
     }
 }

@@ -13,14 +13,17 @@
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="HtmlEncodedString"/>
+        /// Initializes a new instance of the <see cref="HtmlEncodedString"/> class.
         /// </summary>
         /// <param name="value">The raw string to be encoded.</param>
         public HtmlEncodedString(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
+            {
                 _encodedString = WebUtility.HtmlEncode(value);
+            }
         }
+
         #endregion
 
         #region Methods
@@ -30,7 +33,7 @@
         /// <returns>The encoded string.</returns>
         public string ToEncodedString()
         {
-            return _encodedString ?? string.Empty;
+            return this._encodedString ?? string.Empty;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@
         /// <returns>The string representation of this instance.</returns>
         public override string ToString()
         {
-            return ToEncodedString();
+            return this.ToEncodedString();
         }
         #endregion
     }

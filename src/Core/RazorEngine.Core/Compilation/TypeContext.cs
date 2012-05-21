@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Compilation
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TypeContext.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation
 {
     using System;
     using System.Collections.Generic;
@@ -10,16 +15,17 @@
     {
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="TypeContext"/>.
+        /// Initializes a new instance of the <see cref="TypeContext"/> class.
         /// </summary>
         internal TypeContext()
         {
-            ClassName = CompilerServicesUtility.GenerateClassName();
-            Namespaces = new HashSet<string>();
+            this.ClassName = CompilerServicesUtility.GenerateClassName();
+            this.Namespaces = new HashSet<string>();
         }
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the class name.
         /// </summary>
@@ -44,6 +50,7 @@
         /// Gets or sets the base template type.
         /// </summary>
         public Type TemplateType { get; set; }
+
         #endregion
     }
 }

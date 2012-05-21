@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Compilation
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ICompilerService.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation
 {
     using System;
     using System.Collections.Generic;
@@ -18,9 +23,13 @@
         IEnumerable<ICodeInspector> CodeInspectors { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the compiler service is operating in debug mode.
+        /// Gets or sets a value indicating whether the compiler service is operating in debug mode.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if debug; otherwise, <c>false</c>.
+        /// </value>
         bool Debug { get; set; }
+
         #endregion
 
         #region Methods

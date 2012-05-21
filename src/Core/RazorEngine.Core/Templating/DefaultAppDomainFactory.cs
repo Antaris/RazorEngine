@@ -8,6 +8,7 @@
     public class DefaultAppDomainFactory : IAppDomainFactory
     {
         #region Methods
+
         /// <summary>
         /// Creates the <see cref="AppDomain"/>.
         /// </summary>
@@ -19,6 +20,7 @@
 
             return domain;
         }
+
         #endregion
     }
 }

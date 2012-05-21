@@ -1,9 +1,13 @@
-﻿namespace RazorEngine.Configuration
+﻿//-----------------------------------------------------------------------------
+// <copyright file="FluentTemplateServiceConfiguration.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-
     using Compilation;
     using Compilation.Inspectors;
     using Templating;
@@ -15,29 +19,39 @@
     public class FluentTemplateServiceConfiguration : ITemplateServiceConfiguration
     {
         #region Fields
-        private readonly TemplateServiceConfiguration _innerConfig = new TemplateServiceConfiguration();
+
+        /// <summary>
+        /// The Template Service Configuration
+        /// </summary>
+        private readonly TemplateServiceConfiguration innerConfig = new TemplateServiceConfiguration();
+
         #endregion
 
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="FluentTemplateServiceConfiguration"/>.
+        /// Initializes a new instance of the <see cref="FluentTemplateServiceConfiguration"/> class.
         /// </summary>
         /// <param name="config">The delegate used to create the configuration.</param>
         public FluentTemplateServiceConfiguration(Action<IConfigurationBuilder> config)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(config != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            config(new FluentConfigurationBuilder(_innerConfig));
+            config(new FluentConfigurationBuilder(this.innerConfig));
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
-        /// Gets or sets the activator.
+        /// Gets the activator.
         /// </summary>
         public IActivator Activator
         {
-            get { return _innerConfig.Activator; }
+            get { return this.innerConfig.Activator; }
         }
 
         /// <summary>
@@ -45,7 +59,7 @@
         /// </summary>
         public Type BaseTemplateType
         {
-            get { return _innerConfig.BaseTemplateType; }
+            get { return this.innerConfig.BaseTemplateType; }
         }
 
         /// <summary>
@@ -53,47 +67,47 @@
         /// </summary>
         public IEnumerable<ICodeInspector> CodeInspectors
         {
-            get { return _innerConfig.CodeInspectors; }
+            get { return this.innerConfig.CodeInspectors; }
         }
 
         /// <summary>
-        /// Gets or sets the compiler service factory.
+        /// Gets the compiler service factory.
         /// </summary>
         public ICompilerServiceFactory CompilerServiceFactory
         {
-            get { return _innerConfig.CompilerServiceFactory; }
+            get { return this.innerConfig.CompilerServiceFactory; }
         }
 
         /// <summary>
-        /// Gets whether the template service is operating in debug mode.
+        /// Gets a value indicating whether the template service is operating in debug mode.
         /// </summary>
         public bool Debug
         {
-            get { return _innerConfig.Debug; }
+            get { return this.innerConfig.Debug; }
         }
 
         /// <summary>
-        /// Gets or sets the encoded string factory.
+        /// Gets the encoded string factory.
         /// </summary>
         public IEncodedStringFactory EncodedStringFactory
         {
-            get { return _innerConfig.EncodedStringFactory; }
+            get { return this.innerConfig.EncodedStringFactory; }
         }
 
         /// <summary>
-        /// Gets or sets the language.
+        /// Gets the language.
         /// </summary>
         public Language Language
         {
-            get { return _innerConfig.Language; }
+            get { return this.innerConfig.Language; }
         }
 
         /// <summary>
-        /// Gets or sets the collection of namespaces.
+        /// Gets the collection of namespaces.
         /// </summary>
         public ISet<string> Namespaces
         {
-            get { return _innerConfig.Namespaces; }
+            get { return this.innerConfig.Namespaces; }
         }
 
         /// <summary>
@@ -101,7 +115,7 @@
         /// </summary>
         public ITemplateResolver Resolver
         {
-            get { return _innerConfig.Resolver; }
+            get { return this.innerConfig.Resolver; }
         }
         #endregion
     }
