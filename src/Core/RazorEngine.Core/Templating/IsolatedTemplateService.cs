@@ -20,13 +20,25 @@ namespace RazorEngine.Templating
     {
         #region Fields
 
+        /// <summary>
+        /// The Template service type field
+        /// </summary>
         private static readonly Type TemplateServiceType = typeof(TemplateService);
 
-        private readonly ITemplateService _proxy;
+        /// <summary>
+        /// The template service field
+        /// </summary>
+        private readonly ITemplateService templateServiceProxy;
 
-        private readonly AppDomain _appDomain;
+        /// <summary>
+        /// The application domain field
+        /// </summary>
+        private readonly AppDomain appDomain;
 
-        private bool disposed;
+        /// <summary>
+        /// The disposing flag
+        /// </summary>
+        private bool isDisposed;
 
         #endregion
 
@@ -84,19 +96,22 @@ namespace RazorEngine.Templating
         /// <param name="appDomainFactory">The application domain factory.</param>
         public IsolatedTemplateService(Language language, Encoding encoding, IAppDomainFactory appDomainFactory)
         {
-            this._appDomain = CreateAppDomain(appDomainFactory ?? new DefaultAppDomainFactory());
+            this.appDomain = CreateAppDomain(appDomainFactory ?? new DefaultAppDomainFactory());
 
             string assemblyName = TemplateServiceType.Assembly.FullName;
             string typeName = TemplateServiceType.FullName;
 
-            this._proxy =
+            this.templateServiceProxy =
                 (ITemplateService)
-                this._appDomain.CreateInstance(
+                this.appDomain.CreateInstance(
                     assemblyName,
                     typeName,
                     false,
                     BindingFlags.NonPublic | BindingFlags.Instance,
-                    null, new object[] { language, encoding }, CultureInfo.CurrentCulture, null).Unwrap();
+                    null,
+                    new object[] { language, encoding },
+                    CultureInfo.CurrentCulture,
+                    null).Unwrap();
         }
 
         /// <summary>
@@ -148,13 +163,14 @@ namespace RazorEngine.Templating
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Adds a namespace that will be imported into the template.
         /// </summary>
         /// <param name="ns">The namespace to be imported.</param>
         public void AddNamespace(string ns)
         {
-            this._proxy.AddNamespace(ns);
+            this.templateServiceProxy.AddNamespace(ns);
         }
 
         /// <summary>
@@ -165,28 +181,7 @@ namespace RazorEngine.Templating
         /// <param name="cacheName">The name of the template type in the cache.</param>
         public void Compile(string razorTemplate, Type modelType, string cacheName)
         {
-            this._proxy.Compile(razorTemplate, modelType, cacheName);
-        }
-
-        /// <summary>
-        /// Creates an application domain.
-        /// </summary>
-        /// <param name="factory">The application domain factory.</param>
-        /// <returns>An instance of <see cref="AppDomain"/>.</returns>
-        private static AppDomain CreateAppDomain(IAppDomainFactory factory)
-        {
-            var domain = factory.CreateAppDomain();
-            if (domain == null)
-            {
-                throw new InvalidOperationException("The application domain factory did not create an application domain.");
-            }
-
-            if (domain == AppDomain.CurrentDomain)
-            {
-                throw new InvalidOperationException("The application domain factory returned the current application domain which cannot be used for isolation.");
-            }
-
-            return domain;
+            this.templateServiceProxy.Compile(razorTemplate, modelType, cacheName);
         }
 
         /// <summary>
@@ -204,7 +199,7 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
         public ITemplate CreateTemplate(string razorTemplate, Type templateType, object model)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
@@ -217,31 +212,27 @@ namespace RazorEngine.Templating
                 }
             }
 
-            return this._proxy.CreateTemplate(razorTemplate, templateType, model);
+            return this.templateServiceProxy.CreateTemplate(razorTemplate, templateType, model);
         }
 
         /// <summary>
         /// Creates a set of templates from the specified string templates and models.
         /// </summary>
-        /// <param name="razorTemplates">
-        /// The set of templates to create or NULL if all template types are already created (see templateTypes).
-        /// If this parameter is NULL, the the templateTypes parameter may not be NULL. 
-        /// Individual elements in this set may be NULL if the corresponding templateTypes[i] is not NULL (precompiled template).
-        /// </param>
-        /// <param name="models">
-        /// The set of models or NULL if no models exist for all templates.
-        /// Individual elements in this set may be NULL if no model exists for a specific template.
-        /// </param>
-        /// <param name="templateTypes">
-        /// The set of template types or NULL to dynamically create template types for each template.
-        /// If this parameter is NULL, the the razorTemplates parameter may not be NULL. 
-        /// Individual elements in this set may be NULL to dynamically create the template if the corresponding razorTemplates[i] is not NULL (dynamically compile template).
-        /// </param>
+        /// <param name="razorTemplates">The set of templates to create or NULL if all template types are already created (see templateTypes).
+        /// If this parameter is NULL, the the templateTypes parameter may not be NULL.
+        /// Individual elements in this set may be NULL if the corresponding templateTypes[i] is not NULL (precompiled template).</param>
+        /// <param name="templateTypes">The set of template types or NULL to dynamically create template types for each template.
+        /// If this parameter is NULL, the the razorTemplates parameter may not be NULL.
+        /// Individual elements in this set may be NULL to dynamically create the template if the corresponding razorTemplates[i] is not NULL (dynamically compile template).</param>
+        /// <param name="models">The set of models or NULL if no models exist for all templates.
+        /// Individual elements in this set may be NULL if no model exists for a specific template.</param>
         /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
-        /// <returns>The enumerable set of template instances.</returns>
+        /// <returns>
+        /// The enumerable set of template instances.
+        /// </returns>
         public IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, IEnumerable<Type> templateTypes, IEnumerable<object> models, bool parallel = false)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
@@ -260,7 +251,7 @@ namespace RazorEngine.Templating
                 }
             }
 
-            return this._proxy.CreateTemplates(razorTemplates, templateTypes, models, parallel);
+            return this.templateServiceProxy.CreateTemplates(razorTemplates, templateTypes, models, parallel);
         }
 
         /// <summary>
@@ -271,7 +262,7 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="Type"/>.</returns>
         public Type CreateTemplateType(string razorTemplate, Type modelType)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
@@ -281,7 +272,7 @@ namespace RazorEngine.Templating
                 throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
             }
 
-            return this._proxy.CreateTemplateType(razorTemplate, modelType);
+            return this.templateServiceProxy.CreateTemplateType(razorTemplate, modelType);
         }
 
         /// <summary>
@@ -296,7 +287,7 @@ namespace RazorEngine.Templating
         /// <returns>The set of <see cref="Type"/> instances.</returns>
         public IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, IEnumerable<Type> modelTypes, bool parallel = false)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
@@ -312,25 +303,7 @@ namespace RazorEngine.Templating
                 }
             }
 
-            return this._proxy.CreateTemplateTypes(razorTemplates, modelTypes, parallel);
-        }
-
-        /// <summary>
-        /// Releases resources used by this instance.
-        /// </summary>
-        /// <remarks>
-        /// This method ensures the AppDomain is unloaded and any template assemblies are unloaded with it.
-        /// </remarks>
-        /// <param name="disposing">Flag to determine whether the instance is being disposed explicitly.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing && !this.disposed)
-            {
-                this._proxy.Dispose();
-
-                AppDomain.Unload(this._appDomain);
-                this.disposed = true;
-            }
+            return this.templateServiceProxy.CreateTemplateTypes(razorTemplates, modelTypes, parallel);
         }
 
         /// <summary>
@@ -352,12 +325,12 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         public ITemplate GetTemplate(string razorTemplate, object model, string cacheName)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
 
-            return this._proxy.GetTemplate(razorTemplate, model, cacheName);
+            return this.templateServiceProxy.GetTemplate(razorTemplate, model, cacheName);
         }
 
         /// <summary>
@@ -374,7 +347,7 @@ namespace RazorEngine.Templating
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
         public IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<string> cacheNames, bool parallel = false)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
@@ -393,7 +366,7 @@ namespace RazorEngine.Templating
                 }
             }
 
-            return this._proxy.GetTemplates(razorTemplates, models, cacheNames, parallel);
+            return this.templateServiceProxy.GetTemplates(razorTemplates, models, cacheNames, parallel);
         }
 
         /// <summary>
@@ -403,7 +376,7 @@ namespace RazorEngine.Templating
         /// <returns>Whether or not the template has been created.</returns>
         public bool HasTemplate(string cacheName)
         {
-            return this._proxy.HasTemplate(cacheName);
+            return this.templateServiceProxy.HasTemplate(cacheName);
         }
 
         /// <summary>
@@ -416,7 +389,7 @@ namespace RazorEngine.Templating
         /// <returns>The string result of the template.</returns>
         public string Parse(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
@@ -429,7 +402,7 @@ namespace RazorEngine.Templating
                 }
             }
 
-            return this._proxy.Parse(razorTemplate, model, viewBag, cacheName);
+            return this.templateServiceProxy.Parse(razorTemplate, model, viewBag, cacheName);
         }
 
         /// <summary>
@@ -452,7 +425,7 @@ namespace RazorEngine.Templating
         /// <returns>The set of parsed template results.</returns>
         public IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("IsolatedTemplateService");
             }
@@ -483,7 +456,7 @@ namespace RazorEngine.Templating
                 }
             }
 
-            return this._proxy.ParseMany(razorTemplates, models, viewBags, cacheNames, parallel).ToList();
+            return this.templateServiceProxy.ParseMany(razorTemplates, models, viewBags, cacheNames, parallel).ToList();
         }
 
         /// <summary>
@@ -494,7 +467,7 @@ namespace RazorEngine.Templating
         /// <returns>The resolved template.</returns>
         public ITemplate Resolve(string cacheName, object model)
         {
-            return this._proxy.Resolve(cacheName, model);
+            return this.templateServiceProxy.Resolve(cacheName, model);
         }
 
         /// <summary>
@@ -506,7 +479,7 @@ namespace RazorEngine.Templating
         /// <returns>The string result of the template.</returns>
         public string Run(string cacheName, object model, DynamicViewBag viewBag)
         {
-            return this._proxy.Run(cacheName, model, viewBag);
+            return this.templateServiceProxy.Run(cacheName, model, viewBag);
         }
 
         /// <summary>
@@ -517,7 +490,46 @@ namespace RazorEngine.Templating
         /// <returns>The string result of the template.</returns>
         public string Run(ITemplate template, DynamicViewBag viewBag)
         {
-            return this._proxy.Run(template, viewBag);
+            return this.templateServiceProxy.Run(template, viewBag);
+        }
+
+        /// <summary>
+        /// Releases resources used by this instance.
+        /// </summary>
+        /// <remarks>
+        /// This method ensures the AppDomain is unloaded and any template assemblies are unloaded with it.
+        /// </remarks>
+        /// <param name="disposing">Flag to determine whether the instance is being disposed explicitly.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && !this.isDisposed)
+            {
+                this.templateServiceProxy.Dispose();
+
+                AppDomain.Unload(this.appDomain);
+                this.isDisposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Creates an application domain.
+        /// </summary>
+        /// <param name="factory">The application domain factory.</param>
+        /// <returns>An instance of <see cref="AppDomain"/>.</returns>
+        private static AppDomain CreateAppDomain(IAppDomainFactory factory)
+        {
+            var domain = factory.CreateAppDomain();
+            if (domain == null)
+            {
+                throw new InvalidOperationException("The application domain factory did not create an application domain.");
+            }
+
+            if (domain == AppDomain.CurrentDomain)
+            {
+                throw new InvalidOperationException("The application domain factory returned the current application domain which cannot be used for isolation.");
+            }
+
+            return domain;
         }
 
         #endregion

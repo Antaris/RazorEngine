@@ -15,7 +15,7 @@ namespace RazorEngine.Templating
         #region Fields
 
         /// <summary>
-        /// 
+        /// The Configuration field
         /// </summary>
         private static readonly RazorEngineConfigurationSection Configuration;
 
@@ -40,7 +40,7 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="language">The language to use in this service.</param>
         /// <param name="encoding">The type of encoding to use in this service.</param>
-        /// <returns></returns>
+        /// <returns>The template service instance</returns>
         public static ITemplateService CreateTemplateService(Language language, Encoding encoding)
         {
             return null;

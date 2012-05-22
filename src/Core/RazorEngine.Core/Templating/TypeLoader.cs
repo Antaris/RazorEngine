@@ -22,27 +22,27 @@ namespace RazorEngine.Templating
         #region Fields
 
         /// <summary>
-        /// 
+        /// The application domain field
         /// </summary>
         private readonly AppDomain appDomain;
 
         /// <summary>
-        /// 
+        /// The assembly field
         /// </summary>
         private readonly IEnumerable<Assembly> assemblies;
 
         /// <summary>
-        /// 
+        /// The constructor collection field
         /// </summary>
         private readonly ConcurrentDictionary<Type, Func<ITemplate>> constructors;
 
         /// <summary>
-        /// 
+        /// The event resolver field
         /// </summary>
         private readonly ResolveEventHandler resolveEventHandler;
 
         /// <summary>
-        /// 
+        /// The disposing flag field
         /// </summary>
         private bool isdisposed;
 

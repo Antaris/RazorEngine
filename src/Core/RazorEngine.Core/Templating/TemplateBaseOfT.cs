@@ -18,14 +18,14 @@ namespace RazorEngine.Templating
         #region Fields
 
         /// <summary>
-        /// 
+        /// The model type field
         /// </summary>
-        private object model;
+        private readonly Type modelType = typeof(T);
 
         /// <summary>
-        /// 
+        /// The model field
         /// </summary>
-        private readonly Type _modelType = typeof(T);
+        private object model;
 
         #endregion
 
