@@ -9,6 +9,7 @@ namespace RazorEngine.Templating
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using Compilation;
@@ -185,7 +186,7 @@ namespace RazorEngine.Templating
         [Pure]
         public virtual IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, IEnumerable<Type> templateTypes, IEnumerable<object> models, bool parallel = false)
         {
-            if ((razorTemplates == null) && (templateTypes == null))
+            if (razorTemplates == null && templateTypes == null)
             {
                 throw new ArgumentException("The razorTemplates and templateTypes parameters may not both be null.");
             }
@@ -219,21 +220,21 @@ namespace RazorEngine.Templating
                     {
                         if (templateTypeList[i] == null)
                         {
-                            throw new ArgumentException("Expected non-NULL value in templateTypes[" + i.ToString() + "].");
+                            throw new ArgumentException("Expected non-NULL value in templateTypes[" + i.ToString(CultureInfo.InvariantCulture) + "].");
                         }
                     }
                     else if (templateTypeList == null)
                     {
                         if (razorTemplateList[i] == null)
                         {
-                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString() + "].");
+                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString(CultureInfo.InvariantCulture) + "].");
                         }
                     }
                     else
                     {
                         if ((razorTemplateList[i] == null) && (templateTypeList[i] == null))
                         {
-                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString() + "] or templateTypes[" + i.ToString() + "].");
+                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString(CultureInfo.InvariantCulture) + "] or templateTypes[" + i.ToString(CultureInfo.InvariantCulture) + "].");
                         }
                     }
                 }

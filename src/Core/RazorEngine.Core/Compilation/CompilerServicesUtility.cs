@@ -11,7 +11,6 @@ namespace RazorEngine.Compilation
     using System.Dynamic;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Provides service methods for compilation.
@@ -76,8 +75,7 @@ namespace RazorEngine.Compilation
         /// <returns>A new random class name.</returns>
         public static string GenerateClassName()
         {
-            Guid guid = Guid.NewGuid();
-            return Regex.Replace(guid.ToString("N"), @"[^A-Za-z]*", string.Empty);
+            return "RazorEngineAuto" + Guid.NewGuid().ToString("N");
         }
 
         /// <summary>
