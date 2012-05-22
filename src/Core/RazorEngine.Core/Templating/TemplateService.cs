@@ -451,6 +451,7 @@ namespace RazorEngine.Templating
         /// <returns>The set of parsed template results.</returns>
         public virtual IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel)
         {
+            /* TODO: optimize this */
             if (razorTemplates == null)
             {
                 throw new ArgumentException("Expected at least one entry in razorTemplates collection.");
