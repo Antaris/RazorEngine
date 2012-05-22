@@ -101,6 +101,11 @@ namespace RazorEngine.Templating
             string assemblyName = TemplateServiceType.Assembly.FullName;
             string typeName = TemplateServiceType.FullName;
 
+            if (typeName == null)
+            {
+                throw new ArgumentNullException("typeName");
+            }
+
             this.templateServiceProxy =
                 (ITemplateService)
                 this.appDomain.CreateInstance(
