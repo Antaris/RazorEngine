@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateServiceFactory.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using Configuration;
 
@@ -8,17 +13,24 @@
     public static class TemplateServiceFactory
     {
         #region Fields
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static readonly RazorEngineConfigurationSection Configuration;
+
         #endregion
 
         #region Constructor
+
         /// <summary>
-        /// Initialises the <see cref="TemplateServiceFactory"/> type.
+        /// Initializes static members of the <see cref="TemplateServiceFactory"/> class. 
         /// </summary>
         static TemplateServiceFactory()
         {
             Configuration = RazorEngineConfigurationSection.GetConfiguration();
         }
+
         #endregion
 
         #region Methods

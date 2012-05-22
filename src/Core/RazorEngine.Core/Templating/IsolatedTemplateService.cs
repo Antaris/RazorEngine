@@ -1,11 +1,15 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="IsolatedTemplateService.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Reflection;
     using System.Linq;
-
+    using System.Reflection;
     using Compilation;
     using Text;
 
@@ -15,96 +19,132 @@
     public class IsolatedTemplateService : ITemplateService
     {
         #region Fields
+
         private static readonly Type TemplateServiceType = typeof(TemplateService);
+
         private readonly ITemplateService _proxy;
+
         private readonly AppDomain _appDomain;
+
         private bool disposed;
+
         #endregion
 
         #region Constructor
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
-        /// </summary>
-        public IsolatedTemplateService()
-            : this(Language.CSharp, Encoding.Html, (IAppDomainFactory)null) { }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
+        /// </summary>
+        public IsolatedTemplateService()
+            : this(Language.CSharp, Encoding.Html, (IAppDomainFactory)null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="language">The code language.</param>
         public IsolatedTemplateService(Language language)
-            : this(language, Encoding.Html, (IAppDomainFactory)null) { }
+            : this(language, Encoding.Html, (IAppDomainFactory)null)
+        {
+        }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="encoding">The encoding.</param>
         public IsolatedTemplateService(Encoding encoding)
-            : this(Language.CSharp, encoding, (IAppDomainFactory)null) { }
+            : this(Language.CSharp, encoding, (IAppDomainFactory)null)
+        {
+        }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="appDomainFactory">The application domain factory.</param>
         public IsolatedTemplateService(IAppDomainFactory appDomainFactory)
-            : this(Language.CSharp, Encoding.Html, appDomainFactory) { }
+            : this(Language.CSharp, Encoding.Html, appDomainFactory)
+        {
+        }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
-        public IsolatedTemplateService(Func<AppDomain> appDomainFactory) 
-            : this(Language.CSharp, Encoding.Html, appDomainFactory) { }
+        public IsolatedTemplateService(Func<AppDomain> appDomainFactory)
+            : this(Language.CSharp, Encoding.Html, appDomainFactory)
+        {
+        }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="language">The code language.</param>
         /// <param name="encoding">The encoding.</param>
         /// <param name="appDomainFactory">The application domain factory.</param>
         public IsolatedTemplateService(Language language, Encoding encoding, IAppDomainFactory appDomainFactory)
         {
-            _appDomain = CreateAppDomain(appDomainFactory ?? new DefaultAppDomainFactory());
+            this._appDomain = CreateAppDomain(appDomainFactory ?? new DefaultAppDomainFactory());
 
             string assemblyName = TemplateServiceType.Assembly.FullName;
             string typeName = TemplateServiceType.FullName;
 
-            _proxy = (ITemplateService)_appDomain.CreateInstance(
-                assemblyName, typeName, false, BindingFlags.NonPublic | BindingFlags.Instance,
-                null, new object[] { language, encoding }, CultureInfo.CurrentCulture, null).Unwrap();
+            this._proxy =
+                (ITemplateService)
+                this._appDomain.CreateInstance(
+                    assemblyName,
+                    typeName,
+                    false,
+                    BindingFlags.NonPublic | BindingFlags.Instance,
+                    null, new object[] { language, encoding }, CultureInfo.CurrentCulture, null).Unwrap();
         }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="language">The code language.</param>
         /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
         public IsolatedTemplateService(Language language, Func<AppDomain> appDomainFactory)
-            : this(language, Encoding.Html, new DelegateAppDomainFactory(appDomainFactory)) { }
+            : this(language, Encoding.Html, new DelegateAppDomainFactory(appDomainFactory))
+        {
+        }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="language">The code language.</param>
         /// <param name="encoding">The encoding.</param>
         /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
         public IsolatedTemplateService(Language language, Encoding encoding, Func<AppDomain> appDomainFactory)
-            : this(language, encoding, new DelegateAppDomainFactory(appDomainFactory)) { }
+            : this(language, encoding, new DelegateAppDomainFactory(appDomainFactory))
+        {
+        }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
+        /// Initializes a new instance of the <see cref="IsolatedTemplateService"/> class.
         /// </summary>
         /// <param name="encoding">The encoding.</param>
         /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
         public IsolatedTemplateService(Encoding encoding, Func<AppDomain> appDomainFactory)
-            : this(Language.CSharp, encoding, new DelegateAppDomainFactory(appDomainFactory)) { }
+            : this(Language.CSharp, encoding, new DelegateAppDomainFactory(appDomainFactory))
+        {
+        }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
-        IEncodedStringFactory ITemplateService.EncodedStringFactory { get { return null; } }
+        IEncodedStringFactory ITemplateService.EncodedStringFactory
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -114,7 +154,7 @@
         /// <param name="ns">The namespace to be imported.</param>
         public void AddNamespace(string ns)
         {
-            _proxy.AddNamespace(ns);
+            this._proxy.AddNamespace(ns);
         }
 
         /// <summary>
@@ -125,7 +165,7 @@
         /// <param name="cacheName">The name of the template type in the cache.</param>
         public void Compile(string razorTemplate, Type modelType, string cacheName)
         {
-            _proxy.Compile(razorTemplate, modelType, cacheName);
+            this._proxy.Compile(razorTemplate, modelType, cacheName);
         }
 
         /// <summary>
@@ -137,10 +177,14 @@
         {
             var domain = factory.CreateAppDomain();
             if (domain == null)
+            {
                 throw new InvalidOperationException("The application domain factory did not create an application domain.");
+            }
 
             if (domain == AppDomain.CurrentDomain)
+            {
                 throw new InvalidOperationException("The application domain factory returned the current application domain which cannot be used for isolation.");
+            }
 
             return domain;
         }
@@ -160,16 +204,20 @@
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
         public ITemplate CreateTemplate(string razorTemplate, Type templateType, object model)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
             if (model != null)
             {
                 if (CompilerServicesUtility.IsDynamicType(model.GetType()))
+                {
                     throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+                }
             }
 
-            return _proxy.CreateTemplate(razorTemplate, templateType, model);
+            return this._proxy.CreateTemplate(razorTemplate, templateType, model);
         }
 
         /// <summary>
@@ -193,8 +241,10 @@
         /// <returns>The enumerable set of template instances.</returns>
         public IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, IEnumerable<Type> templateTypes, IEnumerable<object> models, bool parallel = false)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
             if (models != null)
             {
@@ -203,12 +253,14 @@
                     if (model != null)
                     {
                         if (CompilerServicesUtility.IsDynamicType(model.GetType()))
+                        {
                             throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+                        }
                     }
                 }
             }
 
-            return _proxy.CreateTemplates(razorTemplates, templateTypes, models, parallel);
+            return this._proxy.CreateTemplates(razorTemplates, templateTypes, models, parallel);
         }
 
         /// <summary>
@@ -219,17 +271,21 @@
         /// <returns>An instance of <see cref="Type"/>.</returns>
         public Type CreateTemplateType(string razorTemplate, Type modelType)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
             if (CompilerServicesUtility.IsDynamicType(modelType))
+            {
                 throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+            }
 
-            return _proxy.CreateTemplateType(razorTemplate, modelType);
+            return this._proxy.CreateTemplateType(razorTemplate, modelType);
         }
 
         /// <summary>
-        /// Creates a set of template types from the specfied string templates.
+        /// Creates a set of template types from the specified string templates.
         /// </summary>
         /// <param name="razorTemplates">The set of templates to create <see cref="Type"/> instances for.</param>
         /// <param name="modelTypes">
@@ -240,19 +296,23 @@
         /// <returns>The set of <see cref="Type"/> instances.</returns>
         public IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, IEnumerable<Type> modelTypes, bool parallel = false)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
             if (modelTypes != null)
             {
                 foreach (Type modelType in modelTypes)
                 {
                     if ((modelType != null) && CompilerServicesUtility.IsDynamicType(modelType))
+                    {
                         throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+                    }
                 }
             }
 
-            return _proxy.CreateTemplateTypes(razorTemplates, modelTypes, parallel);
+            return this._proxy.CreateTemplateTypes(razorTemplates, modelTypes, parallel);
         }
 
         /// <summary>
@@ -264,12 +324,12 @@
         /// <param name="disposing">Flag to determine whether the instance is being disposed explicitly.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && !disposed)
+            if (disposing && !this.disposed)
             {
-                _proxy.Dispose();
+                this._proxy.Dispose();
 
-                AppDomain.Unload(_appDomain);
-                disposed = true;
+                AppDomain.Unload(this._appDomain);
+                this.disposed = true;
             }
         }
 
@@ -278,7 +338,7 @@
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -292,10 +352,12 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         public ITemplate GetTemplate(string razorTemplate, object model, string cacheName)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
-            return _proxy.GetTemplate(razorTemplate, model, cacheName);
+            return this._proxy.GetTemplate(razorTemplate, model, cacheName);
         }
 
         /// <summary>
@@ -312,8 +374,10 @@
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
         public IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<string> cacheNames, bool parallel = false)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
             if (models != null)
             {
@@ -322,12 +386,14 @@
                     if (model != null)
                     {
                         if (CompilerServicesUtility.IsDynamicType(model.GetType()))
+                        {
                             throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+                        }
                     }
                 }
             }
 
-            return _proxy.GetTemplates(razorTemplates, models, cacheNames, parallel);
+            return this._proxy.GetTemplates(razorTemplates, models, cacheNames, parallel);
         }
 
         /// <summary>
@@ -337,7 +403,7 @@
         /// <returns>Whether or not the template has been created.</returns>
         public bool HasTemplate(string cacheName)
         {
-            return _proxy.HasTemplate(cacheName);
+            return this._proxy.HasTemplate(cacheName);
         }
 
         /// <summary>
@@ -350,16 +416,20 @@
         /// <returns>The string result of the template.</returns>
         public string Parse(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
             if (model != null)
             {
-            if (CompilerServicesUtility.IsDynamicType(model.GetType()))
-                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+                if (CompilerServicesUtility.IsDynamicType(model.GetType()))
+                {
+                    throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+                }
             }
 
-           return _proxy.Parse(razorTemplate, model, viewBag, cacheName);
+            return this._proxy.Parse(razorTemplate, model, viewBag, cacheName);
         }
 
         /// <summary>
@@ -382,28 +452,38 @@
         /// <returns>The set of parsed template results.</returns>
         public IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 throw new ObjectDisposedException("IsolatedTemplateService");
+            }
 
             if ((models != null) && (models.Count() != razorTemplates.Count()))
+            {
                 throw new ArgumentException("Expected same number of models contents as templates to be processed.");
+            }
 
             if ((viewBags != null) && (viewBags.Count() != razorTemplates.Count()))
+            {
                 throw new ArgumentException("Expected same number of ViewBag contents as templates to be processed.");
+            }
 
             if ((cacheNames != null) && (cacheNames.Count() != razorTemplates.Count()))
+            {
                 throw new ArgumentException("Expected same number of cache names as templates to be processed.");
+            }
 
             if (models != null)
             {
                 foreach (object model in models)
                 {
                     if ((model != null) && CompilerServicesUtility.IsDynamicType(model.GetType()))
+                    {
                         throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+                    }
                 }
             }
 
-            return _proxy.ParseMany(razorTemplates, models, viewBags, cacheNames, parallel).ToList();
+            return this._proxy.ParseMany(razorTemplates, models, viewBags, cacheNames, parallel).ToList();
         }
 
         /// <summary>
@@ -414,7 +494,7 @@
         /// <returns>The resolved template.</returns>
         public ITemplate Resolve(string cacheName, object model)
         {
-            return _proxy.Resolve(cacheName, model);
+            return this._proxy.Resolve(cacheName, model);
         }
 
         /// <summary>
@@ -426,7 +506,7 @@
         /// <returns>The string result of the template.</returns>
         public string Run(string cacheName, object model, DynamicViewBag viewBag)
         {
-            return _proxy.Run(cacheName, model, viewBag);
+            return this._proxy.Run(cacheName, model, viewBag);
         }
 
         /// <summary>
@@ -437,7 +517,7 @@
         /// <returns>The string result of the template.</returns>
         public string Run(ITemplate template, DynamicViewBag viewBag)
         {
-            return _proxy.Run(template, viewBag);
+            return this._proxy.Run(template, viewBag);
         }
 
         #endregion

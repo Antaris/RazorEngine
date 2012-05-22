@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating.Parallel
+﻿//-----------------------------------------------------------------------------
+// <copyright file="DefaultParallelQueryPlan.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating.Parallel
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -14,6 +19,7 @@
     public class DefaultParallelQueryPlan<T> : IParallelQueryPlan<T>
     {
         #region Methods
+
         /// <summary>
         /// Creates a parallel query for the specified source.
         /// </summary>
@@ -23,6 +29,7 @@
         {
             return source.AsParallel().AsOrdered();
         }
+
         #endregion
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="DynamicViewBag.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections;
@@ -11,7 +16,12 @@
     public class DynamicViewBag : DynamicObject
     {
         #region Fields
-        private readonly IDictionary<string, object> _dict = new Dictionary<string, object>();
+
+        /// <summary>
+        /// The collection
+        /// </summary>
+        private readonly IDictionary<string, object> dictionary = new Dictionary<string, object>();
+
         #endregion
 
         #region DynamicObject Overrides
@@ -22,7 +32,7 @@
         /// <returns>An instance of <see cref="IEnumerable{String}"/>.</returns>
         public override IEnumerable<string> GetDynamicMemberNames()
         {
-            return _dict.Keys;
+            return this.dictionary.Keys;
         }
 
         /// <summary>
@@ -33,10 +43,7 @@
         /// <returns>True, always.</returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            if (_dict.ContainsKey(binder.Name))
-                result = _dict[binder.Name];
-            else
-                result = null;
+            result = this.dictionary.ContainsKey(binder.Name) ? this.dictionary[binder.Name] : null;
 
             return true;
         }
@@ -49,10 +56,14 @@
         /// <returns>True, always.</returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            if (_dict.ContainsKey(binder.Name))
-                _dict[binder.Name] = value;
+            if (this.dictionary.ContainsKey(binder.Name))
+            {
+                this.dictionary[binder.Name] = value;
+            }
             else
-                _dict.Add(binder.Name, value);
+            {
+                this.dictionary.Add(binder.Name, value);
+            }
 
             return true;
         }
@@ -73,12 +84,16 @@
         public void AddValue(string propertyName, object value)
         {
             if (propertyName == null)
-                throw new ArgumentNullException("The propertyName parameter may not be NULL.");
+            {
+                throw new ArgumentNullException("propertyName");
+            }
 
-            if (_dict.ContainsKey(propertyName) == true)
+            if (this.dictionary.ContainsKey(propertyName))
+            {
                 throw new ArgumentException("Attempt to add duplicate value for the '" + propertyName + "' property.");
+            }
 
-            _dict.Add(propertyName, value);
+            this.dictionary.Add(propertyName, value);
         }
 
         /// <summary>
@@ -96,20 +111,26 @@
             foreach (object value in valueList)
             {
                 if (value == null)
-                    throw new ArgumentNullException("Invalid NULL value in initializer list.");
+                {
+                    throw new ArgumentNullException("Invalid NULL value in initialize list.");
+                }
 
                 Type type = value.GetType();
                 object objKey = type.GetProperty(keyPropertyName);
 
                 if (objKey.GetType() != typeof(string))
+                {
                     throw new ArgumentNullException("The keyPropertyName property must be of type string.");
+                }
 
-                string strKey = (string)objKey;
+                var strKey = (string)objKey;
 
-                if (_dict.ContainsKey(strKey) == true)
+                if (this.dictionary.ContainsKey(strKey))
+                {
                     throw new ArgumentException("Attempt to add duplicate value for the '" + strKey + "' property.");
+                }
 
-                _dict.Add(strKey, value);
+                this.dictionary.Add(strKey, value);
             }
         }
 
@@ -125,16 +146,20 @@
             foreach (object objKey in valueDictionary.Keys)
             {
                 if (objKey.GetType() != typeof(string))
+                {
                     throw new ArgumentNullException("The Key in valueDictionary must be of type string.");
+                }
 
-                string strKey = (string)objKey;
+                var strKey = (string)objKey;
 
-                if (_dict.ContainsKey(strKey) == true)
+                if (this.dictionary.ContainsKey(strKey))
+                {
                     throw new ArgumentException("Attempt to add duplicate value for the '" + strKey + "' property.");
+                }
 
                 object value = valueDictionary[strKey];
 
-                _dict.Add(strKey, value);
+                this.dictionary.Add(strKey, value);
             }
         }
 
@@ -157,12 +182,14 @@
         {
             foreach (string strKey in valueDictionary.Keys)
             {
-                if (_dict.ContainsKey(strKey) == true)
+                if (this.dictionary.ContainsKey(strKey))
+                {
                     throw new ArgumentException("Attempt to add duplicate value for the '" + strKey + "' property.");
+                }
 
                 object value = valueDictionary[strKey];
 
-                _dict.Add(strKey, value);
+                this.dictionary.Add(strKey, value);
             }
         }
 

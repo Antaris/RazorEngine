@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ITemplateOfT.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     /// <summary>
     /// Defines the required contract for implementing a template with a model.
@@ -7,10 +12,15 @@
     public interface ITemplate<T> : ITemplate
     {
         #region Properties
+
         /// <summary>
-        /// Gets the or sets the model.
+        /// Gets or sets the model.
         /// </summary>
+        /// <value>
+        /// The model.
+        /// </value>
         T Model { get; set; }
+
         #endregion
     }
 }

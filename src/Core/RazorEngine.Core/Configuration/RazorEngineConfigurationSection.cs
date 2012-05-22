@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Configuration
+﻿//-----------------------------------------------------------------------------
+// <copyright file="RazorEngineConfigurationSection.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration
 {
     using System.Configuration;
 
@@ -10,13 +15,42 @@
     public class RazorEngineConfigurationSection : ConfigurationSection
     {
         #region Fields
+
+        /// <summary>
+        /// The string resource
+        /// </summary>
         private const string ActivatorAttribute = "activatorType";
+
+        /// <summary>
+        /// The string resource
+        /// </summary>
         private const string CompilerServiceFactoryAttribute = "compilerServiceFactoryType";
+
+        /// <summary>
+        /// The string resource
+        /// </summary>
         private const string DefaultLanguageAttribute = "defaultLanguage";
+
+        /// <summary>
+        /// The string resource
+        /// </summary>
         private const string NamespacesElement = "namespaces";
+
+        /// <summary>
+        /// The string resource
+        /// </summary>
         private const string SectionPath = "razorEngine";
+
+        /// <summary>
+        /// The string resource
+        /// </summary>
         private const string TemplateResolverAttribute = "templateResolverType";
+
+        /// <summary>
+        /// The string resource
+        /// </summary>
         private const string TemplateServicesElement = "templateServices";
+
         #endregion
 
         #region Properties

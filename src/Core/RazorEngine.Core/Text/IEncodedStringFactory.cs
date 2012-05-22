@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Text
+﻿//-----------------------------------------------------------------------------
+// <copyright file="IEncodedStringFactory.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Text
 {
     /// <summary>
     /// Defines the required contract for implementing a factory for building encoded strings.
@@ -6,6 +11,7 @@
     public interface IEncodedStringFactory
     {
         #region Methods
+
         /// <summary>
         /// Creates a <see cref="IEncodedString"/> instance for the specified raw string.
         /// </summary>
@@ -19,6 +25,7 @@
         /// <param name="value">The object instance.</param>
         /// <returns>An instance of <see cref="IEncodedString"/>.</returns>
         IEncodedString CreateEncodedString(object value);
+
         #endregion
     }
 }

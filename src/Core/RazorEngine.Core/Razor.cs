@@ -1,4 +1,9 @@
-﻿namespace RazorEngine
+﻿//-----------------------------------------------------------------------------
+// <copyright file="Razor.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine
 {
     using System;
     using System.Collections.Generic;
@@ -13,8 +18,17 @@
     public static class Razor
     {
         #region Fields
-        private static ITemplateService _service = new TemplateService();
-        private static readonly object _sync = new object();
+
+        /// <summary>
+        /// The sync lock
+        /// </summary>
+        private static readonly object Sync = new object();
+
+        /// <summary>
+        /// The template service
+        /// </summary>
+        private static ITemplateService templateService = new TemplateService();
+
         #endregion
 
         #region Properties
@@ -25,10 +39,13 @@
         {
             get
             {
-                lock (_sync) 
-                    return _service;
+                lock (Sync)
+                {
+                    return templateService;
+                }
             }
         }
+
         #endregion
 
         #region Methods
@@ -93,7 +110,7 @@
         /// <param name="razorTemplates">The set of templates to create <see cref="ITemplate"/> instances for.</param>
         /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
         /// <returns>The enumerable set of template instances.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, bool parallel = false)
         {
             return TemplateService.CreateTemplates(razorTemplates, null, null, parallel);
@@ -107,7 +124,7 @@
         /// <param name="models">The set of models used to assign to templates.</param>
         /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
         /// <returns>The enumerable set of template instances.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<ITemplate> CreateTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
         {
             List<object> modelList = (from m in models select (object)m).ToList();
@@ -141,7 +158,7 @@
         /// <param name="razorTemplates">The set of templates to create <see cref="Type"/> instances for.</param>
         /// <param name="parallel">Flag to determine whether to create template types in parallel.</param>
         /// <returns>The set of <see cref="Type"/> instances.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, bool parallel = false)
         {
             return TemplateService.CreateTemplateTypes(razorTemplates, null, parallel);
@@ -154,11 +171,12 @@
         /// <param name="modelType">The model type.</param>
         /// <param name="parallel">Flag to determine whether to create template types in parallel.</param>
         /// <returns>The set of <see cref="Type"/> instances.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, Type modelType, bool parallel = false)
         {
-            IEnumerable<Type> modelTypes = Enumerable.Repeat<Type>(modelType, razorTemplates.Count());
-            return TemplateService.CreateTemplateTypes(razorTemplates, modelTypes, parallel);
+            var collection = razorTemplates.ToArray();
+            IEnumerable<Type> modelTypes = Enumerable.Repeat(modelType, collection.Length);
+            return TemplateService.CreateTemplateTypes(collection, modelTypes, parallel);
         }
 
         /// <summary>
@@ -195,7 +213,7 @@
         /// <param name="cacheNames">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<string> cacheNames, bool parallel = false)
         {
             return TemplateService.GetTemplates(razorTemplates, null, cacheNames, parallel);
@@ -211,7 +229,7 @@
         /// <param name="cacheNames">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<ITemplate> GetTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> cacheNames, bool parallel = false)
         {
             List<object> modelList = (from m in models select (object)m).ToList();
@@ -324,17 +342,22 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany(string razorTemplate, IEnumerable<object> models, bool parallel = false)
         {
             if (models == null)
+            {
                 throw new ArgumentException("Expected models list (this parameter may not be NULL).");
+            }
 
-            if (models.Count() == 0)
+            var collection = models.ToArray();
+            if (collection.Length == 0)
+            {
                 throw new ArgumentException("Expected at least one entry in models list.");
+            }
 
-            List<string> razorTemplateList = Enumerable.Repeat(razorTemplate, models.Count()).ToList();
-            return TemplateService.ParseMany(razorTemplateList, models, null, null, parallel);
+            List<string> razorTemplateList = Enumerable.Repeat(razorTemplate, collection.Length).ToList();
+            return TemplateService.ParseMany(razorTemplateList, collection, null, null, parallel);
         }
 
         /// <summary>
@@ -343,7 +366,7 @@
         /// <param name="razorTemplates">The set of string templates to parse.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, null, null, null, parallel);
@@ -359,7 +382,7 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, models, null, null, parallel);
@@ -375,7 +398,7 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<string> cacheNames, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, null, null, cacheNames, parallel);
@@ -395,7 +418,7 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<string> cacheNames, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, models, null, cacheNames, parallel);
@@ -419,7 +442,7 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel = false)
         {
             return TemplateService.ParseMany(razorTemplates, models, viewBags, cacheNames, parallel);
@@ -435,17 +458,23 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany<T>(string razorTemplate, IEnumerable<T> models, bool parallel = false)
         {
             if (models == null)
+            {
                 throw new ArgumentException("Expected models list (this parameter may not be NULL).");
+            }
 
-            if (models.Count() == 0)
+            var collection = models.ToArray();
+
+            if (collection.Length == 0)
+            {
                 throw new ArgumentException("Expected at least one entry in models list.");
+            }
 
-            List<string> razorTemplateList = Enumerable.Repeat(razorTemplate, models.Count()).ToList();
-            List<object> modelList = (from m in models select (object)m).ToList();
+            List<string> razorTemplateList = Enumerable.Repeat(razorTemplate, collection.Length).ToList();
+            List<object> modelList = (from m in collection select (object)m).ToList();
             return TemplateService.ParseMany(razorTemplateList, modelList, null, null, parallel);
         }
 
@@ -460,7 +489,7 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
         {
             List<object> modelList = (from m in models select (object)m).ToList();
@@ -482,7 +511,7 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> cacheNames, bool parallel = false)
         {
             List<object> modelList = (from m in models select (object)m).ToList();
@@ -508,7 +537,7 @@
         /// </param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel = false)
         {
             List<object> modelList = (from m in models select (object)m).ToList();
@@ -539,7 +568,7 @@
         /// <summary>
         /// Resolves the template with the specified name.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The model</typeparam>
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model for the template.</param>
         /// <returns>The resolved template.</returns>
@@ -612,11 +641,16 @@
         /// <param name="service">The template service.</param>
         public static void SetTemplateService(ITemplateService service)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(service != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            lock (_sync)
-                _service = service;
+            lock (Sync)
+            {
+                templateService = service;
+            }
         }
+
         #endregion
     }
 }

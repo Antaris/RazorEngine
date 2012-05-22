@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="DelegateActivator.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -9,40 +14,57 @@
     internal class DelegateActivator : IActivator
     {
         #region Fields
-        private readonly Func<InstanceContext, ITemplate> _activator;
+
+        /// <summary>
+        /// The activator
+        /// </summary>
+        private readonly Func<InstanceContext, ITemplate> activator;
+
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="DelegateActivator"/>.
+        /// Initializes a new instance of the <see cref="DelegateActivator"/> class.
         /// </summary>
         /// <param name="activator">The delegated used to create an instance of the template.</param>
         public DelegateActivator(Func<InstanceContext, ITemplate> activator)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(activator != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            _activator = activator;
+            this.activator = activator;
         }
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the activator.
         /// </summary>
-        internal Func<InstanceContext, ITemplate> Activator { get { return _activator; } }
+        internal Func<InstanceContext, ITemplate> Activator
+        {
+            get
+            {
+                return this.activator;
+            }
+        }
+
         #endregion
 
         #region Methods
+
         /// <summary>
-        /// Creates an instance of the specifed template.
+        /// Creates an instance of the specified template.
         /// </summary>
         /// <param name="context">The instance context.</param>
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         [Pure]
         public ITemplate CreateInstance(InstanceContext context)
         {
-            return _activator(context);
+            return this.activator(context);
         }
+
         #endregion
     }
 }

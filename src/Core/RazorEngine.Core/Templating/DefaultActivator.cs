@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="DefaultActivator.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -9,8 +14,9 @@
     internal class DefaultActivator : IActivator
     {
         #region Methods
+
         /// <summary>
-        /// Creates an instance of the specifed template.
+        /// Creates an instance of the specified template.
         /// </summary>
         /// <param name="context">The instance context.</param>
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
@@ -18,10 +24,13 @@
         public ITemplate CreateInstance(InstanceContext context)
         {
             if (context == null)
+            {
                 throw new ArgumentNullException("context");
+            }
 
             return context.Loader.CreateInstance(context.TemplateType);
         }
+
         #endregion
     }
 }

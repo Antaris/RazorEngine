@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="DelegateTemplateResolver.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -9,23 +14,31 @@
     public class DelegateTemplateResolver : ITemplateResolver
     {
         #region Fields
-        private readonly Func<string, string> _resolver;
+
+        /// <summary>
+        /// The resolver
+        /// </summary>
+        private readonly Func<string, string> resolver;
+
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="DelegateTemplateResolver"/>.
+        /// Initializes a new instance of the <see cref="DelegateTemplateResolver"/> class.
         /// </summary>
         /// <param name="resolver">The resolver delegate.</param>
         public DelegateTemplateResolver(Func<string, string> resolver)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(resolver != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            _resolver = resolver;
+            this.resolver = resolver;
         }
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Resolves the template content with the specified name.
         /// </summary>
@@ -33,8 +46,9 @@
         /// <returns>The template content.</returns>
         public string Resolve(string name)
         {
-            return _resolver(name);
+            return this.resolver(name);
         }
+
         #endregion
     }
 }

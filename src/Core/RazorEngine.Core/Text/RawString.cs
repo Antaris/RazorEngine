@@ -1,23 +1,34 @@
-﻿namespace RazorEngine.Text
+﻿//-----------------------------------------------------------------------------
+// <copyright file="RawString.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Text
 {
     /// <summary>
-    /// Represents an unencoded string.
+    /// Represents an un-encoded string.
     /// </summary>
     public class RawString : IEncodedString
     {
         #region Fields
-        private readonly string _value;
+
+        /// <summary>
+        /// The value
+        /// </summary>
+        private readonly string value;
+
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="RawString"/>
+        /// Initializes a new instance of the <see cref="RawString"/> class.
         /// </summary>
         /// <param name="value">The value</param>
         public RawString(string value)
         {
-            _value = value;
+            this.value = value;
         }
+
         #endregion
 
         #region Methods
@@ -27,7 +38,7 @@
         /// <returns>The encoded string.</returns>
         public string ToEncodedString()
         {
-            return _value ?? string.Empty;
+            return this.value ?? string.Empty;
         }
 
         /// <summary>
@@ -36,8 +47,9 @@
         /// <returns>The string representation of this instance.</returns>
         public override string ToString()
         {
-            return ToEncodedString();
+            return this.ToEncodedString();
         }
+
         #endregion
     }
 }

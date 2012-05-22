@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateService.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections.Concurrent;
@@ -53,13 +58,16 @@
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateService"/> class.
         /// </summary>
         /// <param name="config">The template service configuration.</param>
         public TemplateService(ITemplateServiceConfiguration config)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(config != null);
+            /* ReSharper restore InvocationIsSkipped */
 
             this._config = config;
             this._loader = new TypeLoader(AppDomain.CurrentDomain, this._assemblies);
@@ -222,17 +230,23 @@
                     if (razorTemplateList == null)
                     {
                         if (templateTypeList[i] == null)
+                        {
                             throw new ArgumentException("Expected non-NULL value in templateTypes[" + i.ToString() + "].");
+                        }
                     }
                     else if (templateTypeList == null)
                     {
                         if (razorTemplateList[i] == null)
+                        {
                             throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString() + "].");
+                        }
                     }
                     else
                     {
                         if ((razorTemplateList[i] == null) && (templateTypeList[i] == null))
+                        {
                             throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString() + "] or templateTypes[" + i.ToString() + "].");
+                        }
                     }
                 }
             }
@@ -240,36 +254,44 @@
             if (parallel)
             {
                 if (razorTemplateList != null)
+                {
                     return GetParallelQueryPlan<string>()
-                        .CreateQuery(razorTemplates)
-                        .Select((rt, i) => CreateTemplate(
-                            rt,
-                            (templateTypeList == null) ? null : templateTypeList[i],
-                            (modelList == null) ? null : modelList[i]));
+                          .CreateQuery(razorTemplates)
+                          .Select((rt, i) => this.CreateTemplate(
+                              rt,
+                              (templateTypeList == null) ? null : templateTypeList[i],
+                              (modelList == null) ? null : modelList[i]));
+                }
                 else
+                {
                     return GetParallelQueryPlan<Type>()
-                        .CreateQuery(templateTypes)
-                        .Select((tt, i) => CreateTemplate(
-                            (razorTemplateList == null) ? null : razorTemplateList[i],
-                            tt,
-                            (modelList == null) ? null : modelList[i]));
+                          .CreateQuery(templateTypes)
+                          .Select((tt, i) => this.CreateTemplate(
+                              (razorTemplateList == null) ? null : razorTemplateList[i],
+                              tt,
+                              (modelList == null) ? null : modelList[i]));
+                }
             }
 
             if (razorTemplateList != null)
             {
-                return razorTemplates.Select(
-                        (rt, i) =>
-                        this.CreateTemplate(
-                            rt,
-                            (templateTypeList == null) ? null : templateTypeList[i],
-                            (modelList == null) ? null : modelList[i]));
+                {
+                    return razorTemplates.Select(
+                           (rt, i) =>
+                           this.CreateTemplate(
+                               rt,
+                               (templateTypeList == null) ? null : templateTypeList[i],
+                               (modelList == null) ? null : modelList[i]));
+                }
             }
 
             else
+            {
                 return templateTypeList.Select((tt, i) => this.CreateTemplate(
                     (razorTemplateList == null) ? null : razorTemplateList[i],
                     tt,
                     (modelList == null) ? null : modelList[i]));
+            }
         }
 
         /// <summary>
@@ -598,7 +620,7 @@
             }
 
             CachedTemplateItem item;
-            if (!_cache.TryGetValue(cacheName, out item))
+            if (!this._cache.TryGetValue(cacheName, out item))
             {
                 throw new InvalidOperationException("No template exists with name '" + cacheName + "'");
             }

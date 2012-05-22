@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateCompilationException.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.CodeDom.Compiler;
@@ -11,12 +16,13 @@
     /// <summary>
     /// Defines an exception that occurs during compilation of the template.
     /// </summary>
-    [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), Serializable]
+    [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors", Justification = "Reviewed. Suppression is OK here."), Serializable]
     public class TemplateCompilationException : Exception
     {
         #region Constructors
+
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateCompilationException"/>.
+        /// Initializes a new instance of the <see cref="TemplateCompilationException"/> class.
         /// </summary>
         /// <param name="errors">The set of compiler errors.</param>
         /// <param name="sourceCode">The source code that wasn't compiled.</param>
@@ -25,17 +31,20 @@
             : base("Unable to compile template. " + errors[0].ErrorText + "\n\nOther compilation errors may have occurred. Check the Errors property for more information.")
         {
             var list = errors.Cast<CompilerError>().ToList();
-            Errors = new ReadOnlyCollection<CompilerError>(list);
-            SourceCode = sourceCode;
-            Template = template;
+            this.Errors = new ReadOnlyCollection<CompilerError>(list);
+            this.SourceCode = sourceCode;
+            this.Template = template;
         }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateCompilationException"/> from serialised data.
+        /// Initializes a new instance of the <see cref="TemplateCompilationException"/> class.
         /// </summary>
-        /// <param name="info">The serialisation info.</param>
+        /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>
-        protected TemplateCompilationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+        /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        protected TemplateCompilationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             int count = info.GetInt32("Count");
 
@@ -47,14 +56,16 @@
                 list.Add((CompilerError)info.GetValue("Errors[" + i + "]", type));
             }
 
-            Errors = new ReadOnlyCollection<CompilerError>(list);
+            this.Errors = new ReadOnlyCollection<CompilerError>(list);
 
-            SourceCode = info.GetString("SourceCode");
-            Template = info.GetString("Template");
+            this.SourceCode = info.GetString("SourceCode");
+            this.Template = info.GetString("Template");
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the set of compiler errors.
         /// </summary>
@@ -69,26 +80,31 @@
         /// Gets the source template that wasn't compiled.
         /// </summary>
         public string Template { get; private set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
-        /// Gets the object data for serialisation.
+        /// Gets the object data for serialization.
         /// </summary>
-        /// <param name="info">The serialisation info.</param>
+        /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("Count", Errors.Count);
+            info.AddValue("Count", this.Errors.Count);
 
-            for (int i = 0; i < Errors.Count; i++)
-                info.AddValue("Errors[" + i + "]", Errors[i]);
+            for (int i = 0; i < this.Errors.Count; i++)
+            {
+                info.AddValue("Errors[" + i + "]", this.Errors[i]);
+            }
 
-            info.AddValue("SourceCode", SourceCode ?? string.Empty);
-            info.AddValue("Template", Template ?? string.Empty);
+            info.AddValue("SourceCode", this.SourceCode ?? string.Empty);
+            info.AddValue("Template", this.Template ?? string.Empty);
         }
+
         #endregion
     }
 }
