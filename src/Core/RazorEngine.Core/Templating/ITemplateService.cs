@@ -120,6 +120,13 @@
         bool HasTemplate(string cacheName);
 
         /// <summary>
+        /// Remove a template by the specified name from the cache.
+        /// </summary>
+        /// <param name="cacheName">The name of the template type in cache.</param>
+        /// <returns>Whether or not the template has been removed.</returns>
+        bool RemoveTemplate(string cacheName);
+        
+        /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
