@@ -64,6 +64,7 @@
             var assemblies = CompilerServicesUtility
                 .GetLoadedAssemblies()
                 .Where(a => !a.IsDynamic)
+                .GroupBy(a => a.FullName).Select(grp => grp.First()) // only select distinct assemblies based on FullName to avoid loading duplicate assemblies
                 .Select(a => a.Location);
 
             var includeAssemblies = (IncludeAssemblies() ?? Enumerable.Empty<string>());
