@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Compilation.CSharp
+﻿//-----------------------------------------------------------------------------
+// <copyright file="CSharpRazorCodeLanguage.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation.CSharp
 {
     using System.Web.Razor;
     using System.Web.Razor.Generator;
@@ -9,24 +14,29 @@
     public class CSharpRazorCodeLanguage : System.Web.Razor.CSharpRazorCodeLanguage
     {
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance
+        /// Initializes a new instance of the <see cref="CSharpRazorCodeLanguage"/> class.
         /// </summary>
         /// <param name="strictMode">Flag to determine whether strict mode is enabled.</param>
         public CSharpRazorCodeLanguage(bool strictMode)
         {
-            StrictMode = strictMode;
+            this.StrictMode = strictMode;
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
-        /// Gets whether strict mode is enabled.
+        /// Gets a value indicating whether strict mode is enabled.
         /// </summary>
         public bool StrictMode { get; private set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Creates the code generator.
         /// </summary>
@@ -37,8 +47,9 @@
         /// <returns>An instance of <see cref="RazorCodeGenerator"/>.</returns>
         public override RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespaceName, string sourceFileName, RazorEngineHost host)
         {
-            return new CSharpRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, StrictMode);
+            return new CSharpRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, this.StrictMode);
         }
+
         #endregion
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Configuration.Xml
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateServiceConfigurationElementCollection.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration.Xml
 {
     using System.Configuration;
 
@@ -9,6 +14,7 @@
     public class TemplateServiceConfigurationElementCollection : ConfigurationElementCollection
     {
         #region Methods
+
         /// <summary>
         /// Creates a new <see cref="ConfigurationElement"/> for use with the collection.
         /// </summary>
@@ -27,6 +33,7 @@
         {
             return ((TemplateServiceConfigurationElement)element).Name;
         }
+
         #endregion
     }
 }

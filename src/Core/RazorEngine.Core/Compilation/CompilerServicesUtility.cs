@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Compilation
+﻿//-----------------------------------------------------------------------------
+// <copyright file="CompilerServicesUtility.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +11,6 @@
     using System.Dynamic;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Provides service methods for compilation.
@@ -14,11 +18,21 @@
     public static class CompilerServicesUtility
     {
         #region Fields
+
+        /// <summary>
+        /// The type
+        /// </summary>
         private static readonly Type DynamicType = typeof(DynamicObject);
+
+        /// <summary>
+        /// The type 
+        /// </summary>
         private static readonly Type ExpandoType = typeof(ExpandoObject);
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Determines if the specified type is an anonymous type.
         /// </summary>
@@ -27,13 +41,15 @@
         public static bool IsAnonymousType(Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
 
-            return (type.IsClass
+            return type.IsClass
                     && type.IsSealed
                     && type.BaseType == typeof(object)
                     && type.Name.StartsWith("<>", StringComparison.Ordinal)
-                    && type.IsDefined(typeof(CompilerGeneratedAttribute), true));
+                    && type.IsDefined(typeof(CompilerGeneratedAttribute), true);
         }
 
         /// <summary>
@@ -44,11 +60,13 @@
         public static bool IsDynamicType(Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
 
-            return (DynamicType.IsAssignableFrom(type)
+            return DynamicType.IsAssignableFrom(type)
                     || ExpandoType.IsAssignableFrom(type)
-                    || IsAnonymousType(type));
+                    || IsAnonymousType(type);
         }
 
         /// <summary>
@@ -57,8 +75,7 @@
         /// <returns>A new random class name.</returns>
         public static string GenerateClassName()
         {
-            Guid guid = Guid.NewGuid();
-            return Regex.Replace(guid.ToString("N"), @"[^A-Za-z]*", "");
+            return "RazorEngineAuto" + Guid.NewGuid().ToString("N");
         }
 
         /// <summary>
@@ -69,10 +86,11 @@
         public static IEnumerable<ConstructorInfo> GetConstructors(Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
 
-            var constructors = type
-                .GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 
             return constructors;
         }
@@ -81,12 +99,13 @@
         /// Gets an enumerable of all assemblies loaded in the current domain.
         /// </summary>
         /// <returns>An enumerable of loaded assemblies.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Reviewed. Suppression is OK here.")]
         public static IEnumerable<Assembly> GetLoadedAssemblies()
         {
             var domain = AppDomain.CurrentDomain;
             return domain.GetAssemblies();
         }
+
         #endregion
     }
 }

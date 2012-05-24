@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="RequireNamespacesAttribute.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections.Generic;
@@ -11,28 +16,35 @@
     public sealed class RequireNamespacesAttribute : Attribute
     {
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="RequireNamespacesAttribute"/>.
+        /// Initializes a new instance of the <see cref="RequireNamespacesAttribute"/> class.
         /// </summary>
         /// <param name="namespaces">The set of required namespace imports.</param>
         public RequireNamespacesAttribute(params string[] namespaces)
         {
             if (namespaces == null)
+            {
                 throw new ArgumentNullException("namespaces");
+            }
 
             var set = new HashSet<string>();
             foreach (string ns in namespaces)
+            {
                 set.Add(ns);
+            }
 
-            Namespaces = set;
+            this.Namespaces = set;
         }
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the set of required namespace imports.
         /// </summary>
         public IEnumerable<string> Namespaces { get; private set; }
+
         #endregion
     }
 }

@@ -1,8 +1,12 @@
-﻿namespace RazorEngine.Configuration
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateServiceConfiguration.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration
 {
     using System;
     using System.Collections.Generic;
-
     using Compilation;
     using Compilation.Inspectors;
     using Templating;
@@ -15,16 +19,16 @@
     {
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateServiceConfiguration"/>.
+        /// Initializes a new instance of the <see cref="TemplateServiceConfiguration"/> class.
         /// </summary>
         public TemplateServiceConfiguration()
         {
-            Activator = new DefaultActivator();
-            CompilerServiceFactory = new DefaultCompilerServiceFactory();
-            EncodedStringFactory = new HtmlEncodedStringFactory();
-            CodeInspectors = new List<ICodeInspector>();
+            this.Activator = new DefaultActivator();
+            this.CompilerServiceFactory = new DefaultCompilerServiceFactory();
+            this.EncodedStringFactory = new HtmlEncodedStringFactory();
+            this.CodeInspectors = new List<ICodeInspector>();
 
-            Namespaces = new HashSet<string>
+            this.Namespaces = new HashSet<string>
                              {
                                  "System", 
                                  "System.Collections.Generic", 
@@ -52,7 +56,13 @@
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
-        IEnumerable<ICodeInspector> ITemplateServiceConfiguration.CodeInspectors { get { return CodeInspectors; } }
+        IEnumerable<ICodeInspector> ITemplateServiceConfiguration.CodeInspectors
+        {
+            get
+            {
+                return this.CodeInspectors;
+            }
+        }
 
         /// <summary>
         /// Gets the set of code inspectors.
@@ -65,7 +75,7 @@
         public ICompilerServiceFactory CompilerServiceFactory { get; set; }
 
         /// <summary>
-        /// Gets whether the template service is operating in debug mode.
+        /// Gets or sets a value indicating whether the template service is operating in debug mode.
         /// </summary>
         public bool Debug { get; set; }
 

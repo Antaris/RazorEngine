@@ -1,10 +1,13 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateBaseOfT.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Dynamic;
-
     using Compilation;
-    using Text;
 
     /// <summary>
     /// Provides a base implementation of a template with a model.
@@ -13,41 +16,68 @@
     public class TemplateBase<T> : TemplateBase, ITemplate<T>
     {
         #region Fields
+
+        /// <summary>
+        /// The model type field
+        /// </summary>
+        private readonly Type modelType = typeof(T);
+
+        /// <summary>
+        /// The model field
+        /// </summary>
         private object model;
-        private readonly Type _modelType = typeof(T);
+
         #endregion
 
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateBase{T}"/>.
+        /// Initializes a new instance of the <see cref="TemplateBase&lt;T&gt;"/> class.
         /// </summary>
         protected TemplateBase()
         {
-            HasDynamicModel = GetType()
+            this.HasDynamicModel = this.GetType()
                 .IsDefined(typeof(HasDynamicModelAttribute), true);
         }
+
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Determines whether this template has a dynamic model.
-        /// </summary>
-        protected bool HasDynamicModel { get; private set; }
 
         /// <summary>
         /// Gets or sets the model.
         /// </summary>
         public T Model
         {
-            get { return (T)model; }
+            get
+            {
+                return (T)this.model;
+            }
+
             set
             {
-                if (HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject))
-                    model = new RazorDynamicObject { Model = value };
+                if (this.HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject))
+                {
+                    this.model = new RazorDynamicObject
+                    {
+                        Model = value
+                    };
+                }
                 else
-                    model = value;
+                {
+                    this.model = value;
+                }
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this template has a dynamic model.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance has dynamic model; otherwise, <c>false</c>.
+        /// </value>
+        protected bool HasDynamicModel { get; private set; }
+
         #endregion
     }
 }

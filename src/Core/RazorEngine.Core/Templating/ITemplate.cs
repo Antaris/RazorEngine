@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ITemplate.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     /// <summary>
     /// Defines the required contract for implementing a template.
@@ -6,13 +11,16 @@
     public interface ITemplate
     {
         #region Properties
+
         /// <summary>
         /// Sets the template service.
         /// </summary>
         ITemplateService TemplateService { set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Executes the compiled template.
         /// </summary>
@@ -36,6 +44,7 @@
         /// </summary>
         /// <param name="literal">The literal to write.</param>
         void WriteLiteral(string literal);
+
         #endregion
     }
 }

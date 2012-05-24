@@ -1,8 +1,12 @@
-﻿namespace RazorEngine.Configuration
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ITemplateServiceConfiguration.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration
 {
     using System;
     using System.Collections.Generic;
-
     using Compilation;
     using Compilation.Inspectors;
     using Templating;
@@ -14,6 +18,7 @@
     public interface ITemplateServiceConfiguration
     {
         #region Properties
+
         /// <summary>
         /// Gets the activator.
         /// </summary>
@@ -35,7 +40,7 @@
         ICompilerServiceFactory CompilerServiceFactory { get; }
 
         /// <summary>
-        /// Gets whether the template service is operating in debug mode.
+        /// Gets a value indicating whether the template service is operating in debug mode.
         /// </summary>
         bool Debug { get; }
 
@@ -43,7 +48,7 @@
         /// Gets the encoded string factory.
         /// </summary>
         IEncodedStringFactory EncodedStringFactory { get; }
-            
+
         /// <summary>
         /// Gets the language.
         /// </summary>
@@ -58,6 +63,7 @@
         /// Gets the template resolver.
         /// </summary>
         ITemplateResolver Resolver { get; }
+
         #endregion
     }
 }

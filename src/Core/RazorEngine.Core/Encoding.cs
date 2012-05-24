@@ -1,4 +1,9 @@
-﻿namespace RazorEngine
+﻿//-----------------------------------------------------------------------------
+// <copyright file="Encoding.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine
 {
     /// <summary>
     /// Defines the possible values for encoding.

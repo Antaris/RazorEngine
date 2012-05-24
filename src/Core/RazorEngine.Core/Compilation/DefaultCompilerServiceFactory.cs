@@ -1,8 +1,12 @@
-﻿namespace RazorEngine.Compilation
+﻿//-----------------------------------------------------------------------------
+// <copyright file="DefaultCompilerServiceFactory.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
     using CSharp;
     using VisualBasic;
 
@@ -17,7 +21,7 @@
         /// </summary>
         /// <param name="language">The <see cref="Language"/>.</param>
         /// <returns>An instance of <see cref="ICompilerService"/>.</returns>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Reviewed. Suppression is OK here.")]
         public ICompilerService CreateCompilerService(Language language)
         {
             switch (language)

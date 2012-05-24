@@ -1,8 +1,12 @@
-﻿namespace RazorEngine.Compilation.CSharp
+﻿//-----------------------------------------------------------------------------
+// <copyright file="CSharpCodeParser.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation.CSharp
 {
     using System.Web.Razor.Parser;
     using System.Web.Razor.Parser.SyntaxTree;
-
     using Spans;
 
     /// <summary>
@@ -11,16 +15,21 @@
     public class CSharpCodeParser : System.Web.Razor.Parser.CSharpCodeParser
     {
         #region Fields
-        private bool _modelOrInheritsStatementFound;
+
+        /// <summary>
+        /// The flag
+        /// </summary>
+        private bool modelOrInheritsStatementFound;
+
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="CSharpCodeParser"/>.
+        /// Initializes a new instance of the <see cref="CSharpCodeParser"/> class.
         /// </summary>
         public CSharpCodeParser()
         {
-            RazorKeywords.Add("model", WrapSimpleBlockParser(BlockType.Directive, ParseModelStatement));
+            this.RazorKeywords.Add("model", this.WrapSimpleBlockParser(BlockType.Directive, this.ParseModelStatement));
         }
         #endregion
 
@@ -29,14 +38,19 @@
         /// Parses the inherits statement.
         /// </summary>
         /// <param name="block">The code block.</param>
+        /// <returns>
+        /// The parse inherits statement.
+        /// </returns>
         protected override bool ParseInheritsStatement(CodeBlockInfo block)
         {
             var location = CurrentLocation;
 
-            if (_modelOrInheritsStatementFound)
+            if (this.modelOrInheritsStatementFound)
+            {
                 OnError(location, "The model or inherits keywords can only appear once.");
+            }
 
-            _modelOrInheritsStatementFound = true;
+            this.modelOrInheritsStatementFound = true;
 
             return base.ParseInheritsStatement(block);
         }
@@ -45,6 +59,7 @@
         /// Parses the model statement.
         /// </summary>
         /// <param name="block">The code block.</param>
+        /// <returns>Returns always false</returns>
         private bool ParseModelStatement(CodeBlockInfo block)
         {
             var location = CurrentLocation;
@@ -52,10 +67,12 @@
             bool readWhiteSpace = RequireSingleWhiteSpace();
             End(MetaCodeSpan.Create(Context, false, readWhiteSpace ? AcceptedCharacters.None : AcceptedCharacters.Any));
 
-            if (_modelOrInheritsStatementFound)
+            if (this.modelOrInheritsStatementFound)
+            {
                 OnError(location, "The model or inherits keywords can only appear once.");
+            }
 
-            _modelOrInheritsStatementFound = true;
+            this.modelOrInheritsStatementFound = true;
 
             Context.AcceptWhiteSpace(false);
 
@@ -68,13 +85,16 @@
                     typeName = Context.ContentBuffer.ToString();
                     Context.AcceptTemporaryBuffer();
                 }
+
                 Context.AcceptNewLine();
             }
             else
             {
                 OnError(location, "Expected model identifier.");
             }
+
             End(new ModelSpan(Context, typeName));
+
             return false;
         }
         #endregion

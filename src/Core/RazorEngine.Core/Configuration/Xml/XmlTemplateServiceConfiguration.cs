@@ -1,10 +1,14 @@
-﻿namespace RazorEngine.Configuration.Xml
+﻿//-----------------------------------------------------------------------------
+// <copyright file="XmlTemplateServiceConfiguration.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration.Xml
 {
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
-
     using Compilation;
     using Compilation.Inspectors;
     using Templating;
@@ -16,19 +20,23 @@
     public class XmlTemplateServiceConfiguration : ITemplateServiceConfiguration
     {
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="XmlTemplateServiceConfiguration"/>.
+        /// Initializes a new instance of the <see cref="XmlTemplateServiceConfiguration"/> class.
         /// </summary>
         /// <param name="name">The name of the template service configuration.</param>
         public XmlTemplateServiceConfiguration(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
+            {
                 throw new ArgumentException("'name' is a required parameter.", "name");
+            }
 
-            Namespaces = new HashSet<string>();
+            this.Namespaces = new HashSet<string>();
 
-            InitialiseConfiguration(name);
+            this.InitialiseConfiguration(name);
         }
+
         #endregion
 
         #region Properties
@@ -53,7 +61,7 @@
         public ICompilerServiceFactory CompilerServiceFactory { get; private set; }
 
         /// <summary>
-        /// Gets whether the template service is operating in debug mode.
+        /// Gets a value indicating whether the template service is operating in debug mode.
         /// </summary>
         public bool Debug { get; private set; }
 
@@ -76,9 +84,11 @@
         /// Gets the template resolver.
         /// </summary>
         public ITemplateResolver Resolver { get; private set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Adds the namespaces from the specified collection.
         /// </summary>
@@ -86,10 +96,14 @@
         private void AddNamespaces(NamespaceConfigurationElementCollection namespaces)
         {
             if (namespaces == null || namespaces.Count == 0)
+            {
                 return;
+            }
 
             foreach (NamespaceConfigurationElement config in namespaces)
-                Namespaces.Add(config.Namespace);
+            {
+                this.Namespaces.Add(config.Namespace);
+            }
         }
 
         /// <summary>
@@ -103,7 +117,9 @@
             Type instanceType = typeof(T);
 
             if (!instanceType.IsAssignableFrom(type))
+            {
                 throw new ConfigurationErrorsException("The type '" + type.FullName + "' is not assignable to type '" + instanceType.FullName + "'");
+            }
 
             return (T)System.Activator.CreateInstance(type);
         }
@@ -112,15 +128,19 @@
         /// Gets the type with the specified name.
         /// </summary>
         /// <param name="typeName">The type name.</param>
-        /// <returns></returns>
+        /// <returns>The type from string</returns>
         private Type GetType(string typeName)
         {
             if (string.IsNullOrWhiteSpace(typeName))
+            {
                 return null;
+            }
 
             var type = Type.GetType(typeName);
             if (type == null)
+            {
                 throw new ConfigurationErrorsException("The type '" + typeName + "' could not be loaded.");
+            }
 
             return type;
         }
@@ -133,15 +153,18 @@
         {
             var config = RazorEngineConfigurationSection.GetConfiguration();
             if (config == null)
+            {
                 throw new ConfigurationErrorsException("No <razorEngine> configuration section has been defined.");
+            }
 
             var serviceConfig = config.TemplateServices
                 .OfType<TemplateServiceConfigurationElement>()
-                .Where(t => t.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-                .SingleOrDefault();
+                .SingleOrDefault(t => t.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
             if (serviceConfig == null)
+            {
                 throw new ConfigurationErrorsException("No <templateService> configuration element defined with name = '" + name + "'");
+            }
 
             InitialiseConfiguration(config, serviceConfig);
         }
@@ -154,29 +177,29 @@
         private void InitialiseConfiguration(RazorEngineConfigurationSection config, TemplateServiceConfigurationElement serviceConfig)
         {
             // Add the global namespaces.
-            AddNamespaces(config.Namespaces);
+            this.AddNamespaces(config.Namespaces);
 
             // Add the specific namespaces.
-            AddNamespaces(serviceConfig.Namespaces);
+            this.AddNamespaces(serviceConfig.Namespaces);
 
             // Sets the activator.
-            SetActivator(config.ActivatorType);
+            this.SetActivator(config.ActivatorType);
 
             // Sets the base template type.
-            SetBaseTemplateType(serviceConfig.BaseTemplateType);
+            this.SetBaseTemplateType(serviceConfig.BaseTemplateType);
 
             // Sets the compiler service factory.
-            SetCompilerServiceFactory(config.CompilerServiceFactoryType);
+            this.SetCompilerServiceFactory(config.CompilerServiceFactoryType);
 
-            Debug = serviceConfig.Debug;
+            this.Debug = serviceConfig.Debug;
 
             // Sets the encoded string factory.
-            SetEncodedStringFactory(serviceConfig.EncodedStringFactoryType);
+            this.SetEncodedStringFactory(serviceConfig.EncodedStringFactoryType);
 
             Language = serviceConfig.Language;
 
             // Sets the tempalte resolver.
-            SetTemplateResolver(config.TemplateResolverType);
+            this.SetTemplateResolver(config.TemplateResolverType);
         }
 
         /// <summary>
@@ -185,9 +208,11 @@
         /// <param name="activatorType">The activator type.</param>
         private void SetActivator(string activatorType)
         {
-            var type = GetType(activatorType);
+            var type = this.GetType(activatorType);
             if (type != null)
-                Activator = GetInstance<IActivator>(type);
+            {
+                this.Activator = this.GetInstance<IActivator>(type);
+            }
         }
 
         /// <summary>
@@ -196,9 +221,11 @@
         /// <param name="baseTemplateType">The base template type.</param>
         private void SetBaseTemplateType(string baseTemplateType)
         {
-            var type = GetType(baseTemplateType);
+            var type = this.GetType(baseTemplateType);
             if (type != null)
-                BaseTemplateType = type;
+            {
+                this.BaseTemplateType = type;
+            }
         }
 
         /// <summary>
@@ -207,20 +234,24 @@
         /// <param name="compilerServiceFactoryType">The compiler service factory type.</param>
         private void SetCompilerServiceFactory(string compilerServiceFactoryType)
         {
-            var type = GetType(compilerServiceFactoryType);
+            var type = this.GetType(compilerServiceFactoryType);
             if (type != null)
-                CompilerServiceFactory = GetInstance<ICompilerServiceFactory>(type);
+            {
+                this.CompilerServiceFactory = this.GetInstance<ICompilerServiceFactory>(type);
+            }
         }
 
         /// <summary>
         /// Sets the encoded string factory.
         /// </summary>
-        /// <param name="encodedStringFactoryType"></param>
+        /// <param name="encodedStringFactoryType">Type of the encoded string factory.</param>
         private void SetEncodedStringFactory(string encodedStringFactoryType)
         {
-            var type = GetType(encodedStringFactoryType);
+            var type = this.GetType(encodedStringFactoryType);
             if (type != null)
-                EncodedStringFactory = GetInstance<IEncodedStringFactory>(type);
+            {
+                this.EncodedStringFactory = this.GetInstance<IEncodedStringFactory>(type);
+            }
         }
 
         /// <summary>
@@ -229,10 +260,13 @@
         /// <param name="templateResolverType">The template resolver type.</param>
         private void SetTemplateResolver(string templateResolverType)
         {
-            var type = GetType(templateResolverType);
+            var type = this.GetType(templateResolverType);
             if (type != null)
-                Resolver = GetInstance<ITemplateResolver>(type);
+            {
+                this.Resolver = this.GetInstance<ITemplateResolver>(type);
+            }
         }
+
         #endregion
     }
 }

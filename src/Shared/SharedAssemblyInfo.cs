@@ -1,4 +1,8 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------------
+// <copyright file="SharedAssemblyInfo.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
 using System.Reflection;
 
 #if DEBUG
@@ -13,5 +17,3 @@ using System.Reflection;
 
 [assembly: AssemblyVersion("3.0.8.0")]
 [assembly: AssemblyFileVersion("3.0.8.0")]
-
-//[assembly: CLSCompliant(true)]

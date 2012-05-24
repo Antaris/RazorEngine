@@ -1,8 +1,12 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ExecuteContext.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections.Generic;
-    using System.Dynamic;
     using System.IO;
 
     /// <summary>
@@ -10,50 +14,71 @@
     /// </summary>
     public class ExecuteContext
     {
+        #region Fields
+
+        /// <summary>
+        /// The sections
+        /// </summary>
+        private readonly IDictionary<string, Action> definedSections = new Dictionary<string, Action>();
+
+        /// <summary>
+        /// The body writers
+        /// </summary>
+        private readonly Stack<TemplateWriter> bodyWriters = new Stack<TemplateWriter>();
+
+        /// <summary>
+        /// The dynamic view bags
+        /// </summary>
+        private readonly dynamic dynamicViewBag;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
-        /// Creates a new instance of ExecuteContext with an empty ViewBag.
+        /// Initializes a new instance of the <see cref="ExecuteContext"/> class.
         /// </summary>
         public ExecuteContext()
         {
-            _viewBag = new DynamicViewBag();
+            this.dynamicViewBag = new DynamicViewBag();
         }
 
         /// <summary>
-        /// Creates a new instance of DynamicViewBag, setting initial values in the ViewBag.
+        /// Initializes a new instance of the <see cref="ExecuteContext"/> class.
         /// </summary>
         /// <param name="viewBag">The initial view bag data or NULL for an empty ViewBag.</param>
         public ExecuteContext(DynamicViewBag viewBag)
         {
-            if (viewBag == null)
-                _viewBag = new DynamicViewBag();
-            else
-                _viewBag = viewBag;
+            this.dynamicViewBag = viewBag ?? new DynamicViewBag();
         }
 
         #endregion
 
-        #region Fields
-        private readonly IDictionary<string, Action> _definedSections = new Dictionary<string, Action>();
-        private readonly Stack<TemplateWriter> _bodyWriters = new Stack<TemplateWriter>();
-        private readonly dynamic _viewBag; 
-        #endregion
-
         #region Properties
+
         /// <summary>
-        /// Gets the current writer.
+        /// Gets the view bag that allows sharing state.
         /// </summary>
-        //internal TextWriter CurrentWriter { get { return _writers.Peek(); } }
+        public dynamic ViewBag
+        {
+            get
+            {
+                return this.dynamicViewBag;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the current writer.
+        /// </summary>
+        /// <value>
+        /// The current writer.
+        /// </value>
         internal TextWriter CurrentWriter { get; set; }
 
-        /// <summary>
-        /// Gets the viewbag that allows sharing state.
-        /// </summary>
-        public dynamic ViewBag { get { return _viewBag; } }
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Defines a section used in layouts.
         /// </summary>
@@ -62,12 +87,16 @@
         public void DefineSection(string name, Action action)
         {
             if (string.IsNullOrWhiteSpace(name))
+            {
                 throw new ArgumentException("A name is required to define a section.");
+            }
 
-            if (_definedSections.ContainsKey(name))
+            if (this.definedSections.ContainsKey(name))
+            {
                 throw new ArgumentException("A section has already been defined with name '" + name + "'");
+            }
 
-            _definedSections.Add(name, action);
+            this.definedSections.Add(name, action);
         }
 
         /// <summary>
@@ -77,8 +106,10 @@
         /// <returns>The section delegate.</returns>
         public Action GetSectionDelegate(string name)
         {
-            if (_definedSections.ContainsKey(name))
-                return _definedSections[name];
+            if (this.definedSections.ContainsKey(name))
+            {
+                return this.definedSections[name];
+            }
 
             return null;
         }
@@ -89,7 +120,7 @@
         /// <returns>The template writer helper.</returns>
         internal TemplateWriter PopBody()
         {
-            return _bodyWriters.Pop();
+            return this.bodyWriters.Pop();
         }
 
         /// <summary>
@@ -99,10 +130,13 @@
         internal void PushBody(TemplateWriter bodyWriter)
         {
             if (bodyWriter == null)
+            {
                 throw new ArgumentNullException("bodyWriter");
+            }
 
-            _bodyWriters.Push(bodyWriter);
+            this.bodyWriters.Push(bodyWriter);
         }
+
         #endregion
     }
 }

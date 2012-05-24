@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Compilation.VisualBasic
+﻿//-----------------------------------------------------------------------------
+// <copyright file="VBRazorCodeLanguage.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation.VisualBasic
 {
     using System.Web.Razor;
     using System.Web.Razor.Generator;
@@ -6,27 +11,34 @@
     /// <summary>
     /// Provides a razor code language that supports the VB language.
     /// </summary>
+    // ReSharper disable InconsistentNaming
     public class VBRazorCodeLanguage : System.Web.Razor.VBRazorCodeLanguage
+    // ReSharper restore InconsistentNaming
     {
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance
+        /// Initializes a new instance of the <see cref="VBRazorCodeLanguage"/> class.
         /// </summary>
         /// <param name="strictMode">Flag to determine whether strict mode is enabled.</param>
         public VBRazorCodeLanguage(bool strictMode)
         {
-            StrictMode = strictMode;
+            this.StrictMode = strictMode;
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
-        /// Gets whether strict mode is enabled.
+        /// Gets a value indicating whether strict mode is enabled.
         /// </summary>
         public bool StrictMode { get; private set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Creates the code generator.
         /// </summary>
@@ -37,8 +49,9 @@
         /// <returns>An instance of <see cref="RazorCodeGenerator"/>.</returns>
         public override RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespaceName, string sourceFileName, RazorEngineHost host)
         {
-            return new VBRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, StrictMode);
+            return new VBRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, this.StrictMode);
         }
+
         #endregion
     }
 }

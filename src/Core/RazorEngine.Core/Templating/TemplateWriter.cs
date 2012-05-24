@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateWriter.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -11,23 +16,33 @@
     public class TemplateWriter
     {
         #region Fields
+
+        /// <summary>
+        /// The delegate
+        /// </summary>
         private readonly Action<TextWriter> writerDelegate;
+
         #endregion
 
         #region Constructors
+
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateWriter"/>.
+        /// Initializes a new instance of the <see cref="TemplateWriter"/> class.
         /// </summary>
         /// <param name="writer">The writer delegate used to write using the specified <see cref="TextWriter"/>.</param>
         public TemplateWriter(Action<TextWriter> writer)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(writer != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            writerDelegate = writer;
+            this.writerDelegate = writer;
         }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Executes the write delegate and returns the result of this <see cref="TemplateWriter"/>.
         /// </summary>
@@ -36,7 +51,7 @@
         {
             using (var writer = new StringWriter(CultureInfo.InvariantCulture))
             {
-                writerDelegate(writer);
+                this.writerDelegate(writer);
                 return writer.ToString();
             }
         }
@@ -47,8 +62,9 @@
         /// <param name="writer">The text writer to write the helper result to.</param>
         public void WriteTo(TextWriter writer)
         {
-            writerDelegate(writer);
+            this.writerDelegate(writer);
         }
+
         #endregion
     }
 }

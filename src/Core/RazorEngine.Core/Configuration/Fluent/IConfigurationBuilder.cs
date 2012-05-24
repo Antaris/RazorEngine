@@ -1,7 +1,11 @@
-﻿namespace RazorEngine.Configuration
+﻿//-----------------------------------------------------------------------------
+// <copyright file="IConfigurationBuilder.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Configuration
 {
     using System;
-
     using Compilation;
     using Compilation.Inspectors;
     using Templating;
@@ -13,6 +17,7 @@
     public interface IConfigurationBuilder
     {
         #region Methods
+
         /// <summary>
         /// Sets the activator.
         /// </summary>
@@ -116,6 +121,7 @@
         /// <param name="encoding">The encoding.</param>
         /// <returns>The current configuration builder.</returns>
         IConfigurationBuilder WithEncoding(Encoding encoding);
+
         #endregion
     }
 }

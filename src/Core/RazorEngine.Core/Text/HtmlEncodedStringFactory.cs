@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Text
+﻿//-----------------------------------------------------------------------------
+// <copyright file="HtmlEncodedStringFactory.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Text
 {
     /// <summary>
     /// Represents a factory that creates <see cref="HtmlEncodedString"/> instances.
@@ -6,6 +11,7 @@
     public class HtmlEncodedStringFactory : IEncodedStringFactory
     {
         #region Methods
+
         /// <summary>
         /// Creates a <see cref="IEncodedString"/> instance for the specified raw string.
         /// </summary>
@@ -24,14 +30,19 @@
         public IEncodedString CreateEncodedString(object value)
         {
             if (value == null)
+            {
                 return new HtmlEncodedString(string.Empty);
+            }
 
             var htmlString = value as HtmlEncodedString;
             if (htmlString != null)
+            {
                 return htmlString;
+            }
 
             return new HtmlEncodedString(value.ToString());
         }
+
         #endregion
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Compilation.Inspectors
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ICodeInspector.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Compilation.Inspectors
 {
     using System.CodeDom;
 
@@ -8,6 +13,7 @@
     public interface ICodeInspector
     {
         #region Methods
+
         /// <summary>
         /// Inspects the specified code unit.
         /// </summary>
@@ -16,6 +22,7 @@
         /// <param name="type">The code type declaration.</param>
         /// <param name="executeMethod">The code method declaration for the Execute method.</param>
         void Inspect(CodeCompileUnit unit, CodeNamespace ns, CodeTypeDeclaration type, CodeMemberMethod executeMethod);
+
         #endregion
     }
 }

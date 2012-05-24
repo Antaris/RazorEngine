@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Text
+﻿//-----------------------------------------------------------------------------
+// <copyright file="RawStringFactory.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Text
 {
     /// <summary>
     /// Represents a factory that creates <see cref="RawString"/> instances.
@@ -6,10 +11,11 @@
     public class RawStringFactory : IEncodedStringFactory
     {
         #region Methods
+
         /// <summary>
         /// Creates a <see cref="IEncodedString"/> instance for the specified raw string.
         /// </summary>
-        /// <param name="value">Thevalue.</param>
+        /// <param name="value">The value.</param>
         /// <returns>An instance of <see cref="IEncodedString"/>.</returns>
         public IEncodedString CreateEncodedString(string value)
         {
@@ -23,7 +29,7 @@
         /// <returns>An instance of <see cref="IEncodedString"/>.</returns>
         public IEncodedString CreateEncodedString(object value)
         {
-            return (value == null) 
+            return (value == null)
                 ? new RawString(string.Empty)
                 : new RawString(value.ToString());
         }

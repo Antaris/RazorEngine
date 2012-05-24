@@ -1,4 +1,9 @@
-﻿namespace RazorEngine
+﻿//-----------------------------------------------------------------------------
+// <copyright file="Language.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine
 {
     /// <summary>
     /// Defines the possible supported code languages.

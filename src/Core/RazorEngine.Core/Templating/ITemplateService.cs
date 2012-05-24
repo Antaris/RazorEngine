@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="ITemplateService.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections.Generic;
@@ -11,10 +16,12 @@
     public interface ITemplateService : IDisposable
     {
         #region Properties
+
         /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
         IEncodedStringFactory EncodedStringFactory { get; }
+
         #endregion
 
         #region Methods
@@ -50,22 +57,18 @@
         /// <summary>
         /// Creates a set of templates from the specified string templates.
         /// </summary>
-        /// <param name="razorTemplates">
-        /// The set of templates to create or NULL if all template types are already created (see templateTypes).
-        /// If this parameter is NULL, the the templateTypes parameter may not be NULL. 
-        /// Individual elements in this set may be NULL if the corresponding templateTypes[i] is not NULL (precompiled template).
-        /// </param>
-        /// <param name="models">
-        /// The set of models or NULL if no models exist for all templates.
-        /// Individual elements in this set may be NULL if no model exists for a specific template.
-        /// </param>
-        /// <param name="templateTypes">
-        /// The set of template types or NULL to dynamically create template types for each template.
-        /// If this parameter is NULL, the the razorTemplates parameter may not be NULL. 
-        /// Individual elements in this set may be NULL to dynamically create the template if the corresponding razorTemplates[i] is not NULL (dynamically compile template).
-        /// </param>
+        /// <param name="razorTemplates">The set of templates to create or NULL if all template types are already created (see templateTypes).
+        /// If this parameter is NULL, the the templateTypes parameter may not be NULL.
+        /// Individual elements in this set may be NULL if the corresponding templateTypes[i] is not NULL (precompiled template).</param>
+        /// <param name="templateTypes">The set of template types or NULL to dynamically create template types for each template.
+        /// If this parameter is NULL, the the razorTemplates parameter may not be NULL.
+        /// Individual elements in this set may be NULL to dynamically create the template if the corresponding razorTemplates[i] is not NULL (dynamically compile template).</param>
+        /// <param name="models">The set of models or NULL if no models exist for all templates.
+        /// Individual elements in this set may be NULL if no model exists for a specific template.</param>
         /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
-        /// <returns>The enumerable set of template instances.</returns>
+        /// <returns>
+        /// The enumerable set of template instances.
+        /// </returns>
         IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, IEnumerable<Type> templateTypes, IEnumerable<object> models, bool parallel = false);
 
         /// <summary>
@@ -77,7 +80,7 @@
         Type CreateTemplateType(string razorTemplate, Type modelType);
 
         /// <summary>
-        /// Creates a set of template types from the specfied string templates.
+        /// Creates a set of template types from the specified string templates.
         /// </summary>
         /// <param name="razorTemplates">The set of templates to create <see cref="Type"/> instances for.</param>
         /// <param name="modelTypes">

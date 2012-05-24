@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="InstanceContext.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -9,19 +14,23 @@
     public class InstanceContext
     {
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="InstanceContext"/>.
+        /// Initializes a new instance of the <see cref="InstanceContext"/> class.
         /// </summary>
         /// <param name="loader">The type loader.</param>
         /// <param name="templateType">The template type.</param>
         internal InstanceContext(TypeLoader loader, Type templateType)
         {
+            // ReSharper disable InvocationIsSkipped
             Contract.Requires(loader != null);
             Contract.Requires(templateType != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            Loader = loader;
-            TemplateType = templateType;
+            this.Loader = loader;
+            this.TemplateType = templateType;
         }
+
         #endregion
 
         #region Properties
@@ -34,6 +43,7 @@
         /// Gets the template type.
         /// </summary>
         public Type TemplateType { get; private set; }
+
         #endregion
     }
 }

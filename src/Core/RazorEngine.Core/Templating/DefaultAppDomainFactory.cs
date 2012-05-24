@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="DefaultAppDomainFactory.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
 
@@ -8,6 +13,7 @@
     public class DefaultAppDomainFactory : IAppDomainFactory
     {
         #region Methods
+
         /// <summary>
         /// Creates the <see cref="AppDomain"/>.
         /// </summary>
@@ -19,6 +25,7 @@
 
             return domain;
         }
+
         #endregion
     }
 }

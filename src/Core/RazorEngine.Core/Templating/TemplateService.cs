@@ -1,12 +1,17 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="TemplateService.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
-
     using Compilation;
     using Compilation.Inspectors;
     using Configuration;
@@ -19,50 +24,88 @@
     public class TemplateService : MarshalByRefObject, ITemplateService
     {
         #region Fields
-        private readonly ITemplateServiceConfiguration _config;
 
-        private readonly ConcurrentDictionary<string, CachedTemplateItem> _cache = new ConcurrentDictionary<string, CachedTemplateItem>();
-        private readonly ConcurrentBag<Assembly> _assemblies = new ConcurrentBag<Assembly>();
-        
-        private readonly TypeLoader _loader;
-        private static readonly Type _objectType = typeof(object);
+        /// <summary>
+        /// The service configuration field
+        /// </summary>
+        private readonly ITemplateServiceConfiguration serviceConfiguration;
 
-        private bool disposed;
+        /// <summary>
+        /// The service cache field
+        /// </summary>
+        private readonly ConcurrentDictionary<string, CachedTemplateItem> serviceCache = new ConcurrentDictionary<string, CachedTemplateItem>();
+
+        /// <summary>
+        /// The assemblies field
+        /// </summary>
+        private readonly ConcurrentBag<Assembly> assemblies = new ConcurrentBag<Assembly>();
+
+        /// <summary>
+        /// The type loader field
+        /// </summary>
+        private readonly TypeLoader typeLoader;
+
+        /// <summary>
+        /// The typeof object
+        /// </summary>
+        private static readonly Type ObjectType = typeof(object);
+
+        /// <summary>
+        /// The disposing flag
+        /// </summary>
+        private bool isdisposed;
+
         #endregion
 
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>
+        /// Initializes a new instance of the <see cref="TemplateService"/> class.
         /// </summary>
         /// <param name="config">The template service configuration.</param>
         public TemplateService(ITemplateServiceConfiguration config)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(config != null);
+            /* ReSharper restore InvocationIsSkipped */
 
-            _config = config;
-            _loader = new TypeLoader(AppDomain.CurrentDomain, _assemblies);
+            this.serviceConfiguration = config;
+            this.typeLoader = new TypeLoader(AppDomain.CurrentDomain, this.assemblies);
         }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>.
+        /// Initializes a new instance of the <see cref="TemplateService"/> class.
         /// </summary>
         public TemplateService()
-            : this(new TemplateServiceConfiguration()) { }
+            : this(new TemplateServiceConfiguration())
+        {
+        }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="TemplateService"/>
+        /// Initializes a new instance of the <see cref="TemplateService"/> class.
         /// </summary>
         /// <param name="language">The code language.</param>
         /// <param name="encoding">the encoding.</param>
         internal TemplateService(Language language, Encoding encoding)
-            : this(new TemplateServiceConfiguration() { Language = language, EncodedStringFactory = GetEncodedStringFactory(encoding) }) { }
+            : this(new TemplateServiceConfiguration { Language = language, EncodedStringFactory = GetEncodedStringFactory(encoding) })
+        {
+        }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
-        public IEncodedStringFactory EncodedStringFactory { get { return _config.EncodedStringFactory; } }
+        public IEncodedStringFactory EncodedStringFactory
+        {
+            get
+            {
+                return this.serviceConfiguration.EncodedStringFactory;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -72,7 +115,7 @@
         /// <param name="ns">The namespace to be imported.</param>
         public void AddNamespace(string ns)
         {
-            _config.Namespaces.Add(ns);
+            this.serviceConfiguration.Namespaces.Add(ns);
         }
 
         /// <summary>
@@ -83,52 +126,41 @@
         /// <param name="cacheName">The name of the template type in the cache.</param>
         public void Compile(string razorTemplate, Type modelType, string cacheName)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(razorTemplate != null);
             Contract.Requires(cacheName != null);
+            /* ReSharper restore InvocationIsSkipped */
 
             int hashCode = razorTemplate.GetHashCode();
 
-            Type type = CreateTemplateType(razorTemplate, modelType);
+            Type type = this.CreateTemplateType(razorTemplate, modelType);
             var item = new CachedTemplateItem(hashCode, type);
 
-            _cache.AddOrUpdate(cacheName, item, (n, i) => item);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="InstanceContext"/> for creating template instances.
-        /// </summary>
-        /// <param name="templateType">The template type.</param>
-        /// <returns>An instance of <see cref="InstanceContext"/>.</returns>
-        [Pure]
-        protected virtual InstanceContext CreateInstanceContext(Type templateType)
-        {
-            return new InstanceContext(_loader, templateType);
+            this.serviceCache.AddOrUpdate(cacheName, item, (n, i) => item);
         }
 
         /// <summary>
         /// Creates an instance of <see cref="ITemplate"/> from the specified string template.
         /// </summary>
-        /// <param name="razorTemplate">
-        /// The string template.
-        /// If templateType is not NULL, this parameter may be NULL (unused).
-        /// </param>
-        /// <param name="templateType">
-        /// The template type or NULL if the template type should be dynamically created.
-        /// If razorTemplate is not NULL, this parameter may be NULL (unused).
-        /// </param>
+        /// <param name="razorTemplate">The string template.
+        /// If templateType is not NULL, this parameter may be NULL (unused).</param>
+        /// <param name="templateType">The template type or NULL if the template type should be dynamically created.
+        /// If razorTemplate is not NULL, this parameter may be NULL (unused).</param>
         /// <param name="model">The model instance or NULL if no model exists.</param>
-        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
+        /// <returns>
+        /// An instance of <see cref="ITemplate"/>.
+        /// </returns>
         [Pure]
         public virtual ITemplate CreateTemplate(string razorTemplate, Type templateType, object model)
         {
             if (templateType == null)
             {
                 Type modelType = (model == null) ? typeof(object) : model.GetType();
-                templateType = CreateTemplateType(razorTemplate, modelType);
+                templateType = this.CreateTemplateType(razorTemplate, modelType);
             }
 
-            var context = CreateInstanceContext(templateType);
-            ITemplate instance = _config.Activator.CreateInstance(context);
+            var context = this.CreateInstanceContext(templateType);
+            ITemplate instance = this.serviceConfiguration.Activator.CreateInstance(context);
             instance.TemplateService = this;
 
             SetModel(instance, model);
@@ -139,27 +171,25 @@
         /// <summary>
         /// Creates a set of templates from the specified string templates and models.
         /// </summary>
-        /// <param name="razorTemplates">
-        /// The set of templates to create or NULL if all template types are already created (see templateTypes).
-        /// If this parameter is NULL, the the templateTypes parameter may not be NULL. 
-        /// Individual elements in this set may be NULL if the corresponding templateTypes[i] is not NULL (precompiled template).
-        /// </param>
-        /// <param name="models">
-        /// The set of models or NULL if no models exist for all templates.
-        /// Individual elements in this set may be NULL if no model exists for a specific template.
-        /// </param>
-        /// <param name="templateTypes">
-        /// The set of template types or NULL to dynamically create template types for each template.
-        /// If this parameter is NULL, the the razorTemplates parameter may not be NULL. 
-        /// Individual elements in this set may be NULL to dynamically create the template if the corresponding razorTemplates[i] is not NULL (dynamically compile template).
-        /// </param>
+        /// <param name="razorTemplates">The set of templates to create or NULL if all template types are already created (see templateTypes).
+        /// If this parameter is NULL, the the templateTypes parameter may not be NULL.
+        /// Individual elements in this set may be NULL if the corresponding templateTypes[i] is not NULL (precompiled template).</param>
+        /// <param name="templateTypes">The set of template types or NULL to dynamically create template types for each template.
+        /// If this parameter is NULL, the the razorTemplates parameter may not be NULL.
+        /// Individual elements in this set may be NULL to dynamically create the template if the corresponding razorTemplates[i] is not NULL (dynamically compile template).</param>
+        /// <param name="models">The set of models or NULL if no models exist for all templates.
+        /// Individual elements in this set may be NULL if no model exists for a specific template.</param>
         /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
-        /// <returns>The enumerable set of template instances.</returns>
+        /// <returns>
+        /// The enumerable set of template instances.
+        /// </returns>
         [Pure]
         public virtual IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, IEnumerable<Type> templateTypes, IEnumerable<object> models, bool parallel = false)
         {
-            if ((razorTemplates == null) && (templateTypes == null))
+            if (razorTemplates == null && templateTypes == null)
+            {
                 throw new ArgumentException("The razorTemplates and templateTypes parameters may not both be null.");
+            }
 
             List<string> razorTemplateList = (razorTemplates == null) ? null : razorTemplates.ToList();
             List<object> modelList = (models == null) ? null : models.ToList();
@@ -168,32 +198,44 @@
             int templateCount = (razorTemplateList != null) ? razorTemplateList.Count() : templateTypeList.Count();
 
             if ((razorTemplateList != null) && (razorTemplateList.Count != templateTypeList.Count))
+            {
                 throw new ArgumentException("Expected the same number of templateTypes as razorTemplates to be processed.");
+            }
 
             if ((templateTypeList != null) && (templateTypeList.Count != templateCount))
+            {
                 throw new ArgumentException("Expected the same number of templateTypes as the number of templates to be processed.");
+            }
 
             if ((modelList != null) && (modelList.Count != templateCount))
+            {
                 throw new ArgumentException("Expected the same number of models as the number of templates to be processed.");
+            }
 
             if ((razorTemplateList != null) && (templateTypeList != null))
             {
-                for (int i = 0; (i < templateCount); i++)
+                for (int i = 0; i < templateCount; i++)
                 {
                     if (razorTemplateList == null)
                     {
                         if (templateTypeList[i] == null)
-                            throw new ArgumentException("Expected non-NULL value in templateTypes[" + i.ToString() + "].");
+                        {
+                            throw new ArgumentException("Expected non-NULL value in templateTypes[" + i.ToString(CultureInfo.InvariantCulture) + "].");
+                        }
                     }
                     else if (templateTypeList == null)
                     {
                         if (razorTemplateList[i] == null)
-                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString() + "].");
+                        {
+                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString(CultureInfo.InvariantCulture) + "].");
+                        }
                     }
                     else
                     {
                         if ((razorTemplateList[i] == null) && (templateTypeList[i] == null))
-                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString() + "] or templateTypes[" + i.ToString() + "].");
+                        {
+                            throw new ArgumentException("Expected non-NULL value in either razorTemplates[" + i.ToString(CultureInfo.InvariantCulture) + "] or templateTypes[" + i.ToString(CultureInfo.InvariantCulture) + "].");
+                        }
                     }
                 }
             }
@@ -201,31 +243,41 @@
             if (parallel)
             {
                 if (razorTemplateList != null)
+                {
                     return GetParallelQueryPlan<string>()
-                        .CreateQuery(razorTemplates)
-                        .Select((rt, i) => CreateTemplate(
-                            rt,
-                            (templateTypeList == null) ? null : templateTypeList[i],
-                            (modelList == null) ? null : modelList[i]));
+                          .CreateQuery(razorTemplates)
+                          .Select((rt, i) => this.CreateTemplate(
+                              rt,
+                              (templateTypeList == null) ? null : templateTypeList[i],
+                              (modelList == null) ? null : modelList[i]));
+                }
                 else
+                {
                     return GetParallelQueryPlan<Type>()
-                        .CreateQuery(templateTypes)
-                        .Select((tt, i) => CreateTemplate(
-                            (razorTemplateList == null) ? null : razorTemplateList[i],
-                            tt,
-                            (modelList == null) ? null : modelList[i]));
+                          .CreateQuery(templateTypes)
+                          .Select((tt, i) => this.CreateTemplate(
+                              (razorTemplateList == null) ? null : razorTemplateList[i],
+                              tt,
+                              (modelList == null) ? null : modelList[i]));
+                }
             }
 
             if (razorTemplateList != null)
-                return razorTemplates.Select((rt, i) => CreateTemplate(
-                    rt,
-                    (templateTypeList == null) ? null : templateTypeList[i],
-                    (modelList == null) ? null : modelList[i]));
-            else
-                return templateTypeList.Select((tt, i) => CreateTemplate(
-                    (razorTemplateList == null) ? null : razorTemplateList[i],
-                    tt,
-                    (modelList == null) ? null : modelList[i]));
+            {
+                {
+                    return razorTemplates.Select(
+                           (rt, i) =>
+                           this.CreateTemplate(
+                               rt,
+                               (templateTypeList == null) ? null : templateTypeList[i],
+                               (modelList == null) ? null : modelList[i]));
+                }
+            }
+
+            return templateTypeList.Select((tt, i) => this.CreateTemplate(
+                (razorTemplateList == null) ? null : razorTemplateList[i],
+                tt,
+                (modelList == null) ? null : modelList[i]));
         }
 
         /// <summary>
@@ -239,29 +291,32 @@
         {
             var context = new TypeContext
                               {
-                                  ModelType = (modelType == null) ? typeof(object) : modelType,
+                                  ModelType = modelType ?? typeof(object),
                                   TemplateContent = razorTemplate,
-                                  TemplateType = (_config.BaseTemplateType) ?? typeof(TemplateBase<>)
+                                  TemplateType = this.serviceConfiguration.BaseTemplateType ?? typeof(TemplateBase<>)
                               };
 
-            foreach (string ns in _config.Namespaces)
+            foreach (string ns in this.serviceConfiguration.Namespaces)
+            {
                 context.Namespaces.Add(ns);
+            }
 
-            var service = _config
+            var service = this.serviceConfiguration
                 .CompilerServiceFactory
-                .CreateCompilerService(_config.Language);
-            service.Debug = _config.Debug;
-            service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
+                .CreateCompilerService(this.serviceConfiguration.Language);
+
+            service.Debug = this.serviceConfiguration.Debug;
+            service.CodeInspectors = this.serviceConfiguration.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
 
             var result = service.CompileType(context);
 
-            _assemblies.Add(result.Item2);
+            this.assemblies.Add(result.Item2);
 
             return result.Item1;
         }
 
         /// <summary>
-        /// Creates a set of template types from the specfied string templates.
+        /// Creates a set of template types from the specified string templates.
         /// </summary>
         /// <param name="razorTemplates">The set of templates to create <see cref="Type"/> instances for.</param>
         /// <param name="modelTypes">
@@ -273,18 +328,19 @@
         [Pure]
         public virtual IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, IEnumerable<Type> modelTypes, bool parallel = false)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(razorTemplates != null);
+            /* ReSharper restore InvocationIsSkipped */
 
             List<Type> modelTypeList = (modelTypes == null) ? null : modelTypes.ToList();
 
             if (parallel)
-                return GetParallelQueryPlan<string>()
-                    .CreateQuery(razorTemplates)
-                    .Select((t, i) => CreateTemplateType(t,
-                        (modelTypeList == null) ? null : modelTypeList[i]));
+            {
+                return GetParallelQueryPlan<string>().CreateQuery(razorTemplates)
+                       .Select((t, i) => this.CreateTemplateType(t, (modelTypeList == null) ? null : modelTypeList[i]));
+            }
 
-            return razorTemplates.Select((t, i) => CreateTemplateType(t,
-                (modelTypeList == null) ? null : modelTypeList[i]));
+            return razorTemplates.Select((t, i) => this.CreateTemplateType(t, (modelTypeList == null) ? null : modelTypeList[i]));
         }
 
         /// <summary>
@@ -294,49 +350,6 @@
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases managed resources used by this instance.
-        /// </summary>
-        /// <param name="disposing">Are we explicitly disposing of this instance?</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed && disposing)
-            {
-                _loader.Dispose();
-                disposed = true;
-            }
-        }
-
-        /// <summary>
-        /// Gets an instance of a <see cref="IEncodedStringFactory"/> for a known encoding.
-        /// </summary>
-        /// <param name="encoding">The encoding to get a factory for.</param>
-        /// <returns>An instance of <see cref="IEncodedStringFactory"/></returns>
-        internal static IEncodedStringFactory GetEncodedStringFactory(Encoding encoding)
-        {
-            switch (encoding)
-            {
-                case Encoding.Html:
-                    return new HtmlEncodedStringFactory();
-
-                case Encoding.Raw:
-                    return new RawStringFactory();
-
-                default:
-                    throw new ArgumentException("Unsupported encoding: " + encoding);
-            }
-        }
-
-        /// <summary>
-        /// Gets a parellel query plan used to configure a parallel query.
-        /// </summary>
-        /// <typeparam name="T">The query item type.</typeparam>
-        /// <returns>An instance of <see cref="IParallelQueryPlan{T}"/>.</returns>
-        protected virtual IParallelQueryPlan<T> GetParallelQueryPlan<T>()
-        {
-            return new DefaultParallelQueryPlan<T>();
         }
 
         /// <summary>
@@ -350,20 +363,22 @@
         public virtual ITemplate GetTemplate(string razorTemplate, object model, string cacheName)
         {
             if (razorTemplate == null)
+            {
                 throw new ArgumentNullException("razorTemplate");
+            }
 
             int hashCode = razorTemplate.GetHashCode();
 
             CachedTemplateItem item;
-            if (!(_cache.TryGetValue(cacheName, out item) && item.CachedHashCode == hashCode))
+            if (!(this.serviceCache.TryGetValue(cacheName, out item) && item.CachedHashCode == hashCode))
             {
-                Type type = CreateTemplateType(razorTemplate, (model == null) ? null : model.GetType());
+                Type type = this.CreateTemplateType(razorTemplate, (model == null) ? null : model.GetType());
                 item = new CachedTemplateItem(hashCode, type);
 
-                _cache.AddOrUpdate(cacheName, item, (n, i) => item);
+                this.serviceCache.AddOrUpdate(cacheName, item, (n, i) => item);
             }
 
-            var instance = CreateTemplate(null, item.TemplateType, model);
+            var instance = this.CreateTemplate(null, item.TemplateType, model);
             return instance;
         }
 
@@ -381,26 +396,23 @@
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
         public virtual IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<string> cacheNames, bool parallel = false)
         {
+            /* ReSharper disable InvocationIsSkipped */
             Contract.Requires(razorTemplates != null);
             Contract.Requires(cacheNames != null);
-            Contract.Requires(razorTemplates.Count() == models.Count(),
-                              "Expected same number of models as string templates to be processed.");
-            Contract.Requires(razorTemplates.Count() == cacheNames.Count(),
-                              "Expected same number of cache names as string templates to be processed.");
+            Contract.Requires(razorTemplates.Count() == models.Count(), "Expected same number of models as string templates to be processed.");
+            Contract.Requires(razorTemplates.Count() == cacheNames.Count(), "Expected same number of cache names as string templates to be processed.");
+            /* ReSharper restore InvocationIsSkipped */
 
             var modelList = (models == null) ? null : models.ToList();
             var cacheNameList = cacheNames.ToList();
 
             if (parallel)
-                return GetParallelQueryPlan<string>()
-                    .CreateQuery(razorTemplates)
-                    .Select((t, i) => GetTemplate(t, 
-                        (modelList == null) ? null : modelList[i],
-                        cacheNameList[i]));
+            {
+                return this.GetParallelQueryPlan<string>().CreateQuery(razorTemplates)
+                            .Select((t, i) => this.GetTemplate(t, (modelList == null) ? null : modelList[i], cacheNameList[i]));
+            }
 
-            return razorTemplates.Select((t, i) => GetTemplate(t, 
-                (modelList == null) ? null : modelList[i],
-                cacheNameList[i]));
+            return razorTemplates.Select((t, i) => this.GetTemplate(t, (modelList == null) ? null : modelList[i], cacheNameList[i]));
         }
 
 
@@ -415,12 +427,7 @@
         [Pure]
         public virtual string Parse(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
         {
-            ITemplate instance;
-            
-            if (cacheName == null)
-                instance = CreateTemplate(razorTemplate, null, model);
-            else
-                instance = GetTemplate(razorTemplate, model, cacheName);
+            ITemplate instance = cacheName == null ? this.CreateTemplate(razorTemplate, null, model) : this.GetTemplate(razorTemplate, model, cacheName);
 
             return Run(instance, viewBag);
         }
@@ -445,47 +452,61 @@
         /// <returns>The set of parsed template results.</returns>
         public virtual IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel)
         {
+            /* TODO: optimize this */
             if (razorTemplates == null)
+            {
                 throw new ArgumentException("Expected at least one entry in razorTemplates collection.");
+            }
 
             if ((models != null) && (razorTemplates.Count() != models.Count()))
+            {
                 throw new ArgumentException("Expected same number of models as string templates to be processed.");
+            }
 
             if ((viewBags != null) && (razorTemplates.Count() != viewBags.Count()))
+            {
                 throw new ArgumentException("Expected same number of viewBags as string templates to be processed.");
+            }
 
             if ((cacheNames != null) && (razorTemplates.Count() != cacheNames.Count()))
+            {
                 throw new ArgumentException("Expected same number of cacheNames as string templates to be processed.");
+            }
 
             var modelList = (models == null) ? null : models.ToList();
             var viewBagList = (viewBags == null) ? null : viewBags.ToList();
             var cacheNameList = (cacheNames == null) ? null : cacheNames.ToList();
 
-            //
-            //  :Matt:
-            //      What is up with the GetParallelQueryPlan() here?
-            //          o   Everywhere else in the code we simply return the ParallelQueryPlan
-            //              (this implements IEnumerablt<T>
-            //          o   However, when I remove the ToArray() in the following code,
-            //              the unit tests that call ParseMany() start failing, complaining
-            //              about serialization (give it a try)
-            //          o   Should all GetParallelQueryPlan() results call ToList()
-            //              to force Linq to execute the results?
-            //          o   If we do not call ToArray() below, then the Parse() 
-            //              method never gets called.
-            //          o   Something is wrong or inconsistent here.  :)
-            //
+            /*
+              :Matt:
+                  What is up with the GetParallelQueryPlan() here?
+                      o   Everywhere else in the code we simply return the ParallelQueryPlan
+                          (this implements IEnumerablt<T>
+                      o   However, when I remove the ToArray() in the following code,
+                          the unit tests that call ParseMany() start failing, complaining
+                          about serialization (give it a try)
+                      o   Should all GetParallelQueryPlan() results call ToList()
+                          to force Linq to execute the results?
+                      o   If we do not call ToArray() below, then the Parse() 
+                          method never gets called.
+                      o   Something is wrong or inconsistent here.  :)
+            */
             if (parallel)
             {
-                return GetParallelQueryPlan<string>()
-                    .CreateQuery(razorTemplates)
-                    .Select((t, i) => Parse(t,
+                return GetParallelQueryPlan<string>().CreateQuery(razorTemplates).Select(
+                    (t, i) =>
+                    this.Parse(
+                        t,
                         (modelList == null) ? null : modelList[i],
                         (viewBagList == null) ? null : viewBagList[i],
                         (cacheNameList == null) ? null : cacheNameList[i]))
                     .ToArray();
             }
-            return razorTemplates.Select((t, i) => Parse(t,
+
+            return razorTemplates.Select(
+                    (t, i) =>
+                    this.Parse(
+                        t,
                         (modelList == null) ? null : modelList[i],
                         (viewBagList == null) ? null : viewBagList[i],
                         (cacheNameList == null) ? null : cacheNameList[i]))
@@ -499,7 +520,7 @@
         /// <returns>Whether or not the template has been created.</returns>
         public bool HasTemplate(string cacheName)
         {
-            return _cache.ContainsKey(cacheName);
+            return this.serviceCache.ContainsKey(cacheName);
         }
 
         /// <summary>
@@ -524,14 +545,18 @@
         {
             CachedTemplateItem cachedItem;
             ITemplate instance = null;
-            if (_cache.TryGetValue(cacheName, out cachedItem))
-                instance = CreateTemplate(null, cachedItem.TemplateType, model);
-
-            if (instance == null && _config.Resolver != null)
+            if (this.serviceCache.TryGetValue(cacheName, out cachedItem))
             {
-                string template = _config.Resolver.Resolve(cacheName);
+                instance = this.CreateTemplate(null, cachedItem.TemplateType, model);
+            }
+
+            if (instance == null && this.serviceConfiguration.Resolver != null)
+            {
+                string template = this.serviceConfiguration.Resolver.Resolve(cacheName);
                 if (!string.IsNullOrWhiteSpace(template))
-                    instance = GetTemplate(template, model, cacheName);
+                {
+                    instance = this.GetTemplate(template, model, cacheName);
+                }
             }
 
             return instance;
@@ -547,13 +572,17 @@
         public string Run(string cacheName, object model, DynamicViewBag viewBag)
         {
             if (string.IsNullOrWhiteSpace(cacheName))
+            {
                 throw new ArgumentException("'cacheName' is a required parameter.");
+            }
 
             CachedTemplateItem item;
-            if (!(_cache.TryGetValue(cacheName, out item)))
+            if (!this.serviceCache.TryGetValue(cacheName, out item))
+            {
                 throw new InvalidOperationException("No template exists with name '" + cacheName + "'");
+            }
 
-            ITemplate instance = CreateTemplate(null, item.TemplateType, model);
+            ITemplate instance = this.CreateTemplate(null, item.TemplateType, model);
 
             return Run(instance, viewBag);
         }
@@ -567,9 +596,65 @@
         public string Run(ITemplate template, DynamicViewBag viewBag)
         {
             if (template == null)
+            {
                 throw new ArgumentNullException("template");
+            }
 
             return template.Run(new ExecuteContext(viewBag));
+        }
+
+        /// <summary>
+        /// Gets an instance of a <see cref="IEncodedStringFactory"/> for a known encoding.
+        /// </summary>
+        /// <param name="encoding">The encoding to get a factory for.</param>
+        /// <returns>An instance of <see cref="IEncodedStringFactory"/></returns>
+        internal static IEncodedStringFactory GetEncodedStringFactory(Encoding encoding)
+        {
+            switch (encoding)
+            {
+                case Encoding.Html:
+                    return new HtmlEncodedStringFactory();
+
+                case Encoding.Raw:
+                    return new RawStringFactory();
+
+                default:
+                    throw new ArgumentException("Unsupported encoding: " + encoding);
+            }
+        }
+
+        /// <summary>
+        /// Releases managed resources used by this instance.
+        /// </summary>
+        /// <param name="disposing">Are we explicitly disposing of this instance?</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.isdisposed && disposing)
+            {
+                this.typeLoader.Dispose();
+                this.isdisposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="InstanceContext"/> for creating template instances.
+        /// </summary>
+        /// <param name="templateType">The template type.</param>
+        /// <returns>An instance of <see cref="InstanceContext"/>.</returns>
+        [Pure]
+        protected virtual InstanceContext CreateInstanceContext(Type templateType)
+        {
+            return new InstanceContext(this.typeLoader, templateType);
+        }
+
+        /// <summary>
+        /// Gets a parallel query plan used to configure a parallel query.
+        /// </summary>
+        /// <typeparam name="T">The query item type.</typeparam>
+        /// <returns>An instance of <see cref="IParallelQueryPlan{T}"/>.</returns>
+        protected virtual IParallelQueryPlan<T> GetParallelQueryPlan<T>()
+        {
+            return new DefaultParallelQueryPlan<T>();
         }
 
         /// <summary>

@@ -1,4 +1,9 @@
-﻿namespace RazorEngine.Templating
+﻿//-----------------------------------------------------------------------------
+// <copyright file="CachedTemplateItem.cs" company="RazorEngine">
+//     Copyright (c) Matthew Abbott. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------------
+namespace RazorEngine.Templating
 {
     using System;
 
@@ -8,19 +13,22 @@
     internal class CachedTemplateItem
     {
         #region Constructor
+
         /// <summary>
-        /// Initialises a new instance of <see cref="CachedTemplateItem"/>.
+        /// Initializes a new instance of the <see cref="CachedTemplateItem"/> class.
         /// </summary>
         /// <param name="cachedHashCode">The cached hash code.</param>
         /// <param name="templateType">The template type.</param>
         public CachedTemplateItem(int cachedHashCode, Type templateType)
         {
-            CachedHashCode = cachedHashCode;
-            TemplateType = templateType;
+            this.CachedHashCode = cachedHashCode;
+            this.TemplateType = templateType;
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets the cached hash code of the template.
         /// </summary>
@@ -30,6 +38,7 @@
         /// Gets the template type.
         /// </summary>
         public Type TemplateType { get; private set; }
+
         #endregion
     }
 }
