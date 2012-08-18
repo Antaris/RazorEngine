@@ -373,6 +373,28 @@
         }
 
         /// <summary>
+        /// Parses and returns the result of the specified string template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="model">The model instance or NULL if no model exists.</param>
+        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+        /// <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
+        /// <returns>The string result of the template.</returns>
+        public string Parse<T>(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
+        {
+            if (disposed)
+                throw new ObjectDisposedException("IsolatedTemplateService");
+
+            if (model != null)
+            {
+                if (CompilerServicesUtility.IsDynamicType(model.GetType()))
+                    throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
+            }
+
+            return _proxy.Parse<T>(razorTemplate, model, viewBag, cacheName);
+        }
+
+        /// <summary>
         /// Parses the specified set of templates.
         /// </summary>
         /// <param name="razorTemplates">The set of string templates to parse.</param>
