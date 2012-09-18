@@ -121,10 +121,10 @@
                 _context.CurrentWriter = null;
             }
 
-            if (_Layout != null)
+            if (Layout != null)
             {
                 // Get the layout template.
-                var layout = ResolveLayout(_Layout);
+                var layout = ResolveLayout(Layout);
 
                 // Push the current body instance onto the stack for later execution.
                 var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
