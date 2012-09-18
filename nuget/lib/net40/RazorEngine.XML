@@ -2709,6 +2709,13 @@
             Initialises a new instance of <see cref="T:RazorEngine.Templating.TemplateBase`1"/>.
             </summary>
         </member>
+        <member name="M:RazorEngine.Templating.TemplateBase`1.ResolveLayout(System.String)">
+            <summary>
+            Resolves the layout template.
+            </summary>
+            <param name="name">The name of the layout template.</param>
+            <returns>An instance of <see cref="T:RazorEngine.Templating.ITemplate"/>.</returns>
+        </member>
         <member name="P:RazorEngine.Templating.TemplateBase`1.HasDynamicModel">
             <summary>
             Determines whether this template has a dynamic model.
