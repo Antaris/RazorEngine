@@ -25,7 +25,7 @@
         /// </summary>
         /// <param name="codeLanguage">The code language.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
-        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, Func<MarkupParser> markupParserFactory)
+        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory)
         {
             Contract.Requires(codeLanguage != null);
 
@@ -53,7 +53,7 @@
         /// <summary>
         /// Gets the markup parser.
         /// </summary>
-        public Func<MarkupParser> MarkupParserFactory { get; private set; }
+        public Func<ParserBase> MarkupParserFactory { get; private set; }
         #endregion
 
         #region Methods
@@ -61,33 +61,20 @@
         /// Builds a type name for the specified template type and model type.
         /// </summary>
         /// <param name="templateType">The template type.</param>
-        /// <param name="modelType">The model type.</param>
         /// <returns>The string type name (including namespace).</returns>
         [Pure]
-        public virtual string BuildTypeName(Type templateType, Type modelType)
+        public virtual string BuildTypeName(Type templateType)
         {
             if (templateType == null)
                 throw new ArgumentNullException("templateType");
 
-            if (!templateType.IsGenericTypeDefinition && !templateType.IsGenericType)
+            if (!templateType.IsGenericTypeDefinition || !templateType.IsGenericType)
                 return templateType.FullName;
-
-            if (modelType == null)
-                throw new ArgumentException("The template type is a generic defintion, and no model type has been supplied.");
-
-            bool @dynamic = CompilerServicesUtility.IsDynamicType(modelType);
-            Type genericType = templateType.MakeGenericType(modelType);
-
-            return BuildTypeNameInternal(genericType, @dynamic);
+            
+            return templateType.Namespace
+                   + "."
+                   + templateType.Name.Substring(0, templateType.Name.IndexOf('`'));
         }
-
-        /// <summary>
-        /// Builds a type name for the specified generic type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="isDynamic">Is the model type dynamic?</param>
-        /// <returns>The string typename (including namespace and generic type parameters).</returns>
-        public abstract string BuildTypeNameInternal(Type type, bool isDynamic);
 
         /// <summary>
         /// Compiles the type defined in the specified type context.
@@ -108,7 +95,7 @@
             var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory)
                            {
                                DefaultBaseTemplateType = templateType,
-                               DefaultBaseClass = BuildTypeName(templateType, modelType),
+                               DefaultBaseClass = BuildTypeName(templateType),
                                DefaultClassName = className,
                                DefaultNamespace = "CompiledRazorTemplates.Dynamic",
                                GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",

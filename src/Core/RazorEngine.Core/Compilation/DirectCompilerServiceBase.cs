@@ -31,7 +31,7 @@
         /// <param name="codeLanguage">The razor code language.</param>
         /// <param name="codeDomProvider">The code dom provider used to generate code.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
-        protected DirectCompilerServiceBase(RazorCodeLanguage codeLanguage, CodeDomProvider codeDomProvider, Func<MarkupParser> markupParserFactory)
+        protected DirectCompilerServiceBase(RazorCodeLanguage codeLanguage, CodeDomProvider codeDomProvider, Func<ParserBase> markupParserFactory)
             : base(codeLanguage, markupParserFactory)
         {
             _codeDomProvider = codeDomProvider;

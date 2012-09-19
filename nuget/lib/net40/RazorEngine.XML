@@ -14,12 +14,11 @@
             Defines the required contract for implementing a compiler service.
             </summary>
         </member>
-        <member name="M:RazorEngine.Compilation.ICompilerService.BuildTypeName(System.Type,System.Type)">
+        <member name="M:RazorEngine.Compilation.ICompilerService.BuildTypeName(System.Type)">
             <summary>
             Builds a type name for the specified template type and model type.
             </summary>
             <param name="templateType">The template type.</param>
-            <param name="modelType">The model type.</param>
             <returns>The string type name (including namespace).</returns>
         </member>
         <member name="M:RazorEngine.Compilation.ICompilerService.CompileType(RazorEngine.Compilation.TypeContext)">
@@ -45,28 +44,19 @@
             Gets or sets whether the compiler service is operating in debug mode.
             </summary>
         </member>
-        <member name="M:RazorEngine.Compilation.CompilerServiceBase.#ctor(System.Web.Razor.RazorCodeLanguage,System.Func{System.Web.Razor.Parser.MarkupParser})">
+        <member name="M:RazorEngine.Compilation.CompilerServiceBase.#ctor(System.Web.Razor.RazorCodeLanguage,System.Func{System.Web.Razor.Parser.ParserBase})">
             <summary>
             Initialises a new instance of <see cref="T:RazorEngine.Compilation.CompilerServiceBase"/>
             </summary>
             <param name="codeLanguage">The code language.</param>
             <param name="markupParserFactory">The markup parser factory.</param>
         </member>
-        <member name="M:RazorEngine.Compilation.CompilerServiceBase.BuildTypeName(System.Type,System.Type)">
+        <member name="M:RazorEngine.Compilation.CompilerServiceBase.BuildTypeName(System.Type)">
             <summary>
             Builds a type name for the specified template type and model type.
             </summary>
             <param name="templateType">The template type.</param>
-            <param name="modelType">The model type.</param>
             <returns>The string type name (including namespace).</returns>
-        </member>
-        <member name="M:RazorEngine.Compilation.CompilerServiceBase.BuildTypeNameInternal(System.Type,System.Boolean)">
-            <summary>
-            Builds a type name for the specified generic type.
-            </summary>
-            <param name="type">The type.</param>
-            <param name="isDynamic">Is the model type dynamic?</param>
-            <returns>The string typename (including namespace and generic type parameters).</returns>
         </member>
         <member name="M:RazorEngine.Compilation.CompilerServiceBase.CompileType(RazorEngine.Compilation.TypeContext)">
             <summary>
@@ -222,17 +212,15 @@
             Initialises a new instance of <see cref="T:RazorEngine.Compilation.CSharp.CSharpCodeParser"/>.
             </summary>
         </member>
-        <member name="M:RazorEngine.Compilation.CSharp.CSharpCodeParser.ParseInheritsStatement(System.Web.Razor.Parser.CodeBlockInfo)">
+        <member name="M:RazorEngine.Compilation.CSharp.CSharpCodeParser.InheritsDirective">
             <summary>
             Parses the inherits statement.
             </summary>
-            <param name="block">The code block.</param>
         </member>
-        <member name="M:RazorEngine.Compilation.CSharp.CSharpCodeParser.ParseModelStatement(System.Web.Razor.Parser.CodeBlockInfo)">
+        <member name="M:RazorEngine.Compilation.CSharp.CSharpCodeParser.ModelDirective">
             <summary>
             Parses the model statement.
             </summary>
-            <param name="block">The code block.</param>
         </member>
         <member name="T:RazorEngine.Compilation.CSharp.CSharpDirectCompilerService">
             <summary>
@@ -244,7 +232,7 @@
             Provides a base implementation of a direct compiler service.
             </summary>
         </member>
-        <member name="M:RazorEngine.Compilation.DirectCompilerServiceBase.#ctor(System.Web.Razor.RazorCodeLanguage,System.CodeDom.Compiler.CodeDomProvider,System.Func{System.Web.Razor.Parser.MarkupParser})">
+        <member name="M:RazorEngine.Compilation.DirectCompilerServiceBase.#ctor(System.Web.Razor.RazorCodeLanguage,System.CodeDom.Compiler.CodeDomProvider,System.Func{System.Web.Razor.Parser.ParserBase})">
             <summary>
             Initialises a new instance of <see cref="T:RazorEngine.Compilation.DirectCompilerServiceBase"/>.
             </summary>
@@ -277,22 +265,12 @@
             </summary>
             <param name="disposing">Are we explicily disposing of this instance?</param>
         </member>
-        <member name="M:RazorEngine.Compilation.CSharp.CSharpDirectCompilerService.#ctor(System.Boolean,System.Func{System.Web.Razor.Parser.MarkupParser})">
+        <member name="M:RazorEngine.Compilation.CSharp.CSharpDirectCompilerService.#ctor(System.Boolean,System.Func{System.Web.Razor.Parser.ParserBase})">
             <summary>
             Initialises a new instance of <see cref="T:RazorEngine.Compilation.CSharp.CSharpDirectCompilerService"/>.
             </summary>
             <param name="strictMode">Specifies whether the strict mode parsing is enabled.</param>
             <param name="markupParserFactory">The markup parser factory to use.</param>
-        </member>
-        <member name="M:RazorEngine.Compilation.CSharp.CSharpDirectCompilerService.BuildTypeNameInternal(System.Type,System.Boolean)">
-            <summary>
-            Builds a type name for the specified generic type.
-            </summary>
-            <param name="type">The type.</param>
-            <param name="isDynamic">Specifies whether the type is dynamic.</param>
-            <returns>
-            The string typename (including namespace and generic type parameters).
-            </returns>
         </member>
         <member name="M:RazorEngine.Compilation.CSharp.CSharpDirectCompilerService.IncludeAssemblies">
             <summary>
@@ -315,30 +293,11 @@
             <param name="host">The host.</param>
             <param name="strictMode">Flag to specify that this generator is running in struct mode.</param>
         </member>
-        <member name="M:RazorEngine.Compilation.CSharp.CSharpRazorCodeGenerator.SetModelType(System.String)">
-            <summary>
-            Sets the model type.
-            </summary>
-            <param name="modelTypeName">The model type.</param>
-        </member>
-        <member name="M:RazorEngine.Compilation.CSharp.CSharpRazorCodeGenerator.TryVisitSpecialSpan(System.Web.Razor.Parser.SyntaxTree.Span)">
-            <summary>
-            Visits any specialised spans used to introduce custom logic.
-            </summary>
-            <param name="span">The current span.</param>
-            <returns>True if additional spans were matched, otherwise false.</returns>
-        </member>
         <member name="M:RazorEngine.Compilation.CSharp.CSharpRazorCodeGenerator.VisitError(System.Web.Razor.Parser.SyntaxTree.RazorError)">
             <summary>
             Visits an error generated through parsing.
             </summary>
             <param name="err">The error that was generated.</param>
-        </member>
-        <member name="M:RazorEngine.Compilation.CSharp.CSharpRazorCodeGenerator.VisitModelSpan(RazorEngine.Spans.ModelSpan)">
-            <summary>
-            Visits a model span.
-            </summary>
-            <param name="span">The model span.</param>
         </member>
         <member name="P:RazorEngine.Compilation.CSharp.CSharpRazorCodeGenerator.StrictMode">
             <summary>
@@ -437,7 +396,7 @@
             Defines the custom razor engine host.
             </summary>
         </member>
-        <member name="M:RazorEngine.Compilation.RazorEngineHost.#ctor(System.Web.Razor.RazorCodeLanguage,System.Func{System.Web.Razor.Parser.MarkupParser})">
+        <member name="M:RazorEngine.Compilation.RazorEngineHost.#ctor(System.Web.Razor.RazorCodeLanguage,System.Func{System.Web.Razor.Parser.ParserBase})">
             <summary>
             Initialises a new instance of <see cref="T:RazorEngine.Compilation.RazorEngineHost"/>.
             </summary>
@@ -501,39 +460,27 @@
             Initialises a new instance of <see cref="T:RazorEngine.Compilation.VisualBasic.VBCodeParser"/>
             </summary>
         </member>
-        <member name="M:RazorEngine.Compilation.VisualBasic.VBCodeParser.ParseInheritsStatement(System.Web.Razor.Parser.CodeBlockInfo)">
+        <member name="M:RazorEngine.Compilation.VisualBasic.VBCodeParser.InheritsStatement">
             <summary>
             Parses the inherits statement.
             </summary>
-            <param name="block">The code block.</param>
         </member>
-        <member name="M:RazorEngine.Compilation.VisualBasic.VBCodeParser.ParseModelTypeStatement(System.Web.Razor.Parser.CodeBlockInfo)">
+        <member name="M:RazorEngine.Compilation.VisualBasic.VBCodeParser.ModelTypeDirective">
             <summary>
             Parses the modeltype statement.
             </summary>
-            <param name="block">The code block.</param>
         </member>
         <member name="T:RazorEngine.Compilation.VisualBasic.VBDirectCompilerService">
             <summary>
             Defines a direct compiler service for the VB syntax.
             </summary>
         </member>
-        <member name="M:RazorEngine.Compilation.VisualBasic.VBDirectCompilerService.#ctor(System.Boolean,System.Func{System.Web.Razor.Parser.MarkupParser})">
+        <member name="M:RazorEngine.Compilation.VisualBasic.VBDirectCompilerService.#ctor(System.Boolean,System.Func{System.Web.Razor.Parser.ParserBase})">
             <summary>
             Initialises a new instance of <see cref="T:RazorEngine.Compilation.VisualBasic.VBDirectCompilerService"/>.
             </summary>
             <param name="strictMode">Specifies whether the strict mode parsing is enabled.</param>
             <param name="markupParserFactory">The markup parser to use.</param>
-        </member>
-        <member name="M:RazorEngine.Compilation.VisualBasic.VBDirectCompilerService.BuildTypeNameInternal(System.Type,System.Boolean)">
-            <summary>
-            Builds a type name for the specified generic type.
-            </summary>
-            <param name="type">The type.</param>
-            <param name="isDynamic">Specifies whether the type is dynamic.</param>
-            <returns>
-            The string typename (including namespace and generic type parameters).
-            </returns>
         </member>
         <member name="T:RazorEngine.Compilation.VisualBasic.VBRazorCodeGenerator">
             <summary>
@@ -550,30 +497,11 @@
             <param name="host">The host.</param>
             <param name="strictMode">Flag to specify that this generator is running in struct mode.</param>
         </member>
-        <member name="M:RazorEngine.Compilation.VisualBasic.VBRazorCodeGenerator.SetModelType(System.String)">
-            <summary>
-            Sets the model type.
-            </summary>
-            <param name="modelTypeName">The model type.</param>
-        </member>
-        <member name="M:RazorEngine.Compilation.VisualBasic.VBRazorCodeGenerator.TryVisitSpecialSpan(System.Web.Razor.Parser.SyntaxTree.Span)">
-            <summary>
-            Visits any specialised spans used to introduce custom logic.
-            </summary>
-            <param name="span">The current span.</param>
-            <returns>True if additional spans were matched, otherwise false.</returns>
-        </member>
         <member name="M:RazorEngine.Compilation.VisualBasic.VBRazorCodeGenerator.VisitError(System.Web.Razor.Parser.SyntaxTree.RazorError)">
             <summary>
             Visits an error generated through parsing.
             </summary>
             <param name="err">The error that was generated.</param>
-        </member>
-        <member name="M:RazorEngine.Compilation.VisualBasic.VBRazorCodeGenerator.VisitModelSpan(RazorEngine.Spans.ModelSpan)">
-            <summary>
-            Visits a model span.
-            </summary>
-            <param name="span">The model span.</param>
         </member>
         <member name="P:RazorEngine.Compilation.VisualBasic.VBRazorCodeGenerator.StrictMode">
             <summary>
@@ -1719,51 +1647,6 @@
         <member name="P:RazorEngine.Razor.TemplateService">
             <summary>
             Gets the template service.
-            </summary>
-        </member>
-        <member name="T:RazorEngine.Spans.ModelSpan">
-            <summary>
-            Defines a span that matches a model.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Spans.ModelSpan.#ctor(System.Web.Razor.Text.SourceLocation,System.String,System.String)">
-            <summary>
-            Initialises a new instance of <see cref="T:RazorEngine.Spans.ModelSpan"/>
-            </summary>
-            <param name="start">The start location.</param>
-            <param name="content">The span content.</param>
-            <param name="modelTypeName">The model type name.</param>
-        </member>
-        <member name="M:RazorEngine.Spans.ModelSpan.#ctor(System.Web.Razor.Parser.ParserContext,System.String)">
-            <summary>
-            Initialises a new instance of <see cref="T:RazorEngine.Spans.ModelSpan"/>
-            </summary>
-            <param name="context">The current parser context.</param>
-            <param name="modelTypeName">The model type name.</param>
-        </member>
-        <member name="M:RazorEngine.Spans.ModelSpan.Equals(System.Object)">
-            <summary>
-            Determines if the specified object is equal to the current instance.
-            </summary>
-            <param name="obj">The object to check.</param>
-            <returns>True if the object is equal to the current instance, otherwise false.</returns>
-        </member>
-        <member name="M:RazorEngine.Spans.ModelSpan.Equals(RazorEngine.Spans.ModelSpan)">
-            <summary>
-            Determines if the specified <see cref="T:RazorEngine.Spans.ModelSpan"/> is equal to the current instance.
-            </summary>
-            <param name="span">The span to check.</param>
-            <returns>True if the object is equal to the current instance, otherwise false.</returns>
-        </member>
-        <member name="M:RazorEngine.Spans.ModelSpan.GetHashCode">
-            <summary>
-            Gets the unique hash code for this instance.
-            </summary>
-            <returns>The hash code.</returns>
-        </member>
-        <member name="P:RazorEngine.Spans.ModelSpan.ModelTypeName">
-            <summary>
-            Gets the model type name.
             </summary>
         </member>
         <member name="T:RazorEngine.Templating.CachedTemplateItem">
