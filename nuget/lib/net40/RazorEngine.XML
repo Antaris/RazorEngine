@@ -1671,6 +1671,229 @@
             Gets the template type.
             </summary>
         </member>
+        <member name="T:RazorEngine.Templating.HtmlTemplateBase`1">
+            <summary>
+            Provides a base implementation of an html template with a model.
+            </summary>
+            <typeparam name="T">The model type.</typeparam>
+        </member>
+        <member name="T:RazorEngine.Templating.TemplateBase`1">
+            <summary>
+            Provides a base implementation of a template with a model.
+            </summary>
+            <typeparam name="T">The model type.</typeparam>
+        </member>
+        <member name="T:RazorEngine.Templating.TemplateBase">
+            <summary>
+            Provides a base implementation of a template.
+            </summary>
+        </member>
+        <member name="T:RazorEngine.Templating.ITemplate">
+            <summary>
+            Defines the required contract for implementing a template.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.ITemplate.Execute">
+            <summary>
+            Executes the compiled template.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.ITemplate.Run(RazorEngine.Templating.ExecuteContext)">
+            <summary>
+            Runs the template and returns the result.
+            </summary>
+            <param name="context">The current execution context.</param>
+            <returns>The merged result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.ITemplate.Write(System.Object)">
+            <summary>
+            Writes the specified object to the result.
+            </summary>
+            <param name="value">The value to write.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.ITemplate.WriteLiteral(System.String)">
+            <summary>
+            Writes the specified string to the result.
+            </summary>
+            <param name="literal">The literal to write.</param>
+        </member>
+        <member name="P:RazorEngine.Templating.ITemplate.TemplateService">
+            <summary>
+            Sets the template service.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.#ctor">
+            <summary>
+            Initialises a new instance of <see cref="T:RazorEngine.Templating.TemplateBase"/>.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.DefineSection(System.String,System.Action)">
+            <summary>
+            Defines a section that can written out to a layout.
+            </summary>
+            <param name="name">The name of the section.</param>
+            <param name="action">The delegate used to write the section.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.Include(System.String,System.Object)">
+            <summary>
+            Includes the template with the specified name.
+            </summary>
+            <param name="cacheName">The name of the template type in cache.</param>
+            <param name="model">The model or NULL if there is no model for the template.</param>
+            <returns>The template writer helper.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.IsSectionDefined(System.String)">
+            <summary>
+            Determines if the section with the specified name has been defined.
+            </summary>
+            <param name="name">The section name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.Execute">
+            <summary>
+            Executes the compiled template.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.Raw(System.String)">
+            <summary>
+            Returns the specified string as a raw string. This will ensure it is not encoded.
+            </summary>
+            <param name="rawString">The raw string to write.</param>
+            <returns>An instance of <see cref="T:RazorEngine.Text.IEncodedString"/>.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.ResolveLayout(System.String)">
+            <summary>
+            Resolves the layout template.
+            </summary>
+            <param name="name">The name of the layout template.</param>
+            <returns>An instance of <see cref="T:RazorEngine.Templating.ITemplate"/>.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.RazorEngine#Templating#ITemplate#Run(RazorEngine.Templating.ExecuteContext)">
+            <summary>
+            Runs the template and returns the result.
+            </summary>
+            <param name="context">The current execution context.</param>
+            <returns>The merged result of the template.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.RenderSection(System.String,System.Boolean)">
+            <summary>
+            Renders the section with the specified name.
+            </summary>
+            <param name="name">The name of the section.</param>
+            <param name="isRequired">Flag to specify whether the section is required.</param>
+            <returns>The template writer helper.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.RenderBody">
+            <summary>
+            Renders the body of the template.
+            </summary>
+            <returns>The template writer helper.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.Write(System.Object)">
+            <summary>
+            Writes the specified object to the result.
+            </summary>
+            <param name="value">The value to write.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.Write(RazorEngine.Templating.TemplateWriter)">
+            <summary>
+            Writes the specified template helper result.
+            </summary>
+            <param name="helper">The template writer helper.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.WriteLiteral(System.String)">
+            <summary>
+            Writes the specified string to the result.
+            </summary>
+            <param name="literal">The literal to write.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.WriteLiteralTo(System.IO.TextWriter,System.String)">
+            <summary>
+            Writes a string literal to the specified <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+            <param name="writer">The writer.</param>
+            <param name="literal">The literal to be written.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.WriteTo(System.IO.TextWriter,System.Object)">
+            <summary>
+            Writes the specified object to the specified <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+            <param name="writer">The writer.</param>
+            <param name="value">The value to be written.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.WriteTo(System.IO.TextWriter,RazorEngine.Templating.TemplateWriter)">
+            <summary>
+            Writes the specfied template helper result to the specified writer.
+            </summary>
+            <param name="writer">The writer.</param>
+            <param name="helper">The template writer helper.</param>
+        </member>
+        <member name="P:RazorEngine.Templating.TemplateBase.Layout">
+            <summary>
+            Gets or sets the layout template name.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Templating.TemplateBase.TemplateService">
+            <summary>
+            Gets or sets the template service.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Templating.TemplateBase.ViewBag">
+            <summary>
+            Gets the viewbag that allows sharing state between layout and child templates.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Templating.TemplateBase.CurrentWriter">
+            <summary>
+            Gets the current writer.
+            </summary>
+        </member>
+        <member name="T:RazorEngine.Templating.ITemplate`1">
+            <summary>
+            Defines the required contract for implementing a template with a model.
+            </summary>
+            <typeparam name="T">The model type.</typeparam>
+        </member>
+        <member name="P:RazorEngine.Templating.ITemplate`1.Model">
+            <summary>
+            Gets the or sets the model.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase`1.#ctor">
+            <summary>
+            Initialises a new instance of <see cref="T:RazorEngine.Templating.TemplateBase`1"/>.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase`1.ResolveLayout(System.String)">
+            <summary>
+            Resolves the layout template.
+            </summary>
+            <param name="name">The name of the layout template.</param>
+            <returns>An instance of <see cref="T:RazorEngine.Templating.ITemplate"/>.</returns>
+        </member>
+        <member name="P:RazorEngine.Templating.TemplateBase`1.HasDynamicModel">
+            <summary>
+            Determines whether this template has a dynamic model.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Templating.TemplateBase`1.Model">
+            <summary>
+            Gets or sets the model.
+            </summary>
+        </member>
+        <member name="M:RazorEngine.Templating.HtmlTemplateBase`1.WriteAttribute(System.String,RazorEngine.PositionTagged{System.String},RazorEngine.PositionTagged{System.String},RazorEngine.AttributeValue[])">
+            <summary>
+            Writes an attribute to the result.
+            </summary>
+            <param name="name">The name of the attribute.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.HtmlTemplateBase`1.WriteAttributeTo(System.IO.TextWriter,System.String,RazorEngine.PositionTagged{System.String},RazorEngine.PositionTagged{System.String},RazorEngine.AttributeValue[])">
+            <summary>
+            Writes an attribute to the specified <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+            <param name="writer">The writer.</param>
+            <param name="name">The name of the attribute to be written.</param>
+        </member>
         <member name="T:RazorEngine.Templating.DefaultActivator">
             <summary>
             Provides a default implementation of an <see cref="T:RazorEngine.Templating.IActivator"/>.
@@ -2393,51 +2616,6 @@
             Gets the encoded string factory.
             </summary>
         </member>
-        <member name="T:RazorEngine.Templating.ITemplate">
-            <summary>
-            Defines the required contract for implementing a template.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Templating.ITemplate.Execute">
-            <summary>
-            Executes the compiled template.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Templating.ITemplate.Run(RazorEngine.Templating.ExecuteContext)">
-            <summary>
-            Runs the template and returns the result.
-            </summary>
-            <param name="context">The current execution context.</param>
-            <returns>The merged result of the template.</returns>
-        </member>
-        <member name="M:RazorEngine.Templating.ITemplate.Write(System.Object)">
-            <summary>
-            Writes the specified object to the result.
-            </summary>
-            <param name="value">The value to write.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.ITemplate.WriteLiteral(System.String)">
-            <summary>
-            Writes the specified string to the result.
-            </summary>
-            <param name="literal">The literal to write.</param>
-        </member>
-        <member name="P:RazorEngine.Templating.ITemplate.TemplateService">
-            <summary>
-            Sets the template service.
-            </summary>
-        </member>
-        <member name="T:RazorEngine.Templating.ITemplate`1">
-            <summary>
-            Defines the required contract for implementing a template with a model.
-            </summary>
-            <typeparam name="T">The model type.</typeparam>
-        </member>
-        <member name="P:RazorEngine.Templating.ITemplate`1.Model">
-            <summary>
-            Gets the or sets the model.
-            </summary>
-        </member>
         <member name="T:RazorEngine.Templating.RequireNamespacesAttribute">
             <summary>
             Allows base templates to define require template imports when
@@ -2453,160 +2631,6 @@
         <member name="P:RazorEngine.Templating.RequireNamespacesAttribute.Namespaces">
             <summary>
             Gets the set of required namespace imports.
-            </summary>
-        </member>
-        <member name="T:RazorEngine.Templating.TemplateBase">
-            <summary>
-            Provides a base implementation of a template.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.#ctor">
-            <summary>
-            Initialises a new instance of <see cref="T:RazorEngine.Templating.TemplateBase"/>.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.DefineSection(System.String,System.Action)">
-            <summary>
-            Defines a section that can written out to a layout.
-            </summary>
-            <param name="name">The name of the section.</param>
-            <param name="action">The delegate used to write the section.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.Include(System.String,System.Object)">
-            <summary>
-            Includes the template with the specified name.
-            </summary>
-            <param name="cacheName">The name of the template type in cache.</param>
-            <param name="model">The model or NULL if there is no model for the template.</param>
-            <returns>The template writer helper.</returns>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.IsSectionDefined(System.String)">
-            <summary>
-            Determines if the section with the specified name has been defined.
-            </summary>
-            <param name="name">The section name.</param>
-            <returns></returns>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.Execute">
-            <summary>
-            Executes the compiled template.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.Raw(System.String)">
-            <summary>
-            Returns the specified string as a raw string. This will ensure it is not encoded.
-            </summary>
-            <param name="rawString">The raw string to write.</param>
-            <returns>An instance of <see cref="T:RazorEngine.Text.IEncodedString"/>.</returns>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.ResolveLayout(System.String)">
-            <summary>
-            Resolves the layout template.
-            </summary>
-            <param name="name">The name of the layout template.</param>
-            <returns>An instance of <see cref="T:RazorEngine.Templating.ITemplate"/>.</returns>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.RazorEngine#Templating#ITemplate#Run(RazorEngine.Templating.ExecuteContext)">
-            <summary>
-            Runs the template and returns the result.
-            </summary>
-            <param name="context">The current execution context.</param>
-            <returns>The merged result of the template.</returns>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.RenderSection(System.String,System.Boolean)">
-            <summary>
-            Renders the section with the specified name.
-            </summary>
-            <param name="name">The name of the section.</param>
-            <param name="isRequired">Flag to specify whether the section is required.</param>
-            <returns>The template writer helper.</returns>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.RenderBody">
-            <summary>
-            Renders the body of the template.
-            </summary>
-            <returns>The template writer helper.</returns>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.Write(System.Object)">
-            <summary>
-            Writes the specified object to the result.
-            </summary>
-            <param name="value">The value to write.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.Write(RazorEngine.Templating.TemplateWriter)">
-            <summary>
-            Writes the specified template helper result.
-            </summary>
-            <param name="helper">The template writer helper.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.WriteLiteral(System.String)">
-            <summary>
-            Writes the specified string to the result.
-            </summary>
-            <param name="literal">The literal to write.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.WriteLiteralTo(System.IO.TextWriter,System.String)">
-            <summary>
-            Writes a string literal to the specified <see cref="T:System.IO.TextWriter"/>.
-            </summary>
-            <param name="writer">The writer.</param>
-            <param name="literal">The literal to be written.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.WriteTo(System.IO.TextWriter,System.Object)">
-            <summary>
-            Writes the specified object to the specified <see cref="T:System.IO.TextWriter"/>.
-            </summary>
-            <param name="writer">The writer.</param>
-            <param name="value">The value to be written.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase.WriteTo(System.IO.TextWriter,RazorEngine.Templating.TemplateWriter)">
-            <summary>
-            Writes the specfied template helper result to the specified writer.
-            </summary>
-            <param name="writer">The writer.</param>
-            <param name="helper">The template writer helper.</param>
-        </member>
-        <member name="P:RazorEngine.Templating.TemplateBase.Layout">
-            <summary>
-            Gets or sets the layout template name.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Templating.TemplateBase.TemplateService">
-            <summary>
-            Gets or sets the template service.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Templating.TemplateBase.ViewBag">
-            <summary>
-            Gets the viewbag that allows sharing state between layout and child templates.
-            </summary>
-        </member>
-        <member name="T:RazorEngine.Templating.TemplateBase`1">
-            <summary>
-            Provides a base implementation of a template with a model.
-            </summary>
-            <typeparam name="T">The model type.</typeparam>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase`1.#ctor">
-            <summary>
-            Initialises a new instance of <see cref="T:RazorEngine.Templating.TemplateBase`1"/>.
-            </summary>
-        </member>
-        <member name="M:RazorEngine.Templating.TemplateBase`1.ResolveLayout(System.String)">
-            <summary>
-            Resolves the layout template.
-            </summary>
-            <param name="name">The name of the layout template.</param>
-            <returns>An instance of <see cref="T:RazorEngine.Templating.ITemplate"/>.</returns>
-        </member>
-        <member name="P:RazorEngine.Templating.TemplateBase`1.HasDynamicModel">
-            <summary>
-            Determines whether this template has a dynamic model.
-            </summary>
-        </member>
-        <member name="P:RazorEngine.Templating.TemplateBase`1.Model">
-            <summary>
-            Gets or sets the model.
             </summary>
         </member>
         <member name="T:RazorEngine.Templating.TemplateCompilationException">

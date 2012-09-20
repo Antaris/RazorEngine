@@ -3,6 +3,7 @@
     using System;
     using System.Globalization;
     using System.Web.Razor.Generator;
+    using Common;
 
     internal class SetModelTypeCodeGenerator : SetBaseTypeCodeGenerator
     {
@@ -33,7 +34,10 @@
 
         public override int GetHashCode()
         {
-            return base.GetHashCode() ^ (_genericTypeFormat ?? string.Empty).GetHashCode();
+            return HashCodeCombiner.Start()
+                .Add(base.GetHashCode())
+                .Add(_genericTypeFormat)
+                .CombinedHash;
         }
 
         public override string ToString()

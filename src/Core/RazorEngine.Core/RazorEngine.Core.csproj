@@ -76,6 +76,7 @@
     <Compile Include="..\..\Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AttributeValue.cs" />
     <Compile Include="CodeGenerators\SetModelTypeCodeGenerator.cs" />
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
@@ -109,11 +110,14 @@
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElementCollection.cs" />
     <Compile Include="Configuration\Xml\XmlTemplateServiceConfiguration.cs" />
     <Compile Include="Encoding.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Common\GlobalSuppressions.cs" />
+    <Compile Include="Common\HashCodeCombiner.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PositionTagged.cs" />
     <Compile Include="Razor.cs" />
     <Compile Include="Templating\CachedTemplateItem.cs" />
+    <Compile Include="Templating\HtmlTemplateBaseOfT.cs" />
     <Compile Include="Templating\DefaultActivator.cs" />
     <Compile Include="Templating\DefaultAppDomainFactory.cs" />
     <Compile Include="Templating\DelegateActivator.cs" />
@@ -155,9 +159,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)*.dll" "$(SolutionDir)..\nuget\lib\net40" /y
-xcopy "$(TargetDir)*.pdb" "$(SolutionDir)..\nuget\lib\net40" /y
-xcopy "$(TargetDir)*.xml" "$(SolutionDir)..\nuget\lib\net40" /y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)RazorEngine.*" "$(SolutionDir)..\nuget\lib\net40" /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

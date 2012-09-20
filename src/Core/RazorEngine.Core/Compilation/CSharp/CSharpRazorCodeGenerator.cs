@@ -1,9 +1,9 @@
-﻿using System.CodeDom;
-
-namespace RazorEngine.Compilation.CSharp
+﻿namespace RazorEngine.Compilation.CSharp
 {
+    using System.CodeDom;
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
+
     using Templating;
 
     /// <summary>

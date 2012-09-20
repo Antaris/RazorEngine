@@ -1,10 +1,8 @@
-﻿using System.CodeDom;
-using System.Web.Razor.Parser.SyntaxTree;
-using RazorEngine.Templating;
-
-namespace RazorEngine.Compilation.VisualBasic
+﻿namespace RazorEngine.Compilation.VisualBasic
 {
     using System.Web.Razor;
+    using System.Web.Razor.Parser.SyntaxTree;
+    using Templating;
 
     /// <summary>
     /// Defines a code generator that supports VB syntax.
