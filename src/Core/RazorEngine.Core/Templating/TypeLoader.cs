@@ -37,7 +37,14 @@
             _constructors = new ConcurrentDictionary<Type, Func<ITemplate>>();
             _resolveEventHandler = (s, e) => ResolveAssembly(e.Name);
 
-            _appDomain.AssemblyResolve += _resolveEventHandler;
+            // Dirty Hack - Medium Trust doesn't allow access to 'AssemblyResolve'
+            // http://shazwazza.com/post/Developing-a-plugin-framework-in-ASPNET-with-medium-trust.aspx
+            // Instead we will catch the error and suppress...
+            try
+            {
+                _appDomain.AssemblyResolve += _resolveEventHandler;
+            }
+            catch{}
         }
         #endregion
 

@@ -49,7 +49,7 @@
             using (var service = new TemplateService())
             {
                 const string parent = @"<div>@RenderSection(""TestSection"")</div>@RenderBody()";
-                const string template = @"@{_Layout = ""Parent"";}@section TestSection {<span>Hello</span>}<h1>Hello World</h1>";
+                const string template = @"@{Layout = ""Parent"";}@section TestSection {<span>Hello</span>}<h1>Hello World</h1>";
                 const string expected = "<div><span>Hello</span></div><h1>Hello World</h1>";
 
                 /* GetTemplate is the simplest method for compiling and caching a template without using a 
@@ -106,8 +106,8 @@
             using (var service = new TemplateService())
             {
                 const string grandparent = @"<div>Message from Child Template (section): @RenderSection(""ChildMessage"")</div><div>Message from Parent Template (section): @RenderSection(""ParentMessage"")</div><div>Content from Parent Template (body): @RenderBody()</div>";
-                const string parent = @"@{_Layout = ""GrandParent"";}@section ParentMessage {<span>Hello from Parent</span>}<p>Child content: @RenderBody()</p>";
-                const string template = @"@{_Layout = ""Parent"";}@section ChildMessage {<span>Hello from Child</span>}<p>This is child content</p>";
+                const string parent = @"@{Layout = ""GrandParent"";}@section ParentMessage {<span>Hello from Parent</span>}<p>Child content: @RenderBody()</p>";
+                const string template = @"@{Layout = ""Parent"";}@section ChildMessage {<span>Hello from Child</span>}<p>This is child content</p>";
                 const string expected = "<div>Message from Child Template (section): <span>Hello from Child</span></div><div>Message from Parent Template (section): <span>Hello from Parent</span></div><div>Content from Parent Template (body): <p>Child content: <p>This is child content</p></p></div>";
 
                 service.GetTemplate(parent, null, "Parent");

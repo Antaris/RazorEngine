@@ -251,7 +251,9 @@
                 .CompilerServiceFactory
                 .CreateCompilerService(_config.Language);
             service.Debug = _config.Debug;
-            service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
+
+            service.CodeInspectors = _config.CodeInspectors ?? new List<ICodeInspector>();
+            //service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
 
             var result = service.CompileType(context);
 

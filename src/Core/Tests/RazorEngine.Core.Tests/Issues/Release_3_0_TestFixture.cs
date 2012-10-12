@@ -27,7 +27,7 @@
             using (var service = new TemplateService())
             {
                 const string layoutTemplate = "<h1>@Model.PageTitle</h1> @RenderSection(\"Child\")";
-                const string childTemplate = "@{ _Layout = \"Parent\"; }@section Child {<h2>@Model.PageDescription</h2>}";
+                const string childTemplate = "@{ Layout = \"Parent\"; }@section Child {<h2>@Model.PageDescription</h2>}";
                 const string expected = "<h1>Test Page</h1> <h2>Test Page Description</h2>";
 
                 var model = new {
@@ -57,7 +57,7 @@
             using (var service = new TemplateService())
             {
                 const string layoutTemplate = "<h1>@ViewBag.Title</h1>@RenderSection(\"Child\")";
-                const string childTemplate = "@{ _Layout =  \"Parent\"; ViewBag.Title = \"Test\"; }@section Child {}";
+                const string childTemplate = "@{ Layout =  \"Parent\"; ViewBag.Title = \"Test\"; }@section Child {}";
 
                 service.Compile(layoutTemplate, null, "Parent");
 
@@ -218,7 +218,7 @@
                 const string parent = "@model RazorEngine.Tests.TestTypes.Person\n<h1>@Model.Forename</h1>@RenderSection(\"Child\")";
                 service.Compile(parent, null, "Parent");
 
-                const string child = "@{ _Layout = \"Parent\"; }\n@section Child { <h2>@Model.Department</h2> }";
+                const string child = "@{ Layout = \"Parent\"; }\n@section Child { <h2>@Model.Department</h2> }";
                 const string expected = "<h1>Matt</h1> <h2>IT</h2> ";
 
                 var model = new Employee
