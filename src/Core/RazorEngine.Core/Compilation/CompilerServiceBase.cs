@@ -249,6 +249,8 @@
             var type = ns.Types[0];
             var executeMethod = type.Members.OfType<CodeMemberMethod>().Where(m => m.Name.Equals("Execute")).Single();
 
+            //Check to ensure we have code inspectors to work with
+            if (CodeInspectors == null || CodeInspectors.Count() == 0) return; 
             foreach (var inspector in CodeInspectors)
                 inspector.Inspect(unit, ns, type, executeMethod);
         }
