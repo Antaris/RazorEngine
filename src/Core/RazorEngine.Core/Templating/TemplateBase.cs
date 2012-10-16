@@ -27,7 +27,7 @@
         /// <summary>
         /// Gets or sets the layout template name.
         /// </summary>
-        public string Layout { get; set; }
+        public string _Layout { get; set; }
 
         /// <summary>
         /// Gets or sets the template service.
