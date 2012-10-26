@@ -1,3 +1,5 @@
+Important - for MVC4 compatability, see this Issue: https://github.com/Antaris/RazorEngine/issues/71
+
 RazorEngine
 ===========
 
