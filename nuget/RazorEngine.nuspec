@@ -15,6 +15,5 @@
   </metadata>
   <files>
     <file src="lib\net40\RazorEngine.dll" target="lib\net40\RazorEngine.dll" />
-    <file src="lib\net40\System.Web.Razor.dll" target="lib\net40\System.Web.Razor.dll" />
   </files>
 </package>
