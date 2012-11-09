@@ -7,6 +7,7 @@
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
+    using System.Collections;
 
     /// <summary>
     /// Provides service methods for compilation.
@@ -16,6 +17,8 @@
         #region Fields
         private static readonly Type DynamicType = typeof(DynamicObject);
         private static readonly Type ExpandoType = typeof(ExpandoObject);
+        private static readonly Type EnumerableType = typeof(IEnumerable);
+        private static readonly Type EnumeratorType = typeof(IEnumerator);
         #endregion
 
         #region Methods
@@ -49,6 +52,21 @@
             return (DynamicType.IsAssignableFrom(type)
                     || ExpandoType.IsAssignableFrom(type)
                     || IsAnonymousType(type));
+        }
+
+        /// <summary>
+        /// Determines if the specified type is a compiler generated iterator type.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>True if the type is an iterator type, otherwise false.</returns>
+        public static bool IsIteratorType(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+
+            return type.IsNestedPrivate
+                && type.Name.StartsWith("<", StringComparison.Ordinal)
+                && (EnumerableType.IsAssignableFrom(type) || EnumeratorType.IsAssignableFrom(type));
         }
 
         /// <summary>

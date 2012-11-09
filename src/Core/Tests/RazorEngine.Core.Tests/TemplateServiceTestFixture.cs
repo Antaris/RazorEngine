@@ -111,6 +111,29 @@
         }
 
         /// <summary>
+        /// Tests that a simple template with an iterator model can be parsed.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanParseSimpleTemplate_WithIteratorModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "@foreach (var i in Model) { @i }";
+                const string expected = "One Two Three";
+
+                var model = CreateIterator("One ", "Two ", "Three");
+                string result = service.Parse(template, model);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        private static IEnumerable<T> CreateIterator<T>(params T[] items)
+        {
+            foreach (var item in items) yield return item;
+        }
+
+            /// <summary>
         /// Tests that a simple template with html-encoding can be parsed.
         /// </summary>
         /// <remarks>

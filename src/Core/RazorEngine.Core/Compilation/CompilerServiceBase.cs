@@ -75,10 +75,30 @@
             if (modelType == null)
                 throw new ArgumentException("The template type is a generic defintion, and no model type has been supplied.");
 
+            if (CompilerServicesUtility.IsIteratorType(modelType))
+            {
+                modelType = GetIteratorInterface(modelType);
+            }
+
             bool @dynamic = CompilerServicesUtility.IsDynamicType(modelType);
             Type genericType = templateType.MakeGenericType(modelType);
 
             return BuildTypeNameInternal(genericType, @dynamic);
+        }
+
+        private static Type GetIteratorInterface(Type modelType)
+        {
+            Type firstInterface = null;
+            foreach (var @interface in modelType.GetInterfaces())
+            {
+                if (firstInterface == null) 
+                    firstInterface = @interface;
+
+                if (@interface.IsGenericType)
+                    return @interface;
+            }
+
+            return @firstInterface ?? modelType;
         }
 
         /// <summary>
