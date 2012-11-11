@@ -57,7 +57,7 @@
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
         /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter Include(string cacheName, object model)
+        public virtual TemplateWriter Include(string cacheName, object model = null)
         {
             var instance = TemplateService.Resolve(cacheName, model);
             if (instance == null)
