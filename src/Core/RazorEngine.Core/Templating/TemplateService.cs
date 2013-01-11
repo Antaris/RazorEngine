@@ -349,6 +349,20 @@
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
         public virtual ITemplate GetTemplate(string razorTemplate, object model, string cacheName)
         {
+            return this.GetTemplate<object>(razorTemplate, model, cacheName);
+        }
+
+        /// <summary>
+        /// Gets an instance of the template using the cached compiled type, or compiles the template type
+        /// if it does not exist in the cache.
+        /// </summary>
+        /// <typeparam name="T">Type of the model</typeparam>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="model">The model instance or NULL if there is no model for this template.</param>
+        /// <param name="cacheName">The name of the template type in the cache.</param>
+        /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
+        private ITemplate GetTemplate<T>(string razorTemplate, object model, string cacheName)
+        {
             if (razorTemplate == null)
                 throw new ArgumentNullException("razorTemplate");
 
@@ -357,7 +371,7 @@
             CachedTemplateItem item;
             if (!(_cache.TryGetValue(cacheName, out item) && item.CachedHashCode == hashCode))
             {
-                Type type = CreateTemplateType(razorTemplate, (model == null) ? null : model.GetType());
+                Type type = CreateTemplateType(razorTemplate, (model == null) ? typeof(T) : model.GetType());
                 item = new CachedTemplateItem(hashCode, type);
 
                 _cache.AddOrUpdate(cacheName, item, (n, i) => item);
@@ -421,6 +435,28 @@
                 instance = CreateTemplate(razorTemplate, null, model);
             else
                 instance = GetTemplate(razorTemplate, model, cacheName);
+
+            return Run(instance, viewBag);
+        }
+
+
+        /// <summary>
+        /// Parses and returns the result of the specified string template.
+        /// </summary>
+        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="model">The model instance or NULL if no model exists.</param>
+        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+        /// <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
+        /// <returns>The string result of the template.</returns>
+        [Pure]
+        public virtual string Parse<T>(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
+        {
+            ITemplate instance;
+
+            if (cacheName == null)
+                instance = CreateTemplate(razorTemplate, typeof(T), model);
+            else
+                instance = GetTemplate<T>(razorTemplate, model, cacheName);
 
             return Run(instance, viewBag);
         }
