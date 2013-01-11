@@ -1,10 +1,8 @@
 ﻿namespace RazorEngine.Templating
 {
-    using System;
     using System.Dynamic;
 
     using Compilation;
-    using Text;
 
     /// <summary>
     /// Provides a base implementation of a template with a model.
@@ -13,22 +11,25 @@
     public class TemplateBase<T> : TemplateBase, ITemplate<T>
     {
         #region Fields
-        private object model;
-        private readonly Type _modelType = typeof(T);
+
+        private object currentModel;
+
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateBase{T}"/>.
         /// </summary>
         protected TemplateBase()
         {
-            HasDynamicModel = GetType()
-                .IsDefined(typeof(HasDynamicModelAttribute), true);
+            HasDynamicModel = GetType().IsDefined(typeof (HasDynamicModelAttribute), true);
         }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Determines whether this template has a dynamic model.
         /// </summary>
@@ -39,15 +40,37 @@
         /// </summary>
         public T Model
         {
-            get { return (T)model; }
+            get { return (T)currentModel; }
             set
             {
                 if (HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject))
-                    model = new RazorDynamicObject { Model = value };
+                    currentModel = new RazorDynamicObject { Model = value };
                 else
-                    model = value;
+                    currentModel = value;
             }
         }
+
         #endregion
+
+        /// <summary>
+        /// Includes the template with the specified name.
+        /// </summary>
+        /// <param name="cacheName">The name of the template type in cache.</param>
+        /// <param name="model">The model or NULL if there is no model for the template.</param>
+        /// <returns>The template writer helper.</returns>
+        public override TemplateWriter Include(string cacheName, object model = null)
+        {
+            return base.Include(cacheName, model ?? Model);
+        }
+
+        /// <summary>
+        /// Resolves the layout template.
+        /// </summary>
+        /// <param name="name">The name of the layout template.</param>
+        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
+        protected override ITemplate ResolveLayout(string name)
+        {
+            return TemplateService.Resolve(name, Model);
+        }
     }
 }
