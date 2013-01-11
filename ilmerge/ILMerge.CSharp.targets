@@ -1,0 +1,37 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- MSBuild target to automatically ILMerge dependencies. Adapted from
+       http://www.hanselman.com/blog/MixingLanguagesInASingleAssemblyInVisualStudioSeamlesslyWithILMergeAndMSBuild.aspx 
+       and using comments from 
+       http://stackoverflow.com/questions/2556048/how-to-integrate-ilmerge-into-visual-studio-build-process-to-merge-assemblies
+  -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <Target Name="MergeReferences" BeforeTargets="PostBuildEvent"> 
+    <CreateItem Include="@(ReferencePath)" Condition="'%(CopyLocal)'=='true' and '%(ReferencePath.IlMerge)'=='true'"> 
+      <Output TaskParameter="Include" ItemName="IlmergeAssemblies"/> 
+    </CreateItem>
+
+    <ItemGroup>
+      <ILMergeArg Include="/lib:&quot;$(MSBuildBinPath)&quot;" />
+      <ILMergeArg Include="/internalize" />
+    </ItemGroup>
+    <ItemGroup Condition=" ($(SignAssembly)) ">
+      <ILMergeArg Include="/keyfile:&quot;$(MSBuildProjectDirectory)\$(AssemblyOriginatorKeyFile)&quot;" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFrameworkVersion.SubString(1))' &gt;= '4.0' ">
+      <ILMergeArg Include="/v4" />
+    </ItemGroup>
+
+    <Message Text="MERGING: @(IlmergeAssemblies->'%(Filename)')" Importance="High" />
+
+    <Exec Command="&quot;$(MSBuildThisFileDirectory)Ilmerge.exe&quot; /out:@(MainAssembly) @(ILMergeArg, ' ') &quot;$(MSBuildProjectDirectory)\@(IntermediateAssembly)&quot; @(IlmergeAssemblies->'&quot;%(FullPath)&quot;', ' ')" />
+    <!-- <Exec Command="&quot;$(MSBuildThisFileDirectory)Ilmerge.exe&quot; /lib:&quot;$(MSBuildBinPath)&quot; /targetplatform:$(TargetFrameworkVersion) /out:@(MainAssembly) &quot;$(MSBuildProjectDirectory)\@(IntermediateAssembly)&quot; $(ILMergeKeyFileArg)$(ILMergeDelaySignArg) " /> -->
+  </Target> 
+
+  <Target Name="AfterResolveReferences">
+    <Message Text="Filtering out ilmerge assemblies from ReferenceCopyLocalPaths" Importance="High" />
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.IlMerge)'=='true'" />
+    </ItemGroup>
+  </Target>
+</Project>

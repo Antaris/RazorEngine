@@ -14,7 +14,7 @@
     <tags>razor razorengine templating</tags>
   </metadata>
   <files>
-    <file src="lib\net40\RazorEngine.dll" target="lib\net40\RazorEngine.dll" />
-    <file src="lib\net40\System.Web.Razor.dll" target="lib\net40\System.Web.Razor.dll" />
+    <file src="lib\**\*.*" target="lib" />
+    <file src="..\src\Core\RazorEngine.Core\**\*.cs" target="src" />
   </files>
 </package>
