@@ -616,6 +616,8 @@
         /// <param name="model">The model instance.</param>
         private static void SetModel<T>(ITemplate template, T model)
         {
+            if (model == null) return;
+
             var dynamicTemplate = template as ITemplate<dynamic>;
             if (dynamicTemplate != null)
             {
@@ -648,7 +650,8 @@
             var type = template.GetType();
             var prop = type.GetProperty("Model");
 
-            prop.SetValue(template, model, null);
+            if (prop != null)
+                prop.SetValue(template, model, null);
         }
         #endregion
     }

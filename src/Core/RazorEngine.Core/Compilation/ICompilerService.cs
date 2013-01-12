@@ -28,9 +28,8 @@
         /// Builds a type name for the specified template type and model type.
         /// </summary>
         /// <param name="templateType">The template type.</param>
-        /// <param name="modelType">The model type.</param>
         /// <returns>The string type name (including namespace).</returns>
-        string BuildTypeName(Type templateType, Type modelType);
+        string BuildTypeName(Type templateType);
 
         /// <summary>
         /// Compiles the type defined in the specified type context.

@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="language">The code language.</param>
         /// <param name="markupParserFactory">The markup parser factory delegate.</param>
-        public RazorEngineHost(RazorCodeLanguage language, Func<MarkupParser> markupParserFactory)
+        public RazorEngineHost(RazorCodeLanguage language, Func<ParserBase> markupParserFactory)
             : base(language, markupParserFactory) { }
         #endregion
 
@@ -39,8 +39,8 @@
 
             if (incomingCodeParser is VBCodeParser)
                 return new VisualBasic.VBCodeParser();
-
-            return incomingCodeParser;
+            
+            return base.DecorateCodeParser(incomingCodeParser);
         }
         #endregion
     }

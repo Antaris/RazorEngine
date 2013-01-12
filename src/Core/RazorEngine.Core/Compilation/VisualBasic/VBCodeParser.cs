@@ -1,11 +1,13 @@
-﻿namespace RazorEngine.Compilation.VisualBasic
+﻿
+namespace RazorEngine.Compilation.VisualBasic
 {
-    using System.Diagnostics.Contracts;
-    using System.Web.Razor.Parser;
+    using System;
+    using System.Linq;
+    using System.Web.Razor.Generator;
+    using System.Web.Razor.Tokenizer.Symbols;
     using System.Web.Razor.Parser.SyntaxTree;
     using System.Web.Razor.Text;
-
-    using Spans;
+    using CodeGenerators;
 
     /// <summary>
     /// Defines a code parser that supports the VB syntax.
@@ -13,7 +15,9 @@
     public class VBCodeParser : System.Web.Razor.Parser.VBCodeParser
     {
         #region Fields
-        private bool _modelOrInheritsStatementFound;
+        private const string GenericTypeFormatString = "{0}(Of {1})";
+        private SourceLocation? _endInheritsLocation;
+        private bool _modelStatementFound;
         #endregion
 
         #region Constructor
@@ -22,7 +26,7 @@
         /// </summary>
         public VBCodeParser()
         {
-            KeywordHandlers.Add("modeltype", ParseModelTypeStatement);
+            MapDirective("ModelType", ModelTypeDirective);
         }
         #endregion
 
@@ -30,61 +34,75 @@
         /// <summary>
         /// Parses the inherits statement.
         /// </summary>
-        /// <param name="block">The code block.</param>
-        protected override bool ParseInheritsStatement(CodeBlockInfo block)
+        protected override bool InheritsStatement()
         {
-            var location = CurrentLocation;
+            // Verify we're on the right keyword and accept
+            Assert(VBKeyword.Inherits);
+            VBSymbol inherits = CurrentSymbol;
+            NextToken();
+            _endInheritsLocation = CurrentLocation;
+            PutCurrentBack();
+            PutBack(inherits);
+            EnsureCurrent();
 
-            if (_modelOrInheritsStatementFound)
-                OnError(location, "The modeltype or inherits keywords can only appear once.");
+            bool result = base.InheritsStatement();
+            CheckForInheritsAndModelStatements();
+            return result;
+        }
 
-            _modelOrInheritsStatementFound = true;
-
-            return base.ParseInheritsStatement(block);
+        private void CheckForInheritsAndModelStatements()
+        {
+            if (_modelStatementFound && _endInheritsLocation.HasValue)
+            {
+                Context.OnError(_endInheritsLocation.Value, "The 'inherits' keyword is not allowed when a 'ModelType' keyword is used.");
+            }
         }
 
         /// <summary>
         /// Parses the modeltype statement.
         /// </summary>
-        /// <param name="block">The code block.</param>
-        public bool ParseModelTypeStatement(CodeBlockInfo block)
+        protected virtual bool ModelTypeDirective()
         {
-            Contract.Requires(block != null);
+            AssertDirective("ModelType");
 
-            using (StartBlock(BlockType.Directive))
+            Span.CodeGenerator = SpanCodeGenerator.Null;
+            Context.CurrentBlock.Type = BlockType.Directive;
+
+            AcceptAndMoveNext();
+            SourceLocation endModelLocation = CurrentLocation;
+
+            if (At(VBSymbolType.WhiteSpace))
             {
-                block.ResumeSpans(Context);
-
-                SourceLocation location = CurrentLocation;
-                bool readWhitespace = RequireSingleWhiteSpace();
-
-                End(MetaCodeSpan.Create(Context, false, readWhitespace ? AcceptedCharacters.None : AcceptedCharacters.Any));
-
-                if (_modelOrInheritsStatementFound)
-                    OnError(location, "The modeltype or inherits keywords can only appear once.");
-
-                _modelOrInheritsStatementFound = true;
-
-                // Accept Whitespace up to the new line or non-whitespace character
-                Context.AcceptWhiteSpace(false);
-
-                string typeName = null;
-                if (ParserHelpers.IsIdentifierStart(CurrentCharacter))
-                {
-                    using (Context.StartTemporaryBuffer())
-                    {
-                        Context.AcceptUntil(ParserHelpers.IsNewLine);
-                        typeName = Context.ContentBuffer.ToString();
-                        Context.AcceptTemporaryBuffer();
-                    }
-                    Context.AcceptNewLine();
-                }
-                else
-                {
-                    OnError(location, "Expected model identifier.");
-                }
-                End(new ModelSpan(Context, typeName));
+                Span.EditHandler.AcceptedCharacters = AcceptedCharacters.None;
             }
+
+            AcceptWhile(VBSymbolType.WhiteSpace);
+            Output(SpanKind.MetaCode);
+
+            if (_modelStatementFound)
+            {
+                Context.OnError(endModelLocation, "Only one 'ModelType' statement is allowed in a file.");
+            }
+            _modelStatementFound = true;
+
+            if (EndOfFile || At(VBSymbolType.WhiteSpace) || At(VBSymbolType.NewLine))
+            {
+                Context.OnError(endModelLocation, "The 'ModelType' keyword must be followed by a type name on the same line.");
+            }
+
+            // Just accept to a newline
+            AcceptUntil(VBSymbolType.NewLine);
+            if (!Context.DesignTimeMode)
+            {
+                // We want the newline to be treated as code, but it causes issues at design-time.
+                Optional(VBSymbolType.NewLine);
+            }
+
+            string baseType = String.Concat(Span.Symbols.Select(s => s.Content)).Trim();
+            Span.CodeGenerator = new SetModelTypeCodeGenerator(baseType, GenericTypeFormatString);
+
+            CheckForInheritsAndModelStatements();
+            Output(SpanKind.Code);
             return false;
         }
         #endregion

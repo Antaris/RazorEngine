@@ -38,6 +38,11 @@
         /// Gets the viewbag that allows sharing state between layout and child templates.
         /// </summary>
         public dynamic ViewBag { get { return _context.ViewBag; } }
+
+        /// <summary>
+        /// Gets the current writer.
+        /// </summary>
+        public TextWriter CurrentWriter { get { return _context.CurrentWriter; } }
         #endregion
 
         #region Methods
