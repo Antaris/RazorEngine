@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{CB08CC9C-1232-4F96-8A43-BFFA906D3DC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Core", "Core\RazorEngine.Core\RazorEngine.Core.csproj", "{D268F86D-2DAB-4329-A75F-3BCF6D5BCDC4}"
@@ -10,11 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3BBC42
 		Shared\RazorEngine.Public.snk = Shared\RazorEngine.Public.snk
 		Shared\RazorEngine.snk = Shared\RazorEngine.snk
 		Shared\SharedAssemblyInfo.cs = Shared\SharedAssemblyInfo.cs
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{9B6FDFEF-B0A6-43F1-AFC6-66C3809703CC}"
-	ProjectSection(SolutionItems) = preProject
-		Libraries\System.Web.Razor.dll = Libraries\System.Web.Razor.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{736162F9-990C-4DDA-BDC6-7FBDEC0AA857}"

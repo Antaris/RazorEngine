@@ -66,20 +66,18 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\Libraries\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AttributeValue.cs" />
+    <Compile Include="CodeGenerators\SetModelTypeCodeGenerator.cs" />
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
     <Compile Include="Compilation\CompilerServicesUtility.cs" />
@@ -112,12 +110,14 @@
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElementCollection.cs" />
     <Compile Include="Configuration\Xml\XmlTemplateServiceConfiguration.cs" />
     <Compile Include="Encoding.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Common\GlobalSuppressions.cs" />
+    <Compile Include="Common\HashCodeCombiner.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PositionTagged.cs" />
     <Compile Include="Razor.cs" />
-    <Compile Include="Spans\ModelSpan.cs" />
     <Compile Include="Templating\CachedTemplateItem.cs" />
+    <Compile Include="Templating\HtmlTemplateBaseOfT.cs" />
     <Compile Include="Templating\DefaultActivator.cs" />
     <Compile Include="Templating\DefaultAppDomainFactory.cs" />
     <Compile Include="Templating\DelegateActivator.cs" />
@@ -153,14 +153,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
     <None Include="RazorEngine.snk" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)*.dll" "$(SolutionDir)..\nuget\lib\net40" /y
-xcopy "$(TargetDir)*.pdb" "$(SolutionDir)..\nuget\lib\net40" /y
-xcopy "$(TargetDir)*.xml" "$(SolutionDir)..\nuget\lib\net40" /y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)RazorEngine.*" "$(SolutionDir)..\nuget\lib\net40" /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

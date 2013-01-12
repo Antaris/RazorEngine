@@ -49,5 +49,17 @@
             }
         }
         #endregion
+
+        #region Methods
+        /// <summary>
+        /// Resolves the layout template.
+        /// </summary>
+        /// <param name="name">The name of the layout template.</param>
+        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
+        protected override ITemplate ResolveLayout(string name)
+        {
+            return TemplateService.Resolve(name, (T)model);
+        }
+        #endregion
     }
 }

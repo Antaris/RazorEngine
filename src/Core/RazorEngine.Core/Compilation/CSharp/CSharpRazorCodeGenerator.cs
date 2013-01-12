@@ -1,11 +1,9 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
-    using System;
     using System.CodeDom;
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
 
-    using Spans;
     using Templating;
 
     /// <summary>
@@ -26,6 +24,12 @@
             : base(className, rootNamespaceName, sourceFileName, host)
         {
             StrictMode = strictMode;
+            var mvcHost = host as Compilation.RazorEngineHost;
+            if (mvcHost != null)
+            {
+                // set the default model type to "dynamic"
+                SetBaseType("dynamic");
+            }
         }
         #endregion
 
@@ -37,33 +41,11 @@
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Sets the model type.
-        /// </summary>
-        /// <param name="modelTypeName">The model type.</param>
-        private void SetModelType(string modelTypeName)
+        private void SetBaseType(string modelTypeName)
         {
-            var host = (Compilation.RazorEngineHost)Host;
-            var type = host.DefaultBaseTemplateType;
-            var className = type.Name;
-
-            if (className.Contains("`"))
-                className = className.Substring(0, className.IndexOf('`'));
-
-            string baseName = string.Format("{0}.{1}<{2}>", type.Namespace, className, modelTypeName);
-            var baseType = new CodeTypeReference(baseName);
-            GeneratedClass.BaseTypes.Clear();
-            GeneratedClass.BaseTypes.Add(baseType);
-        }
-
-        /// <summary>
-        /// Visits any specialised spans used to introduce custom logic.
-        /// </summary>
-        /// <param name="span">The current span.</param>
-        /// <returns>True if additional spans were matched, otherwise false.</returns>
-        protected override bool TryVisitSpecialSpan(Span span)
-        {
-            return TryVisit<ModelSpan>(span, VisitModelSpan);
+            var baseType = new CodeTypeReference(Context.Host.DefaultBaseClass + "<" + modelTypeName + ">");
+            Context.GeneratedClass.BaseTypes.Clear();
+            Context.GeneratedClass.BaseTypes.Add(baseType);
         }
 
         /// <summary>
@@ -74,18 +56,6 @@
         {
             if (StrictMode)
                 throw new TemplateParsingException(err);
-        }
-
-        /// <summary>
-        /// Visits a model span.
-        /// </summary>
-        /// <param name="span">The model span.</param>
-        private void VisitModelSpan(ModelSpan span)
-        {
-            SetModelType(span.ModelTypeName);
-
-            if (DesignTimeMode)
-                WriteHelperVariable(span.Content, "__modelHelper");
         }
         #endregion
     }

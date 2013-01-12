@@ -1,9 +1,9 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
+    using System.Web.Razor.Generator;
+    using System.Web.Razor.Text;
     using System.Web.Razor.Parser;
-    using System.Web.Razor.Parser.SyntaxTree;
-
-    using Spans;
+    using CodeGenerators;
 
     /// <summary>
     /// Defines a code parser that supports the C# syntax.
@@ -11,7 +11,9 @@
     public class CSharpCodeParser : System.Web.Razor.Parser.CSharpCodeParser
     {
         #region Fields
-        private bool _modelOrInheritsStatementFound;
+        private const string GenericTypeFormatString = "{0}<{1}>";
+        private SourceLocation? _endInheritsLocation;
+        private bool _modelStatementFound;
         #endregion
 
         #region Constructor
@@ -20,7 +22,7 @@
         /// </summary>
         public CSharpCodeParser()
         {
-            RazorKeywords.Add("model", WrapSimpleBlockParser(BlockType.Directive, ParseModelStatement));
+            MapDirectives(ModelDirective, "model");
         }
         #endregion
 
@@ -28,54 +30,51 @@
         /// <summary>
         /// Parses the inherits statement.
         /// </summary>
-        /// <param name="block">The code block.</param>
-        protected override bool ParseInheritsStatement(CodeBlockInfo block)
+        protected override void InheritsDirective()
         {
-            var location = CurrentLocation;
+            // Verify we're on the right keyword and accept
+            AssertDirective(SyntaxConstants.CSharp.InheritsKeyword);
+            AcceptAndMoveNext();
+            _endInheritsLocation = CurrentLocation;
 
-            if (_modelOrInheritsStatementFound)
-                OnError(location, "The model or inherits keywords can only appear once.");
+            InheritsDirectiveCore();
+            CheckForInheritsAndModelStatements();
+        }
 
-            _modelOrInheritsStatementFound = true;
-
-            return base.ParseInheritsStatement(block);
+        private void CheckForInheritsAndModelStatements()
+        {
+            if (_modelStatementFound && _endInheritsLocation.HasValue)
+            {
+                Context.OnError(_endInheritsLocation.Value, "The 'inherits' keyword is not allowed when a 'model' keyword is used.");
+            }
         }
 
         /// <summary>
         /// Parses the model statement.
         /// </summary>
-        /// <param name="block">The code block.</param>
-        private bool ParseModelStatement(CodeBlockInfo block)
+        protected virtual void ModelDirective()
         {
-            var location = CurrentLocation;
+            // Verify we're on the right keyword and accept
+            AssertDirective("model");
+            AcceptAndMoveNext();
 
-            bool readWhiteSpace = RequireSingleWhiteSpace();
-            End(MetaCodeSpan.Create(Context, false, readWhiteSpace ? AcceptedCharacters.None : AcceptedCharacters.Any));
+            SourceLocation endModelLocation = CurrentLocation;
 
-            if (_modelOrInheritsStatementFound)
-                OnError(location, "The model or inherits keywords can only appear once.");
+            BaseTypeDirective("The 'model' keyword must be followed by a type name on the same line.", CreateModelCodeGenerator);
 
-            _modelOrInheritsStatementFound = true;
-
-            Context.AcceptWhiteSpace(false);
-
-            string typeName = null;
-            if (ParserHelpers.IsIdentifierStart(CurrentCharacter))
+            if (_modelStatementFound)
             {
-                using (Context.StartTemporaryBuffer())
-                {
-                    Context.AcceptUntil(ParserHelpers.IsNewLine);
-                    typeName = Context.ContentBuffer.ToString();
-                    Context.AcceptTemporaryBuffer();
-                }
-                Context.AcceptNewLine();
+                Context.OnError(endModelLocation, "Only one 'model' statement is allowed in a file.");
             }
-            else
-            {
-                OnError(location, "Expected model identifier.");
-            }
-            End(new ModelSpan(Context, typeName));
-            return false;
+
+            _modelStatementFound = true;
+
+            CheckForInheritsAndModelStatements();
+        }
+
+        private SpanCodeGenerator CreateModelCodeGenerator(string model)
+        {
+            return new SetModelTypeCodeGenerator(model, GenericTypeFormatString);
         }
         #endregion
     }

@@ -21,7 +21,7 @@
         /// <param name="strictMode">Specifies whether the strict mode parsing is enabled.</param>
         /// <param name="markupParserFactory">The markup parser factory to use.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed"), SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed in base class: DirectCompilerServiceBase")]
-        public CSharpDirectCompilerService(bool strictMode = true, Func<MarkupParser> markupParserFactory = null)
+        public CSharpDirectCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
             : base(
                 new CSharpRazorCodeLanguage(strictMode),
                 new CSharpCodeProvider(),
@@ -29,30 +29,6 @@
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Builds a type name for the specified generic type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="isDynamic">Specifies whether the type is dynamic.</param>
-        /// <returns>
-        /// The string typename (including namespace and generic type parameters).
-        /// </returns>
-        public override string BuildTypeNameInternal(Type type, bool isDynamic)
-        {
-            if (type == null)
-                throw new ArgumentNullException("type");
-
-            if (!type.IsGenericType)
-                return type.FullName;
-
-            return type.Namespace
-                   + "."
-                   + type.Name.Substring(0, type.Name.IndexOf('`'))
-                   + "<"
-                   + (isDynamic ? "dynamic" : string.Join(", ", type.GetGenericArguments().Select(t => BuildTypeNameInternal(t, CompilerServicesUtility.IsDynamicType(t)))))
-                   + ">";
-        }
-
         /// <summary>
         /// Returns a set of assemblies that must be referenced by the compiled template.
         /// </summary>
