@@ -127,7 +127,7 @@
             using (var service = new TemplateService())
             {
                 const string child = "<div>Content from child</div>";
-                const string template = "@Include(\"Child\", null)";
+                const string template = "@Include(\"Child\")";
                 const string expected = "<div>Content from child</div>";
 
                 service.GetTemplate(child, null, "Child");
@@ -136,6 +136,46 @@
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
+        
+        /// <summary>
+        /// Tests that a template service can include another template with current templete model if it was not specified.
+        /// </summary>
+        [Test]
+        public void TemplateBase_CanRenderWithInclude_WithCurrentModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string child = "@model RazorEngine.Tests.TestTypes.Person\n<div>Content from child for @Model.Forename</div>";
+                const string template = "@model RazorEngine.Tests.TestTypes.Person\n@Include(\"Child\")";
+                const string expected = "<div>Content from child for Test</div>";
+                var person = new Person { Forename = "Test" };
+
+                service.GetTemplate(child, person, "Child");
+                string result = service.Parse(template, person, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        } 
+        
+        /// <summary>
+        /// Tests that a template service can include another template with current templete model if it was not specified.
+        /// </summary>
+        [Test]
+        public void TemplateBase_CanRenderWithInclude_WithCustomModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string child = "@model RazorEngine.Tests.TestTypes.Person\n<div>Content from child for @Model.Forename</div>";
+                const string template = "@Include(\"Child\", new RazorEngine.Tests.TestTypes.Person { Forename = \"Test\" })";
+                const string expected = "<div>Content from child for Test</div>";
+
+                service.GetTemplate(child, null, "Child");
+                string result = service.Parse(template, null, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
         #endregion
     }
 }
