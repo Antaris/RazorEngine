@@ -4,8 +4,8 @@
     <id>RazorEngine</id>
     <version>3.1.0</version>
     <title>RazorEngine v3.1.0beta</title>
-    <authors>Matthew Abbott,Ben Dornis</authors>
-    <owners>Matthew Abbott,Ben Dornis</owners>
+    <authors>Matthew Abbott, Ben Dornis</authors>
+    <owners>Matthew Abbott, Ben Dornis</owners>
     <licenseUrl>http://razorengine.codeplex.com/license</licenseUrl>
     <projectUrl>http://razorengine.codeplex.com/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -15,6 +15,8 @@
   </metadata>
   <files>
     <file src="lib\net40\RazorEngine.dll" target="lib\net40\RazorEngine.dll" />
+    <file src="lib\net40\RazorEngine.pdb" target="lib\net40\RazorEngine.pdb" />
+    <file src="lib\net40\RazorEngine.XML" target="lib\net40\RazorEngine.XML" />
   </files>
   <dependencies>
     <dependency id="Microsoft.AspNet.Razor" version="2.0.20710.0" />

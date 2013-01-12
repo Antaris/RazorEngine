@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>DotNetOpenAuth.Core</id>
+    <version>4.0.3.12153</version>
+    <title>DotNetOpenAuth Core</title>
+    <authors>Andrew Arnott</authors>
+    <owners>Outercurve Foundation</owners>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl.html</licenseUrl>
+    <projectUrl>http://www.dotnetopenauth.net/</projectUrl>
+    <iconUrl>https://github.com/AArnott/dotnetopenid/raw/v3.4/doc/logo/dnoa-logo_32x32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains shared code for other NuGet packages, and contains no public API in and of itself.</description>
+    <summary>Shared library implementing the messaging pipeline used by auxiliary DotNetOpenAuth libraries.</summary>
+    <language>en-US</language>
+  </metadata>
+</package>

@@ -70,26 +70,10 @@
 
             if (!templateType.IsGenericTypeDefinition || !templateType.IsGenericType)
                 return templateType.FullName;
-<<<<<<< HEAD
 
-            if (modelType == null)
-                throw new ArgumentException("The template type is a generic defintion, and no model type has been supplied.");
-
-            if (CompilerServicesUtility.IsIteratorType(modelType))
-            {
-                modelType = GetIteratorInterface(modelType);
-            }
-
-            bool @dynamic = CompilerServicesUtility.IsDynamicType(modelType);
-            Type genericType = templateType.MakeGenericType(modelType);
-
-            return BuildTypeNameInternal(genericType, @dynamic);
-=======
-            
             return templateType.Namespace
                    + "."
                    + templateType.Name.Substring(0, templateType.Name.IndexOf('`'));
->>>>>>> 57f72d765ad8c63add3a56ac7bb290817f0ca5b0
         }
 
         private static Type GetIteratorInterface(Type modelType)

@@ -52,7 +52,6 @@
 
         #endregion
 
-<<<<<<< HEAD
         /// <summary>
         /// Includes the template with the specified name.
         /// </summary>
@@ -64,9 +63,7 @@
             return base.Include(cacheName, model ?? Model);
         }
 
-=======
         #region Methods
->>>>>>> coxp-release-3.0
         /// <summary>
         /// Resolves the layout template.
         /// </summary>
@@ -74,13 +71,8 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected override ITemplate ResolveLayout(string name)
         {
-<<<<<<< HEAD
-            return TemplateService.Resolve(name, Model);
-        }
-=======
-            return TemplateService.Resolve(name, (T)model);
+            return TemplateService.Resolve(name, (T)currentModel);
         }
         #endregion
->>>>>>> coxp-release-3.0
     }
 }
