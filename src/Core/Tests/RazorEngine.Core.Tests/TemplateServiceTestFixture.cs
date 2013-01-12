@@ -122,7 +122,7 @@
                 const string expected = "One Two Three";
 
                 var model = CreateIterator("One ", "Two ", "Three");
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
