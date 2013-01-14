@@ -133,7 +133,7 @@
             foreach (var item in items) yield return item;
         }
 
-            /// <summary>
+        /// <summary>
         /// Tests that a simple template with html-encoding can be parsed.
         /// </summary>
         /// <remarks>
@@ -372,6 +372,47 @@
                 string result = service.Run("test", model, null);
 
                 Assert.That(result == expected, "Result does not match expected.");
+            }
+        }
+
+        /// <summary>
+        /// Tests that a simple helper template with html-encoding can be parsed.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanParseSimpleHelperTemplate_UsingHtmlEncoding()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>Hello @NameHelper()</h1>@helper NameHelper() { @Model.String }";
+                const string expected = "<h1>Hello Matt &amp; World</h1>";
+
+                var model = new { String = "Matt & World" };
+                string result = service.Parse(template, model, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that a simple helper template with no-encoding can be parsed.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanParseSimpleHelperTemplate_UsingRawEncoding()
+        {
+            var config = new TemplateServiceConfiguration()
+            {
+                EncodedStringFactory = new RawStringFactory()
+            };
+
+            using (var service = new TemplateService(config))
+            {
+                const string template = "<h1>Hello @NameHelper()</h1>@helper NameHelper() { @Model.String }";
+                const string expected = "<h1>Hello Matt & World</h1>";
+
+                var model = new { String = "Matt & World" };
+                string result = service.Parse(template, model, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
         #endregion
