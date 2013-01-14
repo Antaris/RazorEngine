@@ -1,4 +1,4 @@
-﻿namespace RazorEngine.Templating
+namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.Contracts;
@@ -201,6 +201,85 @@
 
             helper.WriteTo(_context.CurrentWriter);
         }
+        
+        /// <summary>
+        /// Writes an attribute to the result.
+        /// </summary>
+        /// <param name="name">The name of the attribute.</param>
+        public virtual void WriteAttribute(string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
+        {
+            WriteAttributeTo(CurrentWriter, name, prefix, suffix, values);
+        }
+
+        /// <summary>
+        /// Writes an attribute to the specified <see cref="TextWriter"/>.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        /// <param name="name">The name of the attribute to be written.</param>
+        [Pure]
+        public virtual void WriteAttributeTo(TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
+        {
+            bool first = true;
+            bool wroteSomething = false;
+            if (values.Length == 0)
+            {
+                // Explicitly empty attribute, so write the prefix and suffix
+                WritePositionTaggedLiteral(writer, prefix);
+                WritePositionTaggedLiteral(writer, suffix);
+            }
+            else
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    AttributeValue attrVal = values[i];
+                    PositionTagged<object> val = attrVal.Value;
+
+                    bool? boolVal = null;
+                    if (val.Value is bool)
+                    {
+                        boolVal = (bool)val.Value;
+                    }
+
+                    if (val.Value != null && (boolVal == null || boolVal.Value))
+                    {
+                        string valStr = val.Value as string;
+                        if (valStr == null)
+                        {
+                            valStr = val.Value.ToString();
+                        }
+                        if (boolVal != null)
+                        {
+                            Debug.Assert(boolVal.Value);
+                            valStr = name;
+                        }
+
+                        if (first)
+                        {
+                            WritePositionTaggedLiteral(writer, prefix);
+                            first = false;
+                        }
+                        else
+                        {
+                            WritePositionTaggedLiteral(writer, attrVal.Prefix);
+                        }
+
+                        if (attrVal.Literal)
+                        {
+                            WriteLiteralTo(writer, valStr);
+                        }
+                        else
+                        {
+                            WriteTo(writer, valStr); // Write value
+                        }
+                        wroteSomething = true;
+                    }
+                }
+                if (wroteSomething)
+                {
+                    WritePositionTaggedLiteral(writer, suffix);
+                }
+            }
+        }
 
         /// <summary>
         /// Writes the specified string to the result.
@@ -225,6 +304,17 @@
 
             if (literal == null) return;
             writer.Write(literal);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="PositionTagged{string}" /> literal to the result.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        /// <param name="literal">The literal to be written.</param>
+        [Pure]
+        private void WritePositionTaggedLiteral(TextWriter writer, PositionTagged<string> value)
+        {
+            WriteLiteralTo(writer, value.Value);
         }
 
         /// <summary>
