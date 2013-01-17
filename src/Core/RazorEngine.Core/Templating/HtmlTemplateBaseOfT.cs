@@ -9,7 +9,7 @@ namespace RazorEngine.Templating
     /// <remarks>
     /// This type does not currently serve a purpose, and the WriteAttribute* API has been migrated to the TemplateBase type. This type is not deprecated, as it
     /// may form the basis for a future template that supports MVC like @Html syntax.
-    /// <remarks>
+    /// </remarks>
     /// <typeparam name="T">The model type.</typeparam>
     public class HtmlTemplateBase<T> : TemplateBase<T> { }
 }

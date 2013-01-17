@@ -1678,12 +1678,7 @@
             Gets the template type.
             </summary>
         </member>
-        <member name="T:RazorEngine.Templating.HtmlTemplateBase`1">
-            <summary>
-            Provides a base implementation of an html template with a model.
-            </summary>
-            <typeparam name="T">The model type.</typeparam>
-        </member>
+        <!-- Badly formed XML comment ignored for member "T:RazorEngine.Templating.HtmlTemplateBase`1" -->
         <member name="T:RazorEngine.Templating.TemplateBase`1">
             <summary>
             Provides a base implementation of a template with a model.
@@ -1808,6 +1803,19 @@
             </summary>
             <param name="helper">The template writer helper.</param>
         </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.WriteAttribute(System.String,RazorEngine.PositionTagged{System.String},RazorEngine.PositionTagged{System.String},RazorEngine.AttributeValue[])">
+            <summary>
+            Writes an attribute to the result.
+            </summary>
+            <param name="name">The name of the attribute.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.WriteAttributeTo(System.IO.TextWriter,System.String,RazorEngine.PositionTagged{System.String},RazorEngine.PositionTagged{System.String},RazorEngine.AttributeValue[])">
+            <summary>
+            Writes an attribute to the specified <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+            <param name="writer">The writer.</param>
+            <param name="name">The name of the attribute to be written.</param>
+        </member>
         <member name="M:RazorEngine.Templating.TemplateBase.WriteLiteral(System.String)">
             <summary>
             Writes the specified string to the result.
@@ -1817,6 +1825,13 @@
         <member name="M:RazorEngine.Templating.TemplateBase.WriteLiteralTo(System.IO.TextWriter,System.String)">
             <summary>
             Writes a string literal to the specified <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+            <param name="writer">The writer.</param>
+            <param name="literal">The literal to be written.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.WritePositionTaggedLiteral(System.IO.TextWriter,RazorEngine.PositionTagged{System.String})">
+            <summary>
+            Writes a <see cref="!:PositionTagged&lt;string&gt;"/> literal to the result.
             </summary>
             <param name="writer">The writer.</param>
             <param name="literal">The literal to be written.</param>
@@ -1895,19 +1910,6 @@
             <summary>
             Gets or sets the model.
             </summary>
-        </member>
-        <member name="M:RazorEngine.Templating.HtmlTemplateBase`1.WriteAttribute(System.String,RazorEngine.PositionTagged{System.String},RazorEngine.PositionTagged{System.String},RazorEngine.AttributeValue[])">
-            <summary>
-            Writes an attribute to the result.
-            </summary>
-            <param name="name">The name of the attribute.</param>
-        </member>
-        <member name="M:RazorEngine.Templating.HtmlTemplateBase`1.WriteAttributeTo(System.IO.TextWriter,System.String,RazorEngine.PositionTagged{System.String},RazorEngine.PositionTagged{System.String},RazorEngine.AttributeValue[])">
-            <summary>
-            Writes an attribute to the specified <see cref="T:System.IO.TextWriter"/>.
-            </summary>
-            <param name="writer">The writer.</param>
-            <param name="name">The name of the attribute to be written.</param>
         </member>
         <member name="T:RazorEngine.Templating.DefaultActivator">
             <summary>
