@@ -1,6 +1,7 @@
 namespace RazorEngine.Templating
 {
     using System;
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Text;
@@ -176,18 +177,7 @@ namespace RazorEngine.Templating
         /// <param name="value">The value to write.</param>
         public virtual void Write(object value)
         {
-            if (value == null) return;
-
-            var encodedString = value as IEncodedString;
-            if (encodedString != null)
-            {
-                _context.CurrentWriter.Write(encodedString);
-            }
-            else
-            {
-                encodedString = TemplateService.EncodedStringFactory.CreateEncodedString(value);
-                _context.CurrentWriter.Write(encodedString);
-            }
+            WriteTo(_context.CurrentWriter, value);
         }
 
         /// <summary>
@@ -216,7 +206,6 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="name">The name of the attribute to be written.</param>
-        [Pure]
         public virtual void WriteAttributeTo(TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
         {
             bool first = true;
@@ -287,8 +276,7 @@ namespace RazorEngine.Templating
         /// <param name="literal">The literal to write.</param>
         public virtual void WriteLiteral(string literal)
         {
-            if (literal == null) return;
-            _context.CurrentWriter.Write(literal);
+            WriteLiteralTo(_context.CurrentWriter, literal);
         }
 
         /// <summary>
@@ -296,8 +284,7 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="literal">The literal to be written.</param>
-        [Pure]
-        public static void WriteLiteralTo(TextWriter writer, string literal)
+        public virtual void WriteLiteralTo(TextWriter writer, string literal)
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
@@ -311,7 +298,6 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="literal">The literal to be written.</param>
-        [Pure]
         private void WritePositionTaggedLiteral(TextWriter writer, PositionTagged<string> value)
         {
             WriteLiteralTo(writer, value.Value);
@@ -322,14 +308,23 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="value">The value to be written.</param>
-        [Pure]
-        public static void WriteTo(TextWriter writer, object value)
+        public virtual void WriteTo(TextWriter writer, object value)
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
 
             if (value == null) return;
-            writer.Write(value);
+            
+            var encodedString = value as IEncodedString;
+            if (encodedString != null)
+            {
+                writer.Write(encodedString);
+            }
+            else
+            {
+                encodedString = TemplateService.EncodedStringFactory.CreateEncodedString(value);
+                _context.CurrentWriter.Write(encodedString);
+            }
         }
 
         /// <summary>
@@ -337,8 +332,7 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="helper">The template writer helper.</param>
-        [Pure]
-        public static void WriteTo(TextWriter writer, TemplateWriter helper)
+        public virtual void WriteTo(TextWriter writer, TemplateWriter helper)
         {
             helper.WriteTo(writer);
         }
