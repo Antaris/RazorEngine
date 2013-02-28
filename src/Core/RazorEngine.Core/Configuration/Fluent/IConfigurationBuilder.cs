@@ -104,6 +104,13 @@
         IConfigurationBuilder UseDefaultEncodedStringFactory();
 
         /// <summary>
+        /// Sets the base template type.
+        /// </summary>
+        /// <param name="baseTemplateType">The base template type.</param>
+        /// <returns>The current configuration builder/.</returns>
+        IConfigurationBuilder WithBaseTemplateType(Type baseTemplateType);
+
+        /// <summary>
         /// Sets the code language.
         /// </summary>
         /// <param name="language">The code language.</param>
