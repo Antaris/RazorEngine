@@ -433,7 +433,7 @@
         }
 
         /// <summary>
-        /// Tests that a tilde is expanded with html-encoding.
+        /// Tests that a tilde is expanded with no-encoding.
         /// </summary>
         [Test]
         public void TemplateService_CanParseTildeInTemplate_UsingRawEncoding() {
