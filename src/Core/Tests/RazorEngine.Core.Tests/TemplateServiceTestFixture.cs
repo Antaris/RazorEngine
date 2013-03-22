@@ -415,6 +415,42 @@
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
+
+        /// <summary>
+        /// Tests that a tilde is expanded with html-encoding.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanParseTildeInTemplate_UsingHtmlEncoding() {
+            using (var service = new TemplateService()) {
+                const string template = "<a href=\"~/index.html\">@Model.String</a>";
+                const string expected = "<a href=\"/index.html\">Matt</a>";
+
+                var model = new { String = "Matt" };
+                string result = service.Parse(template, model, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that a tilde is expanded with html-encoding.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanParseTildeInTemplate_UsingRawEncoding() {
+            var config = new TemplateServiceConfiguration() {
+                EncodedStringFactory = new RawStringFactory()
+            };
+
+            using (var service = new TemplateService(config)) {
+                const string template = "<a href=\"~/index.html\">@Model.String</a>";
+                const string expected = "<a href=\"/index.html\">Matt</a>";
+
+                var model = new { String = "Matt" };
+                string result = service.Parse(template, model, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
         #endregion
     }
 }
