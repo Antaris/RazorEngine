@@ -549,6 +549,23 @@
             return _cache.TryRemove(cacheName, out item);
         }
 
+        /// <summary>
+        /// Links the specified name in the cache to another already existing template with
+        /// the given cache name.
+        /// </summary>
+        /// <param name="cacheName">The name in the cache to link to an existing template.</param>
+        /// <param name="existingTemplateCacheName">The name in the cache of the existing template that should be linked to.</param>
+        /// <returns>true if the cache contained a mapping for the given existing template cache name</returns>
+        public bool LinkTemplate(string cacheName, string existingTemplateCacheName)
+        {
+            CachedTemplateItem item;
+            if (_cache.TryGetValue(existingTemplateCacheName, out item))
+            {
+                _cache.AddOrUpdate(cacheName, item, (n, i) => item);
+                return true;
+            }
+            return false;
+        }
 
         /// <summary>
         /// Resolves the template with the specified name.
@@ -629,6 +646,13 @@
             if (staticModel != null)
             {
                 staticModel.Model = model;
+                return;
+            }
+
+            var templateBase = template as TemplateBase;
+            if (templateBase != null)
+            {
+                templateBase.SetModel(model);
                 return;
             }
 

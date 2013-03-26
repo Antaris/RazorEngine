@@ -123,7 +123,9 @@ namespace RazorEngine.Templating
             using (var writer = new StringWriter(builder)) 
             {
                 _context.CurrentWriter = writer;
+                BeforeExecute();
                 Execute();
+                AfterExecute();
                 _context.CurrentWriter = null;
             }
 
@@ -335,6 +337,33 @@ namespace RazorEngine.Templating
         public virtual void WriteTo(TextWriter writer, TemplateWriter helper)
         {
             helper.WriteTo(writer);
+        }
+
+        /// <summary>
+        /// Allows setting the model when the type of the template does not match the model type.
+        /// Subclasses can override this to handle other model types beyond the standard <see cref="ITemplate{T}.Model"/>.
+        /// </summary>
+        protected internal virtual void SetModel(object model)
+        {
+            
+        }
+
+        /// <summary>
+        /// Called immediately before the template's <see cref="Execute"/> method.  Can be overridden as a hook point into
+        /// template execution.  The default implementation does nothing.
+        /// </summary>
+        protected virtual void BeforeExecute()
+        {
+            
+        }
+
+        /// <summary>
+        /// Called immediately after the template's <see cref="Execute"/> method, if no errors have occured.  Can be overridden as a hook point into
+        /// template execution.  The default implementation does nothing.
+        /// </summary>
+        protected virtual void AfterExecute()
+        {
+            
         }
         #endregion
     }
