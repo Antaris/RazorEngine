@@ -350,6 +350,11 @@
             return _proxy.RemoveTemplate(cacheName);
         }
 
+        public bool LinkTemplate(string cacheName, string existingTemplateCacheName)
+        {
+            return _proxy.LinkTemplate(cacheName, existingTemplateCacheName);
+        }
+
         /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>

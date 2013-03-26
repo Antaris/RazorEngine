@@ -125,6 +125,15 @@
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <returns>Whether or not the template has been removed.</returns>
         bool RemoveTemplate(string cacheName);
+
+        /// <summary>
+        /// Links the specified name in the cache to another already existing template with
+        /// the given cache name.
+        /// </summary>
+        /// <param name="cacheName">The name in the cache to link to an existing template.</param>
+        /// <param name="existingTemplateCacheName">The name in the cache of the existing template that should be linked to.</param>
+        /// <returns>true if the cache contained a mapping for the given existing template cache name</returns>
+        bool LinkTemplate(string cacheName, string existingTemplateCacheName);
         
         /// <summary>
         /// Parses and returns the result of the specified string template.
