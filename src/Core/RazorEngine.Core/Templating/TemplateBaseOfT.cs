@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Templating
+﻿using System;
+
+namespace RazorEngine.Templating
 {
     using System.Dynamic;
 
@@ -72,6 +74,18 @@
         protected override ITemplate ResolveLayout(string name)
         {
             return TemplateService.Resolve(name, (T)currentModel);
+        }
+
+        /// <summary>
+        /// Allows setting the model when the type of the template does not match the model type.
+        /// Subclasses can override this to handle other model types beyond the standard <see cref="ITemplate{T}.Model"/>.
+        /// The default implementation will cause a <see cref="InvalidCastException"/>.
+        /// </summary>
+        /// <param name="model">The model, which is not an instance of type T.</param>
+        protected internal override void SetModel(object model)
+        {
+            //default implementation is direct cast
+            this.Model = (T)model;
         }
         #endregion
     }

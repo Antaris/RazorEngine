@@ -632,6 +632,13 @@
                 return;
             }
 
+            var templateBase = template as TemplateBase;
+            if (templateBase != null)
+            {
+                templateBase.SetModel(model);
+                return;
+            }
+
             SetModelExplicit(template, model);
         }
 
