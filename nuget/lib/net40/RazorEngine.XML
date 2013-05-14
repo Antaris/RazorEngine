@@ -1678,7 +1678,16 @@
             Gets the template type.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:RazorEngine.Templating.HtmlTemplateBase`1" -->
+        <member name="T:RazorEngine.Templating.HtmlTemplateBase`1">
+            <summary>
+            Provides a base implementation of an html template with a model.
+            </summary>
+            <remarks>
+            This type does not currently serve a purpose, and the WriteAttribute* API has been migrated to the TemplateBase type. This type is not deprecated, as it
+            may form the basis for a future template that supports MVC like @Html syntax.
+            </remarks>
+            <typeparam name="T">The model type.</typeparam>
+        </member>
         <member name="T:RazorEngine.Templating.TemplateBase`1">
             <summary>
             Provides a base implementation of a template with a model.
@@ -1869,6 +1878,12 @@
             <summary>
             Gets the current writer.
             </summary>
+        </member>
+        <member name="T:RazorEngine.Templating.TemplateBase.Html">
+            <summary>'Fake' Html class purely for the purposes of mimicking the standard Razor syntax of @Html.Raw(...).</summary>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateBase.Html.Raw(System.String)">
+            <summary>The same Raw method that is in TemplateBase.</summary>
         </member>
         <member name="T:RazorEngine.Templating.ITemplate`1">
             <summary>

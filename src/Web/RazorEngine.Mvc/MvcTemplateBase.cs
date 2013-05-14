@@ -15,7 +15,7 @@
         /// <summary>
         /// Gets the <see cref="HtmlHelper{Object}"/> for this template.
         /// </summary>
-        public HtmlHelper<object> Html { get; private set; }
+        public new HtmlHelper<object> Html { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="UrlHelper"/> for this template.
