@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Compilation
+﻿using System.Linq;
+
+namespace RazorEngine.Compilation
 {
     using System;
     using System.Collections.Generic;
@@ -93,6 +95,63 @@
                 .GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 
             return constructors;
+        }
+
+        public static string ResolveCSharpTypeName(Type type)
+        {
+            if (IsIteratorType(type))
+                type = GetFirstGenericInterface(type);
+
+            if (IsDynamicType(type))
+                return "dynamic";
+
+            if (!type.IsGenericType)
+                return type.FullName;
+
+            return type.Namespace
+                  + "."
+                  + type.Name.Substring(0, type.Name.IndexOf('`'))
+                  + "<"
+                  + string.Join(", ", type.GetGenericArguments().Select(ResolveCSharpTypeName))
+                  + ">";
+        }
+
+        public static string ResolveVBTypeName(Type type)
+        {
+            if (IsIteratorType(type))
+                type = GetFirstGenericInterface(type);
+
+            if (IsDynamicType(type))
+                return "Object";
+
+            if (!type.IsGenericType)
+                return type.FullName;
+
+            return type.Namespace
+                  + "."
+                  + type.Name.Substring(0, type.Name.IndexOf('`'))
+                  + "(Of"
+                  + string.Join(", ", type.GetGenericArguments().Select(ResolveVBTypeName))
+                  + ")";
+        }
+
+        /// <summary>
+        /// Gets the first generic interface of the specified type if one exists.
+        /// </summary>
+        /// <param name="type">The target type.</param>
+        /// <returns>The first generic interface if one exists, otherwise the first interface or the target type itself if there are no interfaces.</returns>
+        public static Type GetFirstGenericInterface(Type type)
+        {
+            Type firstInterface = null;
+            foreach (var @interface in type.GetInterfaces())
+            {
+                if (firstInterface == null)
+                    firstInterface = @interface;
+
+                if (@interface.IsGenericType)
+                    return @interface;
+            }
+            return @firstInterface ?? type;
         }
 
         /// <summary>

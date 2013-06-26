@@ -24,6 +24,12 @@
         /// Gets or sets the default template type.
         /// </summary>
         public Type DefaultBaseTemplateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default model type.
+        /// </summary>
+        public Type DefaultModelType { get; set; }
+
         #endregion
 
         #region Methods
