@@ -1,4 +1,7 @@
-﻿namespace RazorEngine.Compilation.CSharp
+﻿using System;
+using System.Linq;
+
+namespace RazorEngine.Compilation.CSharp
 {
     using System.CodeDom;
     using System.Web.Razor;
@@ -27,10 +30,11 @@
             var mvcHost = host as Compilation.RazorEngineHost;
             if (mvcHost != null)
             {
-                // set the default model type to "dynamic"
-                SetBaseType("dynamic");
+                var modelTypeName = CompilerServicesUtility.ResolveCSharpTypeName(mvcHost.DefaultModelType);
+                SetBaseType(modelTypeName);
             }
         }
+
         #endregion
 
         #region Properties
