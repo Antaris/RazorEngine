@@ -148,7 +148,7 @@ namespace RazorEngine.Templating
         /// <param name="name">The name of the section.</param>
         /// <param name="isRequired">Flag to specify whether the section is required.</param>
         /// <returns>The template writer helper.</returns>
-        public TemplateWriter RenderSection(string name, bool isRequired = true)
+        public virtual TemplateWriter RenderSection(string name, bool isRequired = true)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("The name of the section to render must be specified.");
