@@ -75,8 +75,28 @@
         /// </summary>
         /// <typeparam name="TEncodedStringFactory">The encoded string factory type.</typeparam>
         /// <returns>The current configuration builder.</returns>
-        IConfigurationBuilder EncodeUsing<TEncodedStringFactory>()
-            where TEncodedStringFactory : IEncodedStringFactory, new();
+        IConfigurationBuilder EncodeUsing<TEncodedStringFactory>() where TEncodedStringFactory : IEncodedStringFactory, new();
+
+        /// <summary>
+        /// Sets the resolve used to locate unknown templates.
+        /// </summary>
+        /// <typeparam name="TResolver">The resolve type.</typeparam>
+        /// <returns>The current configuration builder.</returns>
+        IConfigurationBuilder ResolveUsing<TResolver>() where TResolver : ITemplateResolver, new();
+
+        /// <summary>
+        /// Sets the resolver used to locate unknown templates.
+        /// </summary>
+        /// <param name="resolver">The resolver instance to use.</param>
+        /// <returns>The current configuration builder.</returns>
+        IConfigurationBuilder ResolveUsing(ITemplateResolver resolver);
+
+        /// <summary>
+        /// Sets the resolver delegate used to locate unknown templates.
+        /// </summary>
+        /// <param name="resolver">The resolver delegate to use.</param>
+        /// <returns>The current configuration builder.</returns>
+        IConfigurationBuilder ResolveUsing(Func<string, string> resolver);
 
         /// <summary>
         /// Includes the specified namespaces
@@ -102,6 +122,13 @@
         /// </summary>
         /// <returns>The current configuration builder.</returns>
         IConfigurationBuilder UseDefaultEncodedStringFactory();
+
+        /// <summary>
+        /// Sets the base template type.
+        /// </summary>
+        /// <param name="baseTemplateType">The base template type.</param>
+        /// <returns>The current configuration builder/.</returns>
+        IConfigurationBuilder WithBaseTemplateType(Type baseTemplateType);
 
         /// <summary>
         /// Sets the code language.
