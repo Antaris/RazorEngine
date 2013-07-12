@@ -415,6 +415,55 @@
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
+
+        [Test]
+        public void TemplateService_CanParseSimpleTemplate_WithCorrectBaseTypeFromModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>Hello @Model.Forename</h1>";
+
+                var model = new Person { Forename = "Matt" };
+                var templateInstance = service.CreateTemplate(template, null, model);
+
+                Assert.NotNull(templateInstance as ITemplate<Person>, "Template is not derived from the correct base type");
+            }
+        }
+
+        [Test]
+        public void TemplateService_CanParseSimpleTemplate_UsingLinqExtensionMethodOnArrayTypeModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>There are @Model.Take(2).ToList().Count() animals</h1>";
+                const string expected = "<h1>There are 2 animals</h1>";
+
+                var model = new[] {new Animal {Type = "Cat"}, new Animal {Type = "Dog"}};
+
+                string result = service.Parse(template, model, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        [Test]
+        public void TemplateService_CanParseSimpleTemplate_UsingLinqExtensionMethodOnArrayTypeFromModel()
+        {
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>There are @Model.Animals.Take(2).ToList().Count() animals</h1>";
+                const string expected = "<h1>There are 2 animals</h1>";
+
+                var model = new AnimalViewModel
+                    {
+                        Animals = new[] {new Animal {Type = "Cat"}, new Animal {Type = "Dog"}}
+                    };
+                
+                string result = service.Parse(template, model, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
         #endregion
     }
 }
