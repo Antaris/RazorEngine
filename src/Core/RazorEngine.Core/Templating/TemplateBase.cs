@@ -336,6 +336,20 @@ namespace RazorEngine.Templating
         {
             helper.WriteTo(writer);
         }
+
+        /// <summary>
+        /// Resolves the specified path
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns>The resolved path.</returns>
+        public virtual string ResolveUrl(string path)
+        {
+            // TODO: Actually resolve the url
+            if (path.StartsWith("~")) {
+                path = path.Substring(1);
+            }
+            return path;
+        }
         #endregion
     }
 }
