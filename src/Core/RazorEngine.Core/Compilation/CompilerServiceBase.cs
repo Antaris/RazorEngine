@@ -103,7 +103,9 @@
                                GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
                                                                                  "WriteTo", "WriteLiteralTo",
                                                                                  "RazorEngine.Templating.TemplateWriter",
-                                                                                 "DefineSection")
+                                                                                 "DefineSection") {
+                                                                                     ResolveUrlMethodName = "ResolveUrl"
+                                                                                 }
                            };
 
             return host;
