@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Tests
+﻿using RazorEngine.Tests.TestTypes.BaseTypes;
+
+namespace RazorEngine.Tests
 {
     using System.Collections.Generic;
     using System.Dynamic;
@@ -355,6 +357,25 @@
         }
 
         /// <summary>
+        /// Tests that a template service can precompile a template with a non generic base for later execution.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanPrecompileTemplate_WithNoModelAndANonGenericBase()
+        {
+            var config = new TemplateServiceConfiguration {BaseTemplateType = typeof (NonGenericTemplateBase)};
+            using (var service = new TemplateService(config))
+            {
+                const string template = "<h1>@GetHelloWorldText()</h1>";
+                const string expected = "<h1>Hello World</h1>";
+
+                service.Compile(template, null, "test");
+
+                string result = service.Run("test", null, null);
+                Assert.That(result == expected, "Result does not match expected.");
+            }
+        }
+
+        /// <summary>
         /// Tests that a template service can precompile a template for later execution.
         /// </summary>
         [Test]
@@ -427,6 +448,20 @@
                 var templateInstance = service.CreateTemplate(template, null, model);
 
                 Assert.NotNull(templateInstance as ITemplate<Person>, "Template is not derived from the correct base type");
+            }
+        }
+
+        [Test]
+        public void TemplateService_CanParseSimpleTemplate_WithNonGenericBaseType()
+        {
+            var config = new TemplateServiceConfiguration { BaseTemplateType = typeof(NonGenericTemplateBase) };
+            using (var service = new TemplateService(config))
+            {
+                const string template = "<h1>@GetHelloWorldText()</h1>";
+
+                var templateInstance = service.CreateTemplate(template, null, null);
+
+                Assert.NotNull(templateInstance as NonGenericTemplateBase, "Template is not derived from the correct base type");
             }
         }
 

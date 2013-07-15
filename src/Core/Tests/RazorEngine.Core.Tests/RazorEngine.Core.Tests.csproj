@@ -81,6 +81,7 @@
     <Compile Include="TestTypes\Animal.cs" />
     <Compile Include="TestTypes\Activation\CustomTemplateBase.cs" />
     <Compile Include="TestTypes\AnimalViewModel.cs" />
+    <Compile Include="TestTypes\BaseTypes\NonGenericTemplateBase.cs" />
     <Compile Include="TestTypes\Employee.cs" />
     <Compile Include="TestTypes\Inspectors\ThrowExceptionCodeInspector.cs" />
     <Compile Include="Issues\Release_3_0_TestFixture.cs" />

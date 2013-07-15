@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Tests
+﻿using RazorEngine.Tests.TestTypes.BaseTypes;
+
+namespace RazorEngine.Tests
 {
     using System.Collections.Generic;
     using System.Dynamic;
