@@ -29,6 +29,7 @@ namespace RazorEngine.Compilation
         /// </summary>
         /// <param name="type">The type to check.</param>
         /// <returns>True if the type is an anonymous type, otherwise false.</returns>
+        /// <remarks>Amended for VB anonymous types</remarks>
         public static bool IsAnonymousType(Type type)
         {
             if (type == null)
@@ -37,7 +38,8 @@ namespace RazorEngine.Compilation
             return (type.IsClass
                     && type.IsSealed
                     && type.BaseType == typeof(object)
-                    && type.Name.StartsWith("<>", StringComparison.Ordinal)
+                    && (type.Name.StartsWith("<>", StringComparison.Ordinal)
+                        || type.Name.StartsWith("VB$Anonymous"))
                     && type.IsDefined(typeof(CompilerGeneratedAttribute), true));
         }
 
