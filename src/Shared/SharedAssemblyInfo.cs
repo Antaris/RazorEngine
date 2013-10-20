@@ -11,7 +11,7 @@ using System.Reflection;
 [assembly: AssemblyProduct("RazorEngine")]
 [assembly: AssemblyCopyright("Copyright © RazorEngine Project 2011-2013")]
 
-[assembly: AssemblyVersion("3.3.0.0")]
-[assembly: AssemblyFileVersion("3.3.0.0")]
+[assembly: AssemblyVersion("3.4.0.0")]
+[assembly: AssemblyFileVersion("3.4.0.0")]
 
 //[assembly: CLSCompliant(true)]

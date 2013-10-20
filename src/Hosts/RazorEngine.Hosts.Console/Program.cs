@@ -1,6 +1,4 @@
-﻿using System.Web.Razor.Parser.SyntaxTree;
-
-namespace RazorEngine.Hosts.Console
+﻿namespace RazorEngine.Hosts.Console
 {
     using System;
     using System.Linq;

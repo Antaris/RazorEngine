@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Unity</id>
+    <version>3.0.1304.1</version>
+    <title>Unity</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>http://msdn.microsoft.com/unity</projectUrl>
+    <iconUrl>http://nuget.org/Media/Default/Packages/Unity/2.0/entlib_new_icon_100x100.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The Unity Application Block (Unity) is a lightweight extensible dependency injection container with support for constructor, property, and method call injection. It facilitates loosely-coupled design.</description>
+    <summary>The Unity Application Block (Unity) is a lightweight extensible dependency injection container with support for constructor, property, and method call injection.</summary>
+    <tags>Unity EntLib EntLib6 IoC DI container dependency injection inversion control LOB WinRT Win8 Windows8 NetCore WindowsStoreApps WindowsStore</tags>
+  </metadata>
+</package>
