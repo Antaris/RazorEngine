@@ -241,7 +241,7 @@
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10).ToArray();
 
-                var results = service.ParseMany(templates, null, null, null, false);
+                var results = service.ParseMany(templates, null, null, null, null, false);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected.");
             }
@@ -258,7 +258,7 @@
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10).ToArray();
 
-                var results = service.ParseMany(templates, null, null, null, true);
+                var results = service.ParseMany(templates, null, null, null, null, true);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected.");
             }
@@ -279,7 +279,7 @@
                 var templates = Enumerable.Repeat(template, maxTemplates).ToArray();
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
 
-                var results = service.ParseMany(templates, models, null, null, false);
+                var results = service.ParseMany(templates, models, null, null, null, false);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -299,7 +299,7 @@
                 var templates = Enumerable.Repeat(template, maxTemplates).ToArray();
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
 
-                var results = service.ParseMany(templates, models, null, null, true);
+                var results = service.ParseMany(templates, models, null, null, null, true);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
