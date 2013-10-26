@@ -37,7 +37,11 @@
         /// <returns>An instance of <see cref="RazorCodeGenerator"/>.</returns>
         public override RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespaceName, string sourceFileName, RazorEngineHost host)
         {
-            return new CSharpRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, StrictMode);
+            return new CSharpRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, StrictMode)
+            {
+                // Generate line pragmas in order to allow debugging from Visual Studio
+                GenerateLinePragmas = true
+            };
         }
         #endregion
     }

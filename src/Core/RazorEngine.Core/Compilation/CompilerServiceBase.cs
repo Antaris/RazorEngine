@@ -146,12 +146,18 @@
         /// </summary>
         /// <param name="className">The class name.</param>
         /// <param name="template">The template to compile.</param>
+        /// <param name="templateFileName">Name of the template file.</param>
         /// <param name="namespaceImports">The set of namespace imports.</param>
         /// <param name="templateType">The template type.</param>
         /// <param name="modelType">The model type.</param>
-        /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
+        /// <returns>A <see cref="CodeCompileUnit" /> used to compile a type.</returns>
+        /// <exception cref="System.ArgumentException">
+        /// Class name is required.
+        /// or
+        /// Template is required.
+        /// </exception>
         [Pure]
-        public CodeCompileUnit GetCodeCompileUnit(string className, string template, ISet<string> namespaceImports, Type templateType, Type modelType)
+        public CodeCompileUnit GetCodeCompileUnit(string className, string template, string templateFileName, ISet<string> namespaceImports, Type templateType, Type modelType)
         {
             if (string.IsNullOrEmpty(className))
                 throw new ArgumentException("Class name is required.");
@@ -170,7 +176,7 @@
                 host.NamespaceImports.Add(ns);
 
             // Gets the generator result.
-            GeneratorResults result = GetGeneratorResult(host, template);
+            GeneratorResults result = GetGeneratorResult(host, template, templateFileName);
 
             // Add the dynamic model attribute if the type is an anonymous type.
             var type = result.GeneratedCode.Namespaces[0].Types[0];
@@ -191,13 +197,14 @@
         /// </summary>
         /// <param name="host">The razor engine host.</param>
         /// <param name="template">The template.</param>
+        /// <param name="templateFileName">Name of the template file.</param>
         /// <returns>The generator result.</returns>
-        private static GeneratorResults GetGeneratorResult(RazorEngineHost host, string template)
+        private static GeneratorResults GetGeneratorResult(RazorEngineHost host, string template, string templateFileName)
         {
             var engine = new RazorTemplateEngine(host);
             GeneratorResults result;
             using (var reader = new StringReader(template))
-                result = engine.GenerateCode(reader);
+                result = engine.GenerateCode(reader, null, null, templateFileName ?? "CustomTemplate");
 
             return result;
         }

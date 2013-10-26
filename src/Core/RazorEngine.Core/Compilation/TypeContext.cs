@@ -41,6 +41,18 @@
         public string TemplateContent { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the template file.
+        /// </summary>
+        /// <value>The name of the template file.</value>
+        public string TemplateFileName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to include debug information into the generated template in order to support Visual Studio debugger inside the template code.
+        /// </summary>
+        /// <value><c>true</c> if [include debug information]; otherwise, <c>false</c>.</value>
+        public bool IncludeDebugInformation { get; set; }
+
+        /// <summary>
         /// Gets or sets the base template type.
         /// </summary>
         public Type TemplateType { get; set; }
