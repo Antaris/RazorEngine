@@ -11,6 +11,7 @@
         <dependencies>
             <dependency id="Microsoft.AspNet.Razor" version="3.0.0" />
         </dependencies>
+        <projectUrl>https://github.com/Antaris/RazorEngine/wiki</projectUrl>
     </metadata>
     <files>
         <file src="lib\net45\RazorEngine.dll" target="lib\net45\RazorEngine.dll" />
