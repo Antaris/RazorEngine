@@ -58,7 +58,7 @@
                 GenerateInMemory = true,
                 GenerateExecutable = false,
                 IncludeDebugInformation = false,
-                CompilerOptions = "/target:library /optimize"
+                CompilerOptions = "/target:library /optimize /define:RAZORENGINE"
             };
 
             var assemblies = CompilerServicesUtility
