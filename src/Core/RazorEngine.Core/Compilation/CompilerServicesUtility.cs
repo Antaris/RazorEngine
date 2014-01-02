@@ -37,7 +37,7 @@ namespace RazorEngine.Compilation
             return (type.IsClass
                     && type.IsSealed
                     && type.BaseType == typeof(object)
-                    && type.Name.StartsWith("<>", StringComparison.Ordinal)
+                    && (type.Name.StartsWith("<>", StringComparison.Ordinal) || type.Name.StartsWith("VB$Anonymous"))
                     && type.IsDefined(typeof(CompilerGeneratedAttribute), true));
         }
 
@@ -125,12 +125,12 @@ namespace RazorEngine.Compilation
                 return "Object";
 
             if (!type.IsGenericType)
-                return type.FullName;
+                return type.FullName.Replace("[]","()");
 
             return type.Namespace
                   + "."
                   + type.Name.Substring(0, type.Name.IndexOf('`'))
-                  + "(Of"
+                  + "(Of "
                   + string.Join(", ", type.GetGenericArguments().Select(ResolveVBTypeName))
                   + ")";
         }
