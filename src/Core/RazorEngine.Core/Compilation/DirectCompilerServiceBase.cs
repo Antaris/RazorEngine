@@ -58,8 +58,17 @@
                 GenerateInMemory = true,
                 GenerateExecutable = false,
                 IncludeDebugInformation = false,
-                CompilerOptions = "/target:library /optimize"
+                CompilerOptions = "/optimize " 
+               // TempFiles = new TempFileCollection(".", true)
             };
+
+
+            if (this.CodeLanguage.GetType() == typeof(VisualBasic.VBRazorCodeLanguage))
+            {
+                @params.CompilerOptions = "/optimize /optioninfer";
+            }
+
+
 
             var assemblies = CompilerServicesUtility
                 .GetLoadedAssemblies()
@@ -78,7 +87,7 @@
             if (Debug)
             {
                 var builder = new StringBuilder();
-                using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))
+                using (var writer = new IndentedTextWriter(new StringWriter(builder, CultureInfo.InvariantCulture), "    "))
                 {
                     _codeDomProvider.GenerateCodeFromCompileUnit(compileUnit, writer, new CodeGeneratorOptions());
                     sourceCode = builder.ToString();

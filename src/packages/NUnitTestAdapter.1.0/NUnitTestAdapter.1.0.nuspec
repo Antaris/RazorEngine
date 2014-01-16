@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NUnitTestAdapter</id>
+    <version>1.0</version>
+    <title>NUnit Test Adapter for VS2012 and VS2013</title>
+    <authors>NUnit Software</authors>
+    <owners>NUnit Software</owners>
+    <licenseUrl>http://visualstudiogallery.msdn.microsoft.com/site/6ab922d0-21c0-4f06-ab5f-4ecd1fe7175d/eula?licenseType=None</licenseUrl>
+    <projectUrl>http://nunit.org/index.php?p=vsTestAdapter&amp;r=2.6</projectUrl>
+    <iconUrl>http://nunit.org/nuget/nunit_32x32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A package including the NUnit TestAdapter for Visual Studio 2012/13.  With this package you don't need to install the VSIX adapter package, and you don't need to upload the adapter to your TFS server.
+Note that this package ONLY contains the adapter, not the NUnit framework.  You must also get the framework, or use the NUnitTestAdapter.WithFramework nuget package.
+You only need one such package for a solution. 
+The package works with Visual Studio 2012 from RTM, and with Update 1 and higher, and with Visual Studio 2013 Preview.</description>
+    <releaseNotes>Updated to work with VS 2013 preview. 
+Includes fix to profiling tests, bug 1189268</releaseNotes>
+    <copyright>NUnit Software</copyright>
+    <language>en-US</language>
+    <tags>test visualstudio testadapter</tags>
+  </metadata>
+</package>

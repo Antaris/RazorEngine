@@ -1,5 +1,6 @@
 ﻿namespace RazorEngine.Compilation.VisualBasic
 {
+    using System.CodeDom;
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
     using Templating;
@@ -22,7 +23,26 @@
             : base(className, rootNamespaceName, sourceFileName, host)
         {
             StrictMode = strictMode;
+            var mvcHost = host as Compilation.RazorEngineHost;
+            if (mvcHost != null)
+            {
+                SetBaseTypeFromHost(mvcHost);
+            }
         }
+
+        private void SetBaseTypeFromHost(Compilation.RazorEngineHost mvcHost)
+        {
+            if (!mvcHost.DefaultBaseTemplateType.IsGenericType)
+            {
+                SetBaseType(mvcHost.DefaultBaseTemplateType.FullName);
+            }
+            else
+            {
+                var modelTypeName = CompilerServicesUtility.ResolveVBTypeName(mvcHost.DefaultModelType);
+                SetBaseType(mvcHost.DefaultBaseClass + "(Of " + modelTypeName + ")");
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -33,6 +53,13 @@
         #endregion
 
         #region Methods
+        private void SetBaseType(string baseTypeName)
+        {
+            var baseType = new CodeTypeReference(baseTypeName);
+            Context.GeneratedClass.BaseTypes.Clear();
+            Context.GeneratedClass.BaseTypes.Add(baseType);
+        }
+
         /// <summary>
         /// Visits an error generated through parsing.
         /// </summary>
