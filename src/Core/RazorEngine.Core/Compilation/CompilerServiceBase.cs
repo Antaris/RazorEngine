@@ -199,7 +199,7 @@
             using (var reader = new StringReader(template))
                 //for VB,  GenerateCode output  "#ExternalSource(XX,XX)"
                 //http://msdn.microsoft.com/en-us/library/szc67b5s(v=vs.120).aspx
-                result = engine.GenerateCode(reader,null ,null ,"template.file" );
+                result = engine.GenerateCode(reader, null, null, host.DefaultClassName + "." + host.CodeLanguage.LanguageName);
 
             return result;
         }
