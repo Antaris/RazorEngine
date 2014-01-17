@@ -14,6 +14,20 @@
         private readonly IDictionary<string, object> _dict = new Dictionary<string, object>();
         #endregion
 
+        /// <summary>
+        /// Initialises a new instance of <see cref="DynamicViewBag"/>
+        /// </summary>
+        /// <param name="viewbag">The parent view bag.</param>
+        public DynamicViewBag(DynamicViewBag viewbag = null)
+        {
+            if (viewbag != null)
+            {
+                // Add the viewbag to the current dictionary.
+                foreach (var pair in viewbag._dict)
+                    _dict.Add(pair);
+            }
+        }
+
         #region DynamicObject Overrides
 
         /// <summary>

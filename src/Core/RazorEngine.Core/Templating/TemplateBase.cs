@@ -69,7 +69,7 @@ namespace RazorEngine.Templating
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
 
-            return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext())));
+            return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext(new DynamicViewBag(ViewBag)))));
         }
 
         /// <summary>

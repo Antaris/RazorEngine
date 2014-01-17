@@ -2088,6 +2088,12 @@
             Defines a dynamic view bag.
             </summary>
         </member>
+        <member name="M:RazorEngine.Templating.DynamicViewBag.#ctor(RazorEngine.Templating.DynamicViewBag)">
+            <summary>
+            Initialises a new instance of <see cref="T:RazorEngine.Templating.DynamicViewBag"/>
+            </summary>
+            <param name="viewbag">The parent view bag.</param>
+        </member>
         <member name="M:RazorEngine.Templating.DynamicViewBag.GetDynamicMemberNames">
             <summary>
             Gets the set of dynamic member names.

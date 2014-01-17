@@ -328,6 +328,31 @@
                 });
             }
         }
+
+        /// <summary>
+        /// Dynamic ViewBag properties should be persisted to the viewbag used for include templates.
+        /// 
+        /// Issue 133: https://github.com/Antaris/RazorEngine/issues/133
+        /// </summary>
+        [Test]
+        public void Issue133_ViewBagShouldPersistToIncludes()
+        {
+            using (var service = new TemplateService())
+            {
+                const string child = "<h1>@ViewBag.Name</h1>";
+                const string template = "@Include(\"Child\")";
+                const string expected = "<h1>Matt</h1>";
+
+                dynamic bag = new DynamicViewBag();
+                bag.Name = "Matt";
+
+
+                service.GetTemplate(child, null, "Child");
+                string result = service.Parse(template, null, bag, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
         #endregion
     }
 }
