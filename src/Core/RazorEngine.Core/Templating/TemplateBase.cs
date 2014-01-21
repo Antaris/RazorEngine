@@ -14,7 +14,7 @@ namespace RazorEngine.Templating
     public abstract class TemplateBase : MarshalByRefObject, ITemplate
     {
         #region Fields
-        private ExecuteContext _context;
+        protected ExecuteContext _context;
         #endregion
 
         #region Constructor
@@ -69,7 +69,9 @@ namespace RazorEngine.Templating
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
 
-            return new TemplateWriter(tw => tw.Write(instance.Run(new ExecuteContext(new DynamicViewBag(ViewBag)))));
+            return new TemplateWriter(tw => 
+                tw.Write(instance.Run(
+                    TemplateService.CreateExecuteContext(ViewBag))));
         }
 
         /// <summary>

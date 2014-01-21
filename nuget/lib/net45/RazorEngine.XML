@@ -400,9 +400,20 @@
             <param name="result">The member result.</param>
             <returns>True.</returns>
         </member>
+        <member name="M:RazorEngine.Compilation.RazorDynamicObject.ToString">
+            <summary>
+            Returns the string representation of the current instance.
+            </summary>
+            <returns>The string representation of this instance.</returns>
+        </member>
         <member name="P:RazorEngine.Compilation.RazorDynamicObject.Model">
             <summary>
             Gets or sets the model.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Compilation.RazorDynamicObject.AllowMissingPropertiesOnDynamic">
+            <summary>
+            Gets or sets whether to allow missing properties on dynamic members.
             </summary>
         </member>
         <member name="T:RazorEngine.Compilation.RazorEngineHost">
@@ -568,6 +579,11 @@
             Gets the activator.
             </summary>
         </member>
+        <member name="P:RazorEngine.Configuration.ITemplateServiceConfiguration.AllowMissingPropertiesOnDynamic">
+            <summary>
+            Gets or sets whether to allow missing properties on dynamic models.
+            </summary>
+        </member>
         <member name="P:RazorEngine.Configuration.ITemplateServiceConfiguration.BaseTemplateType">
             <summary>
             Gets the base template type.
@@ -616,6 +632,11 @@
         <member name="P:RazorEngine.Configuration.TemplateServiceConfiguration.Activator">
             <summary>
             Gets or sets the activator.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.TemplateServiceConfiguration.AllowMissingPropertiesOnDynamic">
+            <summary>
+            Gets or sets whether to allow missing properties on dynamic models.
             </summary>
         </member>
         <member name="P:RazorEngine.Configuration.TemplateServiceConfiguration.BaseTemplateType">
@@ -844,6 +865,12 @@
             <param name="inspector">The code inspector.</param>
             <returns>The current configuration builder.</returns>
         </member>
+        <member name="M:RazorEngine.Configuration.FluentConfigurationBuilder.AllowMissingPropertiesOnDynamic">
+            <summary>
+            Sets that dynamic models should be fault tollerant in accepting missing properties.
+            </summary>
+            <returns>The current configuration builder.</returns>
+        </member>
         <member name="M:RazorEngine.Configuration.FluentConfigurationBuilder.CompileUsing(RazorEngine.Compilation.ICompilerServiceFactory)">
             <summary>
             Sets the compiler service factory.
@@ -955,6 +982,11 @@
             Gets or sets the activator.
             </summary>
         </member>
+        <member name="P:RazorEngine.Configuration.FluentTemplateServiceConfiguration.AllowMissingPropertiesOnDynamic">
+            <summary>
+            Gets or sets whether to allow missing properties on dynamic models.
+            </summary>
+        </member>
         <member name="P:RazorEngine.Configuration.FluentTemplateServiceConfiguration.BaseTemplateType">
             <summary>
             Gets the base template type.
@@ -1009,6 +1041,11 @@
         <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.ActivatorType">
             <summary>
             Gets the activator type.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.AllowMissingPropertiesOnDynamic">
+            <summary>
+            Gets or sets whether to allow missing properties on dynamic models.
             </summary>
         </member>
         <member name="P:RazorEngine.Configuration.RazorEngineConfigurationSection.CompilerServiceFactoryType">
@@ -1195,6 +1232,11 @@
         <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.Activator">
             <summary>
             Gets the activator.
+            </summary>
+        </member>
+        <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.AllowMissingPropertiesOnDynamic">
+            <summary>
+            Gets or sets whether to allow missing properties on dynamic models.
             </summary>
         </member>
         <member name="P:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.BaseTemplateType">
@@ -2285,6 +2327,13 @@
             </summary>
             <param name="ns">The namespace to be imported.</param>
         </member>
+        <member name="M:RazorEngine.Templating.ITemplateService.CreateExecuteContext(RazorEngine.Templating.DynamicViewBag)">
+            <summary>
+            Creates a new <see cref="T:RazorEngine.Templating.ExecuteContext"/> used to tracking templates.
+            </summary>
+            <param name="viewBag">The view bag.</param>
+            <returns>The instance of <see cref="T:RazorEngine.Templating.ExecuteContext"/></returns>
+        </member>
         <member name="M:RazorEngine.Templating.ITemplateService.Compile(System.String,System.Type,System.String)">
             <summary>
             Compiles the specified template.
@@ -2453,6 +2502,11 @@
             <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <returns>The string result of the template.</returns>
         </member>
+        <member name="P:RazorEngine.Templating.ITemplateService.Configuration">
+            <summary>
+            Gets the template service configuration.
+            </summary>
+        </member>
         <member name="P:RazorEngine.Templating.ITemplateService.EncodedStringFactory">
             <summary>
             Gets the encoded string factory.
@@ -2522,6 +2576,13 @@
             Adds a namespace that will be imported into the template.
             </summary>
             <param name="ns">The namespace to be imported.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.IsolatedTemplateService.RazorEngine#Templating#ITemplateService#CreateExecuteContext(RazorEngine.Templating.DynamicViewBag)">
+            <summary>
+            Creates a new <see cref="T:RazorEngine.Templating.ExecuteContext"/> used to tracking templates.
+            </summary>
+            <param name="viewBag">The view bag.</param>
+            <returns>The instance of <see cref="T:RazorEngine.Templating.ExecuteContext"/></returns>
         </member>
         <member name="M:RazorEngine.Templating.IsolatedTemplateService.Compile(System.String,System.Type,System.String)">
             <summary>
@@ -2710,6 +2771,11 @@
             <param name="template">The template to run.</param>
             <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
             <returns>The string result of the template.</returns>
+        </member>
+        <member name="P:RazorEngine.Templating.IsolatedTemplateService.RazorEngine#Templating#ITemplateService#Configuration">
+            <summary>
+            Gets the template service configuration.
+            </summary>
         </member>
         <member name="P:RazorEngine.Templating.IsolatedTemplateService.RazorEngine#Templating#ITemplateService#EncodedStringFactory">
             <summary>
@@ -2916,6 +2982,13 @@
             <param name="razorTemplate">The string template.</param>
             <param name="modelType">The model type.</param>
             <param name="cacheName">The name of the template type in the cache.</param>
+        </member>
+        <member name="M:RazorEngine.Templating.TemplateService.CreateExecuteContext(RazorEngine.Templating.DynamicViewBag)">
+            <summary>
+            Creates a new <see cref="T:RazorEngine.Templating.ExecuteContext"/> for tracking templates.
+            </summary>
+            <param name="viewBag">The dynamic view bag.</param>
+            <returns>The execute context.</returns>
         </member>
         <member name="M:RazorEngine.Templating.TemplateService.CreateInstanceContext(System.Type)">
             <summary>
@@ -3138,6 +3211,11 @@
             </remarks>
             <param name="template">The template instance.</param>
             <param name="model">The model instance.</param>
+        </member>
+        <member name="P:RazorEngine.Templating.TemplateService.Configuration">
+            <summary>
+            Gets the template service configuration.
+            </summary>
         </member>
         <member name="P:RazorEngine.Templating.TemplateService.EncodedStringFactory">
             <summary>

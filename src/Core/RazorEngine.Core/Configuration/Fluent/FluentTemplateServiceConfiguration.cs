@@ -39,6 +39,14 @@
         {
             get { return _innerConfig.Activator; }
         }
+        
+        /// <summary>
+        /// Gets or sets whether to allow missing properties on dynamic models.
+        /// </summary>
+        public bool AllowMissingPropertiesOnDynamic
+        {
+            get { return _innerConfig.AllowMissingPropertiesOnDynamic; }
+        }
 
         /// <summary>
         /// Gets the base template type.

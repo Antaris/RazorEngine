@@ -236,6 +236,30 @@
         }
 
         /// <summary>
+        /// Requested functionality to allow deep nulls on dynamic models to fail silently without throwing exceptions.
+        /// 
+        /// Issue 22: https://github.com/Antaris/RazorEngine/issues/22
+        /// </summary>
+        [Test]
+        public void Issue22_MissingDynamicPropertiesCausesException()
+        {
+            using (var service = new TemplateService(new TemplateServiceConfiguration()
+                                                     {
+                                                         AllowMissingPropertiesOnDynamic = true
+                                                     }))
+            {
+                const string template = "Missing property: @Model.Something.SomethingElse";
+                const string expected = "Missing property: ";
+
+                var model = new { Name = "Matt" };
+
+                string result = service.Parse(template, model, null, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
         /// ViewBag initialization not possible outside of template.
         /// 
         /// Issue 26: https://github.com/Antaris/RazorEngine/issues/26

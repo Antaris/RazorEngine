@@ -14,6 +14,11 @@
         /// Gets or sets the model.
         /// </summary>
         public object Model { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to allow missing properties on dynamic members.
+        /// </summary>
+        public bool AllowMissingPropertiesOnDynamic { get; set; }
         #endregion
 
         #region Methods
@@ -37,8 +42,14 @@
             var prop = modelType.GetProperty(binder.Name);
             if (prop == null)
             {
-                result = null;
-                return false;
+                if (!AllowMissingPropertiesOnDynamic)
+                {
+                    result = null;
+                    return false;
+                }
+
+                result = new RazorDynamicObject() { AllowMissingPropertiesOnDynamic = AllowMissingPropertiesOnDynamic, Model = new object() };
+                return true;
             }
 
             object value = prop.GetValue(Model, null);
@@ -54,6 +65,15 @@
                          ? new RazorDynamicObject { Model = value }
                          : value;
             return true;
+        }
+
+        /// <summary>
+        /// Returns the string representation of the current instance.
+        /// </summary>
+        /// <returns>The string representation of this instance.</returns>
+        public override string ToString()
+        {
+            return "";
         }
         #endregion
     }

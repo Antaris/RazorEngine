@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>RazorEngine</id>
-        <version>3.4.0</version>
+        <version>3.4.1</version>
         <title>RazorEngine</title>
         <authors>Matthew Abbott,Ben Dornis</authors>
         <owners>Matthew Abbott,Ben Dornis</owners>

@@ -44,7 +44,11 @@
             set
             {
                 if (HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject))
-                    currentModel = new RazorDynamicObject { Model = value };
+                    currentModel = new RazorDynamicObject
+                                   {
+                                       Model = value, 
+                                       AllowMissingPropertiesOnDynamic = TemplateService.Configuration.AllowMissingPropertiesOnDynamic
+                                   };
                 else
                     currentModel = value;
             }

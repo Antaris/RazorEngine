@@ -20,6 +20,11 @@
         IActivator Activator { get; }
 
         /// <summary>
+        /// Gets or sets whether to allow missing properties on dynamic models.
+        /// </summary>
+        bool AllowMissingPropertiesOnDynamic { get; }
+
+        /// <summary>
         /// Gets the base template type.
         /// </summary>
         Type BaseTemplateType { get; }

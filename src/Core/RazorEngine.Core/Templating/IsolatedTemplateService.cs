@@ -7,6 +7,7 @@
     using System.Linq;
 
     using Compilation;
+    using Configuration;
     using Text;
 
     /// <summary>
@@ -102,6 +103,11 @@
 
         #region Properties
         /// <summary>
+        /// Gets the template service configuration.
+        /// </summary>
+        ITemplateServiceConfiguration ITemplateService.Configuration { get { return null; } }
+
+        /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
         IEncodedStringFactory ITemplateService.EncodedStringFactory { get { return null; } }
@@ -115,6 +121,16 @@
         public void AddNamespace(string ns)
         {
             _proxy.AddNamespace(ns);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ExecuteContext"/> used to tracking templates.
+        /// </summary>
+        /// <param name="viewBag">The view bag.</param>
+        /// <returns>The instance of <see cref="ExecuteContext"/></returns>
+        ExecuteContext ITemplateService.CreateExecuteContext(DynamicViewBag viewBag = null)
+        {
+            throw new NotSupportedException("This operation is not supported directly by the IsolatedTemplateService.");
         }
 
         /// <summary>

@@ -38,6 +38,11 @@
         public IActivator Activator { get; private set; }
 
         /// <summary>
+        /// Gets or sets whether to allow missing properties on dynamic models.
+        /// </summary>
+        public bool AllowMissingPropertiesOnDynamic { get; private set; }
+
+        /// <summary>
         /// Gets the base template type.
         /// </summary>
         public Type BaseTemplateType { get; private set; }
@@ -153,6 +158,9 @@
         /// <param name="serviceConfig">The service configuration.</param>
         private void InitialiseConfiguration(RazorEngineConfigurationSection config, TemplateServiceConfigurationElement serviceConfig)
         {
+            // Set whether we are allowing missing properties on dynamic.
+            AllowMissingPropertiesOnDynamic = config.AllowMissingPropertiesOnDynamic;
+
             // Add the global namespaces.
             AddNamespaces(config.Namespaces);
 
@@ -173,6 +181,7 @@
             // Sets the encoded string factory.
             SetEncodedStringFactory(serviceConfig.EncodedStringFactoryType);
 
+            // Set the language.
             Language = serviceConfig.Language;
 
             // Sets the tempalte resolver.

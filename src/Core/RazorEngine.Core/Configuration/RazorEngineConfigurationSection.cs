@@ -11,6 +11,7 @@
     {
         #region Fields
         private const string ActivatorAttribute = "activatorType";
+        private const string AllowMissingPropertiesOnDynamicAttribute = "allowMissingPropertiesOnDynamic";
         private const string CompilerServiceFactoryAttribute = "compilerServiceFactoryType";
         private const string DefaultLanguageAttribute = "defaultLanguage";
         private const string NamespacesElement = "namespaces";
@@ -27,6 +28,15 @@
         public string ActivatorType
         {
             get { return (string)this[ActivatorAttribute]; }
+        }
+
+        /// <summary>
+        /// Gets or sets whether to allow missing properties on dynamic models.
+        /// </summary>
+        [ConfigurationProperty(AllowMissingPropertiesOnDynamicAttribute, IsRequired = false, DefaultValue = false)]
+        public bool AllowMissingPropertiesOnDynamic
+        {
+            get { return (bool)this[AllowMissingPropertiesOnDynamicAttribute]; }
         }
 
         /// <summary>

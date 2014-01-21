@@ -94,6 +94,17 @@
         }
 
         /// <summary>
+        /// Sets that dynamic models should be fault tollerant in accepting missing properties.
+        /// </summary>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder AllowMissingPropertiesOnDynamic()
+        {
+            _config.AllowMissingPropertiesOnDynamic = true;
+
+            return this;
+        }
+
+        /// <summary>
         /// Sets the compiler service factory.
         /// </summary>
         /// <param name="factory">The compiler service factory.</param>

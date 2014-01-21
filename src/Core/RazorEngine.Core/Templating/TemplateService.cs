@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Templating
+﻿using System.Runtime.Remoting.Contexts;
+
+namespace RazorEngine.Templating
 {
     using System;
     using System.Collections.Concurrent;
@@ -60,6 +62,11 @@
 
         #region Properties
         /// <summary>
+        /// Gets the template service configuration.
+        /// </summary>
+        public ITemplateServiceConfiguration Configuration { get { return _config; } }
+
+        /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
         public IEncodedStringFactory EncodedStringFactory { get { return _config.EncodedStringFactory; } }
@@ -92,6 +99,18 @@
             var item = new CachedTemplateItem(hashCode, type);
 
             _cache.AddOrUpdate(cacheName, item, (n, i) => item);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ExecuteContext"/> for tracking templates.
+        /// </summary>
+        /// <param name="viewBag">The dynamic view bag.</param>
+        /// <returns>The execute context.</returns>
+        public virtual ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null)
+        {
+            var context = new ExecuteContext(new DynamicViewBag(viewBag));
+
+            return context;
         }
 
         /// <summary>
@@ -605,7 +624,7 @@
             if (template == null)
                 throw new ArgumentNullException("template");
 
-            return template.Run(new ExecuteContext(viewBag));
+            return template.Run(CreateExecuteContext(viewBag));
         }
 
         /// <summary>

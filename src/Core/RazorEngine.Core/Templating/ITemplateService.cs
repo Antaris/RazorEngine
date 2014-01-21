@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
 
+    using Configuration;
     using Text;
 
     /// <summary>
@@ -11,6 +12,11 @@
     public interface ITemplateService : IDisposable
     {
         #region Properties
+        /// <summary>
+        /// Gets the template service configuration.
+        /// </summary>
+        ITemplateServiceConfiguration Configuration { get; }
+
         /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
@@ -23,6 +29,13 @@
         /// </summary>
         /// <param name="ns">The namespace to be imported.</param>
         void AddNamespace(string ns);
+
+        /// <summary>
+        /// Creates a new <see cref="ExecuteContext"/> used to tracking templates.
+        /// </summary>
+        /// <param name="viewBag">The view bag.</param>
+        /// <returns>The instance of <see cref="ExecuteContext"/></returns>
+        ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null);
 
         /// <summary>
         /// Compiles the specified template.
