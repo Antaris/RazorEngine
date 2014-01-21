@@ -575,7 +575,7 @@ namespace RazorEngine.Templating
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
         /// <returns>The resolved template.</returns>
-        public ITemplate Resolve(string cacheName, object model)
+        public virtual ITemplate Resolve(string cacheName, object model)
         {
             CachedTemplateItem cachedItem;
             ITemplate instance = null;
