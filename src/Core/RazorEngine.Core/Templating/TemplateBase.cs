@@ -65,7 +65,7 @@ namespace RazorEngine.Templating
         /// <returns>The template writer helper.</returns>
         public virtual TemplateWriter Include(string cacheName, object model = null)
         {
-            var instance = TemplateService.Resolve(cacheName, model);
+            var instance = ResolveLayout(cacheName, model);
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
 
@@ -106,10 +106,11 @@ namespace RazorEngine.Templating
         /// Resolves the layout template.
         /// </summary>
         /// <param name="name">The name of the layout template.</param>
+		/// <param name="model">The model for the template.</param>
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
-        protected virtual ITemplate ResolveLayout(string name)
+        protected virtual ITemplate ResolveLayout(string name, object model = null)
         {
-            return TemplateService.Resolve(name, null);
+            return TemplateService.Resolve(name, model);
         }
 
         /// <summary>
