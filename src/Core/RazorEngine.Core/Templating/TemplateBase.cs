@@ -106,7 +106,7 @@ namespace RazorEngine.Templating
         /// Resolves the layout template.
         /// </summary>
         /// <param name="name">The name of the layout template.</param>
-		/// <param name="model">The model for the template.</param>
+        /// <param name="model">The model for the template.</param>
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected virtual ITemplate ResolveLayout(string name, object model = null)
         {
