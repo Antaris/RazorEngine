@@ -598,8 +598,9 @@ namespace RazorEngine.Templating
         /// <param name="cacheName">The name of the template in cache.  The template must be in cache.</param>
         /// <param name="model">The model for the template or NULL if there is no model.</param>
         /// <param name="viewBag">The initial ViewBag contents NULL for an empty ViewBag.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public string Run(string cacheName, object model, DynamicViewBag viewBag)
+		public string Run(string cacheName, object model, DynamicViewBag viewBag, Action<ITemplate> preRunAction = null)
         {
             if (string.IsNullOrWhiteSpace(cacheName))
                 throw new ArgumentException("'cacheName' is a required parameter.");
@@ -610,7 +611,7 @@ namespace RazorEngine.Templating
 
             ITemplate instance = CreateTemplate(null, item.TemplateType, model);
 
-            return Run(instance, viewBag);
+			return Run(instance, viewBag, preRunAction);
         }
 
         /// <summary>
@@ -618,12 +619,16 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="template">The template to run.</param>
         /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public string Run(ITemplate template, DynamicViewBag viewBag)
+		public string Run(ITemplate template, DynamicViewBag viewBag, Action<ITemplate> preRunAction = null)
         {
             if (template == null)
                 throw new ArgumentNullException("template");
-
+			if (preRunAction != null)
+			{
+				preRunAction(template);
+			}
             return template.Run(CreateExecuteContext(viewBag));
         }
 
