@@ -69,7 +69,7 @@ namespace RazorEngine.Templating
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
 
-            return new TemplateWriter(tw => 
+            return new TemplateWriter(tw =>
                 tw.Write(instance.Run(
                     TemplateService.CreateExecuteContext(ViewBag))));
         }
@@ -122,7 +122,7 @@ namespace RazorEngine.Templating
             _context = context;
 
             var builder = new StringBuilder();
-            using (var writer = new StringWriter(builder)) 
+            using (var writer = new StringWriter(builder))
             {
                 _context.CurrentWriter = writer;
                 Execute();
@@ -193,7 +193,7 @@ namespace RazorEngine.Templating
 
             helper.WriteTo(_context.CurrentWriter);
         }
-        
+
         /// <summary>
         /// Writes an attribute to the result.
         /// </summary>
@@ -316,7 +316,7 @@ namespace RazorEngine.Templating
                 throw new ArgumentNullException("writer");
 
             if (value == null) return;
-            
+
             var encodedString = value as IEncodedString;
             if (encodedString != null)
             {
@@ -336,6 +336,8 @@ namespace RazorEngine.Templating
         /// <param name="helper">The template writer helper.</param>
         public virtual void WriteTo(TextWriter writer, TemplateWriter helper)
         {
+            if (helper == null) return;
+
             helper.WriteTo(writer);
         }
 
@@ -347,7 +349,8 @@ namespace RazorEngine.Templating
         public virtual string ResolveUrl(string path)
         {
             // TODO: Actually resolve the url
-            if (path.StartsWith("~")) {
+            if (path.StartsWith("~"))
+            {
                 path = path.Substring(1);
             }
             return path;
