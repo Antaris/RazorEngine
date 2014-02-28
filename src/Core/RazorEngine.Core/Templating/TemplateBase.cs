@@ -134,6 +134,11 @@ namespace RazorEngine.Templating
                 // Get the layout template.
                 var layout = ResolveLayout(Layout);
 
+                if (layout == null)
+                {
+                    throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
+                }
+
                 // Push the current body instance onto the stack for later execution.
                 var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
                 context.PushBody(body);

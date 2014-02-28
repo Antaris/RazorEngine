@@ -1,4 +1,5 @@
-﻿using RazorEngine.Tests.TestTypes.BaseTypes;
+﻿using System;
+using RazorEngine.Tests.TestTypes.BaseTypes;
 
 namespace RazorEngine.Tests
 {
@@ -533,6 +534,19 @@ namespace RazorEngine.Tests
                 string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// When template uses layout but that layout is not specified in cache or by resolver, fail with a meaningful exception
+        /// </summary>
+        [Test]
+        public void TemplateBase_ParseWithLayout_WithoutPrecompiling()
+        {
+            using (var service = new TemplateService())
+            {
+                var template = @"@{Layout = ""Layout"";} @section Body {Test}";
+                Assert.Throws<ArgumentException>(() => service.Parse(template, null, null, null));
             }
         }
         #endregion
