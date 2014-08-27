@@ -44,7 +44,7 @@
         /// Used for debugging.
         /// </summary>
         /// <param name="name">The name of the template to resolve.</param>
-        /// <returns>The filename of the template.</returns>
+        /// <returns>The fullpath to the template.</returns>
         public string ResolveFilename(string name)
         {
             if (_filenameResolver == null) return null;
