@@ -488,7 +488,10 @@ namespace RazorEngine.Templating
             {
                 string template = _config.Resolver.Resolve(cacheName);
                 if (!string.IsNullOrWhiteSpace(template))
-                    instance = GetTemplate(template, model, cacheName, null);
+                {
+                    string filename = _config.Resolver.ResolveFilename(cacheName);
+                    instance = GetTemplate(template, model, cacheName, filename);
+                }
             }
 
             return instance;

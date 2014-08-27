@@ -12,6 +12,14 @@
         /// <param name="name">The name of the template to resolve.</param>
         /// <returns>The template content.</returns>
         string Resolve(string name);
+
+        /// <summary>
+        /// Resolves the filename of the specified templatename.
+        /// Used for debugging and template compile errors.
+        /// </summary>
+        /// <param name="name">The name of the template to resolve.</param>
+        /// <returns>The fullpath filename to the template.</returns>
+        string ResolveFilename(string name);
         #endregion
     }
 }
