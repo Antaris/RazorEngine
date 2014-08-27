@@ -70,6 +70,7 @@ namespace RazorEngine.Templating
         /// Gets the encoded string factory.
         /// </summary>
         public IEncodedStringFactory EncodedStringFactory { get { return _config.EncodedStringFactory; } }
+
         #endregion
 
         #region Methods
@@ -479,7 +480,10 @@ namespace RazorEngine.Templating
             {
                 string template = _config.Resolver.Resolve(cacheName);
                 if (!string.IsNullOrWhiteSpace(template))
-                    instance = GetTemplate(template, model, cacheName, null);
+                {
+                    string filename = _config.Resolver.ResolveFilename(cacheName);
+                    instance = GetTemplate(template, model, cacheName, filename);
+                }
             }
 
             return instance;
