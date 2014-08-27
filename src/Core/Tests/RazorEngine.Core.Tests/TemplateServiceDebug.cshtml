@@ -1,0 +1,16 @@
+﻿@*
+This is to demonstrate debugging on a cshtml loaded from the disk.
+Set a breakpoint inside this file and debug the TemplateServiceTestFixture.TemplateService_CanDebugTemplateLoadedFromDisk
+*@
+@helper TryToDebug()
+{
+    if (System.Diagnostics.Debugger.IsAttached)
+    {
+        <p>Debugger is attached</p>
+    }
+    else
+    {
+        <p>Debugger is not attached</p>
+    }
+}
+@TryToDebug()

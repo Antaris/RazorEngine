@@ -88,6 +88,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="RazorEngine.snk" />
+    <Content Include="TemplateServiceDebug.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\RazorEngine.Core\RazorEngine.Core.csproj">
