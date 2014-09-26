@@ -2,6 +2,7 @@
 {
     using System;
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.IO;
@@ -20,6 +21,9 @@
     public abstract class DirectCompilerServiceBase : CompilerServiceBase, IDisposable
     {
         #region Fields
+        public static Func<IEnumerable<string>, IEnumerable<string>> EditLoadedAssemblyList =
+            new Func<IEnumerable<string>, IEnumerable<string>>(s => s);
+        
         private readonly CodeDomProvider _codeDomProvider;
         private bool _disposed;
         #endregion
@@ -57,7 +61,8 @@
             {
                 GenerateInMemory = true,
                 GenerateExecutable = false,
-                IncludeDebugInformation = false,
+                IncludeDebugInformation = true,
+                TreatWarningsAsErrors = false,
                 CompilerOptions = "/target:library /optimize /define:RAZORENGINE"
             };
 
@@ -68,10 +73,12 @@
                 .Select(a => a.Location);
 
             var includeAssemblies = (IncludeAssemblies() ?? Enumerable.Empty<string>());
+
             assemblies = assemblies.Concat(includeAssemblies)
                 .Where(a => !string.IsNullOrWhiteSpace(a))
                 .Distinct(StringComparer.InvariantCultureIgnoreCase);
 
+            assemblies = DirectCompilerServiceBase.EditLoadedAssemblyList(assemblies);
             @params.ReferencedAssemblies.AddRange(assemblies.ToArray());
 
             string sourceCode = null;
