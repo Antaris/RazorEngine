@@ -21,9 +21,6 @@
     public abstract class DirectCompilerServiceBase : CompilerServiceBase, IDisposable
     {
         #region Fields
-        public static Func<IEnumerable<string>, IEnumerable<string>> EditLoadedAssemblyList =
-            new Func<IEnumerable<string>, IEnumerable<string>>(s => s);
-        
         private readonly CodeDomProvider _codeDomProvider;
         private bool _disposed;
         #endregion
@@ -61,16 +58,12 @@
             {
                 GenerateInMemory = true,
                 GenerateExecutable = false,
-                IncludeDebugInformation = true,
+                IncludeDebugInformation = Debug,
                 TreatWarningsAsErrors = false,
                 CompilerOptions = "/target:library /optimize /define:RAZORENGINE"
             };
 
-            var assemblies = CompilerServicesUtility
-                .GetLoadedAssemblies()
-                .Where(a => !a.IsDynamic && File.Exists(a.Location))
-                .GroupBy(a => a.GetName().Name).Select(grp => grp.First(y => y.GetName().Version == grp.Max(x => x.GetName().Version))) // only select distinct assemblies based on FullName to avoid loading duplicate assemblies
-                .Select(a => a.Location);
+            var assemblies = ReferenceResolver.GetReferences(context);
 
             var includeAssemblies = (IncludeAssemblies() ?? Enumerable.Empty<string>());
 
@@ -78,7 +71,6 @@
                 .Where(a => !string.IsNullOrWhiteSpace(a))
                 .Distinct(StringComparer.InvariantCultureIgnoreCase);
 
-            assemblies = DirectCompilerServiceBase.EditLoadedAssemblyList(assemblies);
             @params.ReferencedAssemblies.AddRange(assemblies.ToArray());
 
             string sourceCode = null;

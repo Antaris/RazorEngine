@@ -5,6 +5,7 @@
     using System.Reflection;
 
     using Inspectors;
+    using RazorEngine.Compilation.Resolver;
 
     /// <summary>
     /// Defines the required contract for implementing a compiler service.
@@ -16,6 +17,8 @@
         /// Gets or sets the set of code inspectors.
         /// </summary>
         IEnumerable<ICodeInspector> CodeInspectors { get; set; }
+
+        IAssemblyReferenceResolver ReferenceResolver { get; set; }
 
         /// <summary>
         /// Gets or sets whether the compiler service is operating in debug mode.

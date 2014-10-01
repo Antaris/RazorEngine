@@ -13,6 +13,7 @@
 
     using Inspectors;
     using Templating;
+    using RazorEngine.Compilation.Resolver;
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
@@ -31,6 +32,7 @@
 
             CodeLanguage = codeLanguage;
             MarkupParserFactory = markupParserFactory ?? (() => new HtmlMarkupParser());
+            ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
         }
         #endregion
 
@@ -39,6 +41,11 @@
         /// Gets or sets the set of code inspectors.
         /// </summary>
         public IEnumerable<ICodeInspector> CodeInspectors { get; set; }
+
+        /// <summary>
+        /// Gets or sets the assembly resolver.
+        /// </summary>
+        public IAssemblyReferenceResolver ReferenceResolver { get; set; }
 
         /// <summary>
         /// Gets the code language.
