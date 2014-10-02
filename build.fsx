@@ -159,6 +159,16 @@ MyTarget "LocalDoc" (fun _ ->
 )
 
 
+MyTarget "ReleaseGithubDoc" (fun _ -> 
+    CleanDir "gh-pages"
+    cloneSingleBranch "" (sprintf "https://github.com/%s/%s.git" github_user github_project) "gh-pages" "gh-pages"
+    fullclean "gh-pages"
+    CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" github_user)@@"html") "gh-pages" true |> printfn "%A"
+    StageAll "gh-pages"
+    Commit "gh-pages" (sprintf "Update generated documentation %s" release.NugetVersion)
+    Branches.push "gh-pages"
+)
+
 Target "All" (fun _ ->
     trace "All finished!"
 )
