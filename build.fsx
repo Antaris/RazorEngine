@@ -102,8 +102,8 @@ MyTarget "Test_40" (fun _ ->
     runTests net40Params
 )
 
-MyTarget "Release" (fun _ ->
-    trace "Releasing because test was OK."
+MyTarget "CopyToRelease" (fun _ ->
+    trace "Copying to release because test was OK."
     CleanDirs [ outLibDir ]
     System.IO.Directory.CreateDirectory(outLibDir) |> ignore
 
@@ -177,10 +177,14 @@ Target "None" (fun _ ->
     trace "All finished!"
 )
 
-Target "Buildbot" (fun _ ->
-    trace "Buildbot finished!"
+Target "Release" (fun _ ->
+    // Build updates the SharedAssemblyInfo.cs files.
+    StageAll ""
+    Commit "" (sprintf "Bump version to %s" release.NugetVersion)
+    Branches.push ""
+    Branches.tag "" release.NugetVersion
+    Branches.pushTag "" "origin" release.NugetVersion
 )
-
 
 // Clean all
 "Clean" 
@@ -198,25 +202,15 @@ Target "Buildbot" (fun _ ->
   ==> "BuildApp_45"
   ==> "BuildTest_45"
   ==> "Test_45"
-  ==> "Release"
-  ==> "NuGet"
+  ==> "CopyToRelease"
   ==> "LocalDoc"
   ==> "All"
-  
-"Clean" 
-  ==> "RestorePackages"
-  ==> "SetVersions" 
-  ==> "BuildApp_45"
-  ==> "BuildTest_45"
-  ==> "Test_45"
-  ==> "Release"
+ 
+"All" 
+  ==> "NuGet"
   ==> "GithubDoc"
-  ==> "Buildbot"
+  ==> "ReleaseGithubDoc"
+  ==> "Release" 
 
-
- // Build test
-"BuildApp_45_single"
-  ==> "BuildTest_45_single"
-  
 // start build
 RunTargetOrDefault "All"
