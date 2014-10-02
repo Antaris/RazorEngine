@@ -45,7 +45,7 @@
                 int expected = Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), "\"*.*\"").Length;
                 string result = service.Parse(template, null, null, null);
 
-                Assert.That(expected == int.Parse(result));
+                Assert.AreEqual(expected.ToString(), result);
             }
         }
 
