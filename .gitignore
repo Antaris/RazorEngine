@@ -6,6 +6,7 @@
 *.svclog
 .DS_Store
 /.nuget
+/gh-pages
 /test
 /tmp
 /release

@@ -1,5 +1,9 @@
 ﻿# RazorEngine implementation documentation 
 
+## Building
+
+Open the ``.sln`` file or run ``./build.cmd``.
+
 ## General overview:
 
 This project aims to be a very flexible, extendable and good performing templating engine based on the Razor parser (Microsoft.AspNet.Razor -> System.Web.Razor.dll).
