@@ -177,7 +177,7 @@ Target "None" (fun _ ->
     trace "All finished!"
 )
 
-Target "Release" (fun _ ->
+MyTarget "Release" (fun _ ->
     // Build updates the SharedAssemblyInfo.cs files.
     StageAll ""
     Commit "" (sprintf "Bump version to %s" release.NugetVersion)
