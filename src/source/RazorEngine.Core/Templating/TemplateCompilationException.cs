@@ -14,6 +14,19 @@
     [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), Serializable]
     public class TemplateCompilationException : Exception
     {
+        /// <summary>
+        /// Gets a exact error message of the given error collection
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="sourceCode"></param>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        internal static string GetMessage(CompilerErrorCollection errors, string sourceCode, string template) {
+            var errorMsgs = string.Join("\n\t", errors.Cast<CompilerError>().Select(error => string.Format(" - {0}: ({1}, {2}) %s", error.IsWarning ? "warning" : "error", error.Line, error.Column, error.ErrorText)));
+            return 
+                string.Format("Unable to compile template. You can find the generated source code in {0}. \n\t{1}", sourceCode, errorMsgs);
+        }
+
         #region Constructors
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateCompilationException"/>.
@@ -22,7 +35,7 @@
         /// <param name="sourceCode">The source code that wasn't compiled.</param>
         /// <param name="template">The source template that wasn't compiled.</param>
         internal TemplateCompilationException(CompilerErrorCollection errors, string sourceCode, string template)
-            : base("Unable to compile template. " + errors[0].ErrorText + "\n\nOther compilation errors may have occurred. Check the Errors property for more information.")
+            : base(TemplateCompilationException.GetMessage(errors, sourceCode, template))
         {
             var list = errors.Cast<CompilerError>().ToList();
             Errors = new ReadOnlyCollection<CompilerError>(list);
