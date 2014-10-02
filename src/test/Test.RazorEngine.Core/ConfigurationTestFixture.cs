@@ -42,7 +42,7 @@
             {
                 const string template = @"@Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), ""*.*"").Length";
 
-                int expected = Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), "\"*.*\"").Length;
+                int expected = Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), "*.*").Length;
                 string result = service.Parse(template, null, null, null);
 
                 Assert.AreEqual(expected.ToString(), result);
