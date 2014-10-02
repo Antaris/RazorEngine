@@ -1,0 +1,40 @@
+@if (Enumerable.Count(Model.Members) > 0) {
+  <h3>@Model.Header</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>@Model.TableHeader</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    @foreach (var it in Model.Members)
+    {
+      <tr>
+        <td class="member-name">
+          @{ var id = Html.UniqueID().ToString(); }
+          <code onmouseout="hideTip(event, '@id', @id)" onmouseover="showTip(event, '@id', @id)">
+            @Html.Encode(it.Details.FormatUsage(40))
+          </code>
+          <div class="tip" id="@id">
+            <strong>Signature:</strong> @Html.Encode(it.Details.Signature)<br />
+            @if (!it.Details.Modifiers.IsEmpty) {
+              <strong>Modifiers:</strong> @it.Details.FormatModifiers<br />
+            }
+            @if (!it.Details.TypeArguments.IsEmpty) {
+              <strong>Type parameters:</strong> @it.Details.FormatTypeArguments
+            }
+          </div>
+        </td>
+        <td class="xmldoc">
+          @if (!String.IsNullOrEmpty(it.Details.FormatSourceLocation))
+          {
+            <a href="@it.Details.FormatSourceLocation" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          }
+          @it.Comment.FullText
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>
+}

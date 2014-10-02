@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="RazorEngine.Compilation.CompilerServiceBase" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABCAAAAAAAAEgAAAAQAAgCMAAAAAAAAAAAQA=</HashCode>
+      <FileName>Compilation\CompilerServiceBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RazorEngine.Compilation.CompilerServiceBuilder" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAIAEAAAAAQAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Compilation\CompilerServiceBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.CompilerServicesUtility" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAJBAAAABAAAAAAAAAAAAAAIAAAEBAA=</HashCode>
+      <FileName>Compilation\CompilerServicesUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.DefaultCompilerServiceFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Compilation\DefaultCompilerServiceFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Compilation.DirectCompilerServiceBase" Collapsed="true">
+    <Position X="4.25" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Compilation\DirectCompilerServiceBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RazorEngine.Compilation.HasDynamicModelAttribute" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\HasDynamicModelAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.RazorDynamicObject" Collapsed="true">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Compilation\RazorDynamicObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.TypeContext" Collapsed="true">
+    <Position X="17.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAACEAAAAABAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Compilation\TypeContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.CSharp.CSharpDirectCompilerService" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\CSharp\CSharpDirectCompilerService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.CSharp.CSharpRazorCodeGenerator" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\CSharp\CSharpRazorCodeGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage" Collapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\CSharp\CSharpRazorCodeLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.VisualBasic.VBDirectCompilerService" Collapsed="true">
+    <Position X="5.75" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\VisualBasic\VBDirectCompilerService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.VisualBasic.VBRazorCodeGenerator" Collapsed="true">
+    <Position X="10.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\VisualBasic\VBRazorCodeGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Compilation.VisualBasic.VBRazorCodeLanguage" Collapsed="true">
+    <Position X="12.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\VisualBasic\VBRazorCodeLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Configuration.DefaultTemplateServiceConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEACAAAAAAIAAAAAEAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configuration\DefaultTemplateServiceConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Configuration.FluentConfigurationBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAIARAAAAAAAAQAAAAAAAEBAgAAAQAAAAAACAAAAAA=</HashCode>
+      <FileName>Configuration\Fluent\FluentConfigurationBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Configuration.FluentTemplateServiceConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEACAAAAAAIAAAAAFAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configuration\Fluent\FluentTemplateServiceConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Configuration.RazorEngineConfigurationSection" Collapsed="true">
+    <Position X="15.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAIBAAAAAABAABAgCAAAAABAAA=</HashCode>
+      <FileName>Configuration\RazorEngineConfigurationSection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.CachedTemplateItem" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIAAAAAAAA=</HashCode>
+      <FileName>Templating\CachedTemplateItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.DefaultActivator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\DefaultActivator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Templating.DefaultAppDomainFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Templating\DefaultAppDomainFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Templating.DelegateActivator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAQAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\DelegateActivator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Templating.DelegateAppDomainFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAAAAAA=</HashCode>
+      <FileName>Templating\DelegateAppDomainFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Templating.InstanceContext" Collapsed="true">
+    <Position X="17.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Templating\InstanceContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.IsolatedTemplateService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIkAAAAACAAAAQAAAAAAAQEAAAEAgAAAEAYAAARAAA=</HashCode>
+      <FileName>Templating\IsolatedTemplateService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Templating.RequireNamespacesAttribute" Collapsed="true">
+    <Position X="17.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\RequireNamespacesAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.TemplateBase" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAABCAQAAAAAAAwAAAAAAAAgCAAAAAGACAA=</HashCode>
+      <FileName>Templating\TemplateBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RazorEngine.Templating.TemplateBase&lt;T&gt;" Collapsed="true">
+    <Position X="2.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAAI=</HashCode>
+      <FileName>Templating\TemplateBaseOfT.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="RazorEngine.Templating.TemplateCompilationException" Collapsed="true">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\TemplateCompilationException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.TemplateParsingException" Collapsed="true">
+    <Position X="10.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAgAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Templating\TemplateParsingException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.TemplateService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIIoAAgACKAAAAQIAAAAAAQAQAAEAgAAAEAkAAABAAA=</HashCode>
+      <FileName>Templating\TemplateService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Templating.TemplateServiceFactory" Collapsed="true">
+    <Position X="14" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Templating\TemplateServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.TemplateWriter" Collapsed="true">
+    <Position X="15.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\TemplateWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RazorEngine.Templating.TypeLoader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIEBAAQACABAAAAAAAQBAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\TypeLoader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Templating.Parallel.DefaultParallelQueryPlan&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\Parallel\DefaultParallelQueryPlan.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Text.HtmlEncodedString" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAACAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\HtmlEncodedString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Text.HtmlEncodedStringFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\HtmlEncodedStringFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Text.RawString" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Text\RawString.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RazorEngine.Text.RawStringFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\RawStringFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="RazorEngine.Compilation.ICompilerService" Collapsed="true">
+    <Position X="12.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABCAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compilation\ICompilerService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Compilation.ICompilerServiceFactory" Collapsed="true">
+    <Position X="14" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Compilation\ICompilerServiceFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Configuration.IConfigurationBuilder" Collapsed="true">
+    <Position X="15.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAARAAAAAAAAQAAAAAAAEBAgAAAQAAAAAACAAAAAA=</HashCode>
+      <FileName>Configuration\Fluent\IConfigurationBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Configuration.ITemplateServiceConfiguration" Collapsed="true">
+    <Position X="14" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEACAAAAAAIAAAAAEAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configuration\ITemplateServiceConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Templating.IActivator" Collapsed="true">
+    <Position X="8.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\IActivator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Templating.IAppDomainFactory" Collapsed="true">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Templating\IAppDomainFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Templating.ITemplate" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAQAAAAAAAQAAAAAAAAAAAAAAAGAAAI=</HashCode>
+      <FileName>Templating\ITemplate.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Templating.ITemplate&lt;T&gt;" Collapsed="true">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Templating\ITemplateOfT.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Templating.ITemplateService" Collapsed="true">
+    <Position X="12.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAQIAAAAAAQAAAAEAgAAAEAAAAABAAA=</HashCode>
+      <FileName>Templating\ITemplateService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Templating.Parallel.IParallelQueryPlan&lt;T&gt;" Collapsed="true">
+    <Position X="10.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Templating\Parallel\IParallelQueryPlan.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Text.IEncodedString" Collapsed="true">
+    <Position X="17.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\IEncodedString.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RazorEngine.Text.IEncodedStringFactory" Collapsed="true">
+    <Position X="8.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\IEncodedStringFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="RazorEngine.Encoding" Collapsed="true">
+    <Position X="8.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Encoding.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RazorEngine.Language" Collapsed="true">
+    <Position X="10.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Language.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

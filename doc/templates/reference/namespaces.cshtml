@@ -1,0 +1,29 @@
+@{
+  Layout = "template";
+  Title = "Namespaces - " + Properties["project-name"];
+}
+
+<h1>@Model.Name</h1>
+
+<h2><a name="Overview" class="anchor" href="#Overview">Overview</a></h2>
+@foreach (var ns in Model.Namespaces)
+{
+  if (ns.Types.Length + ns.Modules.Length > 0)
+  {
+    <a href="#@ns.Name">@ns.Name</a><br />
+  }
+}
+
+@foreach (var ns in Model.Namespaces)
+{
+  if (ns.Types.Length + ns.Modules.Length > 0)
+  {
+    <h2><a href="#Overview"><img src="@Root/content/img/back_to_top.png" alt="Back to top" /></a> <a name="@ns.Name" class="anchor" href="#@ns.Name">@ns.Name Namespace</a></h2>
+    <div>
+      @RenderPart("part-nested", new {
+         Types = ns.Types,
+         Modules = ns.Modules
+      })
+    </div>
+  }
+}

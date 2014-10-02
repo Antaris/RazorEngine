@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{CB08CC9C-1232-4F96-8A43-BFFA906D3DC8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Core", "Core\RazorEngine.Core\RazorEngine.Core.csproj", "{D268F86D-2DAB-4329-A75F-3BCF6D5BCDC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Core", "source\RazorEngine.Core\RazorEngine.Core.csproj", "{D268F86D-2DAB-4329-A75F-3BCF6D5BCDC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3BBC422C-2720-487E-B46E-BFED47165373}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,17 +12,79 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3BBC42
 		Shared\SharedAssemblyInfo.cs = Shared\SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{736162F9-990C-4DDA-BDC6-7FBDEC0AA857}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.RazorEngine.Core", "test\Test.RazorEngine.Core\Test.RazorEngine.Core.csproj", "{F4F5AB5F-BF81-4C0C-8F2E-68AB02160C4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Core.Tests", "Core\Tests\RazorEngine.Core.Tests\RazorEngine.Core.Tests.csproj", "{F4F5AB5F-BF81-4C0C-8F2E-68AB02160C4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Mvc", "source\RazorEngine.Mvc\RazorEngine.Mvc.csproj", "{878A8554-ACF1-4A0B-9BFC-6BD5FC5048C4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{31645D9C-55C6-43F4-A3EB-380DD82B338E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Hosts.Console", "source\RazorEngine.Hosts.Console\RazorEngine.Hosts.Console.csproj", "{BC7891A1-8459-4A69-A37C-F40824E28C70}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{8DA86295-C17B-4D67-8F94-E2463AD45459}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AB84CBF8-2E91-46B4-8803-8CF529CDA7E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Mvc", "Web\RazorEngine.Mvc\RazorEngine.Mvc.csproj", "{878A8554-ACF1-4A0B-9BFC-6BD5FC5048C4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AE7E811A-2B9F-45BC-9752-0FB4D1DEE12D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Hosts.Console", "Hosts\RazorEngine.Hosts.Console\RazorEngine.Hosts.Console.csproj", "{BC7891A1-8459-4A69-A37C-F40824E28C70}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57FF23EF-C0CC-42F2-9CF7-5A468FC50C89}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\.travis.yml = ..\.travis.yml
+		..\appveyor.yml = ..\appveyor.yml
+		..\build.cmd = ..\build.cmd
+		..\build.fsx = ..\build.fsx
+		..\build.sh = ..\build.sh
+		..\buildConfig.fsx = ..\buildConfig.fsx
+		..\downloadNuget.fsx = ..\downloadNuget.fsx
+		..\generateDocs.fsx = ..\generateDocs.fsx
+		..\packages.config = ..\packages.config
+		..\readme.md = ..\readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{A9A2DC20-74A8-4F03-8EDB-A0B6B95F7401}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\AboutRazor.md = ..\doc\AboutRazor.md
+		..\doc\Contributing.md = ..\doc\Contributing.md
+		..\doc\DevelopReadme.md = ..\doc\DevelopReadme.md
+		..\doc\Encoding.md = ..\doc\Encoding.md
+		..\doc\IntellisenseAndResharper.md = ..\doc\IntellisenseAndResharper.md
+		..\doc\LICENSE.md = ..\doc\LICENSE.md
+		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
+		..\doc\TemplateBasics.md = ..\doc\TemplateBasics.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{47C1804C-3301-4AB6-A14A-30BF72417AA3}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\templates\docpage.cshtml = ..\doc\templates\docpage.cshtml
+		..\doc\templates\template-color.tex = ..\doc\templates\template-color.tex
+		..\doc\templates\template-math.tex = ..\doc\templates\template-math.tex
+		..\doc\templates\template-project.html = ..\doc\templates\template-project.html
+		..\doc\templates\template.cshtml = ..\doc\templates\template.cshtml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reference", "reference", "{32977FC4-AC53-4273-97CF-C5FB2212065C}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\templates\reference\module.cshtml = ..\doc\templates\reference\module.cshtml
+		..\doc\templates\reference\namespaces.cshtml = ..\doc\templates\reference\namespaces.cshtml
+		..\doc\templates\reference\part-members.cshtml = ..\doc\templates\reference\part-members.cshtml
+		..\doc\templates\reference\part-nested.cshtml = ..\doc\templates\reference\part-nested.cshtml
+		..\doc\templates\reference\type.cshtml = ..\doc\templates\reference\type.cshtml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{3AC5DA61-ED58-45FA-975B-4FDB23387B7A}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\content\style.css = ..\doc\content\style.css
+		..\doc\content\style.css.bak = ..\doc\content\style.css.bak
+		..\doc\content\tips.js = ..\doc\content\tips.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{CF6DB8E1-2459-4EFC-84D0-BCBB4834DAB8}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\content\img\back_to_top.png = ..\doc\content\img\back_to_top.png
+		..\doc\content\img\github-blue.png = ..\doc\content\img\github-blue.png
+		..\doc\content\img\github.png = ..\doc\content\img\github.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{77852C68-A0DB-4644-A1B4-17E101DFE9B1}"
+	ProjectSection(SolutionItems) = preProject
+		..\nuget\RazorEngine.nuspec = ..\nuget\RazorEngine.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,11 +141,16 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D268F86D-2DAB-4329-A75F-3BCF6D5BCDC4} = {CB08CC9C-1232-4F96-8A43-BFFA906D3DC8}
-		{736162F9-990C-4DDA-BDC6-7FBDEC0AA857} = {CB08CC9C-1232-4F96-8A43-BFFA906D3DC8}
-		{F4F5AB5F-BF81-4C0C-8F2E-68AB02160C4E} = {736162F9-990C-4DDA-BDC6-7FBDEC0AA857}
-		{BC7891A1-8459-4A69-A37C-F40824E28C70} = {31645D9C-55C6-43F4-A3EB-380DD82B338E}
-		{878A8554-ACF1-4A0B-9BFC-6BD5FC5048C4} = {8DA86295-C17B-4D67-8F94-E2463AD45459}
+		{D268F86D-2DAB-4329-A75F-3BCF6D5BCDC4} = {AB84CBF8-2E91-46B4-8803-8CF529CDA7E7}
+		{F4F5AB5F-BF81-4C0C-8F2E-68AB02160C4E} = {AE7E811A-2B9F-45BC-9752-0FB4D1DEE12D}
+		{878A8554-ACF1-4A0B-9BFC-6BD5FC5048C4} = {AB84CBF8-2E91-46B4-8803-8CF529CDA7E7}
+		{BC7891A1-8459-4A69-A37C-F40824E28C70} = {AB84CBF8-2E91-46B4-8803-8CF529CDA7E7}
+		{A9A2DC20-74A8-4F03-8EDB-A0B6B95F7401} = {57FF23EF-C0CC-42F2-9CF7-5A468FC50C89}
+		{47C1804C-3301-4AB6-A14A-30BF72417AA3} = {A9A2DC20-74A8-4F03-8EDB-A0B6B95F7401}
+		{32977FC4-AC53-4273-97CF-C5FB2212065C} = {47C1804C-3301-4AB6-A14A-30BF72417AA3}
+		{3AC5DA61-ED58-45FA-975B-4FDB23387B7A} = {A9A2DC20-74A8-4F03-8EDB-A0B6B95F7401}
+		{CF6DB8E1-2459-4EFC-84D0-BCBB4834DAB8} = {3AC5DA61-ED58-45FA-975B-4FDB23387B7A}
+		{77852C68-A0DB-4644-A1B4-17E101DFE9B1} = {57FF23EF-C0CC-42F2-9CF7-5A468FC50C89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35

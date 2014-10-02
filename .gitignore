@@ -3,8 +3,13 @@
 *.sln.cache
 *.suo
 *.user
+*.svclog
 .DS_Store
-build/
+/.nuget
+/test
+/tmp
+/release
+[Bb]uild
 [Bb]in/
 [Dd]ebug/
 [Oo]bj/

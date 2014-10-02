@@ -1,0 +1,99 @@
+\documentclass{article}
+
+% Defining colors by names
+\usepackage{xcolor}
+% Verbatim enviroment
+\usepackage{fancyvrb}
+% Verbatim enviroment for unformatted source code
+\usepackage{listings}
+% Better font for backslash
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+% Providing more features than usual tabular
+\usepackage{longtable}
+% Augment with more font faces
+\usepackage{bera}
+% More math symbols
+\usepackage{amssymb}
+
+% Simple key value store 
+% (source at http://tex.stackexchange.com/questions/48907/global-key-value-dictionary)
+\def\addvalue#1#2{\expandafter\gdef\csname my@data@\detokenize{#1}\endcsname{#2}}
+\def\usevalue#1{%
+  \ifcsname my@data@\detokenize{#1}\endcsname
+    \csname my@data@\detokenize{#1}\expandafter\endcsname
+  \else
+    % if not found, return key as value
+    {#1}\expandafter
+  \fi
+}
+
+\addvalue{>=}{$\geq$}
+\addvalue{<=}{$\leq$}
+\addvalue{<>}{$\neq$}
+\addvalue{not}{$\neg$}
+\addvalue{&&}{$\land$}
+\addvalue{||}{$\lor$}
+\addvalue{->}{$\rightarrow$}
+\addvalue{<-}{$\leftarrow$}
+\addvalue{=>}{$\Rightarrow$}
+\addvalue{*}{$\times$}
+\addvalue{|>}{$\blacktriangleright$}
+\addvalue{<|}{$\blacktriangleleft$}
+
+% Identifiers
+\newcommand{\id}[1]{\texttt{#1}}
+
+% Comments
+\newcommand{\com}[1]{\textit{#1}}
+
+% Inactive elements
+\newcommand{\inact}[1]{\textmd{#1}}
+
+% Keywords
+\newcommand{\kwd}[1]{\textbf{#1}}
+
+% Numbers
+\newcommand{\num}[1]{\textrm{#1}}
+
+% Operators
+\newcommand{\ops}[1]{\usevalue{#1}}
+
+% Preprocessors
+\newcommand{\prep}[1]{\textsf{#1}}
+
+% Strings
+\newcommand{\str}[1]{\textrm{#1}}
+
+% Line numbers
+\newcommand{\lines}[1]{\textrm{#1}}
+
+% fsi output
+\newcommand{\fsi}[1]{\textsf{#1}}
+
+% Omitted parts
+\newcommand{\omi}[1]{\textsc{#1}}
+
+% Overriding color and style of line numbers
+\renewcommand{\theFancyVerbLine}{
+\lines{\small \arabic{FancyVerbLine}:}}
+
+\lstset{%
+  backgroundcolor=\color{gray!15},
+  basicstyle=\ttfamily,
+  breaklines=true,
+  columns=fullflexible
+}
+
+\title{{page-title}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+{contents}
+
+{tooltips}
+
+\end{document}
