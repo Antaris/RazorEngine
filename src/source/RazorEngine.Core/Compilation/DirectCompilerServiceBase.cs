@@ -63,11 +63,9 @@
                 CompilerOptions = "/target:library /optimize /define:RAZORENGINE"
             };
 
-            var assemblies = ReferenceResolver.GetReferences(context);
+            var assemblies = ReferenceResolver.GetReferences(context, IncludeAssemblies());
 
-            var includeAssemblies = (IncludeAssemblies() ?? Enumerable.Empty<string>());
-
-            assemblies = assemblies.Concat(includeAssemblies)
+            assemblies = assemblies
                 .Where(a => !string.IsNullOrWhiteSpace(a))
                 .Distinct(StringComparer.InvariantCultureIgnoreCase);
 

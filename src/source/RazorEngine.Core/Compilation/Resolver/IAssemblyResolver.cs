@@ -8,6 +8,6 @@ namespace RazorEngine.Compilation.Resolver
 {
     public interface IAssemblyReferenceResolver
     {
-        IEnumerable<string> GetReferences(TypeContext context);
+        IEnumerable<string> GetReferences(TypeContext context, IEnumerable<string> includeAssemblies);
     }
 }
