@@ -2,7 +2,8 @@
 
 ## Building
 
-Open the ``.sln`` file or run ``./build.cmd``.
+Open the ``.sln`` file or run ``./build``.
+NOTE: It is possible that you can ony build the ``.sln`` file AFTER doing an initial ``./build`` (because nuget dependencies have to be downloaded).
 
 ## General overview:
 
