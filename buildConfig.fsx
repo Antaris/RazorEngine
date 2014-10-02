@@ -86,7 +86,12 @@ let buildApp (buildParams:BuildParams) =
     let buildDir = buildDir @@ buildParams.OutDirName
     CleanDirs [ buildDir ]
     // build app
-    !! "src/source/**/*.csproj"
+    let files = !! "src/source/**/*.csproj"
+    (if isMono then
+      files
+      // Don't build the mvc project on mono
+      -- "src/**/RazorEngine.Mvc.csproj"
+     else files)
         |> MSBuild buildDir "Build" 
             [   "Configuration", buildMode
                 "TargetFrameworkVersion", buildParams.TargetName 
@@ -97,7 +102,8 @@ let buildTests (buildParams:BuildParams) =
     let testDir = testDir @@ buildParams.OutDirName
     CleanDirs [ testDir ]
     // build tests
-    !! "src/test/**/Test.*.csproj"
+    let files = !! "src/test/**/Test.*.csproj"
+    files
         |> MSBuild testDir "Build" 
             [   "Configuration", buildMode
                 "TargetFrameworkVersion", buildParams.TargetName 
