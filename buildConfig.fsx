@@ -123,8 +123,8 @@ let runTests  (buildParams:BuildParams) =
                 OutputFile = "logs/TestResults.xml" })
 
     
-let net40Params = { OutDirName = "net40"; TargetName = "v4.0"; DefineConstants = "NET40;FAKE" }
-let net45Params = { OutDirName = "net45"; TargetName = (if isMono then "v4.5" else "v4.5.1"); DefineConstants = "NET45;FAKE" }
+let net40Params = { OutDirName = "net40"; TargetName = "v4.0"; DefineConstants = "NET40" }
+let net45Params = { OutDirName = "net45"; TargetName = (if isMono then "v4.5" else "v4.5.1"); DefineConstants = "NET45" }
 // Documentation 
 
 let buildDocumentationTarget target =
