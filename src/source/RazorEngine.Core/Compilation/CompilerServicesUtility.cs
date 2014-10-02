@@ -21,6 +21,7 @@ namespace RazorEngine.Compilation
         private static readonly Type ExpandoType = typeof(ExpandoObject);
         private static readonly Type EnumerableType = typeof(IEnumerable);
         private static readonly Type EnumeratorType = typeof(IEnumerator);
+        private static readonly Type GenericEnumerableType = typeof(IEnumerable<>);
         #endregion
 
         #region Methods
@@ -101,7 +102,7 @@ namespace RazorEngine.Compilation
         public static string ResolveCSharpTypeName(Type type)
         {
             if (IsIteratorType(type))
-                type = GetFirstGenericInterface(type);
+                type = GetIteratorInterface(type);
 
             if (IsDynamicType(type))
                 return "dynamic";
@@ -120,7 +121,7 @@ namespace RazorEngine.Compilation
         public static string ResolveVBTypeName(Type type)
         {
             if (IsIteratorType(type))
-                type = GetFirstGenericInterface(type);
+                type = GetIteratorInterface(type);
 
             if (IsDynamicType(type))
                 return "Object";
@@ -137,21 +138,29 @@ namespace RazorEngine.Compilation
         }
 
         /// <summary>
-        /// Gets the first generic interface of the specified type if one exists.
+        /// Gets the Iterator type for the given compiler generated iterator.
         /// </summary>
         /// <param name="type">The target type.</param>
-        /// <returns>The first generic interface if one exists, otherwise the first interface or the target type itself if there are no interfaces.</returns>
-        public static Type GetFirstGenericInterface(Type type)
+        /// <returns>Tries to return IEnumerable of T if possible.</returns>
+        public static Type GetIteratorInterface(Type type)
         {
             Type firstInterface = null;
+            // try to find IEnumerable<>
             foreach (var @interface in type.GetInterfaces())
             {
                 if (firstInterface == null)
                     firstInterface = @interface;
 
+                if (@interface.IsGenericType && !@interface.IsGenericTypeDefinition && @interface.GetGenericTypeDefinition() == GenericEnumerableType)
+                    return @interface;
+            }
+            // ok just use the first generic one
+            foreach (var @interface in type.GetInterfaces())
+            {
                 if (@interface.IsGenericType)
                     return @interface;
             }
+            // ok use the first one or the whole type.
             return @firstInterface ?? type;
         }
 
