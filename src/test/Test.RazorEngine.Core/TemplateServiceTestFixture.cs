@@ -21,6 +21,19 @@ namespace RazorEngine.Tests
     [TestFixture]
     public class TemplateServiceTestFixture
     {
+        public void RunTestHelper(Action test)
+        {
+            try
+            {
+                test();
+            }
+            catch (TemplateCompilationException e)
+            {
+                Console.WriteLine("Generated source file: \n\n{0}", System.IO.File.ReadAllText(e.SourceCode));
+                throw;
+            }
+        }
+
         #region Tests
         /// <summary>
         /// Tests that a simple template without a model can be parsed.
@@ -119,16 +132,19 @@ namespace RazorEngine.Tests
         [Test]
         public void TemplateService_CanParseSimpleTemplate_WithIteratorModel()
         {
-            using (var service = new TemplateService())
+            RunTestHelper(() =>
             {
-                const string template = "@foreach (var i in Model) { @i }";
-                const string expected = "One Two Three";
+                using (var service = new TemplateService(new TemplateServiceConfiguration() { Debug = true }))
+                {
+                    const string template = "@foreach (var i in Model) { @i }";
+                    const string expected = "One Two Three";
 
-                var model = CreateIterator("One ", "Two ", "Three");
-                string result = service.Parse(template, model, null, null);
+                    var model = CreateIterator("One ", "Two ", "Three");
+                    string result = service.Parse(template, model, null, null);
 
-                Assert.That(result == expected, "Result does not match expected: " + result);
-            }
+                    Assert.That(result == expected, "Result does not match expected: " + result);
+                }
+            });
         }
 
         private static IEnumerable<T> CreateIterator<T>(params T[] items)
@@ -363,7 +379,7 @@ namespace RazorEngine.Tests
         [Test]
         public void TemplateService_CanPrecompileTemplate_WithNoModelAndANonGenericBase()
         {
-            var config = new TemplateServiceConfiguration {BaseTemplateType = typeof (NonGenericTemplateBase)};
+            var config = new TemplateServiceConfiguration { BaseTemplateType = typeof(NonGenericTemplateBase) };
             using (var service = new TemplateService(config))
             {
                 const string template = "<h1>@GetHelloWorldText()</h1>";

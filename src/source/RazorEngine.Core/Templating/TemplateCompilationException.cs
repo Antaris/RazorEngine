@@ -22,7 +22,7 @@
         /// <param name="template"></param>
         /// <returns></returns>
         internal static string GetMessage(CompilerErrorCollection errors, string sourceCode, string template) {
-            var errorMsgs = string.Join("\n\t", errors.Cast<CompilerError>().Select(error => string.Format(" - {0}: ({1}, {2}) %s", error.IsWarning ? "warning" : "error", error.Line, error.Column, error.ErrorText)));
+            var errorMsgs = string.Join("\n\t", errors.Cast<CompilerError>().Select(error => string.Format(" - {0}: ({1}, {2}) {3}", error.IsWarning ? "warning" : "error", error.Line, error.Column, error.ErrorText)));
             return 
                 string.Format("Unable to compile template. You can find the generated source code in {0}. \n\t{1}", sourceCode, errorMsgs);
         }
