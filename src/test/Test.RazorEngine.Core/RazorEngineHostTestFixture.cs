@@ -69,6 +69,7 @@ namespace RazorEngine.Tests
         /// where the model type might be unknown, but we can pass in an instance of <see cref="object" /> and allow
         /// the @model directive to switch the model type.
         /// </remarks>
+        [Category("VBNET")]
         [Test]
         public void RazorEngineHost_SupportsModelSpan_UsingVBCodeParser()
         {
@@ -89,6 +90,7 @@ namespace RazorEngine.Tests
             }
         }
 
+        [Category("VBNET")]
         [Test]
         public void RazorEngineHost_SupportsModelSpan_WithBaseType_NotGeneric_UsingVBCodeParser()
         {

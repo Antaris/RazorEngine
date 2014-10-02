@@ -118,11 +118,12 @@ let runTests  (buildParams:BuildParams) =
         |> NUnit (fun p ->
             {p with
                 //NUnitParams.WorkingDir = working
-                NUnitParams.ProcessModel = 
+                ExcludeCategory = if isMono then "VBNET" else ""
+                ProcessModel = 
                     // Because the default nunit-console.exe.config doesn't use .net 4...
                     if isMono then NUnitProcessModel.SingleProcessModel else NUnitProcessModel.DefaultProcessModel
-                NUnitParams.WorkingDir = testDir
-                NUnitParams.StopOnError = true
+                WorkingDir = testDir
+                StopOnError = true
                 TimeOut = System.TimeSpan.FromMinutes 30.0
                 Framework = "4.0"
                 DisableShadowCopy = true;

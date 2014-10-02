@@ -65,6 +65,7 @@
         ///     </code>
         /// </remarks>
         [Test]
+        [Category("VBNET")]
         public void FluentTemplateServiceConfiguration_CanConfigureTemplateService_WithSpecificCodeLanguage()
         {
             var config = new FluentTemplateServiceConfiguration(
@@ -118,6 +119,7 @@
         /// <summary>
         /// Tests that the fluent configuration supports setting the code language.
         /// </summary>
+        [Category("VBNET")]
         [Test]
         public void FluentTemplateServiceConfiguration_CanSetCodeLanguage()
         {
