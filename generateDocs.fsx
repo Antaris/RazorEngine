@@ -48,18 +48,18 @@ let buildAllDocumentation outDocDir website_root =
     let references =
         if isMono then
             // Workaround compiler errors in Razor-ViewEngine
-            let d = RazorEngine.Compilation.Resolver.UseCurrentAssembliesReferenceResolver()
-            let loadedList = d.GetReferences null |> Seq.cache
-            // We replace the list and add required items manually as mcs doesn't like duplicates...
-            let getItem name =
-                loadedList |> Seq.find (fun l -> l.Contains name)
+            //let d = RazorEngine.Compilation.Resolver.UseCurrentAssembliesReferenceResolver()
+            //let loadedList = d.GetReferences null |> Seq.cache
+            //// We replace the list and add required items manually as mcs doesn't like duplicates...
+            //let getItem name =
+            //    loadedList |> Seq.find (fun l -> l.Contains name)
             [ (if isMono then "/usr/lib64/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp.Core.dll" else "FSharp.Core") 
-              getItem "FSharp.Compiler.Service"
-              Path.GetFullPath @"build/net40/System.Web.Razor.dll"
-              getItem "RazorEngine"
-              getItem "FSharp.Literate"
-              getItem "FSharp.CodeFormat"
-              getItem "FSharp.MetadataFormat" ] 
+              Path.GetFullPath "./lib/FSharp.Compiler.Service/FSharp.Compiler.Service.dll"
+              Path.GetFullPath "./build/net40/System.Web.Razor.dll"
+              Path.GetFullPath "./build/net40/RazorEngine.dll"
+              Path.GetFullPath "./lib/FSharp.Formatting/FSharp.Literate.dll"
+              Path.GetFullPath "./lib/FSharp.Formatting/FSharp.CodeFormat.dll"
+              Path.GetFullPath "./lib/FSharp.Formatting/FSharp.MetadataFormat.dll" ] 
             |> Some
         else None
     
