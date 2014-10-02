@@ -40,9 +40,9 @@
 
             using (var service = new TemplateService(config))
             {
-                const string template = "@Directory.GetFiles(\"C:\\\\\", \"*.*\").Length";
+                const string template = @"@Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), ""*.*"").Length";
 
-                int expected = Directory.GetFiles(@"C:\", "*.*").Length;
+                int expected = Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), "\"*.*\"").Length;
                 string result = service.Parse(template, null, null, null);
 
                 Assert.That(expected == int.Parse(result));
