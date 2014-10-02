@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- GENERATED FROM COMMIT: 0e575dd707f6e20273b8b88872d0ecb3fd45bfb9 -->
+  <head>
+    <meta charset="utf-8">
+    <title>IConfigurationBuilder - RazorEngine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://matthid.github.io/RazorEngine/content/style.css" />
+    <script type="text/javascript" src="https://matthid.github.io/RazorEngine/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://matthid.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+
+
+
+<h1>IConfigurationBuilder </h1>
+<div class="xmldoc">
+    Defined in RazorEngine.dll.
+</div>
+<div class="xmldoc">
+<p>Defines the required contract for implementing a configuration builder.</p>
+</div>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '138', 138)" onmouseover="showTip(event, '138', 138)">
+            ActivateUsing(activator)
+          </code>
+          <div class="tip" id="138">
+            <strong>Signature:</strong> activator:IActivator -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the activator.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '139', 139)" onmouseover="showTip(event, '139', 139)">
+            ActivateUsing()
+          </code>
+          <div class="tip" id="139">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'TActivator          </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the activator.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '140', 140)" onmouseover="showTip(event, '140', 140)">
+            ActivateUsing(activator)
+          </code>
+          <div class="tip" id="140">
+            <strong>Signature:</strong> activator:Func&lt;InstanceContext,ITemplate&gt; -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '141', 141)" onmouseover="showTip(event, '141', 141)">
+            AddInspector()
+          </code>
+          <div class="tip" id="141">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'TInspector          </div>
+        </td>
+        <td class="xmldoc">
+          <p>Adds the specified code inspector.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '142', 142)" onmouseover="showTip(event, '142', 142)">
+            AddInspector(inspector)
+          </code>
+          <div class="tip" id="142">
+            <strong>Signature:</strong> inspector:ICodeInspector -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Adds the specified code inspector.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '143', 143)" onmouseover="showTip(event, '143', 143)">
+            CompileUsing(factory)
+          </code>
+          <div class="tip" id="143">
+            <strong>Signature:</strong> factory:ICompilerServiceFactory -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the compiler service factory.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '144', 144)" onmouseover="showTip(event, '144', 144)">
+            CompileUsing()
+          </code>
+          <div class="tip" id="144">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'TCompilerServiceFactory          </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the compiler service factory.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '145', 145)" onmouseover="showTip(event, '145', 145)">
+            EncodeUsing(factory)
+          </code>
+          <div class="tip" id="145">
+            <strong>Signature:</strong> factory:IEncodedStringFactory -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the encoded string factory.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '146', 146)" onmouseover="showTip(event, '146', 146)">
+            EncodeUsing()
+          </code>
+          <div class="tip" id="146">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'TEncodedStringFactory          </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the encoded string factory.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '147', 147)" onmouseover="showTip(event, '147', 147)">
+            IncludeNamespaces(namespaces)
+          </code>
+          <div class="tip" id="147">
+            <strong>Signature:</strong> (namespaces:string []) -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '148', 148)" onmouseover="showTip(event, '148', 148)">
+            ResolveUsing()
+          </code>
+          <div class="tip" id="148">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'TResolver          </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the resolve used to locate unknown templates.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '149', 149)" onmouseover="showTip(event, '149', 149)">
+            ResolveUsing(resolver)
+          </code>
+          <div class="tip" id="149">
+            <strong>Signature:</strong> resolver:ITemplateResolver -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the resolver used to locate unknown templates.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '150', 150)" onmouseover="showTip(event, '150', 150)">
+            ResolveUsing(resolver)
+          </code>
+          <div class="tip" id="150">
+            <strong>Signature:</strong> resolver:Func&lt;string,string&gt; -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '151', 151)" onmouseover="showTip(event, '151', 151)">
+            UseDefaultActivator()
+          </code>
+          <div class="tip" id="151">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the default activator.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '152', 152)" onmouseover="showTip(event, '152', 152)">
+            UseDefaultCompilerServiceFactory()
+          </code>
+          <div class="tip" id="152">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the default compiler service factory.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '153', 153)" onmouseover="showTip(event, '153', 153)">
+            UseDefaultEncodedStringFactory()
+          </code>
+          <div class="tip" id="153">
+            <strong>Signature:</strong> unit -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the default encoded string factory.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '154', 154)" onmouseover="showTip(event, '154', 154)">
+            WithBaseTemplateType(baseTemplateType)
+          </code>
+          <div class="tip" id="154">
+            <strong>Signature:</strong> baseTemplateType:Type -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the base template type.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '155', 155)" onmouseover="showTip(event, '155', 155)">
+            WithCodeLanguage(language)
+          </code>
+          <div class="tip" id="155">
+            <strong>Signature:</strong> language:Language -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the code language.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '156', 156)" onmouseover="showTip(event, '156', 156)">
+            WithEncoding(encoding)
+          </code>
+          <div class="tip" id="156">
+            <strong>Signature:</strong> encoding:Encoding -&gt; IConfigurationBuilder<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          <p>Sets the encoding.</p>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+        </div>
+        <div class="span3">
+          <a href="https://matthid.github.io/RazorEngine/index.html">
+            <img src="https://matthid.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+        <!--
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+        -->
+            <li><a href="https://github.com/matthid/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/matthid/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

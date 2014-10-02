@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- GENERATED FROM COMMIT: 0e575dd707f6e20273b8b88872d0ecb3fd45bfb9 -->
+  <head>
+    <meta charset="utf-8">
+    <title>RazorEngine implementation documentation
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple templating using Razor syntax.">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://matthid.github.io/RazorEngine/content/style.css" />
+    <script type="text/javascript" src="https://matthid.github.io/RazorEngine/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://matthid.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="RazorEngine-implementation-documentation" class="anchor" href="#RazorEngine-implementation-documentation">RazorEngine implementation documentation</a></h1>
+
+<h2><a name="General-overview" class="anchor" href="#General-overview">General overview:</a></h2>
+
+<p>This project aims to be a very flexible, extendable and good performing templating engine based on the Razor parser (Microsoft.AspNet.Razor -> System.Web.Razor.dll).
+Everybody familiar with Razor can start building templates very quickly.</p>
+
+<h3><a name="Issues-Features-TODOs" class="anchor" href="#Issues-Features-TODOs">Issues / Features / TODOs</a></h3>
+
+<p>Issues and TODOs are tracked on github:
+See: <a href="https://github.com/Anatris/RazorEngine/issues">https://github.com/Anatris/RazorEngine/issues</a> or <a href="https://github.com/matthid/RazorEngine/issues">https://github.com/matthid/RazorEngine/issues</a></p>
+
+<h3><a name="Versioning" class="anchor" href="#Versioning">Versioning:</a></h3>
+
+<p>Not clear.</p>
+
+<h3><a name="High-level-documentation-ordered-by-project" class="anchor" href="#High-level-documentation-ordered-by-project">High level documentation ordered by project.</a></h3>
+
+<ul>
+<li><p>RazorEngine.Core</p>
+<p>The Core of the RazorEngine framework, basically all you need to get started.</p></li>
+<li><p>RazorEngine.Mvc</p>
+<p>A template base-class implementation which uses MVC classes to get the @Html and @Url features.</p></li>
+<li><p>RazorEngine.Hosts.Console</p>
+<p>A simple console application showing the beauty of RazorEngine.</p></li>
+</ul>
+
+<h3><a name="The-Project-structure" class="anchor" href="#The-Project-structure">The Project structure:</a></h3>
+
+<ul>
+<li><p>/.nuget/</p>
+<p>Nuget dependencies will be downloaded into this folder. 
+This folder can safly be deleted without affecting the build.</p></li>
+<li><p>/build/</p>
+<p>The project assemblies will be build into this folder. This folder can safly be deleted without affecting the build.</p></li>
+<li><p>/lib/</p>
+<p>library dependencies. Most dependencies are automatically managed by nuget and not in this folder. 
+Only some internal dependencies and packages not in nuget. The git repository should always be "complete".</p></li>
+<li><p>/doc/</p>
+<p>Project documentation files. This folder contains both development and user documentation (currently only development documentation because the project is at an very early phase).</p></li>
+<li><p>/src/</p>
+<p>The Solution directory for all projects</p>
+<ul>
+<li><p>/src/source/</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">The</span> <span class="i">root</span> <span class="k">for</span> <span class="i">all</span> <span class="i">projects</span> (<span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">not</span> <span class="i">including</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">unit</span> <span class="i">test</span> <span class="i">projects</span>)</pre>
+</td>
+</tr>
+</table></li>
+<li><p>/src/test/</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">The</span> <span class="i">root</span> <span class="k">for</span> <span class="i">all</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="i">unit</span> <span class="i">test</span> <span class="i">projects</span></pre>
+</td>
+</tr>
+</table></li>
+</ul></li>
+<li><p>/test/</p>
+<p>The unit test assemblies will be build into this folder. This folder can safly be deleted without affecting the build.</p></li>
+<li><p>/tmp/</p>
+<p>This folder is ignored by git.</p></li>
+<li><p>/build.cmd, /build.sh, /build.fsx</p>
+<p>Files to directly start a build including unit tests via console (windows &amp; linux).</p></li>
+<li><p>/packages.config</p>
+<p>Nuget packages required by the build process.</p></li>
+</ul>
+
+<p>Each project should have has a corresponding project with the name "Test.<span class="math">\({ProjectName}" in the test folder.
+This test project provides unit tests for the project "\)</span>{ProjectName}". 
+Often unit tests are written agains interfaces and used by multiple implementations of the interface.
+Sometimes these unit tests can be used even by custom code (inheriting from the corresponding test-class and overriding an Create* method).</p>
+
+<div class="tip" id="fs1">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
+<div class="tip" id="fs2">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
+
+        </div>
+        <div class="span3">
+          <a href="https://matthid.github.io/RazorEngine/index.html">
+            <img src="https://matthid.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+        <!--
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+        -->
+            <li><a href="https://github.com/matthid/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/matthid/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

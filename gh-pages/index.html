@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- GENERATED FROM COMMIT: 0e575dd707f6e20273b8b88872d0ecb3fd45bfb9 -->
+  <head>
+    <meta charset="utf-8">
+    <title>RazorEngine
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple templating using Razor syntax.">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://matthid.github.io/RazorEngine/content/style.css" />
+    <script type="text/javascript" src="https://matthid.github.io/RazorEngine/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://matthid.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
+
+<h2><a name="Quickstart" class="anchor" href="#Quickstart">Quickstart</a></h2>
+
+<p>A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
+All you need to do is use the static Razor class:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">string</span> <span class="i">template</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Hello</span><span class="s"> </span><span class="s">@</span><span class="s">Model</span><span class="s">.</span><span class="s">Name</span><span class="s">,</span><span class="s"> </span><span class="s">welcome</span><span class="s"> </span><span class="s">to</span><span class="s"> </span><span class="s">RazorEngine</span><span class="s">!</span><span class="s">&quot;</span>;
+<span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="i">string</span> <span class="i">result</span> <span class="o">=</span> <span class="i">Razor</span><span class="o">.</span><span class="i">Parse</span>(<span class="i">template</span>, <span class="k">new</span> { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">World</span><span class="s">&quot;</span> });</pre>
+</td>
+</tr>
+</table>
+
+<p>The templating engine supports strict and anonymous types, as well as customised base templates, for instance:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">Razor</span><span class="o">.</span><span class="i">SetTemplateBase</span>(<span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="i">typeof</span>(<span class="i">HtmlTemplateBase</span><span class="o">&lt;&gt;</span>));
+
+<span onmouseout="hideTip(event, 'fs1', 4)" onmouseover="showTip(event, 'fs1', 4)" class="i">string</span> <span class="i">template</span> <span class="o">=</span> 
+<span class="s">@&quot;</span><span class="s">&lt;</span><span class="s">html</span><span class="s">&gt;</span>
+<span class="s">    </span><span class="s">&lt;</span><span class="s">head</span><span class="s">&gt;</span>
+<span class="s">      </span><span class="s">&lt;</span><span class="s">title</span><span class="s">&gt;</span><span class="s">Hello</span><span class="s"> </span><span class="s">@</span><span class="s">Model</span><span class="s">.</span><span class="s">Name</span><span class="s">&lt;</span><span class="s">/</span><span class="s">title</span><span class="s">&gt;</span>
+<span class="s">    </span><span class="s">&lt;</span><span class="s">/</span><span class="s">head</span><span class="s">&gt;</span>
+<span class="s">    </span><span class="s">&lt;</span><span class="s">body</span><span class="s">&gt;</span>
+<span class="s">      </span><span class="s">Email</span><span class="s">:</span><span class="s"> </span><span class="s">@</span><span class="s">Html</span><span class="s">.</span><span class="s">TextBoxFor</span><span class="s">(</span><span class="s">m</span><span class="s"> </span><span class="s">=</span><span class="s">&gt;</span><span class="s"> </span><span class="s">m</span><span class="s">.</span><span class="s">Email</span><span class="s">)</span>
+<span class="s">    </span><span class="s">&lt;</span><span class="s">/</span><span class="s">body</span><span class="s">&gt;</span>
+<span class="s">  </span><span class="s">&lt;</span><span class="s">/</span><span class="s">html</span><span class="s">&gt;</span><span class="s">&quot;</span>;
+
+<span class="i">var</span> <span class="i">model</span> <span class="o">=</span> <span class="k">new</span> <span class="i">PageModel</span> { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">World</span><span class="s">&quot;</span>, <span class="i">Email</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">someone</span><span class="s">@</span><span class="s">somewhere</span><span class="s">.</span><span class="s">com</span><span class="s">&quot;</span> };
+<span onmouseout="hideTip(event, 'fs1', 5)" onmouseover="showTip(event, 'fs1', 5)" class="i">string</span> <span class="i">result</span> <span class="o">=</span> <span class="i">Razor</span><span class="o">.</span><span class="i">Parse</span>(<span class="i">template</span>, <span class="i">model</span>);</pre>
+</td>
+</tr>
+</table>
+
+<h2><a name="Caching" class="anchor" href="#Caching">Caching</a></h2>
+
+<p>To improve the speed for often used templates caching the compiled template type is build right into RazorEngine, but you would only compile the template when you need it:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">if</span> (<span class="i">Razor</span><span class="o">.</span><span class="i">Resolve</span>(<span class="i">templateName</span>, <span class="i">model</span>) <span class="o">==</span> <span class="k">null</span>) <span class="k">then</span>
+    <span class="c">// Custom logic to resolve your template name to an actual template string</span>
+    <span class="i">var</span> <span class="i">templateContent</span> <span class="o">=</span> <span class="i">templateResolver</span><span class="o">.</span><span class="i">Resolve</span>(<span class="i">templateName</span>); 
+    <span class="i">Razor</span><span class="o">.</span><span class="i">Compile</span>(<span class="i">templateContent</span>, (<span class="i">model</span> <span class="o">==</span> <span class="k">null</span> <span class="o">?</span> <span onmouseout="hideTip(event, 'fs2', 6)" onmouseover="showTip(event, 'fs2', 6)" class="i">typeof</span><span class="o">&lt;</span><span class="i">object</span><span class="o">&gt;</span> <span class="o">:</span> <span class="i">model</span><span class="o">.</span><span class="i">GetType</span>()), <span class="i">templateName</span>);
+<span class="i">Razor</span><span class="o">.</span><span class="i">Run</span>(<span class="i">templateName</span>, <span class="i">model</span>, <span class="i">properties</span> <span class="o">/*</span> <span class="i">can</span> <span class="i">be</span> <span class="k">null</span> <span class="k">as</span> <span class="i">well</span> <span class="o">*/</span>);</pre>
+</td>
+</tr>
+</table>
+
+<h1><a name="Multiple-templates-multiple-distinct-sources" class="anchor" href="#Multiple-templates-multiple-distinct-sources">Multiple templates (multiple distinct sources)</a></h1>
+
+<p>If you need multiple template sources (for example with conflicting template names) you would just create a new instance of the TemplateService and use 
+its instance members instead of the static methods of the static Razor class.</p>
+
+<h2><a name="Configuration" class="anchor" href="#Configuration">Configuration</a></h2>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">var</span> <span class="i">config</span> <span class="o">=</span> <span class="k">new</span> <span class="i">TemplateServiceConfiguration</span>();
+<span class="c">// .. configure your instance</span>
+
+<span class="i">var</span> <span class="i">templateservice</span> <span class="o">=</span> <span class="k">new</span> <span class="i">MyTemplateService</span>(<span class="i">config</span>);</pre>
+</td>
+</tr>
+</table>
+
+<p>If you want to use the static Razor class with this configured template service:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">Razor</span><span class="o">.</span><span class="i">SetTemplateService</span>(<span class="i">templateservice</span>);</pre>
+</td>
+</tr>
+</table>
+
+<h3><a name="Enable-debugging" class="anchor" href="#Enable-debugging">Enable debugging</a></h3>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">config</span><span class="o">.</span><span class="i">Debug</span> <span class="o">=</span> <span class="k">true</span>;</pre>
+</td>
+</tr>
+</table>
+
+<h3><a name="Set-a-resolver" class="anchor" href="#Set-a-resolver">Set a resolver</a></h3>
+
+<p>A template resolver can do the "templateName -> templateContents" resolving.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="c">// if templates are often read from disk you propably want to do some caching yourself.</span>
+<span class="i">config</span><span class="o">.</span><span class="i">Resolver</span> <span class="o">=</span> <span class="k">new</span> <span class="i">MyITemplateResolver</span>(); </pre>
+</td>
+</tr>
+</table>
+
+<p>See also <a href="http://stackoverflow.com/questions/10520821/how-are-templates-in-razorengine-cached">http://stackoverflow.com/questions/10520821/how-are-templates-in-razorengine-cached</a></p>
+
+<h3><a name="Set-a-reference-Resolver-templates-with-special-assembly-references-MONO-support" class="anchor" href="#Set-a-reference-Resolver-templates-with-special-assembly-references-MONO-support">Set a reference Resolver (templates with special assembly references / MONO support)</a></h3>
+
+<p>Sometimes it is required to controll the references added in the compilation step yourself instead of just using all currently loaded assemblies (default).
+In these cases you can set an IAssemblyReferenceResolver:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">config</span><span class="o">.</span><span class="i">ReferenceResolver</span> <span class="o">=</span> <span class="k">new</span> <span class="i">MyIReferenceResolver</span>();
+
+
+<span class="k">class</span> <span class="i">MyIReferenceResolver</span> <span class="o">:</span> <span class="i">IAssemblyReferenceResolver</span> {
+    <span class="k">public</span> <span class="i">IEnumerable</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs1', 7)" onmouseover="showTip(event, 'fs1', 7)" class="i">string</span><span class="o">&gt;</span> <span class="i">GetReferences</span>(<span class="i">TypeContext</span> <span class="i">context</span>) {
+        <span class="c">// My templates need some special reference to compile.</span>
+        <span class="k">return</span> <span class="k">new</span> [] { <span class="s">&quot;</span><span class="s">Path</span><span class="s">-</span><span class="s">to</span><span class="s">-</span><span class="s">my</span><span class="s">-</span><span class="s">custom</span><span class="s">-</span><span class="s">assembly</span><span class="s">&quot;</span>; };
+    }
+}</pre>
+</td>
+</tr>
+</table>
+
+<p>It could be usefull to get running on mono to just manually return all the assemblies you need.
+The default is to use the <code>UseCurrentAssembliesReferenceResolver</code> class, which always returns all currently loaded assemblies.
+You can get and modify this list with (and return it in your own implementation if you wish):</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">var</span> <span class="i">loadedList</span> <span class="o">=</span> (<span class="k">new</span> <span class="i">UseCurrentAssembliesReferenceResolver</span>())<span class="o">.</span><span class="i">GetReferences</span>(<span class="k">null</span>);</pre>
+</td>
+</tr>
+</table>
+
+<div class="tip" id="fs1">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs2">val typeof&lt;&#39;T&gt; : System.Type<br /><br />Full name: Microsoft.FSharp.Core.Operators.typeof</div>
+
+        </div>
+        <div class="span3">
+          <a href="https://matthid.github.io/RazorEngine/index.html">
+            <img src="https://matthid.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+        <!--
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+        -->
+            <li><a href="https://github.com/matthid/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/matthid/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

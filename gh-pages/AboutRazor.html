@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- GENERATED FROM COMMIT: 0e575dd707f6e20273b8b88872d0ecb3fd45bfb9 -->
+  <head>
+    <meta charset="utf-8">
+    <title>About Razor and its syntax
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple templating using Razor syntax.">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://matthid.github.io/RazorEngine/content/style.css" />
+    <script type="text/javascript" src="https://matthid.github.io/RazorEngine/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://matthid.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="About-Razor-and-its-syntax" class="anchor" href="#About-Razor-and-its-syntax">About Razor and its syntax</a></h1>
+
+<h2><a name="About-Razor" class="anchor" href="#About-Razor">About Razor</a></h2>
+
+<p>The Razor parser was introduced as part of the <a href="http://www.asp.net">ASP.NET</a> MVC and WebPages release by Microsoft. The Razor parser itself is designed to process a stream of characters to generate a C# or VB class which can be compiled.</p>
+
+<p>For an overview of how the Razor parser works under the hood, please visit <a href="http://vibrantcode.com">Andrew Nurse's blog</a> for some in-depth articles.</p>
+
+<h2><a name="Razor-Syntax" class="anchor" href="#Razor-Syntax">Razor Syntax</a></h2>
+
+<p>The Razor syntax is designed to be a clean but robust syntax for merging both code and markup into a single language. Primarily Razor was designed for Html-like languages, but future editions may take advantage of the existing <code>MarkupParser</code> abstraction to deliver alternative markup languages (possibly BBCode, Latex, Markdown, etc.). An example Razor template could look like:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="o">&lt;</span><span class="i">div</span><span class="o">&gt;</span><span class="i">Hello</span> <span class="o">@</span><span class="i">Model</span><span class="o">.</span><span class="i">Name</span>, <span class="i">you</span> <span class="i">are</span> <span class="o">@</span><span class="i">Model</span><span class="o">.</span><span class="i">GetAge</span>() <span class="i">years</span> <span class="i">old</span><span class="o">.</span><span class="o">&lt;/</span><span class="i">div</span><span class="o">&gt;</span></pre>
+</td>
+</tr>
+</table>
+
+<p>This template is transformed into the body of a method, the <code>Execute</code> method, which could look something like this:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">public</span> <span class="k">void</span> <span class="i">Execute</span>()
+{
+    <span class="i">WriteLiteral</span>(<span class="s">&quot;</span><span class="s">&lt;</span><span class="s">div</span><span class="s">&gt;</span><span class="s">Hello</span><span class="s"> </span><span class="s">&quot;</span>);
+    <span class="i">Write</span>(<span class="i">Model</span><span class="o">.</span><span class="i">Name</span>);
+    <span class="i">WriteLiteral</span>(<span class="s">&quot;</span><span class="s">,</span><span class="s"> </span><span class="s">you</span><span class="s"> </span><span class="s">are</span><span class="s"> </span><span class="s">&quot;</span>);
+    <span class="i">Write</span>(<span class="i">Model</span><span class="o">.</span><span class="i">GetAge</span>());
+    <span class="i">WriteLiteral</span>(<span class="s">&quot;</span><span class="s"> </span><span class="s">years</span><span class="s"> </span><span class="s">old</span><span class="s">.</span><span class="s">&lt;</span><span class="s">/</span><span class="s">div</span><span class="s">&gt;</span><span class="s">&quot;</span>);
+}</pre>
+</td>
+</tr>
+</table>
+
+<p>This mixture of code and markup allows for quite a declarative syntax where markup becomes a first-class feature alongside the code.  Here is slightly more complex template:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="o">&lt;</span><span class="i">ul</span><span class="o">&gt;</span>
+    <span class="o">@</span><span class="i">foreach</span> (<span class="i">Person</span> <span class="i">p</span> <span class="k">in</span> <span class="i">Model</span><span class="o">.</span><span class="i">Persons</span>) {
+        <span class="o">&lt;</span><span class="i">li</span><span class="o">&gt;</span><span class="o">@</span><span class="i">p</span><span class="o">.</span><span class="i">name</span><span class="o">&lt;/</span><span class="i">li</span><span class="o">&gt;</span>
+    }
+<span class="o">&lt;/</span><span class="i">ul</span><span class="o">&gt;</span></pre>
+</td>
+</tr>
+</table>
+
+<p>Razor understands the code language (in this case, C#) because it operates dual parsers (a code parser and a markup parser). Much like the markup parser is geared up to understand Html, the code parser (in this example), is designed to understand C#.</p>
+
+<p>For an overview of the Razor syntax, please view <a href="http://weblogs.asp.net/scottgu/archive/2010/07/02/introducing-razor.aspx">ScottGu's article: Introducing �Razor� � a new view engine for ASP.NET</a></p>
+
+<h2><a name="Razor-vs-MVC-vs-WebPages-vs-RazorEngine" class="anchor" href="#Razor-vs-MVC-vs-WebPages-vs-RazorEngine">Razor vs. MVC vs. WebPages vs. RazorEngine</a></h2>
+
+<p>There is often a confusion about where Razor sits in this set of technoligies. Essentially Razor is the parsing framework that does the work to take your text template and convert it into a compileable class. In terms of MVC and WebPages, they both utilise this parsing engine to convert text templates (view/page files) into executable classes (views/pages). Often we are asked questions such as "Where is @Html, @Url", etc. These are not features provided by Razor itself, but implementation details of the MVC and WebPages frameworks.</p>
+
+<p>RazorEngine is another consumer framework of the Razor parser. We wrap up the instantiation of the Razor parser and provide a common framework for using runtime template processing.</p>
+
+
+        </div>
+        <div class="span3">
+          <a href="https://matthid.github.io/RazorEngine/index.html">
+            <img src="https://matthid.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+        <!--
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+        -->
+            <li><a href="https://github.com/matthid/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://matthid.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://matthid.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/matthid/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>
