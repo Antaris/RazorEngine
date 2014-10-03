@@ -30,8 +30,9 @@ open AssemblyInfoFile
 
 
 let MyTarget name body =
-    Target name body
-    Target (sprintf "%s_single" name) body 
+    Target name (fun _ -> body false)
+    let single = (sprintf "%s_single" name)
+    Target single (fun _ -> body true) 
 
 // Targets
 MyTarget "Clean" (fun _ ->
@@ -126,7 +127,7 @@ MyTarget "CopyToRelease" (fun _ ->
     // Versioning?
 )
 
-Target "NuGet" (fun _ ->
+MyTarget "NuGet" (fun _ ->
     let outDir = releaseDir @@ "nuget"
     ensureDirectory outDir
     NuGet (fun p -> 
@@ -159,31 +160,57 @@ MyTarget "LocalDoc" (fun _ ->
 )
 
 
-MyTarget "ReleaseGithubDoc" (fun _ -> 
-    CleanDir "gh-pages"
-    cloneSingleBranch "" (sprintf "https://github.com/%s/%s.git" github_user github_project) "gh-pages" "gh-pages"
-    fullclean "gh-pages"
-    CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" github_user)@@"html") "gh-pages" true |> printfn "%A"
-    StageAll "gh-pages"
-    Commit "gh-pages" (sprintf "Update generated documentation %s" release.NugetVersion)
-    Branches.push "gh-pages"
+MyTarget "ReleaseGithubDoc" (fun isSingle -> 
+    let doAction =
+        if isSingle then true
+        else
+            printf "create github docs? (y,n): "
+            let line = System.Console.ReadLine()
+            line = "y"
+    if doAction then
+        CleanDir "gh-pages"
+        cloneSingleBranch "" (sprintf "https://github.com/%s/%s.git" github_user github_project) "gh-pages" "gh-pages"
+        fullclean "gh-pages"
+        CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" github_user)@@"html") "gh-pages" true |> printfn "%A"
+        StageAll "gh-pages"
+        Commit "gh-pages" (sprintf "Update generated documentation %s" release.NugetVersion)
+        printf "gh-pages branch updated in the gh-pages directory, push that branch now? (y,n): "
+        let line = System.Console.ReadLine()
+        if line = "y" then
+            Branches.push "gh-pages"
 )
 
 Target "All" (fun _ ->
     trace "All finished!"
 )
 
-Target "None" (fun _ ->
-    trace "All finished!"
+MyTarget "VersionBump" (fun _ ->
+    // Build updates the SharedAssemblyInfo.cs files.
+    let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
+    if changedFiles |> Seq.isEmpty |> not then
+        for (status, file) in changedFiles do
+            printfn "File %s changed (%A)" file status
+        printf "version bump commit? (y,n): "
+        let line = System.Console.ReadLine()
+        if line = "y" then
+            StageAll ""
+            Commit "" (sprintf "Bump version to %s" release.NugetVersion)
+            Branches.push ""
+        
+            printf "create tag? (y,n): "
+            let line = System.Console.ReadLine()
+            if line = "y" then
+                Branches.tag "" release.NugetVersion
+                Branches.pushTag "" "origin" release.NugetVersion
+            
+            printf "push branch? (y,n): "
+            let line = System.Console.ReadLine()
+            if line = "y" then
+                Branches.push "gh-pages"
 )
 
-MyTarget "Release" (fun _ ->
-    // Build updates the SharedAssemblyInfo.cs files.
-    StageAll ""
-    Commit "" (sprintf "Bump version to %s" release.NugetVersion)
-    Branches.push ""
-    Branches.tag "" release.NugetVersion
-    Branches.pushTag "" "origin" release.NugetVersion
+Target "Release" (fun _ ->
+    trace "All released!"
 )
 
 // Clean all
@@ -207,10 +234,11 @@ MyTarget "Release" (fun _ ->
   ==> "All"
  
 "All" 
+  ==> "VersionBump"
   ==> "NuGet"
   ==> "GithubDoc"
   ==> "ReleaseGithubDoc"
-  ==> "Release" 
+  ==> "Release"
 
 // start build
 RunTargetOrDefault "All"
