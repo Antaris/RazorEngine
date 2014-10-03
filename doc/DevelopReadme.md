@@ -1,9 +1,9 @@
-﻿# RazorEngine implementation documentation 
+# RazorEngine implementation documentation 
 
 ## Building
 
 Open the ``.sln`` file or run ``./build``.
-NOTE: It is possible that you can ony build the ``.sln`` file AFTER doing an initial ``./build`` (because nuget dependencies have to be downloaded).
+NOTE: It is possible that you can only build the ``.sln`` file AFTER doing an initial ``./build`` (because nuget dependencies have to be resolved).
 
 ## General overview:
 
@@ -52,7 +52,7 @@ Not clear.
 
 - /doc/
 
-	Project documentation files. This folder contains both development and user documentation (currently only development documentation because the project is at an very early phase).
+	Project documentation files. This folder contains both development and user documentation.
 
 - /src/
 
@@ -64,8 +64,12 @@ Not clear.
 
 	- /src/test/
 
-		The root for all unit test projects
+		The root for all unit test projects.
 
+	- /src/nugetDependencies/
+
+		A bit of a hack to get the dependencies of the .net40 profile downloaded properly.
+		
 - /test/
 
 	The unit test assemblies will be build into this folder. This folder can safly be deleted without affecting the build.
