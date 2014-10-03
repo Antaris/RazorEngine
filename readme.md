@@ -4,8 +4,16 @@ Documentation also available on http://matthid.github.io/RazorEngine/.
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/matthid/RazorEngine.svg)](https://travis-ci.org/matthid/RazorEngine)
+Develop Branch
+
+[![Build Status](https://travis-ci.org/matthid/RazorEngine.svg?branch=develop)](https://travis-ci.org/matthid/RazorEngine)
+[![Build status](https://ci.appveyor.com/api/projects/status/tm7j32leemw2u6j0/branch/develop)](https://ci.appveyor.com/project/matthid/razorengine/branch/develop)
+
+Master Branch
+
+[![Build Status](https://travis-ci.org/matthid/RazorEngine.svg?branch=master)](https://travis-ci.org/matthid/RazorEngine)
 [![Build status](https://ci.appveyor.com/api/projects/status/tm7j32leemw2u6j0/branch/master)](https://ci.appveyor.com/project/matthid/razorengine/branch/master)
+
 
 ## Quickstart
 
