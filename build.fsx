@@ -169,7 +169,7 @@ MyTarget "ReleaseGithubDoc" (fun isSingle ->
             line = "y"
     if doAction then
         CleanDir "gh-pages"
-        cloneSingleBranch "" (sprintf "https://github.com/%s/%s.git" github_user github_project) "gh-pages" "gh-pages"
+        cloneSingleBranch "" (sprintf "git@github.com:%s/%s.git" github_user github_project) "gh-pages" "gh-pages"
         fullclean "gh-pages"
         CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" github_user)@@"html") "gh-pages" true |> printfn "%A"
         StageAll "gh-pages"
@@ -177,7 +177,7 @@ MyTarget "ReleaseGithubDoc" (fun isSingle ->
         printf "gh-pages branch updated in the gh-pages directory, push that branch now? (y,n): "
         let line = System.Console.ReadLine()
         if line = "y" then
-            Branches.push "gh-pages"
+            Branches.pushBranch "gh-pages" "origin" "gh-pages"
 )
 
 Target "All" (fun _ ->

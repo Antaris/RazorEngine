@@ -132,18 +132,13 @@ let runTests  (buildParams:BuildParams) =
     
 let net40Params = { OutDirName = "net40"; TargetName = "v4.0"; DefineConstants = "NET40" }
 let net45Params = { OutDirName = "net45"; TargetName = (if isMono then "v4.5" else "v4.5.1"); DefineConstants = "NET45" }
-// Documentation 
 
+// Documentation 
 let buildDocumentationTarget target =
+    trace (sprintf "Building documentation (%s), this could take some time, please wait..." target)
     let b, s = executeFSI "." "generateDocs.fsx" ["target", target]
     for l in s do
         (if l.IsError then traceError else trace) (sprintf "DOCS: %s" l.Message)
     if not b then
         failwith "documentation failed"
-    // let result = ExecProcess (fun info ->
-    // info.FileName <- "Fake.exe"
-    // info.WorkingDirectory <- Path.Fulldir "."
-    // info.Arguments <- "generateDocs.fsx") (TimeSpan.FromMinutes 5.0)
-    //
-    // if result <> 0 then failwithf "MyProc.exe returned with a non-zero exit code"
     ()

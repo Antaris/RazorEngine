@@ -75,7 +75,7 @@ let buildAllDocumentation outDocDir website_root =
           "project-github", github_url
           "project-issues", sprintf "%s/issues" github_url
           "project-new-issue", sprintf "%s/issues/new" github_url
-          "project-nuget", "https://www.nuget.org/packages/RazorEngine/"]
+          "project-nuget", "https://www.nuget.org/packages/RazorEngine.N/"]
 
       
     // Copy static files and CSS + JS from F# Formatting
@@ -86,16 +86,16 @@ let buildAllDocumentation outDocDir website_root =
       //  |> Log "Copying styles and scripts: "
 
     let processDirectory(outputKind) =
-      let template, outDirName, indexName = 
+      let indexTemplate, template, outDirName, indexName = 
         match outputKind with
-        | OutputKind.Html -> docTemplatesDir @@ "docpage.cshtml", "html", "index.html"
-        | OutputKind.Latex -> docTemplatesDir @@ "template-color.tex", "latex", "Readme.tex"
+        | OutputKind.Html -> docTemplatesDir @@ "docpage-index.cshtml", docTemplatesDir @@ "docpage.cshtml", "html", "index.html"
+        | OutputKind.Latex -> docTemplatesDir @@ "template-color.tex", docTemplatesDir @@ "template-color.tex", "latex", "Readme.tex"
       let outDir = outDocDir @@ outDirName
       Literate.ProcessDirectory
         ( "./doc", template, outDir, 
           outputKind, replacements = projInfo, layoutRoots = layoutRoots, generateAnchors = true, ?assemblyReferences = references)
 
-      Literate.ProcessMarkdown("./readme.md", template, outDir @@ indexName, outputKind, replacements = projInfo, layoutRoots = layoutRoots, generateAnchors = true, ?assemblyReferences = references)
+      Literate.ProcessMarkdown("./readme.md", indexTemplate, outDir @@ indexName, outputKind, replacements = projInfo, layoutRoots = layoutRoots, generateAnchors = true, ?assemblyReferences = references)
   
 
     // Build API reference from XML comments

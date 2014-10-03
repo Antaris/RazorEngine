@@ -51,6 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{A9A2DC20-74A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{47C1804C-3301-4AB6-A14A-30BF72417AA3}"
 	ProjectSection(SolutionItems) = preProject
+		..\doc\templates\docpage-index.cshtml = ..\doc\templates\docpage-index.cshtml
 		..\doc\templates\docpage.cshtml = ..\doc\templates\docpage.cshtml
 		..\doc\templates\template-color.tex = ..\doc\templates\template-color.tex
 		..\doc\templates\template-math.tex = ..\doc\templates\template-math.tex
