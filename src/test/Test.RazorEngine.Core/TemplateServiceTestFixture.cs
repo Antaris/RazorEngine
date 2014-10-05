@@ -21,11 +21,20 @@ namespace RazorEngine.Tests
     [TestFixture]
     public class TemplateServiceTestFixture
     {
-        public void RunTestHelper(Action test)
+        public static void RunTestHelper(Action<TemplateService> test, Action<TemplateServiceConfiguration> withConfig = null)
         {
+            if (withConfig == null)
+            {
+                withConfig = (config) => { config.Debug = true; };
+            }
             try
             {
-                test();
+                var config = new TemplateServiceConfiguration();
+                withConfig(config);
+                using (var service = new TemplateService(config))
+                {
+                    test(service);
+                }
             }
             catch (TemplateCompilationException e)
             {
@@ -134,18 +143,15 @@ namespace RazorEngine.Tests
         [Test]
         public void TemplateService_CanParseSimpleTemplate_WithIteratorModel()
         {
-            RunTestHelper(() =>
+            RunTestHelper(service =>
             {
-                using (var service = new TemplateService(new TemplateServiceConfiguration() { Debug = true }))
-                {
-                    const string template = "@foreach (var i in Model) { @i }";
-                    const string expected = "One Two Three";
+                const string template = "@foreach (var i in Model) { @i }";
+                const string expected = "One Two Three";
 
-                    var model = CreateIterator("One ", "Two ", "Three");
-                    string result = service.Parse(template, model, null, null);
+                var model = CreateIterator("One ", "Two ", "Three");
+                string result = service.Parse(template, model, null, null);
 
-                    Assert.That(result == expected, "Result does not match expected: " + result);
-                }
+                Assert.That(result == expected, "Result does not match expected: " + result);
             });
         }
 
@@ -165,7 +171,6 @@ namespace RazorEngine.Tests
         [Test]
         public void TemplateService_CanParseSimpleTemplate_UsingHtmlEncoding()
         {
-
             using (var service = new TemplateService())
             {
                 const string template = "<h1>Hello @Model.String</h1>";
