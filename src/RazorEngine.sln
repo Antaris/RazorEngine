@@ -70,6 +70,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reference", "reference", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{3AC5DA61-ED58-45FA-975B-4FDB23387B7A}"
 	ProjectSection(SolutionItems) = preProject
+		..\doc\content\prism.css = ..\doc\content\prism.css
+		..\doc\content\prism.js = ..\doc\content\prism.js
 		..\doc\content\style.css = ..\doc\content\style.css
 		..\doc\content\style.css.bak = ..\doc\content\style.css.bak
 		..\doc\content\tips.js = ..\doc\content\tips.js

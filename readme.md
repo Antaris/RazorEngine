@@ -20,11 +20,13 @@ Master Branch
 A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
 All you need to do is use the static Razor class:
 
+	[lang=csharp]
     string template = "Hello @Model.Name, welcome to RazorEngine!";
     string result = Razor.Parse(template, new { Name = "World" });
 
 The templating engine supports strict and anonymous types, as well as customised base templates, for instance:
 
+    [lang=csharp]
     Razor.SetTemplateBase(typeof(HtmlTemplateBase<>));
     
     string template = 
@@ -44,11 +46,12 @@ The templating engine supports strict and anonymous types, as well as customised
 
 To improve the speed for often used templates caching the compiled template type is build right into RazorEngine, but you would only compile the template when you need it:
 
-      if (Razor.Resolve(templateName, model) == null) then
-          // Custom logic to resolve your template name to an actual template string
-          var templateContent = templateResolver.Resolve(templateName); 
-          Razor.Compile(templateContent, (model == null ? typeof<object> : model.GetType()), templateName);
-      Razor.Run(templateName, model, properties /* can be null as well */);
+    [lang=csharp]
+    if (Razor.Resolve(templateName, model) == null) then
+        // Custom logic to resolve your template name to an actual template string
+        var templateContent = templateResolver.Resolve(templateName); 
+        Razor.Compile(templateContent, (model == null ? typeof<object> : model.GetType()), templateName);
+    Razor.Run(templateName, model, properties /* can be null as well */);
 
 # Multiple templates (multiple distinct sources)
 
@@ -57,6 +60,7 @@ its instance members instead of the static methods of the static Razor class.
 
 ## Configuration
 
+    [lang=csharp]
 	var config = new TemplateServiceConfiguration();
 	// .. configure your instance
 	
@@ -64,16 +68,19 @@ its instance members instead of the static methods of the static Razor class.
 
 If you want to use the static Razor class with this configured template service:
 
+    [lang=csharp]
     Razor.SetTemplateService(templateservice);
 
 ### Enable debugging
 
+    [lang=csharp]
     config.Debug = true;
 
 ### Set a resolver
 	
 A template resolver can do the "templateName -> templateContents" resolving.
 
+    [lang=csharp]
     // if templates are often read from disk you propably want to do some caching yourself.
 	config.Resolver = new MyITemplateResolver(); 
 
@@ -84,6 +91,7 @@ See also http://stackoverflow.com/questions/10520821/how-are-templates-in-razore
 Sometimes it is required to controll the references added in the compilation step yourself instead of just using all currently loaded assemblies (default).
 In these cases you can set an IAssemblyReferenceResolver:
 
+    [lang=csharp]
 	config.ReferenceResolver = new MyIReferenceResolver();
 
 
@@ -98,4 +106,5 @@ It could be usefull to get running on mono to just manually return all the assem
 The default is to use the ``UseCurrentAssembliesReferenceResolver`` class, which always returns all currently loaded assemblies.
 You can get and modify this list with (and return it in your own implementation if you wish):
 
+    [lang=csharp]
 	var loadedList = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null);

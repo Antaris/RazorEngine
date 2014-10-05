@@ -1,4 +1,4 @@
-# RazorEngine
+﻿# RazorEngine
 
 ## Contributing
 

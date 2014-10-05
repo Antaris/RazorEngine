@@ -1,4 +1,4 @@
-# RazorEngine implementation documentation 
+﻿# RazorEngine implementation documentation 
 
 ## Building
 

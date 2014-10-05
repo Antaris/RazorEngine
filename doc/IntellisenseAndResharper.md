@@ -1,9 +1,10 @@
-# Intellisence and ReSharper
+﻿# Intellisence and ReSharper
 
 It is often convenient to have your razor templates as file resources in your project and edit them like you would a normal ASP.NET MVC view as *.cshtml files and provide them to RazorEngine as a string.  It is also nice when IntelliSense will give you a helping hand, but ReSharper won't help you unless it can understand that the `Model` property exists on the `TemplateBase<T>` and what type the `Model` property is.
 
 Here is an example template file where `MyCustomizedTemplate<T>` derives from RazorEngine's `TemplateBase<T>`:
 
+    [lang=markup]
     @using MyProject.Templates
     @using MyProject.Templates.Models
     @inherits MyCustomizedTemplate<InvoiceModel>
@@ -20,6 +21,7 @@ Here is an example template file where `MyCustomizedTemplate<T>` derives from Ra
 
 The custom class would look something like this:
 
+    [lang=csharp]
 	public class MyCustomizedTemplate<T> : TemplateBase<T>
 	{
 		public T Model { get; set; }
