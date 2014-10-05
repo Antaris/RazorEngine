@@ -164,7 +164,7 @@ MyTarget "ReleaseGithubDoc" (fun isSingle ->
     let doAction =
         if isSingle then true
         else
-            printf "create github docs? (y,n): "
+            printf "update github docs? (y,n): "
             let line = System.Console.ReadLine()
             line = "y"
     if doAction then
