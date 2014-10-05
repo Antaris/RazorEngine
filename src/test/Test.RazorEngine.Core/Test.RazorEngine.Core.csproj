@@ -87,6 +87,7 @@
     <Compile Include="CodeInspectorTestFixture.cs" />
     <Compile Include="ConfigurationTestFixture.cs" />
     <Compile Include="IsolatedTemplateServiceTestFixture.cs" />
+    <Compile Include="Issues\Release_3_6_TestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorEngineHostTestFixture.cs" />
     <Compile Include="TemplateBaseTestFixture.cs" />

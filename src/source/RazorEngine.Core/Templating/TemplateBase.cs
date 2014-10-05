@@ -239,14 +239,15 @@ namespace RazorEngine.Templating
                     if (val.Value != null && (boolVal == null || boolVal.Value))
                     {
                         string valStr = val.Value as string;
+                        string valToString = valStr;
                         if (valStr == null)
                         {
-                            valStr = val.Value.ToString();
+                            valToString = val.Value.ToString();
                         }
                         if (boolVal != null)
                         {
                             Debug.Assert(boolVal.Value);
-                            valStr = name;
+                            valToString = name;
                         }
 
                         if (first)
@@ -261,11 +262,18 @@ namespace RazorEngine.Templating
 
                         if (attrVal.Literal)
                         {
-                            WriteLiteralTo(writer, valStr);
+                            WriteLiteralTo(writer, valToString);
                         }
                         else
                         {
-                            WriteTo(writer, valStr); // Write value
+                            if (val.Value is IEncodedString && boolVal == null)
+                            {
+                                WriteTo(writer, val.Value); // Write value
+                            }
+                            else
+                            {
+                                WriteTo(writer, valToString); // Write value
+                            }
                         }
                         wroteSomething = true;
                     }
