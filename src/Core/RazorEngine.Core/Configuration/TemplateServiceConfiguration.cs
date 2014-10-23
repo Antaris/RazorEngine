@@ -1,4 +1,7 @@
-﻿namespace RazorEngine.Configuration
+﻿using System.Linq;
+using RazorEngine.Configuration.Xml;
+
+namespace RazorEngine.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -19,10 +22,15 @@
         /// </summary>
         public TemplateServiceConfiguration()
         {
-            Activator = new DefaultActivator();
-            CompilerServiceFactory = new DefaultCompilerServiceFactory();
-            EncodedStringFactory = new HtmlEncodedStringFactory();
-            CodeInspectors = new List<ICodeInspector>();
+            // Read configuration values from App.config / Web.config
+            // and fallback to appropriate defaults. 
+            var xmlConfig = new XmlTemplateServiceConfiguration();
+
+            Activator = xmlConfig.Activator ?? new DefaultActivator();
+            CompilerServiceFactory = xmlConfig.CompilerServiceFactory ?? new DefaultCompilerServiceFactory();
+            EncodedStringFactory = xmlConfig.EncodedStringFactory ?? new HtmlEncodedStringFactory();
+            CodeInspectors = xmlConfig.CodeInspectors != null ? xmlConfig.CodeInspectors.ToList()  : new List<ICodeInspector>();
+            Language = xmlConfig.Language;
 
             Namespaces = new HashSet<string>
                              {
@@ -31,10 +39,7 @@
                                  "System.Linq"
                              };
 
-            var config = RazorEngineConfigurationSection.GetConfiguration();
-            Language = (config == null)
-                           ? Language.CSharp
-                           : config.DefaultLanguage;
+            Namespaces.UnionWith(xmlConfig.Namespaces);
         }
         #endregion
 
