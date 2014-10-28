@@ -471,9 +471,14 @@
         /// <param name="cacheName">The name of the template in cache.  The template must be in cache.</param>
         /// <param name="model">The model for the template or NULL if there is no model.</param>
         /// <param name="viewBag">The initial ViewBag contents NULL for an empty ViewBag.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public string Run(string cacheName, object model, DynamicViewBag viewBag)
+		public string Run(string cacheName, object model, DynamicViewBag viewBag, Action<ITemplate> preRunAction = null)
         {
+			if (preRunAction != null)
+			{
+				throw new ArgumentException("Isolated template does not allow preRunAction", "preRunAction");
+			}
             return _proxy.Run(cacheName, model, viewBag);
         }
 
@@ -482,9 +487,14 @@
         /// </summary>
         /// <param name="template">The template to run.</param>
         /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public string Run(ITemplate template, DynamicViewBag viewBag)
+		public string Run(ITemplate template, DynamicViewBag viewBag, Action<ITemplate> preRunAction = null)
         {
+			if (preRunAction != null)
+			{
+				throw new ArgumentException("Isolated template does not allow preRunAction", "preRunAction");
+			}
             return _proxy.Run(template, viewBag);
         }
 

@@ -70,6 +70,7 @@
     <Compile Include="RazorEngineHostTestFixture.cs" />
     <Compile Include="TemplateBaseTestFixture.cs" />
     <Compile Include="TemplateServiceTestFixture.cs" />
+    <Compile Include="TemplateServiceWithPreRunTestFixture.cs" />
     <Compile Include="TestTypes\Activation\ITextFormatter.cs" />
     <Compile Include="TestTypes\Activation\ReverseTextFormatter.cs" />
     <Compile Include="TestTypes\Activation\UnityTemplateActivator.cs" />

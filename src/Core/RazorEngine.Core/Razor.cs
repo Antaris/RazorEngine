@@ -552,10 +552,11 @@
         /// Runs the template with the specified name.
         /// </summary>
         /// <param name="cacheName">The name of the template type in cache.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public static string Run(string cacheName)
+		public static string Run(string cacheName, Action<ITemplate> preRunAction = null)
         {
-            return TemplateService.Run(cacheName, null, null);
+			return TemplateService.Run(cacheName, null, null, preRunAction);
         }
 
         /// <summary>
@@ -563,10 +564,11 @@
         /// </summary>
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public static string Run(string cacheName, object model)
+		public static string Run(string cacheName, object model, Action<ITemplate> preRunAction = null)
         {
-            return TemplateService.Run(cacheName, model, null);
+			return TemplateService.Run(cacheName, model, null, preRunAction);
         }
 
         /// <summary>
@@ -575,10 +577,11 @@
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model.</param>
         /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public static string Run(string cacheName, object model, DynamicViewBag viewBag)
+		public static string Run(string cacheName, object model, DynamicViewBag viewBag, Action<ITemplate> preRunAction = null)
         {
-            return TemplateService.Run(cacheName, model, viewBag);
+			return TemplateService.Run(cacheName, model, viewBag, preRunAction);
         }
 
         /// <summary>
@@ -587,10 +590,11 @@
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public static string Run<T>(string cacheName, T model)
+		public static string Run<T>(string cacheName, T model, Action<ITemplate> preRunAction = null)
         {
-            return TemplateService.Run(cacheName, model, null);
+			return TemplateService.Run(cacheName, model, null, preRunAction);
         }
 
         /// <summary>
@@ -600,10 +604,11 @@
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model.</param>
         /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+		/// <param name="preRunAction">Action to run to enrich the template.</param>
         /// <returns>The string result of the template.</returns>
-        public static string Run<T>(string cacheName, T model, DynamicViewBag viewBag)
+		public static string Run<T>(string cacheName, T model, DynamicViewBag viewBag, Action<ITemplate> preRunAction = null)
         {
-            return TemplateService.Run(cacheName, model, viewBag);
+			return TemplateService.Run(cacheName, model, viewBag, preRunAction);
         }
 
         /// <summary>

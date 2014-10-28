@@ -1684,40 +1684,44 @@
             <param name="model">The model for the template.</param>
             <returns>The resolved template.</returns>
         </member>
-        <member name="M:RazorEngine.Razor.Run(System.String)">
+        <member name="M:RazorEngine.Razor.Run(System.String,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified name.
             </summary>
             <param name="cacheName">The name of the template type in cache.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
-        <member name="M:RazorEngine.Razor.Run(System.String,System.Object)">
+        <member name="M:RazorEngine.Razor.Run(System.String,System.Object,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified name.
             </summary>
             <param name="cacheName">The name of the template type in cache.</param>
             <param name="model">The model.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
-        <member name="M:RazorEngine.Razor.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Razor.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified name.
             </summary>
             <param name="cacheName">The name of the template type in cache.</param>
             <param name="model">The model.</param>
             <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
-        <member name="M:RazorEngine.Razor.Run``1(System.String,``0)">
+        <member name="M:RazorEngine.Razor.Run``1(System.String,``0,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified name.
             </summary>
             <typeparam name="T">The model type.</typeparam>
             <param name="cacheName">The name of the template type in cache.</param>
             <param name="model">The model.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
-        <member name="M:RazorEngine.Razor.Run``1(System.String,``0,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Razor.Run``1(System.String,``0,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified name.
             </summary>
@@ -1725,6 +1729,7 @@
             <param name="cacheName">The name of the template type in cache.</param>
             <param name="model">The model.</param>
             <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="M:RazorEngine.Razor.SetTemplateService(RazorEngine.Templating.ITemplateService)">
@@ -2158,6 +2163,17 @@
             <param name="value">The value to set.</param>
             <returns>True, always.</returns>
         </member>
+        <member name="M:RazorEngine.Templating.DynamicViewBag.SetValue(System.String,System.Object)">
+            <summary>
+            Set a value in this instance of DynamicViewBag.
+            </summary>
+            <param name="propertyName">
+            The property name through which this value can be get/set.
+            </param>
+            <param name="value">
+            The value that will be assigned to this property name.
+            </param>
+        </member>
         <member name="M:RazorEngine.Templating.DynamicViewBag.AddValue(System.String,System.Object)">
             <summary>
             Add a value to this instance of DynamicViewBag.
@@ -2485,21 +2501,23 @@
             <param name="model">The model for the template.</param>
             <returns>The resolved template.</returns>
         </member>
-        <member name="M:RazorEngine.Templating.ITemplateService.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Templating.ITemplateService.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified cacheName.
             </summary>
             <param name="cacheName">The name of the template in cache.  The template must be in cache.</param>
             <param name="model">The model for the template or NULL if there is no model.</param>
             <param name="viewBag">The initial ViewBag contents NULL for an empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
-        <member name="M:RazorEngine.Templating.ITemplateService.Run(RazorEngine.Templating.ITemplate,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Templating.ITemplateService.Run(RazorEngine.Templating.ITemplate,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the specified template.
             </summary>
             <param name="template">The template to run.</param>
             <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="P:RazorEngine.Templating.ITemplateService.Configuration">
@@ -2755,21 +2773,23 @@
             <param name="model">The model or NULL if there is no model for the template.</param>
             <returns>The resolved template.</returns>
         </member>
-        <member name="M:RazorEngine.Templating.IsolatedTemplateService.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Templating.IsolatedTemplateService.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified cacheName.
             </summary>
             <param name="cacheName">The name of the template in cache.  The template must be in cache.</param>
             <param name="model">The model for the template or NULL if there is no model.</param>
             <param name="viewBag">The initial ViewBag contents NULL for an empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
-        <member name="M:RazorEngine.Templating.IsolatedTemplateService.Run(RazorEngine.Templating.ITemplate,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Templating.IsolatedTemplateService.Run(RazorEngine.Templating.ITemplate,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified name.
             </summary>
             <param name="template">The template to run.</param>
             <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="P:RazorEngine.Templating.IsolatedTemplateService.RazorEngine#Templating#ITemplateService#Configuration">
@@ -3175,21 +3195,23 @@
             <param name="model">The model or NULL if there is no model for the template.</param>
             <returns>The resolved template.</returns>
         </member>
-        <member name="M:RazorEngine.Templating.TemplateService.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Templating.TemplateService.Run(System.String,System.Object,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the template with the specified cacheName.
             </summary>
             <param name="cacheName">The name of the template in cache.  The template must be in cache.</param>
             <param name="model">The model for the template or NULL if there is no model.</param>
             <param name="viewBag">The initial ViewBag contents NULL for an empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
-        <member name="M:RazorEngine.Templating.TemplateService.Run(RazorEngine.Templating.ITemplate,RazorEngine.Templating.DynamicViewBag)">
+        <member name="M:RazorEngine.Templating.TemplateService.Run(RazorEngine.Templating.ITemplate,RazorEngine.Templating.DynamicViewBag,System.Action{RazorEngine.Templating.ITemplate})">
             <summary>
             Runs the specified template and returns the result.
             </summary>
             <param name="template">The template to run.</param>
             <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+            <param name="preRunAction">Action to run to enrich the template.</param>
             <returns>The string result of the template.</returns>
         </member>
         <member name="M:RazorEngine.Templating.TemplateService.SetModel``1(RazorEngine.Templating.ITemplate,``0)">
