@@ -37,7 +37,8 @@ namespace RazorEngine.Compilation
             return (type.IsClass
                     && type.IsSealed
                     && type.BaseType == typeof(object)
-                    && type.Name.StartsWith("<>", StringComparison.Ordinal)
+                    && (type.Name.StartsWith("<>", StringComparison.Ordinal)
+                        || type.Name.StartsWith("VB$Anonymous", StringComparison.Ordinal))
                     && type.IsDefined(typeof(CompilerGeneratedAttribute), true));
         }
 
