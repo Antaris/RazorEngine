@@ -330,7 +330,7 @@ namespace RazorEngine.Templating
             else
             {
                 encodedString = TemplateService.EncodedStringFactory.CreateEncodedString(value);
-                _context.CurrentWriter.Write(encodedString);
+                writer.Write(encodedString);
             }
         }
 
