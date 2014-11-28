@@ -11,7 +11,14 @@
     public class DynamicViewBag : DynamicObject
     {
         #region Fields
-        private readonly IDictionary<string, object> _dict = new Dictionary<string, object>();
+        private readonly IDictionary<string, object> _dict;
+        #endregion
+
+        #region Constructors
+        public DynamicViewBag(IDictionary<string, object> dictionary = null)
+        {
+            _dict = dictionary ?? new Dictionary<string, object>();
+        }
         #endregion
 
         /// <summary>
