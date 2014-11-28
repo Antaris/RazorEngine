@@ -1159,11 +1159,18 @@
             Represents a template service configuration that supports the xml configuration mechanism.
             </summary>
         </member>
+        <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.#ctor">
+            <summary>
+            Initialises a new instance of <see cref="T:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration"/> that only reads the global config values and
+            ignores any template service configuration element.
+            </summary>
+        </member>
         <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.#ctor(System.String)">
             <summary>
             Initialises a new instance of <see cref="T:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration"/>.
             </summary>
-            <param name="name">The name of the template service configuration.</param>
+            <param name="name">The name of the template service configuration to read or null to ignore all the template service configurations 
+            and only read the global configuration values.</param>
         </member>
         <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.AddNamespaces(RazorEngine.Configuration.Xml.NamespaceConfigurationElementCollection)">
             <summary>
@@ -1197,7 +1204,7 @@
             Initialises the configuration.
             </summary>
             <param name="config">The core configuration.</param>
-            <param name="serviceConfig">The service configuration.</param>
+            <param name="serviceConfig">The service configuration or null if there is no service configuration.</param>
         </member>
         <member name="M:RazorEngine.Configuration.Xml.XmlTemplateServiceConfiguration.SetActivator(System.String)">
             <summary>
@@ -2157,6 +2164,17 @@
             <param name="binder">The binder.</param>
             <param name="value">The value to set.</param>
             <returns>True, always.</returns>
+        </member>
+        <member name="M:RazorEngine.Templating.DynamicViewBag.SetValue(System.String,System.Object)">
+            <summary>
+            Set a value in this instance of DynamicViewBag.
+            </summary>
+            <param name="propertyName">
+            The property name through which this value can be get/set.
+            </param>
+            <param name="value">
+            The value that will be assigned to this property name.
+            </param>
         </member>
         <member name="M:RazorEngine.Templating.DynamicViewBag.AddValue(System.String,System.Object)">
             <summary>
