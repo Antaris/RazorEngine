@@ -1,0 +1,27 @@
+﻿# Auto detect text files and perform LF normalization
+* text=auto
+
+# Text files that should be normalized to LF.
+*.cs       text diff=csharp
+*.sln      text
+*.csproj   text
+*.nuspec   text
+*.fsx      text
+*.sh       text
+*.ps1      text
+*.cmd      text
+*.bat      text
+*.md       text
+*.markdown text
+
+
+# Binary files that should not be normalized or diffed
+*.png    binary
+*.jpg    binary
+*.gif    binary
+*.ico    binary
+*.snk    binary
+*.dll    binary
+*.exe    binary
+*.lib    binary
+*.pdb    binary
