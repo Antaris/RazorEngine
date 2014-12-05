@@ -5,6 +5,7 @@ namespace RazorEngine.Tests
 {
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.IO;
     using System.Linq;
     using System.Threading;
 
@@ -199,7 +200,7 @@ namespace RazorEngine.Tests
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10);
 
-                var results = service.ParseMany(templates, null, null, null, false);
+                var results = service.ParseMany(templates, null, null, null, null, false);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected.");
             }
@@ -216,7 +217,7 @@ namespace RazorEngine.Tests
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10);
 
-                var results = service.ParseMany(templates, null, null, null, true);
+                var results = service.ParseMany(templates, null, null, null, null, true);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected."); 
             }
@@ -237,7 +238,7 @@ namespace RazorEngine.Tests
                 var templates = Enumerable.Repeat(template, maxTemplates);
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
 
-                var results = service.ParseMany(templates, models, null, null, false);
+                var results = service.ParseMany(templates, models, null, null, null, false);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -257,7 +258,7 @@ namespace RazorEngine.Tests
                 var templates = Enumerable.Repeat(template, maxTemplates);
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
 
-                var results = service.ParseMany(templates, models, null, null, true);
+                var results = service.ParseMany(templates, models, null, null, null, true);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -549,6 +550,31 @@ namespace RazorEngine.Tests
                 Assert.Throws<ArgumentException>(() => service.Parse(template, null, null, null));
             }
         }
+
+        [Test]
+        public void TemplateService_CanDebugTemplateLoadedFromDisk()
+        {
+            var debuggerIsAttached = System.Diagnostics.Debugger.IsAttached;
+
+            using (var service = new TemplateService())
+            {
+                // Include debug information in order to support debugging of cshtml
+                service.IncludeDebugInformation = true;
+
+                // Place a breakpoint inside TemplateServiceDebug.cshtml in order to check that debugging is working
+                string templateFilePath = Path.Combine(Environment.CurrentDirectory, "TemplateServiceDebug.cshtml");
+                string template = File.ReadAllText(templateFilePath);
+                string expected =
+                    debuggerIsAttached
+                        ? "<p>Debugger is attached</p>"
+                        : "<p>Debugger is not attached</p>";
+
+                string result = service.Parse(template, null, null, null, templateFilePath).Trim();
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
         #endregion
     }
 }

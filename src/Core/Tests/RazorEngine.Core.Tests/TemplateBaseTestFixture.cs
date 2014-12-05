@@ -176,6 +176,27 @@
             }
         }
 
+        /// <summary>
+        /// Tests that a template service can pass inline templates into an included template
+        /// and outputs this in the correct order
+        /// </summary>
+        [Test]
+        public void TemplateBase_CanRenderInclude_WithInlineTemplate()
+        {
+            using (var service = new TemplateService())
+            {
+                const string child = "@model RazorEngine.Tests.TestTypes.InlineTemplateModel\n@Model.InlineTemplate(Model)";
+                const string template = "@model RazorEngine.Tests.TestTypes.InlineTemplateModel\n@{ Model.InlineTemplate = @<h1>@ViewBag.Name</h1>; }@Include(\"Child\", Model)";
+                const string expected = "<h1>Matt</h1>";
+
+                dynamic bag = new DynamicViewBag();
+                bag.Name = "Matt";
+
+                service.GetTemplate(child, null, "Child");
+                string result = service.Parse(template, new InlineTemplateModel(), bag, null);
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
         #endregion
     }
 }
