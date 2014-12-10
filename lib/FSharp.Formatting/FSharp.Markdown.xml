@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>FSharp.Markdown</name></assembly>
+<members>
+<member name="">
+
+</member>
+<member name="T:FSharp.Collections.Tree`1">
+<summary>
+ Represents a tree with nodes containing values an a list of children
+</summary>
+</member>
+<member name="M:FSharp.Collections.Tree.ofIndentedList``1(Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,``0}})">
+<summary>
+ Turns a list of items with an indentation specified by an integer
+ into a tree where indented items are children.
+</summary>
+</member>
+<member name="M:FSharp.Collections.Tree.takeDeeperThan``2(``0,Microsoft.FSharp.Collections.FSharpList{System.Tuple{``0,``1}})">
+<summary>
+ Takes elements that are deeper (children) and turns them into nodes
+</summary>
+</member>
+<member name="M:FSharp.Collections.Tree.takeAtLevel``2(``0,Microsoft.FSharp.Collections.FSharpList{System.Tuple{``0,``1}})">
+<summary>
+ Takes all elements at the specified level and turns them into nodes
+</summary>
+</member>
+<member name="T:FSharp.Collections.Tree">
+
+</member>
+<member name="M:FSharp.Collections.List.nestUnderLastMatching``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ A function that nests items of the input sequence 
+ that do not match a specified predicate under the 
+ last item that matches the predicate. 
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.partitionUntilEquals``1(Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Partitions the input list into two parts - the break is added 
+ at a point where the list starts with the specified sub-list.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.startsWith``1(Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Tests whether a list starts with the elements of another
+ list (specified as the first parameter)
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.iterInterleaved``1(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.Unit},Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,Microsoft.FSharp.Core.Unit},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Iterates over the elements of the list and calls the first function for 
+ every element. Between each two elements, the second function is called.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.partitionUntil``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Partitions list into an initial sequence (while the 
+ specified predicate returns &apos;false&apos;) and a rest of the list.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.partitionWhileLookahead``1(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Collections.FSharpList{``0},System.Boolean},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Partitions list into an initial sequence (while the specified predicate 
+ returns true) and a rest of the list. The predicate gets the entire 
+ tail of the list and can perform lookahead.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.partitionWhile``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Partitions list into an initial sequence (while the 
+ specified predicate returns true) and a rest of the list.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.skipWhile``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Skips elements while the predicate returns &apos;true&apos; and then 
+ returns the rest of the list as a result.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.skip``1(System.Int32,Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Skips the specified number of elements. Fails if the list is smaller.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.singleton``1(``0)">
+<summary>
+ Returns a singleton list containing a specified value
+</summary>
+</member>
+<member name="T:FSharp.Collections.List">
+
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteLatex(FSharp.Markdown.MarkdownDocument,System.IO.TextWriter)">
+<summary>
+ Transform the provided MarkdownDocument into LaTeX
+ format and write the result to a given writer.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteLatex(FSharp.Markdown.MarkdownDocument)">
+<summary>
+ Transform the provided MarkdownDocument into LaTeX
+ format and return the result as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteLatex(FSharp.Markdown.MarkdownDocument,System.String)">
+<summary>
+ Transform the provided MarkdownDocument into LaTeX
+ format and return the result as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteLatex(FSharp.Markdown.MarkdownDocument,System.IO.TextWriter,System.String)">
+<summary>
+ Transform the provided MarkdownDocument into LaTeX
+ format and write the result to a given writer.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteHtml(FSharp.Markdown.MarkdownDocument,System.IO.TextWriter)">
+<summary>
+ Transform the provided MarkdownDocument into HTML
+ format and write the result to a given writer.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteHtml(FSharp.Markdown.MarkdownDocument)">
+<summary>
+ Transform the provided MarkdownDocument into HTML
+ format and return the result as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteHtml(FSharp.Markdown.MarkdownDocument,System.String)">
+<summary>
+ Transform the provided MarkdownDocument into HTML
+ format and return the result as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.WriteHtml(FSharp.Markdown.MarkdownDocument,System.IO.TextWriter,System.String)">
+<summary>
+ Transform the provided MarkdownDocument into HTML
+ format and write the result to a given writer.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformLatex(System.String)">
+<summary>
+ Transform Markdown document into LaTeX format. 
+ The result will be returned as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformLatex(System.String,System.String)">
+<summary>
+ Transform Markdown document into LaTeX format. 
+ The result will be returned as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformLatex(System.String,System.IO.TextWriter)">
+<summary>
+ Transform Markdown document into LaTeX format. The result
+ will be written to the provided TextWriter.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformLatex(System.String,System.IO.TextWriter,System.String)">
+<summary>
+ Transform Markdown document into LaTeX format. The result
+ will be written to the provided TextWriter.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformHtml(System.String)">
+<summary>
+ Transform Markdown document into HTML format. 
+ The result will be returned as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformHtml(System.String,System.String)">
+<summary>
+ Transform Markdown document into HTML format. 
+ The result will be returned as a string.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformHtml(System.String,System.IO.TextWriter)">
+<summary>
+ Transform Markdown document into HTML format. The result
+ will be written to the provided TextWriter.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.TransformHtml(System.String,System.IO.TextWriter,System.String)">
+<summary>
+ Transform Markdown document into HTML format. The result
+ will be written to the provided TextWriter.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.Parse(System.String)">
+<summary>
+ Parse the specified text into a MarkdownDocument.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Markdown.Parse(System.String,System.String)">
+<summary>
+ Parse the specified text into a MarkdownDocument. Line breaks in the
+ inline HTML (etc.) will be stored using the specified string.
+</summary>
+</member>
+<member name="T:FSharp.Markdown.Markdown">
+<summary>
+ Static class that provides methods for formatting 
+ and transforming Markdown documents.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="P:FSharp.Markdown.MarkdownDocument.Paragraphs">
+<summary>
+ Returns a list of paragraphs in the document
+</summary>
+</member>
+<member name="P:FSharp.Markdown.MarkdownDocument.DefinedLinks">
+<summary>
+ Returns a dictionary containing explicitly defined links
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.Markdown.MarkdownDocument">
+<summary>
+ Representation of a Markdown document - the representation of Paragraphs
+ uses an F# discriminated union type and so is best used from F#.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.Markdown.Html.FormattingContext">
+<summary>
+ Context passed around while formatting the HTML
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.Markdown.Html.UniqueNameGenerator">
+<summary>
+ Generates a unique string out of given input
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.formatMarkdown(System.IO.TextWriter,System.Boolean,System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Tuple{System.String,Microsoft.FSharp.Core.FSharpOption{System.String}}})">
+<summary>
+ Format Markdown document and write the result to 
+ a specified TextWriter. Parameters specify newline character
+ and a dictionary with link keys defined in the document.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.formatParagraphs(FSharp.Markdown.Html.FormattingContext,Microsoft.FSharp.Collections.FSharpList{FSharp.Markdown.MarkdownParagraph})">
+<summary>
+ Write a list of MarkdownParagraph values to a TextWriter
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.formatParagraph(FSharp.Markdown.Html.FormattingContext,FSharp.Markdown.MarkdownParagraph)">
+<summary>
+ Write a MarkdownParagraph value to a TextWriter
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.formatAnchor(FSharp.Markdown.Html.FormattingContext,Microsoft.FSharp.Collections.FSharpList{FSharp.Markdown.MarkdownSpan})">
+<summary>
+ generate anchor name from Markdown text
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.formatSpans(FSharp.Markdown.Html.FormattingContext)">
+<summary>
+ Write list of MarkdownSpan values to a TextWriter
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.formatSpan(FSharp.Markdown.Html.FormattingContext,FSharp.Markdown.MarkdownSpan)">
+<summary>
+ Write MarkdownSpan value to a TextWriter
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Markdown.Html.|LookupKey|_|``1(System.Collections.Generic.IDictionary{System.String,``0},System.String)">
+<summary>
+ Lookup a specified key in a dictionary, possibly
+ ignoring newlines or spaces in the key.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.htmlEncodeQuotes(System.String)">
+<summary>
+ Basic escaping as done by Markdown including quotes
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Html.htmlEncode(System.String)">
+<summary>
+ Basic escaping as done by Markdown
+</summary>
+</member>
+<member name="T:FSharp.Markdown.Html">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.Markdown.Latex.FormattingContext">
+<summary>
+ Context passed around while formatting the LaTEX
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Latex.formatMarkdown(System.IO.TextWriter,System.String,System.Collections.Generic.IDictionary{System.String,System.Tuple{System.String,Microsoft.FSharp.Core.FSharpOption{System.String}}})">
+<summary>
+ Format Markdown document and write the result to 
+ a specified TextWriter. Parameters specify newline character
+ and a dictionary with link keys defined in the document.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Latex.formatParagraphs(FSharp.Markdown.Latex.FormattingContext,Microsoft.FSharp.Collections.FSharpList{FSharp.Markdown.MarkdownParagraph})">
+<summary>
+ Write a list of MarkdownParagraph values to a TextWriter
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Latex.formatParagraph(FSharp.Markdown.Latex.FormattingContext,FSharp.Markdown.MarkdownParagraph)">
+<summary>
+ Write a MarkdownParagraph value to a TextWriter
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Latex.formatSpans(FSharp.Markdown.Latex.FormattingContext)">
+<summary>
+ Write list of MarkdownSpan values to a TextWriter
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Latex.formatSpan(FSharp.Markdown.Latex.FormattingContext,FSharp.Markdown.MarkdownSpan)">
+<summary>
+ Write MarkdownSpan value to a TextWriter
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:FSharp.Markdown.Latex.|LookupKey|_|``1(System.Collections.Generic.IDictionary{System.String,``0},System.String)">
+<summary>
+ Lookup a specified key in a dictionary, possibly
+ ignoring newlines or spaces in the key.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="P:FSharp.Markdown.Latex.specialChars">
+<summary>
+ LaTEX special chars
+ from http://tex.stackexchange.com/questions/34580/escape-character-in-latex
+</summary>
+</member>
+<member name="T:FSharp.Markdown.Latex">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.Markdown.Matching">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:FSharp.Markdown.Parser.ParsingContext">
+<summary>
+ Defines a context for the main `parseParagraphs` function
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.parseParagraphs(FSharp.Markdown.Parser.ParsingContext,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Parse a list of lines into a sequence of markdown paragraphs
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|LinkDefinition|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognize a definition of a link as in `[key]: http://url ...`
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|LatexBlock|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes Latex block - start with &quot;$$$&quot;
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|Blockquote|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes blockquote - continues taking paragraphs 
+ starting with &apos;&gt;&apos; until there is something else
+</summary>
+</member>
+<member name="P:FSharp.Markdown.Parser.|LinesUntilBlockquoteOrWhite|">
+<summary>
+ Continues taking lines until a whitespace line or start of a blockquote
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|HtmlBlock|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognize nested HTML block
+ TODO: This is too simple - takes paragraph that starts with &lt;
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|TakeParagraphLines|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Takes lines that belong to a continuing paragraph until 
+ a white line or start of other paragraph-item is found
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|BlockquoteStart|_|(System.String)">
+<summary>
+ Recognizes a start of a blockquote
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|EmacsTableBlock|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes emacs table
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|EmacsTableLine|_|(Microsoft.FSharp.Core.FSharpOption{System.Int32[]},System.Char,Microsoft.FSharp.Core.FSharpFunc{System.String,System.Boolean},System.String)">
+<summary>
+ Recognizes one line of emacs table. It can be line with content or separator line.
+ The function takes positions of grid columns (if known) and expected grid separator.
+ Passed function is used to check whether all parts within grid are valid.
+ Retuns tuple (position of grid columns, text between grid columns).
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|PipeTableBlock|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes pipe table
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|PipeSeparatorRow|_|(Microsoft.FSharp.Core.FSharpOption{System.Int32},System.String)">
+<summary>
+ Recognizes separator row of pipe table.
+ Returns list of alignments.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|PipeTableRow|_|(Microsoft.FSharp.Core.FSharpOption{System.Int32},System.Char[],System.String)">
+<summary>
+ Recognizes row of pipe table.
+ The function takes number of expected columns and array of delimiters.
+ Returns list of strings between delimiters.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|TableCellSeparator|_|(System.String)">
+<summary>
+ Recognizes alignment specified in the passed separator line.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|ListItems|_|(System.Boolean,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes a list - returns list items with information about 
+ their indents - these need to be turned into a tree structure later.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|ListItem|_|(System.Boolean,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes a list item until the next list item (possibly nested) or end of a list.
+ The parameter specifies whether the previous line was simple (single-line not 
+ separated by a white line - simple items are not wrapped in &lt;p&gt;)
+</summary>
+</member>
+<member name="P:FSharp.Markdown.Parser.|LinesUntilListOrUnindented|">
+<summary>
+ Splits input into lines until not-indented line or starting of a list and the rest.
+</summary>
+</member>
+<member name="P:FSharp.Markdown.Parser.|LinesUntilListOrWhite|">
+<summary>
+ Splits input into lines until whitespace or starting of a list and the rest.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|ListStart|_|(System.String)">
+<summary>
+ Recognizes a staring of a list (either 1. or +, *, -).
+ Returns the rest of the line, together with the indent.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|SkipSomeNumbers|_|(System.String)">
+<summary>
+ Matches when the input starts with a number. Returns the
+ rest of the input, following the last number.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|CodeBlock|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes a code block - lines starting with four spaces (including blank)
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|HorizontalRule|_|(System.String)">
+<summary>
+ Recognizes a horizontal rule written using *, _ or -
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|Heading|_|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Recognizes heading, either prefixed with #s or followed by === or --- line
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.parseSpans(System.String)">
+<summary>
+ Parse body of a paragraph into a list of Markdown inline spans      
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.parseChars(Microsoft.FSharp.Collections.FSharpList{System.Char},Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Parses a body of a paragraph and recognizes all inline tags.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|Emphasised|_|(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Recognizes some form of emphasis using `**bold**` or `*italic*`
+ (both can be also marked using underscore).
+ TODO: This does not handle nested emphasis well.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|AutoLink|_|(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Recognizes an automatic link written using `http://url` or `https://url`
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|DirectLink|_|(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Recognize a direct link written using `[body](http://url &quot;with title&quot;)`
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|IndirectLink|_|(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Recognizes an indirect link written using `[body][key]` or just `[key]`
+ The key can be preceeded by a space or other single whitespace thing.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|DelimitedLatexInlineMath|_|(Microsoft.FSharp.Collections.FSharpList{System.Char},Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ This is similar to `List.Delimited`, but it skips over Latex inline math characters.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|DelimitedLatexDisplayMath|_|(Microsoft.FSharp.Collections.FSharpList{System.Char},Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ This is similar to `List.Delimited`, but it skips over Latex inline math characters.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|DelimitedMarkdown|_|(Microsoft.FSharp.Collections.FSharpList{System.Char},Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Matches a list if it starts with a sub-list that is delimited
+ using the specified delimiters. Returns a wrapped list and the rest.
+
+ This is similar to `List.Delimited`, but it skips over escaped characters.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|EscapedLatexInlineMathChar|_|(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Escape dollar inside a LaTex inline math span.
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.|EscapedChar|_|(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Succeeds when the specified character list starts with an escaped 
+ character - in that case, returns the character and the tail of the list
+</summary>
+</member>
+<member name="M:FSharp.Markdown.Parser.getLinkAndTitle(System.String)">
+<summary>
+ Splits a link formatted as `http://link &quot;title&quot;` into a link part
+ and an optional title part (may be wrapped using quote or double-quotes)
+</summary>
+</member>
+<member name="T:FSharp.Markdown.Parser">
+
+</member>
+<member name="M:FSharp.Markdown.Utils.replaceTabs(System.Int32)">
+<summary>
+ Replace tabs with four spaces - tab will end at the 
+ first column that is divisible by four.
+</summary>
+</member>
+<member name="T:FSharp.Markdown.Utils">
+
+</member>
+<member name="M:FSharp.Patterns.|Command|_|``2(``0,System.Collections.Generic.IDictionary{``0,``1})">
+<summary>
+ Lookup in a dictionary
+</summary>
+</member>
+<member name="M:FSharp.Patterns.|ParseCommand|_|(System.String)">
+<summary>
+ Utility for parsing commands - this deals with a single command.
+ The key of the command should be identifier with just 
+ characters in it - otherwise, the parsing fails.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.|ParseCommands|_|(System.String)">
+<summary>
+ Utility for parsing commands. Commands can be used in different places. We 
+ recognize `key1=value, key2=value` and also `key1:value, key2:value`
+ The key of the command should be identifier with just 
+ characters in it - otherwise, the parsing fails.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.|Let|``2(``0,``1)">
+<summary>
+ Parameterized pattern that assigns the specified value to the 
+ first component of a tuple. Usage:
+
+    match str with
+    | Let 1 (n, &quot;one&quot;) | Let 2 (n, &quot;two&quot;) -&gt; n
+ 
+</summary>
+</member>
+<member name="P:FSharp.Patterns.Lines.|TrimBlankStart|">
+<summary>
+ Removes whitespace lines from the beginning of the list
+</summary>
+</member>
+<member name="M:FSharp.Patterns.Lines.|TakeStartingWithOrBlank|_|(System.String,Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Matches when there are some lines at the beginning that are 
+ either empty (or whitespace) or start with the specified string.
+ Returns all such lines from the beginning until a different line.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.Lines.|TrimBlank|(Microsoft.FSharp.Collections.FSharpList{System.String})">
+<summary>
+ Removes blank lines from the start and the end of a list
+</summary>
+</member>
+<member name="T:FSharp.Patterns.Lines">
+
+</member>
+<member name="M:FSharp.Patterns.List.|AsString|(Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Returns a list of characters as a string.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.List.|BracketDelimited|_|(System.Char,System.Char,Microsoft.FSharp.Collections.FSharpList{System.Char})">
+<summary>
+ Matches a list if it starts with a bracketed list. Nested brackets
+ are skipped (by counting opening and closing brackets) and can be 
+ escaped using the &apos;\&apos; symbol.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.List.|Delimited|_|``1(Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Matches a list if it starts with a sub-list that is delimited
+ using the specified delimiter. Returns a wrapped list and the rest.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.List.|StartsWith|_|``1(Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Matches a list if it starts with a sub-list. Returns the list.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.List.|DelimitedWith|_|``1(Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Matches a list if it starts with a sub-list that is delimited
+ using the specified delimiters. Returns a wrapped list and the rest.
+</summary>
+</member>
+<member name="T:FSharp.Patterns.List">
+
+</member>
+<member name="M:FSharp.Patterns.String.removeSpaces(System.Collections.Generic.IEnumerable{System.String})">
+<summary>
+ Given a list of lines indented with certan number of whitespace 
+ characters (spaces), remove the spaces from the beginning of each line 
+ and return the string as a list of lines
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|EqualsRepeated|_|(System.String,System.String)">
+<summary>
+ Matches when a string consists of some number of 
+ complete repetitions of a specified sub-string.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|StartsWithWrapped|_|(System.String,System.String,System.String)">
+<summary>
+ Matches when a string starts with a sub-string wrapped using the 
+ opening and closing sub-string specified in the parameter.
+ For example &quot;[aa]bc&quot; is wrapped in [ and ] pair. Returns the wrapped
+ text together with the rest.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|StartsWithRepeated|_|(System.String,System.String)">
+<summary>
+ Matches when a string starts with a non-zero number of complete
+ repetitions of the specified parameter (and returns the number
+ of repetitions, together with the rest of the string)
+
+    let (StartsWithRepeated &quot;/\&quot; (2, &quot; abc&quot;)) = &quot;/\/\ abc&quot;
+
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|StartsAndEndsWithTrim|_|(System.String,System.String,System.String)">
+<summary>
+ Matches when a string starts with the given value and ends 
+ with a given value (and returns trimmed body)
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|StartsAndEndsWith|_|(System.String,System.String,System.String)">
+<summary>
+ Matches when a string starts with the given value and ends 
+ with a given value (and returns the rest of it)
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|StartsWithTrim|_|(System.String,System.String)">
+<summary>
+ Matches when a string starts with the specified sub-string
+ The matched string is trimmed from all whitespace.
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|StartsWith|_|(System.String,System.String)">
+<summary>
+ Matches when a string starts with the specified sub-string
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|StartsWithAny|_|(System.Collections.Generic.IEnumerable{System.String},System.String)">
+<summary>
+ Matches when a string starts with any of the specified sub-strings
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|TrimStartAndCount|(System.String)">
+<summary>
+ Returns a string trimmed from the start together with 
+ the number of skipped whitespace characters
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|TrimEndUsing|(System.Collections.Generic.IEnumerable{System.Char},System.String)">
+<summary>
+ Retrusn a string trimmed from the end using characters given as a parameter
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|TrimStart|(System.String)">
+<summary>
+ Returns a string trimmed from the start
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|TrimEnd|(System.String)">
+<summary>
+ Returns a string trimmed from the end
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|TrimBoth|(System.String)">
+<summary>
+ Returns a string trimmed from both start and end
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|Unindented|_|(System.String)">
+<summary>
+ Matches when a string does starts with non-whitespace
+</summary>
+</member>
+<member name="M:FSharp.Patterns.String.|WhiteSpace|_|(System.String)">
+<summary>
+ Matches when a string is a whitespace or null
+</summary>
+</member>
+<member name="T:FSharp.Patterns.String">
+
+</member>
+<member name="T:FSharp.Patterns">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:System.AssemblyVersionInformation">
+
+</member>
+</members>
+</doc>

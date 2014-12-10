@@ -1,0 +1,19 @@
+language: objective-c
+
+env:
+  matrix:
+    - MONO_VERSION="3.4.0"
+
+install:
+  - wget "http://download.mono-project.com/archive/${MONO_VERSION}/macos-10-x86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg"
+  - sudo installer -pkg "MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg" -target /
+  
+before_script:
+- chmod +x build.sh
+
+script: 
+  - ./build.sh All
+  
+branches:
+  except:
+    - gh-pages

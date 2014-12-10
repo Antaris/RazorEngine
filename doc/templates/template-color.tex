@@ -1,0 +1,75 @@
+\documentclass{article}
+
+% Defining colors by names
+\usepackage{xcolor}
+% Verbatim enviroment
+\usepackage{fancyvrb}
+% Verbatim enviroment for unformatted source code
+\usepackage{listings}
+% Better font for backslash
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+% Providing more features than usual tabular
+\usepackage{longtable}
+
+% Identifiers in color code #000000
+\newcommand{\id}[1]{\textcolor{black}{#1}}
+
+% Comments in green
+\definecolor{officegreen}{rgb}{0, 0.5, 0}
+\newcommand{\com}[1]{\textcolor{officegreen}{#1}}
+
+% Inactive elements in color code #808080
+\newcommand{\inact}[1]{\textcolor{gray}{#1}}
+
+% Keywords in color code #000080
+\definecolor{navy}{rgb}{0, 0, 0.5}
+\newcommand{\kwd}[1]{\textcolor{navy}{#1}}
+
+% Numbers in color code #008000
+\newcommand{\num}[1]{\textcolor{officegreen}{#1}}
+
+% Operators in color code #800080
+\newcommand{\ops}[1]{\textcolor{purple}{#1}}
+
+% Preprocessors in color code #800080
+\newcommand{\prep}[1]{\textcolor{purple}{#1}}
+
+% Strings in color code #808000
+\newcommand{\str}[1]{\textcolor{olive}{#1}}
+
+% Lines in color code #80b0b0
+% Define relative color to work correctly with \newcommand
+\definecolor{linecolor}{rgb}{0.5, 0.6875, 0.6875}
+\newcommand{\lines}[1]{\textcolor{linecolor}{#1}}
+
+% fsi output in color code #606060
+\definecolor{outputcolor}{rgb}{0.375, 0.375, 0.375}
+\newcommand{\fsi}[1]{\textcolor{outputcolor}{#1}}
+
+% Omitted parts in color code #808080
+\newcommand{\omi}[1]{\textcolor{gray}{#1}}
+
+% Overriding color and style of line numbers
+\renewcommand{\theFancyVerbLine}{
+\lines{\small \arabic{FancyVerbLine}:}}
+
+\lstset{%
+  backgroundcolor=\color{gray!15},
+  basicstyle=\ttfamily,
+  breaklines=true,
+  columns=fullflexible
+}
+
+\title{{page-title}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+{contents}
+
+{tooltips}
+
+\end{document}

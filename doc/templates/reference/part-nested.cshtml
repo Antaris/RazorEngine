@@ -1,0 +1,36 @@
+@if (Enumerable.Count(Model.Types) > 0) {
+  <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      @foreach (var it in Model.Types)
+      {
+        <tr>
+          <td class="type-name">
+            <a href="@(it.UrlName).html">@it.Name</a>
+          </td>
+          <td class="xmldoc">@it.Comment.Blurb</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+@if (Enumerable.Count(Model.Modules) > 0) {
+  <table class="table table-bordered module-list">
+    <thead>
+      <tr><td>Module</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      @foreach (var it in Model.Modules)
+      {
+        <tr>
+          <td class="module-name">
+            <a href="@(it.UrlName).html">@it.Name</a>
+          </td>
+          <td class="xmldoc">@it.Comment.Blurb</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
