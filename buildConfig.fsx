@@ -31,7 +31,7 @@ let projectSummary = "Simple templating using Razor syntax."
 let projectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
 let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
 let mail = "matthew.abbott@outlook.com"
-let version = "3.5.0.0"
+let version = "3.4.2.0"
 let commitHash = Information.getCurrentSHA1(".")
 
 //let buildTargets = environVarOrDefault "BUILDTARGETS" ""
