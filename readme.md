@@ -6,13 +6,13 @@ Documentation also available on http://matthid.github.io/RazorEngine/.
 
 Develop Branch
 
-[![Build Status](https://travis-ci.org/matthid/RazorEngine.svg?branch=develop)](https://travis-ci.org/matthid/RazorEngine)
-[![Build status](https://ci.appveyor.com/api/projects/status/tm7j32leemw2u6j0/branch/develop)](https://ci.appveyor.com/project/matthid/razorengine/branch/develop)
+[![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=develop)](https://travis-ci.org/Antaris/RazorEngine)
+[![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine)
 
 Master Branch
 
-[![Build Status](https://travis-ci.org/matthid/RazorEngine.svg?branch=master)](https://travis-ci.org/matthid/RazorEngine)
-[![Build status](https://ci.appveyor.com/api/projects/status/tm7j32leemw2u6j0/branch/master)](https://ci.appveyor.com/project/matthid/razorengine/branch/master)
+[![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=master)](https://travis-ci.org/Antaris/RazorEngine)
+[![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/master?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine/branch/master)
 
 
 ## Quickstart
