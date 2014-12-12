@@ -30,7 +30,7 @@ let projectName = "RazorEngine"
 let projectSummary = "Simple templating using Razor syntax."
 let projectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
 let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
-let mail = "matthi.d@gmail.com"
+let mail = "matthew.abbott@outlook.com"
 let version = "3.5.0.0"
 let commitHash = Information.getCurrentSHA1(".")
 
@@ -45,7 +45,7 @@ let testDir  = "./test/"
 let nugetDir  = "./.nuget/"
 let packageDir  = "./.nuget/packages"
 
-let github_user = "matthid"
+let github_user = "Antaris"
 let github_project = "RazorEngine"
 
 let tags = "C# razor template engine programming"
