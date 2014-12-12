@@ -7,8 +7,8 @@
     <authors>@authors@</authors>
     <owners>@authors@</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/matthid/RazorEngine/blob/master/doc/LICENSE.md</licenseUrl>
-    <projectUrl>https://github.com/matthid/RazorEngine</projectUrl>
+    <licenseUrl>https://github.com/Antaris/RazorEngine/blob/master/doc/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/Antaris/RazorEngine</projectUrl>
     <summary>@summary@</summary>
     <description>@description@</description>
     <releaseNotes>@releaseNotes@</releaseNotes>
