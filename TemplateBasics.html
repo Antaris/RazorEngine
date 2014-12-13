@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Template basics
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple templating using Razor syntax.">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/style.css" />
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/prism.css" />
+    <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/tips.js"></script>
+	<script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/prism.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://Antaris.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="Template-basics" class="anchor" href="#Template-basics">Template basics</a></h1>
+
+<h2><a name="Getting-Started" class="anchor" href="#Getting-Started">Getting Started</a></h2>
+
+<p>RazorEngine provides a base implementation of a template class, the <code>TemplateBase</code>, this is normally superseded by the model specific template class, the <code>TemplateBase&lt;T&gt;</code>. For most use cases, we're hoping this will be enough. To get started with template using RazorEngine, you can simply use the static <code>Razor</code> type:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
+var model = new { Name = &quot;Matt&quot; };
+
+string result = Razor.Parse(template, model);</code></pre>
+
+<p>Which should result in:</p>
+
+<pre class="line-numbers language-markup"><code class="language-markup">&lt;div&gt;Hello Matt&lt;/div&gt;</code></pre>
+
+<h2><a name="Using-Anonymous-Types" class="anchor" href="#Using-Anonymous-Types">Using Anonymous Types</a></h2>
+
+<p>RazorEngine supports anonymous types (those declared as <code>var</code> with no identifier, e.g. <code>var model = { Name = "Matt" };</code>. The set of statements to use an anonymous model, is exactly the same as a statically type model (as seen above):</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
+var model = new { Name = &quot;Matt&quot; };
+
+string result = Razor.Parse(template, model);</code></pre>
+
+<p>Thanks to the C# compiler's (and Visual Studio's) type inference, it will determine the model type that is passed to the generic <code>Razor.Parse&lt;T&gt;(string, T)</code> method for you, keeping the code clean and concise.</p>
+
+<blockquote>
+  <p>Note: Anonymous types are not supported when using the <code>IsolatedTemplateService</code></p>
+</blockquote>
+
+<h2><a name="Using-Dynamic-Types" class="anchor" href="#Using-Dynamic-Types">Using Dynamic Types</a></h2>
+
+<p>RazorEngine has support for dynamic types (those declared as <code>dynamic</code>). Again, the structure for using dynamic types is very similar:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
+dynamic model = new ExpandoObject();
+model.Name = &quot;Matt&quot;;
+
+string result = Razor.Parse(template, model);</code></pre>
+
+<blockquote>
+  <p>Note: Dynamic types are not supported when using the <code>IsolatedTemplateService</code></p>
+</blockquote>
+
+<h2><a name="Caching-Templates" class="anchor" href="#Caching-Templates">Caching Templates</a></h2>
+
+<p>When you provide a name argument to your call, RazorEngine will cache the compiled type so we can re-use the template type for subsequent executions:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">string result = Razor.Parse(template, model, &quot;test&quot;);</code></pre>
+
+<p>If you reuse the same template again, it will not have to parse and recompile the template, because we've already cached it.</p>
+
+<blockquote>
+  <p>Note: If you call to parse a template with a name for the cached version, but the template content has changed, RazorEngine will invalidate the cached version and replace with the update template. This allows templates to be cached, changed and re-cached over time.</p>
+</blockquote>
+
+<h2><a name="Pre-compiling-and-Running-Templates" class="anchor" href="#Pre-compiling-and-Running-Templates">Pre-compiling and Running Templates</a></h2>
+
+<p>On the back of the caching feature mentioned above, RazorEngine supports the ability to pre-compile your templates for later execution. Convenience methods called <code>Compile</code> and <code>Run</code> allow you to make an initial compile and cache of your template (<code>Compile</code>) and then execute it later (<code>Run</code>):</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">Razor.Compile(template, &quot;testTemplate&quot;);
+
+// And then...
+string result = Razor.Run(&quot;testTemplate&quot;);</code></pre>
+
+<h2><a name="Configuration" class="anchor" href="#Configuration">Configuration</a></h2>
+
+<p>By default RazorEngine is configured to encode using Html. This supports the majority of users but with some configuration changes you can also set it to encode using Raw format which is better suited for templates that generate things like javascript, php, C# and others.</p>
+
+<h3><a name="Old-school" class="anchor" href="#Old-school">Old school:</a></h3>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">var config = new TemplateServiceConfiguration();
+config.EncodedStringFactory = new RawStringFactory();
+
+// create a new TemplateService and pass in the configuration to the constructor
+var myConfiguredTemplateService = new TemplateService(config);
+// set the template service to our configured one
+Razor.SetTemplateService(myConfiguredTemplateService);
+
+// start parsing templates
+string template = &quot;Hello \&quot;@(Model.Name)\&quot;&quot;;
+var model = new { Name = &quot;Matt&quot; };
+
+string result = Razor.Parse(template, model);</code></pre>
+
+<p>Which should result in:</p>
+
+<pre class="line-numbers language-markup"><code class="language-markup">Hello &quot;Matt&quot;</code></pre>
+
+<h3><a name="Using-the-fluent-API" class="anchor" href="#Using-the-fluent-API">Using the fluent API:</a></h3>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">var config = new FluentTemplateServiceConfiguration(c =&gt; c.WithEncoding(RazorEngine.Encoding.Raw));
+
+// create a new TemplateService and pass in the configuration to the constructor
+var myConfiguredTemplateService = new TemplateService(config);
+// set the template service to our configured one
+Razor.SetTemplateService(myConfiguredTemplateService);
+
+// start parsing templates
+string template = &quot;Hello \&quot;@(Model.Name)\&quot;&quot;;
+var model = new { Name = &quot;Matt&quot; };
+
+string result = Razor.Parse(template, model);</code></pre>
+
+<p>Which should result in:</p>
+
+<pre class="line-numbers language-markup"><code class="language-markup">Hello &quot;Matt&quot;</code></pre>
+
+
+        </div>
+        <div class="span3">
+          <a href="https://Antaris.github.io/RazorEngine/index.html">
+            <img src="https://Antaris.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/Antaris/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>
