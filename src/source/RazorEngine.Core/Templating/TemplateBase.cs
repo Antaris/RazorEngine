@@ -142,6 +142,7 @@ namespace RazorEngine.Templating
                 // Push the current body instance onto the stack for later execution.
                 var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
                 context.PushBody(body);
+                context.PushSections();
 
                 return layout.Run(context);
             }
@@ -166,7 +167,9 @@ namespace RazorEngine.Templating
 
             if (action == null) action = () => { };
 
-            return new TemplateWriter(tw => action());
+            return new TemplateWriter(tw => {
+                _context.PopSections(action);
+            });
         }
 
         /// <summary>

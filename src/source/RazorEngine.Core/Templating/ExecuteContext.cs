@@ -16,8 +16,8 @@
         /// Creates a new instance of ExecuteContext with an empty ViewBag.
         /// </summary>
         public ExecuteContext()
+            : this(null)
         {
-            _viewBag = new DynamicViewBag();
         }
 
         /// <summary>
@@ -30,12 +30,15 @@
                 _viewBag = new DynamicViewBag();
             else
                 _viewBag = viewBag;
+            _currentSectionStack.Push(new HashSet<string>());
         }
 
         #endregion
 
         #region Fields
-        private readonly IDictionary<string, Action> _definedSections = new Dictionary<string, Action>();
+        private readonly Stack<ISet<string>> _currentSectionStack = new Stack<ISet<string>>();
+        private ISet<string> _currentSections = new HashSet<string>();
+        private readonly IDictionary<string, Stack<Action>> _definedSections = new Dictionary<string, Stack<Action>>();
         private readonly Stack<TemplateWriter> _bodyWriters = new Stack<TemplateWriter>();
         private readonly dynamic _viewBag; 
         #endregion
@@ -63,11 +66,17 @@
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("A name is required to define a section.");
+            if (_currentSections.Contains(name))
+	            throw new ArgumentException("A section has already been defined with name '" + name + "'");
 
-            if (_definedSections.ContainsKey(name))
-                throw new ArgumentException("A section has already been defined with name '" + name + "'");
-
-            _definedSections.Add(name, action);
+            _currentSections.Add(name);
+            Stack<Action> sectionStack;
+            if (!_definedSections.TryGetValue(name, out sectionStack))
+            {
+                sectionStack = new Stack<Action>();
+                _definedSections.Add(name, sectionStack);
+            }
+            sectionStack.Push(action);
         }
 
         /// <summary>
@@ -77,10 +86,43 @@
         /// <returns>The section delegate.</returns>
         public Action GetSectionDelegate(string name)
         {
-            if (_definedSections.ContainsKey(name))
-                return _definedSections[name];
+            if (_definedSections.ContainsKey(name) && _definedSections[name].Count > 0)
+                return _definedSections[name].Peek();
 
             return null;
+        }
+
+        /// <summary>
+        /// Allows to pop all the section delegates for the executing action.
+        /// This is required for nesting sections.
+        /// </summary>
+        /// <param name="inner">the executing section delegate.</param>
+        internal void PopSections(Action inner)
+        {
+            var oldsections = _currentSections;
+            _currentSections = _currentSectionStack.Pop();
+            var poppedSections = new List<Tuple<string, Action>>();
+            foreach (var section in _currentSections)
+            {
+                var item = _definedSections[section].Pop();
+                poppedSections.Add(Tuple.Create(section, item));
+            }
+            inner();
+            foreach (var item in poppedSections)
+	        {
+		        _definedSections[item.Item1].Push(item.Item2);
+            }
+            _currentSectionStack.Push(_currentSections);
+            _currentSections = oldsections;
+        }
+
+        /// <summary>
+        /// Push the set of current sections to the stack.
+        /// </summary>
+        internal void PushSections()
+        {
+            _currentSectionStack.Push(_currentSections);
+            _currentSections = new HashSet<string>();
         }
 
         /// <summary>

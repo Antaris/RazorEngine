@@ -40,5 +40,59 @@
             }
         }
 
+        /// <summary>
+        /// Using nested sections doesn't work.
+        /// 
+        /// Issue 163: https://github.com/Antaris/RazorEngine/issues/163
+        /// </summary>
+        [Test]
+        public void Issue163_SectionRedefenition()
+        {
+            TemplateServiceTestFixture.RunTestHelper(service =>
+            {
+                string parentLayoutTemplate = @"<script scr=""/Scripts/jquery.js""></script>@RenderSection(""Scripts"", false)";
+                string childLayoutTemplate =
+                    @"@{ Layout = ""ParentLayout""; }@section Scripts {<script scr=""/Scripts/childlayout.js""></script>@RenderSection(""Scripts"", false)}";
+                service.Compile(parentLayoutTemplate, null, "ParentLayout");
+                service.Compile(childLayoutTemplate, null, "ChildLayout");
+
+                // Page with no section defined (e.g. page has no own scripts)
+                string pageWithoutOwnScriptsTemplate = @"@{ Layout = ""ChildLayout""; }";
+                string expectedPageWithoutOwnScriptsResult =
+                    @"<script scr=""/Scripts/jquery.js""></script><script scr=""/Scripts/childlayout.js""></script>";
+                string actualPageWithoutOwnScriptsResult = service.Parse(pageWithoutOwnScriptsTemplate, null, null, null);
+                Assert.AreEqual(expectedPageWithoutOwnScriptsResult, actualPageWithoutOwnScriptsResult);
+
+                // Page with section redefenition (page has own additional scripts)
+                string pageWithOwnScriptsTemplate = @"@{ Layout = ""ChildLayout""; }@section Scripts {<script scr=""/Scripts/page.js""></script>}";
+                string expectedPageWithOwnScriptsResult =
+                    @"<script scr=""/Scripts/jquery.js""></script><script scr=""/Scripts/childlayout.js""></script><script scr=""/Scripts/page.js""></script>";
+                string actualPageWithOwnScriptsResult = service.Parse(pageWithOwnScriptsTemplate, null, null, null);
+                Assert.AreEqual(expectedPageWithOwnScriptsResult, actualPageWithOwnScriptsResult);
+            });
+        }
+
+        /*
+        /// <summary>
+        /// Using RenderBody multiply times doesn't work.
+        /// Note it doesn't seem like anyone actually needs this.
+        /// </summary>
+        [Test]
+        [Ignore]
+        public void Issue_MultipleRenderBody()
+        {
+            TemplateServiceTestFixture.RunTestHelper(service =>
+            {
+                const string parent = @"@RenderBody() and @RenderBody()";
+                service.Compile(parent, null, "ParentLayout");
+                string child = @"@{ Layout = ""ParentLayout""; }test";
+                service.Compile(child, null, "ChildLayout");
+
+                const string expected = @"test and test";
+                string result = service.Run("ChildLayout", null, null);
+                Assert.AreEqual(expected, result);
+            });
+        }
+         */
     }
 }
