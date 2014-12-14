@@ -24,5 +24,13 @@
                 new VBCodeProvider(),
                 markupParserFactory) { }
         #endregion
+
+        public override string SourceFileExtension
+        {
+            get
+            {
+                return "vb";
+            }
+        }
     }
 }

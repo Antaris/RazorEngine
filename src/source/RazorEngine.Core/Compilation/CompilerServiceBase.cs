@@ -61,6 +61,11 @@
         /// Gets the markup parser.
         /// </summary>
         public Func<ParserBase> MarkupParserFactory { get; private set; }
+
+        /// <summary>
+        /// Extension of a source file without dot ("cs" for C# files or "vb" for VB.NET files).
+        /// </summary>
+        public abstract string SourceFileExtension { get; }
         #endregion
 
         #region Methods
@@ -199,13 +204,24 @@
         /// <param name="host">The razor engine host.</param>
         /// <param name="template">The template.</param>
         /// <returns>The generator result.</returns>
-        private static GeneratorResults GetGeneratorResult(RazorEngineHost host, string template)
+        private GeneratorResults GetGeneratorResult(RazorEngineHost host, string template)
         {
             var engine = new RazorTemplateEngine(host);
             GeneratorResults result;
             using (var reader = new StringReader(template))
                 result = engine.GenerateCode(reader);
 
+            // Allow to step into the template code by removing the "#line hidden" pragmas
+            foreach(CodeNamespace @namespace in result.GeneratedCode.Namespaces.Cast<CodeNamespace>().ToList()) {
+                foreach (CodeTypeDeclaration @type in @namespace.Types.Cast<CodeTypeDeclaration>().ToList()) {
+                    foreach (CodeTypeMember member in @type.Members.Cast<CodeTypeMember>().ToList()) {
+                        var snippet = member as CodeSnippetTypeMember;
+                        if (snippet != null && snippet.Text == "#line hidden") {
+                            @type.Members.Remove(snippet);
+                        }
+	                } 
+                }
+            }
             return result;
         }
 

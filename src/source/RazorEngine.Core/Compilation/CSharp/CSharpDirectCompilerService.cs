@@ -28,6 +28,14 @@
                 markupParserFactory) { }
         #endregion
 
+        public override string SourceFileExtension
+        {
+            get
+            {
+                return "cs";
+            }
+        }
+
         #region Methods
         /// <summary>
         /// Returns a set of assemblies that must be referenced by the compiled template.

@@ -38,8 +38,40 @@
             _codeDomProvider = codeDomProvider;
         }
         #endregion
-
+        
         #region Methods
+        public static string GetTemporaryDirectory()
+        {
+            var created = false;
+            var tried = 0;
+            string tempDirectory = "";
+            while (!created && tried < 10)
+            {
+                tried++;
+                try
+                {
+                    tempDirectory = Path.Combine(Path.GetTempPath(), "RazorEngine_" + Path.GetRandomFileName());
+                    if (!Directory.Exists(tempDirectory))
+                    {
+                        Directory.CreateDirectory(tempDirectory);
+                        created = Directory.Exists(tempDirectory);
+                    }
+                }
+                catch (IOException)
+                {
+                    if (tried > 8)
+                    {
+                        throw;
+                    }
+                }
+            }
+            if (!created)
+            {
+                throw new Exception("Could not create a temporary directory! Maybe all names are already used?");
+            }
+            return tempDirectory;
+        }
+
         /// <summary>
         /// Creates the compile results for the specified <see cref="TypeContext"/>.
         /// </summary>
@@ -74,6 +106,9 @@
             string sourceCode = null;
             if (Debug)
             {
+                @params.GenerateInMemory = false;
+                @params.TempFiles = new TempFileCollection(GetTemporaryDirectory(), true);
+                @params.IncludeDebugInformation = true;
                 var builder = new StringBuilder();
                 using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))
                 {
@@ -82,7 +117,31 @@
                 }
             }
 
-            return Tuple.Create(_codeDomProvider.CompileAssemblyFromDom(@params, compileUnit), sourceCode);
+            var results = _codeDomProvider.CompileAssemblyFromDom(@params, compileUnit);
+            if (Debug)
+            {
+                bool written = false;
+                var targetFile = Path.Combine(results.TempFiles.TempDir, "generated_template." + SourceFileExtension);
+                if (!written && !File.Exists(targetFile))
+                {
+                    File.WriteAllText(targetFile, sourceCode);
+                    written = true;
+                }
+                if (!written)
+                {
+                    foreach (string item in results.TempFiles)
+	                {
+                        if (item.EndsWith("." + this.SourceFileExtension))
+                        {
+                            File.Copy(item, targetFile, true);
+                            written = true;
+                            break;
+                        }
+	                } 
+                }
+            }
+
+            return Tuple.Create(results, sourceCode);
         }
 
         /// <summary>
@@ -100,7 +159,10 @@
             var compileResult = result.Item1;
 
             if (compileResult.Errors != null && compileResult.Errors.HasErrors)
+            {
+                var tmpDir = compileResult.TempFiles.TempDir;
                 throw new TemplateCompilationException(compileResult.Errors, result.Item2, context.TemplateContent);
+            }
 
             return Tuple.Create(
                 compileResult.CompiledAssembly.GetType("CompiledRazorTemplates.Dynamic." + context.ClassName),
