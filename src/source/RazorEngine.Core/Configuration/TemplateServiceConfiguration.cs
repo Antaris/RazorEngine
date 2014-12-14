@@ -17,6 +17,8 @@ namespace RazorEngine.Configuration
     /// </summary>
     public class TemplateServiceConfiguration : ITemplateServiceConfiguration
     {
+        ITemplateResolver resolver;
+
         #region Constructor
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateServiceConfiguration"/>.
@@ -33,6 +35,16 @@ namespace RazorEngine.Configuration
             CodeInspectors = xmlConfig.CodeInspectors != null ? xmlConfig.CodeInspectors.ToList()  : new List<ICodeInspector>();
             Language = xmlConfig.Language;
             ReferenceResolver = xmlConfig.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
+            CachingProvider = xmlConfig.CachingProvider ?? new DefaultCachingProvider();
+            Resolver = xmlConfig.Resolver;
+            TemplateManager =
+                xmlConfig.TemplateManager ?? 
+                new DelegateTemplateManager(name => {
+                    throw new ArgumentException(
+                        string.Format(
+                            "Please either set a template manager to resolve templates or add the template '{0}'!",
+                            name));
+                });
 
             Namespaces = new HashSet<string>
                              {
@@ -82,6 +94,11 @@ namespace RazorEngine.Configuration
         public IAssemblyReferenceResolver ReferenceResolver { get; set; }
 
         /// <summary>
+        /// Gets or sets the caching provider.
+        /// </summary>
+        public ICachingProvider CachingProvider { get; set; }
+
+        /// <summary>
         /// Gets or sets the compiler service factory.
         /// </summary>
         public ICompilerServiceFactory CompilerServiceFactory { get; set; }
@@ -109,7 +126,24 @@ namespace RazorEngine.Configuration
         /// <summary>
         /// Gets or sets the template resolver.
         /// </summary>
-        public ITemplateResolver Resolver { get; set; }
+        [Obsolete("Please use the TemplateManager property instead")]
+        public ITemplateResolver Resolver { 
+            get { 
+                return resolver;
+            } 
+            set { 
+                resolver = value;
+                if (value != null)
+                {
+                    TemplateManager = new WrapperTemplateManager(value);
+                }
+            } 
+        }
+
+        /// <summary>
+        /// Gets or sets the template resolver.
+        /// </summary>
+        public ITemplateManager TemplateManager { get; set; }
         #endregion
     }
 }

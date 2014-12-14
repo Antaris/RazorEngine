@@ -47,7 +47,8 @@
                     currentModel = new RazorDynamicObject
                                    {
                                        Model = value, 
-                                       AllowMissingPropertiesOnDynamic = TemplateService.Configuration.AllowMissingPropertiesOnDynamic
+                                       AllowMissingPropertiesOnDynamic = 
+                                            InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic
                                    };
                 else
                     currentModel = value;
@@ -55,6 +56,11 @@
         }
 
         #endregion
+
+        public override void SetModel(object model)
+        {
+            Model = (T)model;
+        }
 
         /// <summary>
         /// Includes the template with the specified name.
@@ -75,7 +81,7 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected override ITemplate ResolveLayout(string name)
         {
-            return TemplateService.Resolve(name, (T)currentModel);
+            return InternalTemplateService.Resolve(name, (T)currentModel, ResolveType.Layout);
         }
         #endregion
     }

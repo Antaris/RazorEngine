@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Templating
+﻿using System;
+using System.IO;
+namespace RazorEngine.Templating
 {
     /// <summary>
     /// Defines the required contract for implementing a template.
@@ -7,12 +9,30 @@
     {
         #region Properties
         /// <summary>
-        /// Sets the template service.
+        /// Sets the internal template service.
         /// </summary>
+        IInternalTemplateService InternalTemplateService { set; }
+
+        /// <summary>
+        /// OBSOLETE: Sets the template service.
+        /// </summary>
+        [Obsolete("Only provided for backwards compatibility, use CachedTemplateService instead.")]
         ITemplateService TemplateService { set; }
+
+        /// <summary>
+        /// Sets the cached template service.
+        /// </summary>
+        ICachedTemplateService CachedTemplateService { set; }
+
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Set the model of the template (if applicable).
+        /// </summary>
+        /// <param name="model"></param>
+        void SetModel(object model);
+
         /// <summary>
         /// Executes the compiled template.
         /// </summary>
@@ -23,7 +43,7 @@
         /// </summary>
         /// <param name="context">The current execution context.</param>
         /// <returns>The merged result of the template.</returns>
-        string Run(ExecuteContext context);
+        void Run(ExecuteContext context, TextWriter writer);
 
         /// <summary>
         /// Writes the specified object to the result.

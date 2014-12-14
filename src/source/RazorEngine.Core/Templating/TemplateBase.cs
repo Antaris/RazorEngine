@@ -33,7 +33,12 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Gets or sets the template service.
         /// </summary>
+        public IInternalTemplateService InternalTemplateService { internal get; set; }
+
+        [Obsolete("Only provided for backwards compatibility, use CachedTemplateService instead.")]
         public ITemplateService TemplateService { get; set; }
+
+        public ICachedTemplateService CachedTemplateService { get; set; }
 
         /// <summary>
         /// Gets the viewbag that allows sharing state between layout and child templates.
@@ -47,6 +52,11 @@ namespace RazorEngine.Templating
         #endregion
 
         #region Methods
+        public virtual void SetModel(object model)
+        {
+
+        }
+
         /// <summary>
         /// Defines a section that can written out to a layout.
         /// </summary>
@@ -65,13 +75,13 @@ namespace RazorEngine.Templating
         /// <returns>The template writer helper.</returns>
         public virtual TemplateWriter Include(string cacheName, object model = null)
         {
-            var instance = TemplateService.Resolve(cacheName, model);
+            var instance = InternalTemplateService.Resolve(cacheName, model, ResolveType.Include);
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
 
             return new TemplateWriter(tw =>
-                tw.Write(instance.Run(
-                    TemplateService.CreateExecuteContext(ViewBag))));
+                instance.Run(
+                    InternalTemplateService.CreateExecuteContext(ViewBag), tw));
         }
 
         /// <summary>
@@ -109,7 +119,19 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected virtual ITemplate ResolveLayout(string name)
         {
-            return TemplateService.Resolve(name, null);
+            return InternalTemplateService.Resolve(name, null, ResolveType.Layout);
+        }
+
+        private static void StreamToTextWriter(MemoryStream memory, TextWriter writer)
+        {
+            memory.Position = 0;
+            using (var r = new StreamReader(memory))
+            {
+                while (!r.EndOfStream)
+                {
+                    writer.Write(r.ReadToEnd());
+                }
+            }
         }
 
         /// <summary>
@@ -117,37 +139,45 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="context">The current execution context.</param>
         /// <returns>The merged result of the template.</returns>
-        string ITemplate.Run(ExecuteContext context)
+        void ITemplate.Run(ExecuteContext context, TextWriter reader)
         {
             _context = context;
 
-            var builder = new StringBuilder();
-            using (var writer = new StringWriter(builder))
+            using (var memory = new MemoryStream())
             {
-                _context.CurrentWriter = writer;
-                Execute();
-                _context.CurrentWriter = null;
-            }
-
-            if (Layout != null)
-            {
-                // Get the layout template.
-                var layout = ResolveLayout(Layout);
-
-                if (layout == null)
+                using (var writer = new StreamWriter(memory))
                 {
-                    throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
+                    _context.CurrentWriter = writer;
+                    Execute();
+                    writer.Flush();
+                    _context.CurrentWriter = null;
+
+
+                    if (Layout != null)
+                    {
+                        // Get the layout template.
+                        var layout = ResolveLayout(Layout);
+
+                        if (layout == null)
+                        {
+                            throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
+                        }
+
+                        // Push the current body instance onto the stack for later execution.
+                        var body = new TemplateWriter(tw =>
+                        {
+                            StreamToTextWriter(memory, tw);
+                        });
+                        context.PushBody(body);
+                        context.PushSections();
+
+                        layout.Run(context, reader);
+                        return;
+                    }
+
+                    StreamToTextWriter(memory, reader);
                 }
-
-                // Push the current body instance onto the stack for later execution.
-                var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
-                context.PushBody(body);
-                context.PushSections();
-
-                return layout.Run(context);
             }
-
-            return builder.ToString();
         }
 
         /// <summary>
@@ -340,7 +370,7 @@ namespace RazorEngine.Templating
             }
             else
             {
-                encodedString = TemplateService.EncodedStringFactory.CreateEncodedString(value);
+                encodedString = InternalTemplateService.EncodedStringFactory.CreateEncodedString(value);
                 writer.Write(encodedString);
             }
         }

@@ -5,6 +5,7 @@
     /// <summary>
     /// Defines a cached template item.
     /// </summary>
+    [Obsolete("This class is no longer used.")]
     internal class CachedTemplateItem
     {
         #region Constructor

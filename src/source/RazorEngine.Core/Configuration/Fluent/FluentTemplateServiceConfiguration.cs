@@ -74,6 +74,14 @@
         }
 
         /// <summary>
+        /// Gets the caching provider.
+        /// </summary>
+        public ICachingProvider CachingProvider
+        {
+            get { return _innerConfig.CachingProvider; }
+        }
+
+        /// <summary>
         /// Gets or sets the compiler service factory.
         /// </summary>
         public ICompilerServiceFactory CompilerServiceFactory
@@ -116,9 +124,18 @@
         /// <summary>
         /// Gets the resolver.
         /// </summary>
+        [Obsolete("Please use the TemplateManager property instead")]
         public ITemplateResolver Resolver
         {
             get { return _innerConfig.Resolver; }
+        }
+
+        /// <summary>
+        /// Gets the template manager.
+        /// </summary>
+        public ITemplateManager TemplateManager
+        {
+            get { return _innerConfig.TemplateManager; }
         }
         #endregion
     }

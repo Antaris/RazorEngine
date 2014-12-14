@@ -78,7 +78,7 @@
         /// Issue 163: https://github.com/Antaris/RazorEngine/issues/163
         /// </summary>
         [Test]
-        public void Issue163_SectionRedefenition()
+        public void Issue163_SectionRedefinition()
         {
             TemplateServiceTestFixture.RunTestHelper(service =>
             {

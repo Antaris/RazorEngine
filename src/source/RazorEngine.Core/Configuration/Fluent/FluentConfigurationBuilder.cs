@@ -175,9 +175,21 @@
         /// </summary>
         /// <typeparam name="TResolver">The resolve type.</typeparam>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("Please use the ManageUsing method instead.")]
         public IConfigurationBuilder ResolveUsing<TResolver>() where TResolver : ITemplateResolver, new()
         {
             _config.Resolver = new TResolver();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resolve used to locate unknown templates.
+        /// </summary>
+        /// <typeparam name="TResolver">The resolve type.</typeparam>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder ManageUsing<TResolver>() where TResolver : ITemplateManager, new()
+        {
+            _config.TemplateManager = new TResolver();
             return this;
         }
 
@@ -186,11 +198,25 @@
         /// </summary>
         /// <param name="resolver">The resolver instance to use.</param>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("Please use the ManageUsing method instead.")]
         public IConfigurationBuilder ResolveUsing(ITemplateResolver resolver)
         {
             Contract.Requires(resolver != null);
 
             _config.Resolver = resolver;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resolver used to locate unknown templates.
+        /// </summary>
+        /// <param name="resolver">The resolver instance to use.</param>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder ManageUsing(ITemplateManager resolver)
+        {
+            Contract.Requires(resolver != null);
+
+            _config.TemplateManager = resolver;
             return this;
         }
 
@@ -203,7 +229,7 @@
         {
             Contract.Requires(resolver != null);
 
-            _config.Resolver = new DelegateTemplateResolver(resolver);
+            _config.TemplateManager = new DelegateTemplateManager(resolver);
             return this;
         }
 

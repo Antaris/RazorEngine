@@ -41,6 +41,11 @@
         IAssemblyReferenceResolver ReferenceResolver { get; }
 
         /// <summary>
+        /// Gets the caching provider.
+        /// </summary>
+        ICachingProvider CachingProvider { get; }
+
+        /// <summary>
         /// Gets the compiler service factory.
         /// </summary>
         ICompilerServiceFactory CompilerServiceFactory { get; }
@@ -68,7 +73,13 @@
         /// <summary>
         /// Gets the template resolver.
         /// </summary>
+        [Obsolete("Please use the TemplateManager property instead")]
         ITemplateResolver Resolver { get; }
+        
+        /// <summary>
+        /// Gets the template resolver.
+        /// </summary>
+        ITemplateManager TemplateManager { get; }
         #endregion
 
     }
