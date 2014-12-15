@@ -219,16 +219,31 @@ Target "Release" (fun _ ->
 "Clean_single" 
   ==> "CleanAll_single"
 
-// Dependencies
-"Clean" 
+"Clean"
   ==> "RestorePackages"
   ==> "SetVersions" 
+
+"SetVersions"
   ==> "BuildApp_40"
+"SetVersions"
+  ==> "BuildApp_45"
+
+"BuildApp_40"
   ==> "BuildTest_40"
   ==> "Test_40"
-  ==> "BuildApp_45"
+  
+"BuildApp_45"
   ==> "BuildTest_45"
   ==> "Test_45"
+  
+"Test_40"
+  ==> "All"
+"Test_45"
+  ==> "All"
+
+
+// Dependencies
+"Clean" 
   ==> "CopyToRelease"
   ==> "LocalDoc"
   ==> "All"
