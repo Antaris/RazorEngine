@@ -39,6 +39,38 @@
                 Assert.AreEqual(expected_2, result_2);
             }
         }
+        
+#if NET45
+        /// <summary>
+        /// Parser fails on layout sections if closing brace is not on a new line.
+        /// This is a bug on Microsoft.Asp.Razor 2.0.30506.0.
+        ///  
+        /// Issue 93: https://github.com/Antaris/RazorEngine/issues/93
+        /// </summary>
+        [Test]
+        public void Issue93_SectionParsing()
+        {
+            using (var service = new TemplateService())
+            {
+                string parent = @"@RenderSection(""MySection"", false)";
+                string section_test_1 = "@{ Layout = \"ParentLayout\"; }@section MySection { My section content }";
+                string section_test_2 = "@{ Layout = \"ParentLayout\"; }@section MySection {\nMy section content\n}";
+                string section_test_3 = "@{ Layout = \"ParentLayout\"; }@section MySection {\nMy section content\na}";
+                string expected_1 = " My section content ";
+                string expected_2 = "\nMy section content\n";
+                string expected_3 = "\nMy section content\na";
+                service.Compile(parent, null, "ParentLayout");
+                
+                var result_1 = service.Parse(section_test_1, null, null, null);
+                var result_2 = service.Parse(section_test_2, null, null, null);
+                var result_3 = service.Parse(section_test_3, null, null, null);
+
+                Assert.AreEqual(expected_1, result_1);
+                Assert.AreEqual(expected_2, result_2);
+                Assert.AreEqual(expected_3, result_3);
+            }
+        }
+#endif
 
         /// <summary>
         /// Using nested sections doesn't work.
@@ -72,10 +104,9 @@
             });
         }
 
-        /*
+        /* It doesn't seem like anyone actually needs this.
         /// <summary>
         /// Using RenderBody multiply times doesn't work.
-        /// Note it doesn't seem like anyone actually needs this.
         /// </summary>
         [Test]
         [Ignore]
@@ -94,5 +125,33 @@
             });
         }
          */
+
+        /* This is a bug on Microsoft.Asp.Razor which only happens when we have an empty script tag
+         * TODO: Uncomment when fixed
+        /// <summary>
+        /// RenderSection is failing when there's HTML in the section.
+        /// 
+        /// Issue 193: https://github.com/Antaris/RazorEngine/issues/193
+        /// </summary>
+        [Test]
+        public void Issue193_SectionParsing()
+        {
+            using (var service = new TemplateService())
+            {
+                service.Compile("@RenderBody() @RenderSection(\"Scripts\")", null, "layout-working");
+                service.Compile("@{ Layout = \"layout-working\"; } body @section Scripts {" +
+                    "a script" +
+                    "}", null, "page-working");
+                var workingresult = service.Run("page-working", null, null);
+
+                service.Compile("@RenderBody() @RenderSection(\"Scripts\")", null, "layout");
+                service.Compile("@{ Layout = \"layout\"; } body @section Scripts {" +
+                    "<script/>" +
+                    "}", null, "page");
+                var result = service.Run("page", null, null);
+            }
+        }
+        */
+
     }
 }
