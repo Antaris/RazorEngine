@@ -90,6 +90,7 @@
     <Compile Include="Issues\Release_3_6_TestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorEngineHostTestFixture.cs" />
+    <Compile Include="RazorEngineServiceTestFixture.cs" />
     <Compile Include="TemplateBaseTestFixture.cs" />
     <Compile Include="TemplateServiceTestFixture.cs" />
     <Compile Include="TestTypes\Activation\ITextFormatter.cs" />

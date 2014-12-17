@@ -116,7 +116,7 @@
                     sourceCode = builder.ToString();
                 }
             }
-
+            
             var results = _codeDomProvider.CompileAssemblyFromDom(@params, compileUnit);
             if (Debug)
             {
@@ -150,7 +150,7 @@
         /// <param name="context">The type context which defines the type to compile.</param>
         /// <returns>The compiled type.</returns>
         [Pure, SecurityCritical]
-        public override Tuple<Type, Assembly> CompileType(TypeContext context)
+        public override Tuple<Type, CompilationData> CompileType(TypeContext context)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -158,15 +158,19 @@
             var result = Compile(context);
             var compileResult = result.Item1;
 
+            CompilationData tmpDir = new CompilationData(result.Item2, null);
+            if (compileResult.TempFiles != null)
+            {
+                tmpDir = new CompilationData(result.Item2, compileResult.TempFiles.TempDir);
+            }
             if (compileResult.Errors != null && compileResult.Errors.HasErrors)
             {
-                var tmpDir = compileResult.TempFiles.TempDir;
-                throw new TemplateCompilationException(compileResult.Errors, result.Item2, context.TemplateContent);
+                throw new TemplateCompilationException(compileResult.Errors, tmpDir, context.TemplateContent);
             }
 
             return Tuple.Create(
                 compileResult.CompiledAssembly.GetType("CompiledRazorTemplates.Dynamic." + context.ClassName),
-                compileResult.CompiledAssembly);
+                tmpDir);
         }
 
         /// <summary>

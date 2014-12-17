@@ -44,7 +44,7 @@ namespace RazorEngine.Configuration.Xml
                 return result;
             }
             var templateString = _resolver.Resolve(key.Name);
-            return new TemplateSource(templateString);
+            return new LoadedTemplateSource(templateString);
         }
 
         public void AddDynamic(ITemplateKey key, ITemplateSource source)

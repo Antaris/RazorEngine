@@ -1,5 +1,6 @@
 ﻿namespace RazorEngine.Templating
 {
+    using RazorEngine.Compilation;
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
@@ -14,6 +15,12 @@
     [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), Serializable]
     public class TemplateCompilationException : Exception
     {
+        internal static string Separate(string rawLines)
+        {
+            const string seperator = "\n------------- START -----------\n{0}\n------------- END -----------\n";
+            return string.Format(seperator, rawLines);
+        }
+
         /// <summary>
         /// Gets a exact error message of the given error collection
         /// </summary>
@@ -21,10 +28,46 @@
         /// <param name="sourceCode"></param>
         /// <param name="template"></param>
         /// <returns></returns>
-        internal static string GetMessage(CompilerErrorCollection errors, string sourceCode, string template) {
+        internal static string GetMessage(CompilerErrorCollection errors, CompilationData files, ITemplateSource template)
+        {
             var errorMsgs = string.Join("\n\t", errors.Cast<CompilerError>().Select(error => string.Format(" - {0}: ({1}, {2}) {3}", error.IsWarning ? "warning" : "error", error.Line, error.Column, error.ErrorText)));
-            return 
-                string.Format("Unable to compile template. You can find the generated source code in {0}. \n\t{1}", sourceCode, errorMsgs);
+
+            const string rawTemplateFileMsg = "The template-file we tried to compile is: {0}\n";
+            const string rawTemplate = "The template we tried to compile is: {0}\n";
+            const string rawTmpFiles = "Temporary files of the compilation can be found in (please delete the folder): {0}\n";
+            const string rawSourceCode = "The generated source code is: {0}\n";
+
+            string templateFileMsg;
+            if (string.IsNullOrEmpty(template.TemplateFile)) {
+                templateFileMsg = string.Format(rawTemplate, Separate(template.Template ?? string.Empty));
+	        } else{
+                templateFileMsg = string.Format(rawTemplateFileMsg, template.TemplateFile ?? string.Empty);
+            }
+            string tempFilesMsg = string.Empty;
+            if (files.TmpFolder != null)
+            {
+                tempFilesMsg = string.Format(rawTmpFiles, files.TmpFolder);
+            }
+
+            string sourceCodeMessage = string.Empty;
+            if (files.SourceCode != null)
+            {
+                sourceCodeMessage = string.Format(rawSourceCode, Separate(files.SourceCode));
+            }
+
+            var rawMessage = @"Errors while compiling a Template.
+Please try the following to solve the situation:
+  * If the problem is about missing references either try to load the missing references manually (in the current appdomain) or
+    Specify your references manually by providing your own IAssemblyReferenceResolver implementation.
+    Currently all references have to be available as files!
+  * If you get 'class' does not contain a definition for 'member': 
+        try another modelType (for example 'typeof(DynamicObject)' to make the model dynamic).
+    NOTE: You CANNOT use the generic overloads with the <dynamic> type parameter for this.
+    Or try to use static instead of anonymous types.
+More details about the error:
+{0}
+{1}{2}{3}";
+            return string.Format(rawMessage, errorMsgs, tempFilesMsg, templateFileMsg, sourceCodeMessage);
         }
 
         #region Constructors
@@ -34,13 +77,13 @@
         /// <param name="errors">The set of compiler errors.</param>
         /// <param name="sourceCode">The source code that wasn't compiled.</param>
         /// <param name="template">The source template that wasn't compiled.</param>
-        internal TemplateCompilationException(CompilerErrorCollection errors, string sourceCode, string template)
-            : base(TemplateCompilationException.GetMessage(errors, sourceCode, template))
+        internal TemplateCompilationException(CompilerErrorCollection errors, CompilationData files, ITemplateSource template)
+            : base(TemplateCompilationException.GetMessage(errors, files, template))
         {
             var list = errors.Cast<CompilerError>().ToList();
             Errors = new ReadOnlyCollection<CompilerError>(list);
-            SourceCode = sourceCode;
-            Template = template;
+            CompilationData = files;
+            Template = template.Template;
         }
 
         /// <summary>
@@ -61,8 +104,17 @@
             }
 
             Errors = new ReadOnlyCollection<CompilerError>(list);
-
-            SourceCode = info.GetString("SourceCode");
+            var sourceCode = info.GetString("SourceCode");
+            if (string.IsNullOrEmpty(sourceCode))
+            {
+                sourceCode = null;
+            }
+            var tmpFolder = info.GetString("TmpFolder");
+            if (string.IsNullOrEmpty(tmpFolder))
+            {
+                tmpFolder = null;
+            }
+            CompilationData = new CompilationData(sourceCode, tmpFolder);
             Template = info.GetString("Template");
         }
         #endregion
@@ -74,9 +126,20 @@
         public ReadOnlyCollection<CompilerError> Errors { get; private set; }
 
         /// <summary>
-        /// Gets the source code that wasn't compiled.
+        /// Gets some copilation specific (temporary) data.
         /// </summary>
-        public string SourceCode { get; private set; }
+        public CompilationData CompilationData { get; private set; }
+
+        /// <summary>
+        /// Gets the generated source code.
+        /// </summary>
+        public string SourceCode 
+        { 
+            get
+            {
+                return CompilationData.SourceCode;
+            }
+        }
 
         /// <summary>
         /// Gets the source template that wasn't compiled.
@@ -99,7 +162,8 @@
             for (int i = 0; i < Errors.Count; i++)
                 info.AddValue("Errors[" + i + "]", Errors[i]);
 
-            info.AddValue("SourceCode", SourceCode ?? string.Empty);
+            info.AddValue("SourceCode", CompilationData.SourceCode ?? string.Empty);
+            info.AddValue("TmpFolder", CompilationData.TmpFolder ?? string.Empty);
             info.AddValue("Template", Template ?? string.Empty);
         }
         #endregion

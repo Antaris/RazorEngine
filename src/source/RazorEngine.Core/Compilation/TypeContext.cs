@@ -1,5 +1,6 @@
 ﻿namespace RazorEngine.Compilation
 {
+    using RazorEngine.Templating;
     using System;
     using System.Collections.Generic;
 
@@ -38,7 +39,7 @@
         /// <summary>
         /// Gets or sets the template content.
         /// </summary>
-        public string TemplateContent { get; set; }
+        public ITemplateSource TemplateContent { get; set; }
 
         /// <summary>
         /// Gets or sets the base template type.

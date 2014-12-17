@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RazorEngine.Compilation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,18 +8,24 @@ using System.Threading.Tasks;
 
 namespace RazorEngine.Templating
 {
-    class CompiledTemplate : ICompiledTemplate
+    internal class CompiledTemplate : ICompiledTemplate
     {
+        private readonly CompilationData _tempFiles;
         private readonly ITemplateSource _source;
         private readonly ITemplateKey _key;
         private readonly Type _templateType;
         private readonly Type _modelType;
-        public CompiledTemplate(ITemplateKey key, ITemplateSource source, Type templateType, Type modelType)
+        public CompiledTemplate(CompilationData tempFiles, ITemplateKey key, ITemplateSource source, Type templateType, Type modelType)
         {
+            _tempFiles = tempFiles;
             _key = key;
             _source = source;
             _templateType = templateType;
             _modelType = modelType;
+        }
+        public CompilationData CompilationData
+        {
+            get { return _tempFiles; }
         }
 
         public ITemplateKey Key

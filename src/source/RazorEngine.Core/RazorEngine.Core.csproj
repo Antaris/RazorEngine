@@ -127,6 +127,7 @@
     <Compile Include="Compilation\RazorEngineHost.cs" />
     <Compile Include="Compilation\Resolver\IAssemblyResolver.cs" />
     <Compile Include="Compilation\Resolver\UseCurrentAssembliesReferenceResolver.cs" />
+    <Compile Include="Compilation\CompilationData.cs" />
     <Compile Include="Compilation\TypeContext.cs" />
     <Compile Include="Compilation\VisualBasic\VBCodeParser.cs" />
     <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />

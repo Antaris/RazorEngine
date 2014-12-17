@@ -86,7 +86,7 @@ namespace RazorEngine.Templating
                 name = "dynamic_" + Guid.NewGuid().ToString();
             }
             var key = _service.GetKey(name);
-            var source = new TemplateSource(template);
+            var source = new LoadedTemplateSource(template);
             _service.Configuration.TemplateManager.AddDynamic(key, source);
             return key;
         }
@@ -150,7 +150,7 @@ namespace RazorEngine.Templating
             else
             {
                 var source = _service.Core.Resolve(key);
-                compiledTemplate = new CompiledTemplate(key, source, templateType, modelType);
+                compiledTemplate = new CompiledTemplate(new CompilationData(null, null), key, source, templateType, modelType);
 	        }
             return _service.Core.CreateTemplate(compiledTemplate, model);
         }
@@ -256,7 +256,9 @@ namespace RazorEngine.Templating
         [Pure]
         public virtual Type CreateTemplateType(string razorTemplate, Type modelType)
         {
-            return _service.Core.CreateTemplateType(razorTemplate, modelType);
+            var result = _service.Core.CreateTemplateType(new LoadedTemplateSource(razorTemplate), modelType);
+            result.Item2.DeleteAll();
+            return result.Item1;
         }
 
         /// <summary>

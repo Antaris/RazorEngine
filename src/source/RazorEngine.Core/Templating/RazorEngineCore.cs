@@ -59,8 +59,8 @@ namespace RazorEngine.Templating
             Contract.Requires(key != null);
 
             var source = Resolve(key);
-            Type type = CreateTemplateType(source.Template, modelType);
-            return new CompiledTemplate(key, source, type, modelType);
+            var result = CreateTemplateType(source, modelType);
+            return new CompiledTemplate(result.Item2, key, source, result.Item1, modelType);
         }
         
         /// <summary>
@@ -104,7 +104,7 @@ namespace RazorEngine.Templating
         /// <param name="modelType">The model type or NULL if no model exists.</param>
         /// <returns>An instance of <see cref="Type"/>.</returns>
         [Pure]
-        public virtual Type CreateTemplateType(string razorTemplate, Type modelType)
+        public virtual Tuple<Type, CompilationData> CreateTemplateType(ITemplateSource razorTemplate, Type modelType)
         {
             var context = new TypeContext
             {
@@ -125,9 +125,7 @@ namespace RazorEngine.Templating
 
             var result = service.CompileType(context);
 
-            //_assemblies.Add(result.Item2);
-
-            return result.Item1;
+            return result;
         }
 
 

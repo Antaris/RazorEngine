@@ -42,7 +42,7 @@
                 return result;
             }
             var templateString = _resolver(key.Name);
-            return new TemplateSource(templateString);
+            return new LoadedTemplateSource(templateString);
         }
 
         public void AddDynamic(ITemplateKey key, ITemplateSource source)

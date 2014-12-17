@@ -36,12 +36,12 @@ namespace RazorEngine.Templating
 
         public static void AddTemplate(this IRazorEngineService service, ITemplateKey key, string templateSource)
         {
-            service.AddTemplate(key, new TemplateSource(templateSource));
+            service.AddTemplate(key, new LoadedTemplateSource(templateSource));
         }
 
         public static void AddTemplate(this IRazorEngineService service, string name, string templateSource)
         {
-            service.AddTemplate(name, new TemplateSource(templateSource));
+            service.AddTemplate(name, new LoadedTemplateSource(templateSource));
         }
 
         public static void CompileAndCache<T>(this IRazorEngineService service, ITemplateKey key)

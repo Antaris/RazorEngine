@@ -94,7 +94,7 @@
         /// </summary>
         /// <param name="context">The type context which defines the type to compile.</param>
         /// <returns>The compiled type.</returns>
-        public abstract Tuple<Type, Assembly> CompileType(TypeContext context);
+        public abstract Tuple<Type, CompilationData> CompileType(TypeContext context);
 
         /// <summary>
         /// Creates a <see cref="RazorEngineHost"/> used for class generation.
@@ -163,12 +163,12 @@
         /// <param name="modelType">The model type.</param>
         /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
         [Pure]
-        public CodeCompileUnit GetCodeCompileUnit(string className, string template, ISet<string> namespaceImports, Type templateType, Type modelType)
+        public CodeCompileUnit GetCodeCompileUnit(string className, ITemplateSource template, ISet<string> namespaceImports, Type templateType, Type modelType)
         {
             if (string.IsNullOrEmpty(className))
                 throw new ArgumentException("Class name is required.");
 
-            if (string.IsNullOrEmpty(template))
+            if (template == null)
                 throw new ArgumentException("Template is required.");
 
             namespaceImports = namespaceImports ?? new HashSet<string>();
@@ -204,22 +204,29 @@
         /// <param name="host">The razor engine host.</param>
         /// <param name="template">The template.</param>
         /// <returns>The generator result.</returns>
-        private GeneratorResults GetGeneratorResult(RazorEngineHost host, string template)
+        private GeneratorResults GetGeneratorResult(RazorEngineHost host, ITemplateSource template)
         {
             var engine = new RazorTemplateEngine(host);
             GeneratorResults result;
-            using (var reader = new StringReader(template))
-                result = engine.GenerateCode(reader);
+            using (var reader = template.GetTemplateReader())
+                result = engine.GenerateCode(reader, null, null, template.TemplateFile);
 
-            // Allow to step into the template code by removing the "#line hidden" pragmas
-            foreach(CodeNamespace @namespace in result.GeneratedCode.Namespaces.Cast<CodeNamespace>().ToList()) {
-                foreach (CodeTypeDeclaration @type in @namespace.Types.Cast<CodeTypeDeclaration>().ToList()) {
-                    foreach (CodeTypeMember member in @type.Members.Cast<CodeTypeMember>().ToList()) {
-                        var snippet = member as CodeSnippetTypeMember;
-                        if (snippet != null && snippet.Text == "#line hidden") {
-                            @type.Members.Remove(snippet);
+            if (template.TemplateFile == null)
+            {
+                // Allow to step into the template code by removing the "#line hidden" pragmas
+                foreach (CodeNamespace @namespace in result.GeneratedCode.Namespaces.Cast<CodeNamespace>().ToList())
+                {
+                    foreach (CodeTypeDeclaration @type in @namespace.Types.Cast<CodeTypeDeclaration>().ToList())
+                    {
+                        foreach (CodeTypeMember member in @type.Members.Cast<CodeTypeMember>().ToList())
+                        {
+                            var snippet = member as CodeSnippetTypeMember;
+                            if (snippet != null && snippet.Text == "#line hidden")
+                            {
+                                @type.Members.Remove(snippet);
+                            }
                         }
-	                } 
+                    }
                 }
             }
             return result;

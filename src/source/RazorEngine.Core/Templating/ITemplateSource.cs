@@ -9,8 +9,14 @@ namespace RazorEngine.Templating
 {
     public interface ITemplateSource
     {
+        /// <summary>
+        /// When not null this file is used for debugging the template.
+        /// </summary>
+        string TemplateFile { get; }
 
         string Template { get; }
-        Stream TemplateStream { get; }
+
+
+        TextReader GetTemplateReader();
     }
 }

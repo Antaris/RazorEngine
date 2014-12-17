@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RazorEngine.Compilation;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace RazorEngine.Templating
 
         ITemplateSource Template { get; }
 
+        CompilationData CompilationData { get; }
 
         Type TemplateType { get; }
 
