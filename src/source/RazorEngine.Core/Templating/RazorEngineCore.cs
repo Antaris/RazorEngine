@@ -14,15 +14,15 @@ namespace RazorEngine.Templating
     using Configuration;
     using Parallel;
     using Text;
-    internal class TemplateServiceCore : ITemplateServiceCore
+    internal class RazorEngineCore : MarshalByRefObject, IRazorEngineCore
     {
         private readonly ITemplateServiceConfiguration _config;
         /// <summary>
         /// We need this for creating the templates.
         /// </summary>
-        private readonly CachedTemplateService _cached;
+        private readonly RazorEngineService _cached;
 
-        internal TemplateServiceCore(ITemplateServiceConfiguration config, CachedTemplateService cached)
+        internal RazorEngineCore(ITemplateServiceConfiguration config, RazorEngineService cached)
         {
             Contract.Requires(config != null);
             Contract.Requires(config.TemplateManager != null);
@@ -51,16 +51,16 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Compiles the specified template.
         /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
+        /// <param name="key">The string template.</param>
         /// <param name="modelType">The model type.</param>
         /// <param name="cacheName">The name of the template type in the cache.</param>
-        public ICompiledTemplate Compile(ITemplateKey razorTemplate, Type modelType)
+        public ICompiledTemplate Compile(ITemplateKey key, Type modelType)
         {
-            Contract.Requires(razorTemplate != null);
+            Contract.Requires(key != null);
 
-            var source = Resolve(razorTemplate);
+            var source = Resolve(key);
             Type type = CreateTemplateType(source.Template, modelType);
-            return new CompiledTemplate(source, type, modelType);
+            return new CompiledTemplate(key, source, type, modelType);
         }
         
         /// <summary>
@@ -81,9 +81,9 @@ namespace RazorEngine.Templating
         {
             var context = CreateInstanceContext(template.TemplateType);
             ITemplate instance = _config.Activator.CreateInstance(context);
-            instance.InternalTemplateService = new InternalTemplateService(this, template);
+            instance.InternalTemplateService = new InternalTemplateService(this, template.Key);
             instance.TemplateService = new TemplateService(_cached);
-            instance.CachedTemplateService = _cached;
+            instance.RazorEngine = _cached;
             if (model != null)
             {
                 instance.SetModel(model);
@@ -157,12 +157,12 @@ namespace RazorEngine.Templating
             return new InstanceContext(_config.CachingProvider.TypeLoader, templateType);
         }
 
-        public ITemplateKey GetKey(string cacheName, ResolveType resolveType = ResolveType.Global, ICompiledTemplate context = null)
+        public ITemplateKey GetKey(string cacheName, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null)
         {
             return _config.TemplateManager.GetKey(cacheName, resolveType, context);
         }
 
-        internal virtual ITemplate ResolveInternal(string cacheName, object model, ResolveType resolveType, ICompiledTemplate context)
+        internal virtual ITemplate ResolveInternal(string cacheName, object model, ResolveType resolveType, ITemplateKey context)
         {
             var templateKey = GetKey(cacheName, resolveType, context);
             var compiledTemplate = Compile(templateKey, GetTypeFromModelObject(model));

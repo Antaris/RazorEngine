@@ -9,7 +9,7 @@
     /// <summary>
     /// Defines the required contract for implementing a template service.
     /// </summary>
-    [Obsolete("Please use ICachedTemplateService or ITemplateServiceCore")]
+    [Obsolete("Please use IRazorEngineService instead.")]
     public interface ITemplateService : IDisposable
     {
         #region Properties

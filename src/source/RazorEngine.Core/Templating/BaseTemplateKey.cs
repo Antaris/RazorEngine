@@ -9,9 +9,9 @@ namespace RazorEngine.Templating
     {
         readonly string _name;
         readonly ResolveType _resolveType;
-        readonly ICompiledTemplate _context;
+        readonly ITemplateKey _context;
 
-        public BaseTemplateKey(string name, ResolveType resolveType, ICompiledTemplate context)
+        public BaseTemplateKey(string name, ResolveType resolveType, ITemplateKey context)
         {
             _name = name;
             _resolveType = resolveType;
@@ -26,7 +26,7 @@ namespace RazorEngine.Templating
         {
             get { return _resolveType; }
         }
-        public ICompiledTemplate Context
+        public ITemplateKey Context
         {
             get { return _context; }
         }

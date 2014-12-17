@@ -9,7 +9,7 @@ namespace RazorEngine.Templating
 {
     public interface ITemplateSource
     {
-        string TemplateName { get; }
+
         string Template { get; }
         Stream TemplateStream { get; }
     }

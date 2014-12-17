@@ -9,15 +9,23 @@ namespace RazorEngine.Templating
 {
     class CompiledTemplate : ICompiledTemplate
     {
-        readonly ITemplateSource _source;
-        readonly Type _templateType;
-        readonly Type _modelType;
-        public CompiledTemplate(ITemplateSource source, Type templateType, Type modelType)
+        private readonly ITemplateSource _source;
+        private readonly ITemplateKey _key;
+        private readonly Type _templateType;
+        private readonly Type _modelType;
+        public CompiledTemplate(ITemplateKey key, ITemplateSource source, Type templateType, Type modelType)
         {
+            _key = key;
             _source = source;
             _templateType = templateType;
             _modelType = modelType;
         }
+
+        public ITemplateKey Key
+        {
+            get { return _key; }
+        }
+
         public ITemplateSource Template
         {
             get { return _source; }

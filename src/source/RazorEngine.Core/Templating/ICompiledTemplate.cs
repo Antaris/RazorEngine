@@ -11,6 +11,8 @@ namespace RazorEngine.Templating
 
     public interface ICompiledTemplate
     {
+        ITemplateKey Key { get; }
+
         ITemplateSource Template { get; }
 
 

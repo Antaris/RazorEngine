@@ -1,32 +1,24 @@
-﻿namespace RazorEngine.Templating
+﻿using RazorEngine.Configuration;
+using System;
+using System.IO;
+namespace RazorEngine.Templating
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Configuration;
-    using Text;
-    using System.IO;
-
-
-    /// <summary>
-    /// Defines the required contract for implementing a template service.
-    /// </summary>
-    public interface ICachedTemplateService : IDisposable
+    internal interface IRazorEngineCore
     {
         /// <summary>
-        /// Gets the core service.
+        /// Gets the template service configuration.
         /// </summary>
-        ITemplateServiceCore Core { get; }
-        
+        ITemplateServiceConfiguration Configuration { get; }
+
+        ITemplateKey GetKey(string name, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null);
+
         /// <summary>
         /// Compiles the specified template.
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="modelType">The model type.</param>
         /// <param name="cacheName">The name of the template type in the cache.</param>
-        ICompiledTemplate CompileAndCache(ITemplateKey key, Type modelType);
-
-        void RunCompileOnDemand(ITemplateKey key, Type modelType, TextWriter writer, object model, DynamicViewBag viewBag);
+        ICompiledTemplate Compile(ITemplateKey key, Type modelType);
 
         /// <summary>
         /// Creates an instance of <see cref="ITemplate{T}"/> from the specified string template.
@@ -41,7 +33,6 @@
         /// </param>
         /// <param name="model">The model instance or NULL if no model exists.</param>
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
-        void RunCachedTemplate(ITemplateKey key, Type modelType, TextWriter writer, object model, DynamicViewBag viewBag);
+        void RunTemplate(ICompiledTemplate template, TextWriter writer, object model, DynamicViewBag viewBag);
     }
-
 }

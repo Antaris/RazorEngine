@@ -42,7 +42,7 @@
                 return result;
             }
             var templateString = _resolver(key.Name);
-            return new TemplateSource(templateString, key.Name);
+            return new TemplateSource(templateString);
         }
 
         public void AddDynamic(ITemplateKey key, ITemplateSource source)
@@ -51,13 +51,13 @@
             {
                 if (oldSource.Template != source.Template)
                 {
-                    throw new InvalidOperationException("The same key was used for another template!");
+                    throw new InvalidOperationException("The same key was already used for another template!");
                 }
                 return source;
             });
         }
 
-        public ITemplateKey GetKey(string name, ResolveType templateType, ICompiledTemplate context)
+        public ITemplateKey GetKey(string name, ResolveType templateType, ITemplateKey context)
         {
             return new NameOnlyTemplateKey(name, templateType, context);
         }

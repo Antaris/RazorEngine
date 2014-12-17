@@ -10,6 +10,7 @@
     /// <summary>
     /// Provides quick access to template functions.
     /// </summary>
+    [Obsolete("Please use the RazorService class instead.")]
     public static class Razor
     {
         #region Fields

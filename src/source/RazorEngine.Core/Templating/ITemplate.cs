@@ -22,7 +22,7 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Sets the cached template service.
         /// </summary>
-        ICachedTemplateService CachedTemplateService { set; }
+        IRazorEngineService RazorEngine { set; }
 
         #endregion
 

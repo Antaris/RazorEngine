@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace RazorEngine.Templating
 {
-    internal class TemplateServiceCoreWithCache : TemplateServiceCore
+    internal class RazorEngineCoreWithCache : RazorEngineCore
     {
-        internal TemplateServiceCoreWithCache(ITemplateServiceConfiguration config, CachedTemplateService cached)
+        internal RazorEngineCoreWithCache(ITemplateServiceConfiguration config, RazorEngineService cached)
             : base(config, cached)
         {
         }
 
-        internal override ITemplate ResolveInternal(string cacheName, object model, ResolveType resolveType, ICompiledTemplate context)
+        internal override ITemplate ResolveInternal(string cacheName, object model, ResolveType resolveType, ITemplateKey context)
         {
             var templateKey = GetKey(cacheName, resolveType, context);
             ICompiledTemplate compiledTemplate;

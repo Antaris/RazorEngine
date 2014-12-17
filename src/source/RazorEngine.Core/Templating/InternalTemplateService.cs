@@ -11,9 +11,9 @@ namespace RazorEngine.Templating
 {
     internal class InternalTemplateService : IInternalTemplateService
     {
-        private readonly TemplateServiceCore _service;
-        private readonly ICompiledTemplate _template;
-        public InternalTemplateService(TemplateServiceCore service, ICompiledTemplate template)
+        private readonly RazorEngineCore _service;
+        private readonly ITemplateKey _template;
+        public InternalTemplateService(RazorEngineCore service, ITemplateKey template)
         {
             Contract.Requires(service != null);
             Contract.Requires(template != null);

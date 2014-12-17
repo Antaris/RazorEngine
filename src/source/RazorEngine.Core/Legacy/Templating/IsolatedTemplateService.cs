@@ -13,6 +13,7 @@
     /// <summary>
     /// Provides template parsing and compilation in an isolated application domain.
     /// </summary>
+    [Obsolete("Please use the IsolatedRazorEngine class instead.")]
     public class IsolatedTemplateService : ITemplateService
     {
         #region Fields

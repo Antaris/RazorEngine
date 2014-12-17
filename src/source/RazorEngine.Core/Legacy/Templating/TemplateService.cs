@@ -18,11 +18,11 @@ namespace RazorEngine.Templating
     /// <summary>
     /// Defines a template service.
     /// </summary>
-    [Obsolete("Use CachedTemplateService instead")]
+    [Obsolete("Use RazorEngineService instead")]
     public class TemplateService : MarshalByRefObject, ITemplateService
     {
         #region Fields
-        private readonly CachedTemplateService _service;
+        private readonly RazorEngineService _service;
         private bool disposed;
         #endregion
 
@@ -34,10 +34,10 @@ namespace RazorEngine.Templating
         public TemplateService(ITemplateServiceConfiguration config)
         {
             Contract.Requires(config != null);
-            _service = (CachedTemplateService)CachedTemplateService.Create(config);
+            _service = (RazorEngineService)RazorEngineService.Create(config);
         }
 
-        internal TemplateService(CachedTemplateService service)
+        internal TemplateService(RazorEngineService service)
         {
             Contract.Requires(service != null);
             _service = service;
@@ -62,12 +62,12 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Gets the template service configuration.
         /// </summary>
-        public ITemplateServiceConfiguration Configuration { get { return _service.Core.Configuration; } }
+        public ITemplateServiceConfiguration Configuration { get { return _service.Configuration; } }
 
         /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
-        public IEncodedStringFactory EncodedStringFactory { get { return _service.Core.Configuration.EncodedStringFactory; } }
+        public IEncodedStringFactory EncodedStringFactory { get { return _service.Configuration.EncodedStringFactory; } }
         #endregion
 
         #region Methods
@@ -85,8 +85,8 @@ namespace RazorEngine.Templating
             {
                 name = "dynamic_" + Guid.NewGuid().ToString();
             }
-            var key = _service.Core.GetKey(name);
-            var source = new TemplateSource(template, name);
+            var key = _service.GetKey(name);
+            var source = new TemplateSource(template);
             _service.Configuration.TemplateManager.AddDynamic(key, source);
             return key;
         }
@@ -111,7 +111,7 @@ namespace RazorEngine.Templating
         /// <returns>The execute context.</returns>
         public virtual ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null)
         {
-            return _service.InternalCore.CreateExecuteContext(viewBag);
+            return _service.Core.CreateExecuteContext(viewBag);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace RazorEngine.Templating
         [Pure]
         protected virtual InstanceContext CreateInstanceContext(Type templateType)
         {
-            return _service.InternalCore.CreateInstanceContext(templateType);
+            return _service.Core.CreateInstanceContext(templateType);
         }
 
         /// <summary>
@@ -145,14 +145,14 @@ namespace RazorEngine.Templating
             ICompiledTemplate compiledTemplate;
             Type modelType = (model == null) ? typeof(object) : model.GetType();
             if (templateType == null) {
-                compiledTemplate = _service.CompileAndCache(key, modelType);
+                compiledTemplate = _service.CompileAndCacheInternal(key, modelType);
             }
             else
             {
-                var source = _service.InternalCore.Resolve(key);
-                compiledTemplate = new CompiledTemplate(source, templateType, modelType);
+                var source = _service.Core.Resolve(key);
+                compiledTemplate = new CompiledTemplate(key, source, templateType, modelType);
 	        }
-            return _service.InternalCore.CreateTemplate(compiledTemplate, model);
+            return _service.Core.CreateTemplate(compiledTemplate, model);
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace RazorEngine.Templating
         [Pure]
         public virtual Type CreateTemplateType(string razorTemplate, Type modelType)
         {
-            return _service.InternalCore.CreateTemplateType(razorTemplate, modelType);
+            return _service.Core.CreateTemplateType(razorTemplate, modelType);
         }
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace RazorEngine.Templating
         {
             using(var writer = new System.IO.StringWriter())
 	        {
-                _service.RunCompileOnDemand(GetKeyAndAdd(razorTemplate, cacheName), typeof(T), writer, model, viewBag);
+                _service.RunCompileOnDemand(GetKeyAndAdd(razorTemplate, cacheName), writer, typeof(T), model, viewBag);
                 return writer.ToString();
 	        }
         }
@@ -547,7 +547,7 @@ namespace RazorEngine.Templating
         public virtual ITemplate Resolve(string cacheName, object model)
         {
             return _service.GetTemplate(
-                _service.Core.GetKey(cacheName), TemplateServiceCore.GetTypeFromModelObject(model), model);
+                _service.GetKey(cacheName), RazorEngineCore.GetTypeFromModelObject(model), model);
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace RazorEngine.Templating
                 throw new ArgumentException("'cacheName' is a required parameter.");
             using(var writer = new System.IO.StringWriter())
 	        {
-                _service.RunCachedTemplate(_service.Core.GetKey(cacheName), TemplateServiceCore.GetTypeFromModelObject(model), writer, model, viewBag);
+                _service.RunCachedTemplate(_service.GetKey(cacheName), writer, RazorEngineCore.GetTypeFromModelObject(model), model, viewBag);
                 return writer.ToString();
 	        }
         }

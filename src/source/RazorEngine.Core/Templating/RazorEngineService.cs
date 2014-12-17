@@ -13,12 +13,12 @@ namespace RazorEngine.Templating
     /// <summary>
     /// Defines a template service.
     /// </summary>
-    public class CachedTemplateService : MarshalByRefObject, ICachedTemplateService
+    public class RazorEngineService : MarshalByRefObject, IRazorEngineService
     {
         #region Fields
         private readonly ITemplateServiceConfiguration _config;
-        private readonly TemplateServiceCore _core;
-        private readonly TemplateServiceCore _core_with_cache;
+        //private readonly RazorEngineCore _core;
+        private readonly RazorEngineCore _core_with_cache;
 
         private static readonly Type _objectType = typeof(object);
 
@@ -30,40 +30,48 @@ namespace RazorEngine.Templating
         /// Initialises a new instance of <see cref="TemplateService"/>
         /// </summary>
         /// <param name="config">The template service configuration.</param>
-        internal CachedTemplateService(ITemplateServiceConfiguration config)
+        internal RazorEngineService(ITemplateServiceConfiguration config)
         {
             Contract.Requires(config != null);
 
             _config = config;
-            _core = new TemplateServiceCore(config, this);
-            _core_with_cache = new TemplateServiceCoreWithCache(config, this);
+            //_core = new RazorEngineCore(config, this);
+            _core_with_cache = new RazorEngineCoreWithCache(config, this);
         }
 
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateService"/>.
         /// </summary>
-        internal CachedTemplateService()
+        internal RazorEngineService()
             : this(new TemplateServiceConfiguration()) { }
 
-        public static ICachedTemplateService Create()
-        {
-            return Create(new TemplateServiceConfiguration());
-        }
-        public static ICachedTemplateService Create(ITemplateServiceConfiguration config)
-        {
-            return new CachedTemplateService(config);
-        }
 
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateService"/>
         /// </summary>
         /// <param name="language">The code language.</param>
         /// <param name="encoding">the encoding.</param>
-        internal CachedTemplateService(Language language, Encoding encoding)
+        internal RazorEngineService(Language language, Encoding encoding)
             : this(new TemplateServiceConfiguration() { Language = language, EncodedStringFactory = GetEncodedStringFactory(encoding) }) { }
+
+
+        public static IRazorEngineService Create()
+        {
+            return Create(new TemplateServiceConfiguration());
+        }
+        public static IRazorEngineService Create(ITemplateServiceConfiguration config)
+        {
+            return new RazorEngineService(config);
+        }
         #endregion
 
         #region Properties
+
+        internal RazorEngineCore Core
+        {
+            get { return _core_with_cache; }
+        }
+
         /// <summary>
         /// Gets the template service configuration.
         /// </summary>
@@ -115,25 +123,16 @@ namespace RazorEngine.Templating
             }
         }
 
-
-        #endregion
-
-        internal TemplateServiceCore InternalCore
-        {
-            get { return _core; }
-        }
-
-
-        public ITemplateServiceCore Core
-        {
-            get { return _core; }
-        }
-
-        public ICompiledTemplate CompileAndCache(ITemplateKey key, Type modelType)
+        internal ICompiledTemplate CompileAndCacheInternal(ITemplateKey key, Type modelType)
         {
             var compiled = _core_with_cache.Compile(key, modelType);
             _config.CachingProvider.CacheTemplate(compiled, key);
             return compiled;
+        }
+
+        public void CompileAndCache(ITemplateKey key, Type modelType = null)
+        {
+            CompileAndCacheInternal(key, modelType);
         }
 
         internal ICompiledTemplate GetCompiledTemplate(ITemplateKey key, Type modelType, bool compileOnCacheMiss)
@@ -144,7 +143,7 @@ namespace RazorEngine.Templating
             {
                 if (compileOnCacheMiss)
                 {
-                    template = CompileAndCache(key, modelType);
+                    template = CompileAndCacheInternal(key, modelType);
                 }
                 else
                 {
@@ -154,13 +153,13 @@ namespace RazorEngine.Templating
             return template;
         }
 
-        public void RunCompileOnDemand(ITemplateKey key, Type modelType, System.IO.TextWriter writer, object model, DynamicViewBag viewBag)
+        public void RunCompileOnDemand(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             var template = GetCompiledTemplate(key, modelType, true);
-            RunCachedTemplate(key, modelType, writer, model, viewBag);
+            RunCachedTemplate(key, writer, modelType, model, viewBag);
         }
 
-        public void RunCachedTemplate(ITemplateKey key, Type modelType, System.IO.TextWriter writer, object model, DynamicViewBag viewBag)
+        public void RunCachedTemplate(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             var template = GetCompiledTemplate(key, modelType, false);
             _core_with_cache.RunTemplate(template, writer, model, viewBag);
@@ -171,5 +170,17 @@ namespace RazorEngine.Templating
             var template = GetCompiledTemplate(key, modelType, true);
             return _core_with_cache.CreateTemplate(template, model);
         }
+
+
+        public ITemplateKey GetKey(string cacheName, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null)
+        {
+            return _core_with_cache.GetKey(cacheName, resolveType, context);
+        }
+
+        internal void RunTemplate(ICompiledTemplate template, System.IO.TextWriter writer, object model, DynamicViewBag viewBag)
+        {
+            _core_with_cache.RunTemplate(template, writer, model, viewBag);
+        }
+        #endregion
     }
 }

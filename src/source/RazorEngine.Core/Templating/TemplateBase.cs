@@ -38,7 +38,7 @@ namespace RazorEngine.Templating
         [Obsolete("Only provided for backwards compatibility, use CachedTemplateService instead.")]
         public ITemplateService TemplateService { get; set; }
 
-        public ICachedTemplateService CachedTemplateService { get; set; }
+        public IRazorEngineService RazorEngine { get; set; }
 
         /// <summary>
         /// Gets the viewbag that allows sharing state between layout and child templates.

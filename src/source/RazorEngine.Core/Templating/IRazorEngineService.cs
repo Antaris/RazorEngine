@@ -1,16 +1,24 @@
-﻿using RazorEngine.Configuration;
-using System;
-using System.IO;
-namespace RazorEngine.Templating
+﻿namespace RazorEngine.Templating
 {
-    public interface ITemplateServiceCore
+    using System;
+    using System.Collections.Generic;
+
+    using Configuration;
+    using Text;
+    using System.IO;
+
+
+    /// <summary>
+    /// Defines the required contract for implementing a template service.
+    /// </summary>
+    public interface IRazorEngineService : IDisposable
     {
         /// <summary>
         /// Gets the template service configuration.
         /// </summary>
         ITemplateServiceConfiguration Configuration { get; }
-        
-        ITemplateKey GetKey(string cacheName, ResolveType resolveType = ResolveType.Global, ICompiledTemplate context = null);
+
+        ITemplateKey GetKey(string name, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null);
 
         /// <summary>
         /// Compiles the specified template.
@@ -18,7 +26,10 @@ namespace RazorEngine.Templating
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="modelType">The model type.</param>
         /// <param name="cacheName">The name of the template type in the cache.</param>
-        ICompiledTemplate Compile(ITemplateKey key, Type modelType);
+        void CompileAndCache(ITemplateKey key, Type modelType = null);
+
+
+        void RunCompileOnDemand(ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null);
 
         /// <summary>
         /// Creates an instance of <see cref="ITemplate{T}"/> from the specified string template.
@@ -33,6 +44,7 @@ namespace RazorEngine.Templating
         /// </param>
         /// <param name="model">The model instance or NULL if no model exists.</param>
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
-        void RunTemplate(ICompiledTemplate template, TextWriter writer, object model, DynamicViewBag viewBag);
+        void RunCachedTemplate(ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null);
     }
+
 }

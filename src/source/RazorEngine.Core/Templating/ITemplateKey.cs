@@ -12,7 +12,7 @@ namespace RazorEngine.Templating
 
         ResolveType TemplateType { get; }
 
-        ICompiledTemplate Context { get; }
+        ITemplateKey Context { get; }
 
         string GetUniqueKeyString();
     }

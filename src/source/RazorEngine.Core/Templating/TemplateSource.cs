@@ -8,17 +8,10 @@ namespace RazorEngine.Templating
     public class TemplateSource : ITemplateSource
     {
         private readonly string _template;
-        private readonly string _templateName;
 
-        public TemplateSource(string template, string templateName)
+        public TemplateSource(string template)
         {
             this._template = template;
-            this._templateName = templateName;
-        }
-
-        public string TemplateName
-        {
-            get { return _templateName; }
         }
 
         public string Template
