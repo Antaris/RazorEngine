@@ -12,7 +12,9 @@ namespace RazorEngine.Compilation.CSharp
     /// <summary>
     /// Defines a code generator that supports C# syntax.
     /// </summary>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
+#endif
     public class CSharpRazorCodeGenerator : System.Web.Razor.Generator.CSharpRazorCodeGenerator
     {
         #region Constructor
@@ -69,7 +71,9 @@ namespace RazorEngine.Compilation.CSharp
         /// Visits an error generated through parsing.
         /// </summary>
         /// <param name="err">The error that was generated.</param>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
         [SecurityCritical]
+#endif
         public override void VisitError(RazorError err)
         {
             if (StrictMode)

@@ -9,7 +9,9 @@
     /// <summary>
     /// Defines a code parser that supports the C# syntax.
     /// </summary>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
+#endif
     public class CSharpCodeParser : System.Web.Razor.Parser.CSharpCodeParser
     {
         #region Fields
@@ -32,7 +34,9 @@
         /// <summary>
         /// Parses the inherits statement.
         /// </summary>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
         [SecurityCritical]
+#endif
         protected override void InheritsDirective()
         {
             // Verify we're on the right keyword and accept
@@ -55,7 +59,9 @@
         /// <summary>
         /// Parses the model statement.
         /// </summary>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
         [SecurityCritical]
+#endif
         protected virtual void ModelDirective()
         {
             // Verify we're on the right keyword and accept
@@ -76,7 +82,9 @@
             CheckForInheritsAndModelStatements();
         }
 
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
         [SecurityCritical]
+#endif
         private SpanCodeGenerator CreateModelCodeGenerator(string model)
         {
             return new SetModelTypeCodeGenerator(model, GenericTypeFormatString);

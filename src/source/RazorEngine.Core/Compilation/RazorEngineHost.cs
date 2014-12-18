@@ -8,7 +8,9 @@
     /// <summary>
     /// Defines the custom razor engine host.
     /// </summary>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
+#endif
     public class RazorEngineHost : System.Web.Razor.RazorEngineHost
     {
         #region Constructor
@@ -40,7 +42,9 @@
         /// </summary>
         /// <param name="incomingCodeParser">The code parser.</param>
         /// <returns>The decorated parser.</returns>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
         [SecurityCritical]
+#endif
         public override ParserBase DecorateCodeParser(ParserBase incomingCodeParser)
         {
             if (incomingCodeParser is CSharpCodeParser)
