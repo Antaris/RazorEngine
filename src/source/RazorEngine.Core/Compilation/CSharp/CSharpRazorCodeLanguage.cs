@@ -1,11 +1,13 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
+    using System.Security;
     using System.Web.Razor;
     using System.Web.Razor.Generator;
 
     /// <summary>
     /// Provides a razor code language that supports the C# language.
     /// </summary>
+    [SecurityCritical]
     public class CSharpRazorCodeLanguage : System.Web.Razor.CSharpRazorCodeLanguage
     {
         #region Constructor
@@ -35,6 +37,7 @@
         /// <param name="sourceFileName">Name of the source file.</param>
         /// <param name="host">The host.</param>
         /// <returns>An instance of <see cref="RazorCodeGenerator"/>.</returns>
+        [SecurityCritical]
         public override RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespaceName, string sourceFileName, RazorEngineHost host)
         {
             return new CSharpRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, StrictMode);

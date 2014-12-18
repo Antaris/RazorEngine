@@ -1,4 +1,5 @@
-﻿namespace RazorEngine.Compilation
+﻿using System.Security;
+namespace RazorEngine.Compilation
 {
     /// <summary>
     /// Defines the required contract for implementing a compiler service factory.

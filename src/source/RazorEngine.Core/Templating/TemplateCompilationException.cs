@@ -8,6 +8,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Security;
 
     /// <summary>
     /// Defines an exception that occurs during compilation of the template.
@@ -153,6 +154,7 @@ More details about the error:
         /// </summary>
         /// <param name="info">The serialisation info.</param>
         /// <param name="context">The streaming context.</param>
+        [SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

@@ -13,12 +13,11 @@
     /// </summary>
     public interface IRazorEngineService : IDisposable
     {
-        /// <summary>
-        /// Gets the template service configuration.
-        /// </summary>
-        ITemplateServiceConfiguration Configuration { get; }
-
         ITemplateKey GetKey(string name, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null);
+
+        bool IsTemplateCached(ITemplateKey key, Type modelType);
+
+        void AddTemplate(ITemplateKey key, ITemplateSource templateSource);
 
         /// <summary>
         /// Compiles the specified template.

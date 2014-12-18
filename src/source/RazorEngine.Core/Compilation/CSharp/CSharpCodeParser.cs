@@ -4,10 +4,12 @@
     using System.Web.Razor.Text;
     using System.Web.Razor.Parser;
     using CodeGenerators;
+    using System.Security;
 
     /// <summary>
     /// Defines a code parser that supports the C# syntax.
     /// </summary>
+    [SecurityCritical]
     public class CSharpCodeParser : System.Web.Razor.Parser.CSharpCodeParser
     {
         #region Fields
@@ -30,6 +32,7 @@
         /// <summary>
         /// Parses the inherits statement.
         /// </summary>
+        [SecurityCritical]
         protected override void InheritsDirective()
         {
             // Verify we're on the right keyword and accept
@@ -52,6 +55,7 @@
         /// <summary>
         /// Parses the model statement.
         /// </summary>
+        [SecurityCritical]
         protected virtual void ModelDirective()
         {
             // Verify we're on the right keyword and accept
@@ -72,6 +76,7 @@
             CheckForInheritsAndModelStatements();
         }
 
+        [SecurityCritical]
         private SpanCodeGenerator CreateModelCodeGenerator(string model)
         {
             return new SetModelTypeCodeGenerator(model, GenericTypeFormatString);

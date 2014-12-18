@@ -49,7 +49,7 @@ namespace Test.RazorEngine
                 const string template = "@foreach (var i in Model.Unknown) { @i }";
                 var exn = Assert.Throws<TemplateCompilationException>(() =>
                 {
-                    string result = service.RunCompileOnDemand<object>(template, "test", new object());
+                    string result = service.RunCompileOnDemand(template, "test", typeof(object), new object());
                 });
                 exn.CompilationData.DeleteAll();
                 var msg = exn.Message;

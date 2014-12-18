@@ -1,12 +1,14 @@
 ﻿namespace RazorEngine.Compilation
 {
     using System;
+    using System.Security;
     using System.Web.Razor;
     using System.Web.Razor.Parser;
 
     /// <summary>
     /// Defines the custom razor engine host.
     /// </summary>
+    [SecurityCritical]
     public class RazorEngineHost : System.Web.Razor.RazorEngineHost
     {
         #region Constructor
@@ -38,6 +40,7 @@
         /// </summary>
         /// <param name="incomingCodeParser">The code parser.</param>
         /// <returns>The decorated parser.</returns>
+        [SecurityCritical]
         public override ParserBase DecorateCodeParser(ParserBase incomingCodeParser)
         {
             if (incomingCodeParser is CSharpCodeParser)

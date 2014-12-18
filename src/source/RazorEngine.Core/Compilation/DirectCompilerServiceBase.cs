@@ -9,10 +9,10 @@
     using System.Linq;
     using System.Reflection;
     using System.Security;
+    using System.Security.Permissions;
     using System.Text;
     using System.Web.Razor;
     using System.Web.Razor.Parser;
-
     using Templating;
 
     /// <summary>
@@ -32,8 +32,9 @@
         /// <param name="codeLanguage">The razor code language.</param>
         /// <param name="codeDomProvider">The code dom provider used to generate code.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
+        [SecurityCritical]
         protected DirectCompilerServiceBase(RazorCodeLanguage codeLanguage, CodeDomProvider codeDomProvider, Func<ParserBase> markupParserFactory)
-            : base(codeLanguage, markupParserFactory)
+            : base(codeLanguage, new ParserBaseCreator(markupParserFactory))
         {
             _codeDomProvider = codeDomProvider;
         }
@@ -78,6 +79,7 @@
         /// <param name="context">The type context.</param>
         /// <returns>The compiler results.</returns>
         [Pure]
+        [SecurityCritical]
         private Tuple<CompilerResults, string> Compile(TypeContext context)
         {
             if (_disposed)
@@ -88,7 +90,7 @@
 
             var @params = new CompilerParameters
             {
-                GenerateInMemory = true,
+                GenerateInMemory = false,
                 GenerateExecutable = false,
                 IncludeDebugInformation = Debug,
                 TreatWarningsAsErrors = false,
@@ -106,7 +108,7 @@
             string sourceCode = null;
             if (Debug)
             {
-                @params.GenerateInMemory = false;
+                //@params.GenerateInMemory = false;
                 @params.TempFiles = new TempFileCollection(GetTemporaryDirectory(), true);
                 @params.IncludeDebugInformation = true;
                 var builder = new StringBuilder();
@@ -140,7 +142,6 @@
 	                } 
                 }
             }
-
             return Tuple.Create(results, sourceCode);
         }
 
@@ -155,6 +156,7 @@
             if (context == null)
                 throw new ArgumentNullException("context");
 
+            (new PermissionSet(PermissionState.Unrestricted)).Assert();
             var result = Compile(context);
             var compileResult = result.Item1;
 
@@ -167,10 +169,13 @@
             {
                 throw new TemplateCompilationException(compileResult.Errors, tmpDir, context.TemplateContent);
             }
-
-            return Tuple.Create(
-                compileResult.CompiledAssembly.GetType("CompiledRazorTemplates.Dynamic." + context.ClassName),
-                tmpDir);
+            // Make sure we load the assembly from a file (or it will be fully trusted!)
+            var assemblyPath = compileResult.PathToAssembly;
+            compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
+            //compileResult.CompiledAssembly = AppDomain.CurrentDomain.Load(File.ReadAllBytes(assemblyPath));
+            var type = compileResult.CompiledAssembly.GetType("CompiledRazorTemplates.Dynamic." + context.ClassName);
+            //CodeAccessPermission.RevertAssert();
+            return Tuple.Create(type, tmpDir);
         }
 
         /// <summary>

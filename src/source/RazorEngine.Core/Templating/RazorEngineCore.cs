@@ -14,6 +14,8 @@ namespace RazorEngine.Templating
     using Configuration;
     using Parallel;
     using Text;
+    using System.Security;
+    using System.Security.Permissions;
     internal class RazorEngineCore : MarshalByRefObject, IRazorEngineCore
     {
         private readonly ITemplateServiceConfiguration _config;
@@ -57,7 +59,6 @@ namespace RazorEngine.Templating
         public ICompiledTemplate Compile(ITemplateKey key, Type modelType)
         {
             Contract.Requires(key != null);
-
             var source = Resolve(key);
             var result = CreateTemplateType(source, modelType);
             return new CompiledTemplate(result.Item2, key, source, result.Item1, modelType);
@@ -103,7 +104,7 @@ namespace RazorEngine.Templating
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="modelType">The model type or NULL if no model exists.</param>
         /// <returns>An instance of <see cref="Type"/>.</returns>
-        [Pure]
+        [Pure][SecuritySafeCritical]
         public virtual Tuple<Type, CompilationData> CreateTemplateType(ITemplateSource razorTemplate, Type modelType)
         {
             var context = new TypeContext
@@ -135,6 +136,7 @@ namespace RazorEngine.Templating
         /// <param name="template">The template to run.</param>
         /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
         /// <returns>The string result of the template.</returns>
+        //[SecurityCritical]
         public void RunTemplate(ICompiledTemplate template, System.IO.TextWriter writer, object model, DynamicViewBag viewBag)
         {
             if (template == null)

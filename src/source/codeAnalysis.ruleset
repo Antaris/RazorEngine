@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="RazorEngine Analysis" Description="Dieser Regelsatz enthält alle Regeln. Das Ausführen dieses Regelsatzes führt möglicherweise zu einer hohen Anzahl gemeldeter Warnungen. Verwenden Sie diesen Regelsatz, um einen Überblick über alle Probleme in Ihrem Code zu erhalten. Dies kann Ihnen bei der Entscheidung behilflich sein, welche der spezifischeren Regelsätze für Ihre Projekte am besten geeignet sind." ToolsVersion="12.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Microsoft.Analyzers.NativeCodeAnalysis" RuleNamespace="Microsoft.Rules.Native">
+    <Rule Id="C28625" Action="Error" />
+    <Rule Id="C28719" Action="Error" />
+    <Rule Id="C28720" Action="Error" />
+    <Rule Id="C28726" Action="Error" />
+    <Rule Id="C28727" Action="Error" />
+    <Rule Id="C6029" Action="Error" />
+    <Rule Id="C6053" Action="Error" />
+    <Rule Id="C6054" Action="Error" />
+    <Rule Id="C6200" Action="Error" />
+    <Rule Id="C6201" Action="Error" />
+    <Rule Id="C6248" Action="Error" />
+    <Rule Id="C6277" Action="Error" />
+    <Rule Id="C6305" Action="Error" />
+    <Rule Id="C6383" Action="Error" />
+    <Rule Id="C6385" Action="Error" />
+    <Rule Id="C6386" Action="Error" />
+    <Rule Id="C6411" Action="Error" />
+    <Rule Id="C6412" Action="Error" />
+  </Rules>
+</RuleSet>

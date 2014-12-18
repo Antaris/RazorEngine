@@ -8,10 +8,12 @@ namespace RazorEngine.Compilation.VisualBasic
     using System.Web.Razor.Parser.SyntaxTree;
     using System.Web.Razor.Text;
     using CodeGenerators;
+    using System.Security;
 
     /// <summary>
     /// Defines a code parser that supports the VB syntax.
     /// </summary>
+    [SecurityCritical]
     public class VBCodeParser : System.Web.Razor.Parser.VBCodeParser
     {
         #region Fields
@@ -34,6 +36,7 @@ namespace RazorEngine.Compilation.VisualBasic
         /// <summary>
         /// Parses the inherits statement.
         /// </summary>
+        [SecurityCritical]
         protected override bool InheritsStatement()
         {
             // Verify we're on the right keyword and accept

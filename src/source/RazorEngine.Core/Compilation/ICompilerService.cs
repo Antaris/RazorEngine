@@ -6,6 +6,7 @@
 
     using Inspectors;
     using RazorEngine.Compilation.Resolver;
+    using System.Security;
 
     /// <summary>
     /// Defines the required contract for implementing a compiler service.
@@ -42,6 +43,7 @@
         /// </summary>
         /// <param name="context">The type context which defines the type to compile.</param>
         /// <returns>The compiled type.</returns>
+        [SecurityCritical]
         Tuple<Type, CompilationData> CompileType(TypeContext context);
 
         /// <summary>

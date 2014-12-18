@@ -14,24 +14,42 @@
     using Inspectors;
     using Templating;
     using RazorEngine.Compilation.Resolver;
+    using System.Security;
+
+
+    [SecurityCritical]
+    public class ParserBaseCreator
+    {
+        private Func<ParserBase> creator;
+        public ParserBaseCreator(Func<ParserBase> creator)
+        {
+            this.creator = creator ?? (() => new HtmlMarkupParser());
+        }
+        public ParserBase Create()
+        {
+            return this.creator();
+        }
+    }
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
     /// </summary>
     public abstract class CompilerServiceBase : MarshalByRefObject, ICompilerService
     {
+
         #region Constructor
         /// <summary>
         /// Initialises a new instance of <see cref="CompilerServiceBase"/>
         /// </summary>
         /// <param name="codeLanguage">The code language.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
-        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory)
+        [SecurityCritical]
+        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory)
         {
             Contract.Requires(codeLanguage != null);
 
             CodeLanguage = codeLanguage;
-            MarkupParserFactory = markupParserFactory ?? (() => new HtmlMarkupParser());
+            MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
         }
         #endregion
@@ -50,7 +68,7 @@
         /// <summary>
         /// Gets the code language.
         /// </summary>
-        public RazorCodeLanguage CodeLanguage { get; private set; }
+        public RazorCodeLanguage CodeLanguage { [SecurityCritical] get; [SecurityCritical] private set; }
 
         /// <summary>
         /// Gets or sets whether the compiler service is operating in debug mode.
@@ -60,7 +78,7 @@
         /// <summary>
         /// Gets the markup parser.
         /// </summary>
-        public Func<ParserBase> MarkupParserFactory { get; private set; }
+        public ParserBaseCreator MarkupParserFactory { [SecurityCritical] get; [SecurityCritical] private set; }
 
         /// <summary>
         /// Extension of a source file without dot ("cs" for C# files or "vb" for VB.NET files).
@@ -94,6 +112,7 @@
         /// </summary>
         /// <param name="context">The type context which defines the type to compile.</param>
         /// <returns>The compiled type.</returns>
+        [SecurityCritical]
         public abstract Tuple<Type, CompilationData> CompileType(TypeContext context);
 
         /// <summary>
@@ -103,9 +122,11 @@
         /// <param name="modelType">The model type.</param>
         /// <param name="className">The class name.</param>
         /// <returns>An instance of <see cref="RazorEngineHost"/>.</returns>
+
+        [SecurityCritical]
         private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
         {
-            var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory)
+            var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory.Create)
                            {
                                DefaultBaseTemplateType = templateType,
                                DefaultModelType = modelType,
@@ -162,7 +183,7 @@
         /// <param name="templateType">The template type.</param>
         /// <param name="modelType">The model type.</param>
         /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
-        [Pure]
+        [Pure][SecurityCritical]
         public CodeCompileUnit GetCodeCompileUnit(string className, ITemplateSource template, ISet<string> namespaceImports, Type templateType, Type modelType)
         {
             if (string.IsNullOrEmpty(className))
@@ -204,6 +225,7 @@
         /// <param name="host">The razor engine host.</param>
         /// <param name="template">The template.</param>
         /// <returns>The generator result.</returns>
+        [SecurityCritical]
         private GeneratorResults GetGeneratorResult(RazorEngineHost host, ITemplateSource template)
         {
             var engine = new RazorTemplateEngine(host);

@@ -6,6 +6,7 @@ using System.Text;
 
 namespace RazorEngine.Templating
 {
+    [Serializable]
     public class LoadedTemplateSource : ITemplateSource
     {
         private readonly string _template;

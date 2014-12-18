@@ -43,7 +43,7 @@
             get { return (T)currentModel; }
             set
             {
-                if (HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject))
+                if (HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject) && !(value is RazorDynamicObject))
                     currentModel = new RazorDynamicObject
                                    {
                                        Model = value, 

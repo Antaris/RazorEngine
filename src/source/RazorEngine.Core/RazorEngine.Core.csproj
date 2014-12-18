@@ -49,7 +49,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <DocumentationFile>bin\Debug\RazorEngine.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\codeAnalysis.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -144,6 +144,7 @@
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElement.cs" />
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElementCollection.cs" />
     <Compile Include="RazorService.cs" />
+    <Compile Include="Templating\IsolatedRazorEngineService.cs" />
     <Compile Include="Templating\WrapperTemplateManager.cs" />
     <Compile Include="Configuration\Xml\XmlTemplateServiceConfiguration.cs" />
     <Compile Include="Encoding.cs" />

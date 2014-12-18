@@ -53,6 +53,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\.nuget\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
@@ -86,6 +90,7 @@
     <Compile Include="ActivatorTestFixture.cs" />
     <Compile Include="CodeInspectorTestFixture.cs" />
     <Compile Include="ConfigurationTestFixture.cs" />
+    <Compile Include="IsolatedRazorEngineServiceTestFixture.cs" />
     <Compile Include="IsolatedTemplateServiceTestFixture.cs" />
     <Compile Include="Issues\Release_3_6_TestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

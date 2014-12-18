@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RazorEngine.Templating
 {
-    public abstract class BaseTemplateKey : ITemplateKey
+    public abstract class BaseTemplateKey : MarshalByRefObject, ITemplateKey
     {
         readonly string _name;
         readonly ResolveType _resolveType;

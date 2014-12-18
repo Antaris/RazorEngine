@@ -1,5 +1,6 @@
 ﻿namespace RazorEngine.Compilation.VisualBasic
 {
+    using System.Security;
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
     using Templating;
@@ -7,6 +8,7 @@
     /// <summary>
     /// Defines a code generator that supports VB syntax.
     /// </summary>
+    [SecurityCritical]
     public class VBRazorCodeGenerator : System.Web.Razor.Generator.VBRazorCodeGenerator
     {
         #region Constructor
@@ -37,6 +39,7 @@
         /// Visits an error generated through parsing.
         /// </summary>
         /// <param name="err">The error that was generated.</param>
+        [SecurityCritical]
         public override void VisitError(RazorError err)
         {
             if (StrictMode)

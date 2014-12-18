@@ -4,8 +4,8 @@ namespace RazorEngine.Templating
     using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.IO;
+    using System.Security;
     using System.Text;
-
     using Text;
 
     /// <summary>

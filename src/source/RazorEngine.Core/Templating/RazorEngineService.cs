@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -75,11 +77,22 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Gets the template service configuration.
         /// </summary>
-        public ITemplateServiceConfiguration Configuration { get { return _config; } }
+        internal ITemplateServiceConfiguration Configuration { get { return _config; } }
 
         #endregion
 
         #region Methods
+
+        public bool IsTemplateCached(ITemplateKey key, Type modelType)
+        {
+            ICompiledTemplate template;
+            return Configuration.CachingProvider.TryRetrieveTemplate(key, modelType, out template);
+        }
+
+        public void AddTemplate(ITemplateKey key, ITemplateSource templateSource)
+        {
+            Configuration.TemplateManager.AddDynamic(key, templateSource);
+        }
 
         /// <summary>
         /// Releases managed resources used by this instance.
