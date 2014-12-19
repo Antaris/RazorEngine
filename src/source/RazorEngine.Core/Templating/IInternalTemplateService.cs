@@ -25,7 +25,7 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        ITemplate Resolve(string name, object model, ResolveType resolveType);
+        ITemplate Resolve(string name, object model, Type modelType, ResolveType resolveType);
 
         /// <summary>
         /// Adds a namespace that will be imported into the template.

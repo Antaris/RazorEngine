@@ -22,8 +22,6 @@ namespace RazorEngine.Templating
         //private readonly RazorEngineCore _core;
         private readonly RazorEngineCore _core_with_cache;
 
-        private static readonly Type _objectType = typeof(object);
-
         private bool disposed;
         #endregion
 

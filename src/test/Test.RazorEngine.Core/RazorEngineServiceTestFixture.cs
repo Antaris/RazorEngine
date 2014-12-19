@@ -90,7 +90,7 @@ namespace Test.RazorEngine
                     var source = new LoadedTemplateSource(template, file);
                     var exn = Assert.Throws<Microsoft.CSharp.RuntimeBinder.RuntimeBinderException>(() =>
                     {
-                        string result = service.RunCompileOnDemand(source, "test", typeof(DynamicObject), new object());
+                        string result = service.RunCompileOnDemand(source, "test", null, new object());
                     });
                     // We now have a reference to our template in the stacktrace
                     var stack = exn.StackTrace.ToLowerInvariant();

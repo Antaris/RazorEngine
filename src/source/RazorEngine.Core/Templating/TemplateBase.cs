@@ -30,6 +30,14 @@ namespace RazorEngine.Templating
         /// </summary>
         public string Layout { get; set; }
 
+        internal virtual Type ModeType
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the template service.
         /// </summary>
@@ -73,9 +81,9 @@ namespace RazorEngine.Templating
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
         /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter Include(string cacheName, object model = null)
+        public virtual TemplateWriter Include(string cacheName, object model = null, Type modelType = null)
         {
-            var instance = InternalTemplateService.Resolve(cacheName, model, ResolveType.Include);
+            var instance = InternalTemplateService.Resolve(cacheName, model, modelType, ResolveType.Include);
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
 
@@ -119,7 +127,7 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected virtual ITemplate ResolveLayout(string name)
         {
-            return InternalTemplateService.Resolve(name, null, ResolveType.Layout);
+            return InternalTemplateService.Resolve(name, null, null, ResolveType.Layout);
         }
 
         private static void StreamToTextWriter(MemoryStream memory, TextWriter writer)

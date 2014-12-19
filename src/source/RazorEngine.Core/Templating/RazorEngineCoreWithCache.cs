@@ -14,13 +14,13 @@ namespace RazorEngine.Templating
         {
         }
 
-        internal override ITemplate ResolveInternal(string cacheName, object model, ResolveType resolveType, ITemplateKey context)
+        internal override ITemplate ResolveInternal(string cacheName, object model, Type modelType, ResolveType resolveType, ITemplateKey context)
         {
             var templateKey = GetKey(cacheName, resolveType, context);
             ICompiledTemplate compiledTemplate;
-            if (!Configuration.CachingProvider.TryRetrieveTemplate(templateKey, GetTypeFromModelObject(model), out compiledTemplate))
+            if (!Configuration.CachingProvider.TryRetrieveTemplate(templateKey, modelType, out compiledTemplate))
             {
-                compiledTemplate = Compile(templateKey, GetTypeFromModelObject(model));
+                compiledTemplate = Compile(templateKey, modelType);
                 Configuration.CachingProvider.CacheTemplate(compiledTemplate, templateKey);
             }
             return CreateTemplate(compiledTemplate, model);

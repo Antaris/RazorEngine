@@ -44,9 +44,9 @@ namespace RazorEngine.Templating
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
         /// <returns>The resolved template.</returns>
-        public ITemplate Resolve(string cacheName, object model, ResolveType resolveType)
+        public ITemplate Resolve(string cacheName, object model, Type modelType, ResolveType resolveType)
         {
-            return _service.ResolveInternal(cacheName, model, resolveType, _template);
+            return _service.ResolveInternal(cacheName, model, modelType, resolveType, _template);
         }
 
         /// <summary>

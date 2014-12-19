@@ -92,12 +92,6 @@ namespace RazorEngine.Templating
             return instance;
         }
 
-        internal static Type GetTypeFromModelObject(object model, Type modelType = null)
-        {
-            var actualModelType = (model == null) ? null : model.GetType();
-            return modelType ?? actualModelType;
-        }
-
         /// <summary>
         /// Creates a <see cref="Type"/> that can be used to instantiate an instance of a template.
         /// </summary>
@@ -109,7 +103,7 @@ namespace RazorEngine.Templating
         {
             var context = new TypeContext
             {
-                ModelType = (modelType == null) ? typeof(object) : modelType,
+                ModelType = modelType ?? typeof(System.Dynamic.DynamicObject),
                 TemplateContent = razorTemplate,
                 TemplateType = (_config.BaseTemplateType) ?? typeof(TemplateBase<>)
             };
@@ -162,10 +156,10 @@ namespace RazorEngine.Templating
             return _config.TemplateManager.GetKey(cacheName, resolveType, context);
         }
 
-        internal virtual ITemplate ResolveInternal(string cacheName, object model, ResolveType resolveType, ITemplateKey context)
+        internal virtual ITemplate ResolveInternal(string cacheName, object model, Type modelType, ResolveType resolveType, ITemplateKey context)
         {
             var templateKey = GetKey(cacheName, resolveType, context);
-            var compiledTemplate = Compile(templateKey, GetTypeFromModelObject(model));
+            var compiledTemplate = Compile(templateKey, modelType);
             return CreateTemplate(compiledTemplate, model);
         }
 

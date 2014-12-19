@@ -541,6 +541,19 @@ namespace RazorEngine.Templating
 
 
         /// <summary>
+        /// This is a helper method to get the type that fits best to a given model object.
+        /// We use this method only on places where we have no modelType (in legacy code).
+        /// </summary>
+        /// <param name="model">the object we try to get the type from</param>
+        /// <param name="modelType">the preferred type of the model (if not null this will be returned.)</param>
+        /// <returns></returns>
+        internal static Type GetTypeFromModelObject(object model, Type modelType = null)
+        {
+            var actualModelType = (model == null) ? null : model.GetType();
+            return modelType ?? actualModelType;
+        }
+
+        /// <summary>
         /// Resolves the template with the specified name.
         /// </summary>
         /// <param name="cacheName">The name of the template type in cache.</param>
@@ -549,7 +562,7 @@ namespace RazorEngine.Templating
         public virtual ITemplate Resolve(string cacheName, object model)
         {
             return _service.GetTemplate(
-                _service.GetKey(cacheName), RazorEngineCore.GetTypeFromModelObject(model), model);
+                _service.GetKey(cacheName), GetTypeFromModelObject(model), model);
         }
 
         /// <summary>
@@ -565,7 +578,7 @@ namespace RazorEngine.Templating
                 throw new ArgumentException("'cacheName' is a required parameter.");
             using(var writer = new System.IO.StringWriter())
 	        {
-                _service.RunCachedTemplate(_service.GetKey(cacheName), writer, RazorEngineCore.GetTypeFromModelObject(model), model, viewBag);
+                _service.RunCachedTemplate(_service.GetKey(cacheName), writer, GetTypeFromModelObject(model), model, viewBag);
                 return writer.ToString();
 	        }
         }
