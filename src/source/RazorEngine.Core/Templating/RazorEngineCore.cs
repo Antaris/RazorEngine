@@ -104,7 +104,7 @@ namespace RazorEngine.Templating
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="modelType">The model type or NULL if no model exists.</param>
         /// <returns>An instance of <see cref="Type"/>.</returns>
-        [Pure][SecuritySafeCritical]
+        [Pure][SecuritySafeCritical] // This should not be SecuritySafeCritical (make the template classes SecurityCritical instead)
         public virtual Tuple<Type, CompilationData> CreateTemplateType(ITemplateSource razorTemplate, Type modelType)
         {
             var context = new TypeContext
