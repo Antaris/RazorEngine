@@ -207,7 +207,7 @@
 
             // Add the dynamic model attribute if the type is an anonymous type.
             var type = result.GeneratedCode.Namespaces[0].Types[0];
-            if (modelType != null && CompilerServicesUtility.IsAnonymousType(modelType))
+            if (modelType != null && CompilerServicesUtility.IsDynamicType(modelType))
                 type.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(HasDynamicModelAttribute))));
 
             // Generate any constructors required by the base template type.

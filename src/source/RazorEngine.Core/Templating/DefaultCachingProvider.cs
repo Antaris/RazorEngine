@@ -30,19 +30,19 @@ namespace RazorEngine.Templating
         }
         private class NoModel { }
 
-        private Type GetModelTypeKey(Type modelType)
+        public static Type GetModelTypeKey(Type modelType)
         {
-            if (modelType == null)
+            if (modelType == null || 
+                typeof(System.Dynamic.IDynamicMetaObjectProvider).IsAssignableFrom(modelType))
             {
-                return typeof(NoModel);
+                return typeof(System.Dynamic.DynamicObject);
             }
             return modelType;
         }
 
-        public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
+        private void CacheTemplateHelper(ICompiledTemplate template, ITemplateKey templateKey, Type modelTypeKey)
         {
             var uniqueKey = templateKey.GetUniqueKeyString();
-            var modelTypeKey = GetModelTypeKey(template.ModelType);
             _cache.AddOrUpdate(uniqueKey, key =>
             {
                 // new item added
@@ -50,18 +50,35 @@ namespace RazorEngine.Templating
                 var dict = new ConcurrentDictionary<Type, ICompiledTemplate>();
                 dict.AddOrUpdate(modelTypeKey, template, (t, old) => template);
                 return dict;
-            }, (key, dict) => {
+            }, (key, dict) =>
+            {
                 dict.AddOrUpdate(modelTypeKey, t =>
                 {
                     // new item added (template was not compiled with the given type).
                     _assemblies.Add(template.TemplateAssembly);
                     return template;
-                }, (t, old) => {
+                }, (t, old) =>
+                {
                     // item was already added before
                     return template;
                 });
                 return dict;
             });
+        }
+
+        public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
+        {
+            var modelTypeKey = GetModelTypeKey(template.ModelType);
+            CacheTemplateHelper(template, templateKey, modelTypeKey);
+            if (template.TemplateType.BaseType.GenericTypeArguments.Length > 0)
+            {
+                var alternativeKey = GetModelTypeKey(template.TemplateType.BaseType.GenericTypeArguments[0]);
+                if (alternativeKey != modelTypeKey)
+                {
+                    // could be a template with an @model directive.
+                    CacheTemplateHelper(template, templateKey, template.TemplateType.BaseType.GenericTypeArguments[0]);
+                }
+            }
         }
 
         public bool TryRetrieveTemplate(ITemplateKey templateKey, Type modelType, out ICompiledTemplate compiledTemplate)

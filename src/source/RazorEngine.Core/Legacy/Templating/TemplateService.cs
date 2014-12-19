@@ -350,7 +350,11 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
         public virtual ITemplate GetTemplate(string razorTemplate, object model, string cacheName)
         {
-            return this.GetTemplate<object>(razorTemplate, model, cacheName);
+            if (razorTemplate == null)
+                throw new ArgumentNullException("razorTemplate");
+            var key = GetKeyAndAdd(razorTemplate, cacheName);
+            return _service.GetTemplate(key, GetTypeFromModelObject(model) , model);
+            // return this.GetTemplate<object>(razorTemplate, model, cacheName);
         }
 
         /// <summary>
