@@ -80,7 +80,7 @@ namespace RazorEngine.Compilation
         public static string GenerateClassName()
         {
             Guid guid = Guid.NewGuid();
-            return Regex.Replace(guid.ToString("N"), @"[^A-Za-z]*", "");
+            return String.Format("RazorEngine_{0}", guid.ToString("N"));
         }
 
         /// <summary>
