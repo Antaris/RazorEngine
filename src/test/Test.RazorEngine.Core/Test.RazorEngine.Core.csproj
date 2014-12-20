@@ -82,7 +82,6 @@
       </ItemGroup>
     </When>
   </Choose>
-
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>

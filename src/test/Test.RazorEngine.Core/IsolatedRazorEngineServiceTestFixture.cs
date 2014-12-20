@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using RazorEngine.Compilation;
 using RazorEngine.Templating;
 using RazorEngine.Tests.TestTypes;
 using System;
@@ -221,16 +222,14 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithAnonymousModel()
         {
-            Assert.Ignore();
             using (var service = new IsolatedRazorEngineService())
             {
                 const string template = "<h1>Animal Type: @Model.Type</h1>";
+                const string expected = "<h1>Animal Type: Cat</h1>";
 
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    var model = new { Type = "Cat" };
-                    service.RunCompileOnDemand(template, "test", model.GetType(), model);
-                });
+                var model = new { Type = "Cat" };
+                var result = service.RunCompileOnDemand(template, "test", null, new RazorDynamicObject(model));
+                Assert.AreEqual(expected, result);
             }
         }
 
@@ -246,17 +245,15 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithExpandoModel()
         {
-            Assert.Ignore();
             using (var service = new IsolatedRazorEngineService())
             {
                 const string template = "<h1>Animal Type: @Model.Type</h1>";
+                const string expected = "<h1>Animal Type: Cat</h1>";
 
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    dynamic model = new ExpandoObject();
-                    model.Type = "Cat";
-                    service.RunCompileOnDemand(template, "test", (Type)model.GetType(), (object)model);
-                });
+                dynamic model = new ExpandoObject();
+                model.Type = "Cat";
+                var result = service.RunCompileOnDemand(template, "test", null, new RazorDynamicObject(model));
+                Assert.AreEqual(expected, result);
             }
         }
 
@@ -272,16 +269,14 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithDynamicModel()
         {
-            Assert.Ignore();
             using (var service = new IsolatedRazorEngineService())
             {
                 const string template = "<h1>Animal Type: @Model.Type</h1>";
+                const string expected = "<h1>Animal Type: Cat</h1>";
 
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    dynamic model = new ValueObject(new Dictionary<string, object> { { "Type", "Cat" } });
-                    service.RunCompileOnDemand(template, "test", (Type)model.GetType(), (object)model);
-                });
+                dynamic model = new ValueObject(new Dictionary<string, object> { { "Type", "Cat" } });
+                string result = service.RunCompileOnDemand(template, "test", null, new RazorDynamicObject(model));
+                Assert.AreEqual(expected, result);
             }
         }
 

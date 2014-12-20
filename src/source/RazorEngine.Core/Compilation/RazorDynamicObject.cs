@@ -1,80 +1,320 @@
 ﻿namespace RazorEngine.Compilation
 {
+    using ImpromptuInterface;
+    using ImpromptuInterface.Dynamic;
+    using ImpromptuInterface.Optimization;
+    using Microsoft.CSharp.RuntimeBinder;
     using System;
+    using System.Collections;
     using System.Diagnostics;
     using System.Dynamic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
+    using System.Runtime.Serialization;
+    using System.Security;
 
     /// <summary>
-    /// Defines a dynamic object.
+    /// Wraps a dynamic object for serialization of dynamic objects and anonymous type support.
+    /// But this type will also make (static) types work which are not serializable.
     /// </summary>
-    internal class RazorDynamicObject : DynamicObject
+    [Serializable]
+    internal class RazorDynamicObject : ImpromptuObject
     {
-        #region Properties
-        /// <summary>
-        /// Gets or sets the model.
-        /// </summary>
-        public object Model { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether to allow missing properties on dynamic members.
-        /// </summary>
-        public bool AllowMissingPropertiesOnDynamic { get; set; }
-        #endregion
-
-        #region Methods
-        /// <summary>
-        /// Gets the value of the specified member.
-        /// </summary>
-        /// <param name="binder">The current binder.</param>
-        /// <param name="result">The member result.</param>
-        /// <returns>True.</returns>
-        [DebuggerStepThrough]
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        public static dynamic Cast<T>(object o)
         {
-            if (binder == null)
-                throw new ArgumentNullException("binder");
+            T data = (T)o;
+            return data;
+        }
 
-            var dynamicObject = Model as RazorDynamicObject;
-            if (dynamicObject != null)
-                return dynamicObject.TryGetMember(binder, out result);
+        public static object DynamicCast(object o, Type targetType)
+        {
+            var castMethod = typeof(RazorDynamicObject).GetMethod("Cast").MakeGenericMethod(targetType);
+            return castMethod.Invoke(null, new object[] { o });
+        }
 
-            Type modelType = Model.GetType();
-            var prop = modelType.GetProperty(binder.Name);
-            if (prop == null)
+        private static BindingFlags Flags =
+            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public;
+
+
+        public static bool CompatibleWith(ParameterInfo[] parameterInfo, Type[] paramTypes)
+        {
+            if (parameterInfo.Length != paramTypes.Length)
             {
-                if (!AllowMissingPropertiesOnDynamic)
+                return false;
+            }
+            for (int i = 0; i < paramTypes.Length; i++)
+            {
+                if (!parameterInfo[i].ParameterType.IsAssignableFrom(paramTypes[i]))
                 {
-                    result = null;
                     return false;
                 }
-
-                result = new RazorDynamicObject() { AllowMissingPropertiesOnDynamic = AllowMissingPropertiesOnDynamic, Model = new object() };
-                return true;
             }
-
-            object value = prop.GetValue(Model, null);
-            if (value == null)
-            {
-                result = value;
-                return true;
-            }
-
-            Type valueType = value.GetType();
-
-            result = (CompilerServicesUtility.IsAnonymousType(valueType))
-                         ? new RazorDynamicObject { Model = value }
-                         : value;
             return true;
         }
 
+        public static bool IsPrimitive(object result)
+        {
+            if (result == null)
+            {
+                return true;
+            }
+            var t = result.GetType();
+            return t.IsPrimitive ||
+                result is string ||
+                result is Decimal ||
+                result is DateTime ||
+                result is DateTimeOffset;
+        }
+
+        internal class MarshalWrapper : MarshalByRefObject
+        {
+            object component;
+            bool allowMissing;
+            Type runtimeType;
+            public MarshalWrapper(object wrapped, bool allowMissingMembers)
+            {
+                allowMissing = allowMissingMembers;
+                component = wrapped;
+                runtimeType = wrapped.GetType();
+            }
+            public object GetResult(Invocation invocation)
+            {
+                object result = null;
+                string name = invocation.Name.Name;
+                object[] args = invocation.Args;
+                Type[] paramTypes = args.Select(o => o.GetType()).ToArray();
+                try
+                {
+                    // First we try to resolve via DLR
+                    dynamic target = component;
+                    result = invocation.InvokeWithStoredArgs(component);
+                }
+                catch (RuntimeBinderException)
+                {
+                    // DLR doesn't like some kind of functions, 
+                    // expecially because we have casted the component to object...
+                    bool found = false;
+                    switch (invocation.Kind)
+                    {
+                        case InvocationKind.Convert:
+                            var targetType = (Type)args[0];
+                            bool tExplict = false;
+                            if (args.Length == 2)
+                                tExplict = (bool)args[1];
+                            // try to find explicit or implicit operator.
+                            try
+                            {
+                                result = DynamicCast(component, targetType);
+                                found = true;
+                            }
+                            catch (Exception)
+                            {
+                                found = false;
+                            }
+                            break;
+                        //case InvocationKind.IsEvent:
+                        //case InvocationKind.AddAssign:
+                        //case InvocationKind.SubtractAssign:
+                        //case InvocationKind.Invoke:
+                        //case InvocationKind.InvokeAction:
+                        //case InvocationKind.InvokeUnknown:
+                        //case InvocationKind.InvokeMember: // TODO: add testcase
+                        //case InvocationKind.InvokeMemberAction: // TODO: add testcase
+                        //case InvocationKind.GetIndex: // TODO: add testcase
+                        //case InvocationKind.SetIndex: // TODO: add testcase
+                        case InvocationKind.Get:
+                        case InvocationKind.Set:
+                        case InvocationKind.InvokeMemberUnknown:
+                            {
+                                var members = runtimeType.GetMember(name, RazorDynamicObject.Flags);
+                                foreach (var member in members)
+                                {
+                                    var methodInfo = member as MethodInfo;
+                                    if (!found && methodInfo != null && RazorDynamicObject.CompatibleWith(methodInfo.GetParameters(), paramTypes))
+                                    {
+                                        result = methodInfo.Invoke(component, args);
+                                        found = true;
+                                        break;
+                                    }
+                                    var property = member as PropertyInfo;
+                                    if (!found && property != null)
+                                    {
+                                        var setMethod = property.SetMethod;
+                                        if (setMethod != null && RazorDynamicObject.CompatibleWith(setMethod.GetParameters(), paramTypes))
+                                        {
+                                            result = setMethod.Invoke(component, args);
+                                            found = true;
+                                            break;
+                                        }
+                                        var getMethod = property.GetMethod;
+                                        if (getMethod != null && RazorDynamicObject.CompatibleWith(getMethod.GetParameters(), paramTypes))
+                                        {
+                                            result = getMethod.Invoke(component, args);
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (!found)
+                    {
+                        if (allowMissing)
+                        {
+                            return new RazorDynamicObject("", allowMissing);
+                        }
+                        throw;
+                    }
+                }
+                if (RazorDynamicObject.IsPrimitive(result))
+                {
+                    return result;
+                }
+                else
+                {
+                    return new RazorDynamicObject(result, allowMissing);
+                }
+            }
+
+
+            //public object CastTo(Type t)
+            //{
+            //    object act = castedObject.ActLike(t);
+            //    return new NewRazorDynamicObject(act);
+            //}
+        }
+
+
+        private MarshalWrapper component;
+        public RazorDynamicObject(object wrapped, bool allowMissingMembers = false)
+            : base ()
+        {
+            component = new MarshalWrapper(wrapped, allowMissingMembers);
+        }
+        
         /// <summary>
-        /// Returns the string representation of the current instance.
+        /// Initializes a new instance of the <see cref="ImpromptuForwarder"/> class.
         /// </summary>
-        /// <returns>The string representation of this instance.</returns>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
+        protected RazorDynamicObject(SerializationInfo info, StreamingContext context)
+            : base(info,context)
+        {
+            component = info.GetValue<MarshalWrapper>("Component");
+        }
+        /// <summary>
+        /// Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.
+        /// </summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+        [SecurityCritical]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info,context);
+            info.AddValue("Component", component);
+        }
+
+        private bool RemoteInvoke(Invocation invocation, out object result)
+        {
+            result = null;
+            try
+            {
+                result = component.GetResult(invocation);
+                return true;
+            }
+            catch (RuntimeBinderException)
+            {
+                return false;
+            }
+        }
+
+        public override bool TryGetMember(System.Dynamic.GetMemberBinder binder, out object result)
+        {
+            return RemoteInvoke(new Invocation(InvocationKind.Get, binder.Name), out result);
+        }
+
+        public override bool TryConvert(System.Dynamic.ConvertBinder binder, out object result)
+        {
+            var targetType = binder.Type;
+            var isExplicit = binder.Explicit;
+            result = null;
+            object tempResult;
+            if (RemoteInvoke(new Invocation(InvocationKind.Convert, (isExplicit ? "op_Explicit" : "op_Implicit"), targetType, isExplicit), out tempResult))
+            {
+                if (tempResult.GetType() == targetType)
+                { // Not wrapped, so most likely a primitive?
+                    result = tempResult;
+                }
+                else
+                {
+                    if (targetType.IsInterface)
+                    {
+                        result = Impromptu.DynamicActLike(tempResult, targetType);
+                    }
+                    else
+                    {
+                        // We can not present ourself as any class so we just try keep beeing dynamic.
+                        result = tempResult;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public override bool TrySetMember(System.Dynamic.SetMemberBinder binder, object value)
+        {
+            return RemoteInvoke(new Invocation(InvocationKind.Set, binder.Name, value), out value);
+        }
+        /// <summary>
+        /// Tries the invoke member.
+        /// </summary>
+        /// <param name="binder">The binder.</param>
+        /// <param name="args">The args.</param>
+        /// <param name="result">The result.</param>
+        /// <returns></returns>
+        public override bool TryInvokeMember(System.Dynamic.InvokeMemberBinder binder, object[] args, out object result)
+        {
+            return RemoteInvoke(new Invocation(InvocationKind.InvokeMemberUnknown, binder.Name, Util.NameArgsIfNecessary(binder.CallInfo, args)), out result);
+        }
+        /// <summary>
+        /// Tries the index of the get.
+        /// </summary>
+        /// <param name="binder">The binder.</param>
+        /// <param name="indexes">The indexes.</param>
+        /// <param name="result">The result.</param>
+        /// <returns></returns>
+        public override bool TryGetIndex(System.Dynamic.GetIndexBinder binder, object[] indexes, out object result)
+        {
+            return RemoteInvoke(new Invocation(InvocationKind.GetIndex, Invocation.IndexBinderName, Util.NameArgsIfNecessary(binder.CallInfo, indexes)), out result);
+        }
+        /// <summary>
+        /// Tries the index of the set.
+        /// </summary>
+        /// <param name="binder">The binder.</param>
+        /// <param name="indexes">The indexes.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public override bool TrySetIndex(System.Dynamic.SetIndexBinder binder, object[] indexes, object value)
+        {
+            object outTemp;
+            var tCombinedArgs = indexes.Concat(new[] { value }).ToArray();
+            return RemoteInvoke(new Invocation(InvocationKind.GetIndex, Invocation.IndexBinderName, Util.NameArgsIfNecessary(binder.CallInfo, tCombinedArgs)), out outTemp);
+        }
+        
         public override string ToString()
         {
-            return "";
+            object result;
+            RemoteInvoke(
+                new Invocation(InvocationKind.InvokeMemberUnknown, "ToString", new object[]{}), 
+                out result);
+            return (string)result;
         }
-        #endregion
     }
 }

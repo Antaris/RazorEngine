@@ -4,6 +4,7 @@
 
     using Compilation;
     using System;
+    using System.Security;
 
     /// <summary>
     /// Provides a base implementation of a template with a model.
@@ -58,15 +59,25 @@
         public T Model
         {
             get { return (T)currentModel; }
+            [SecuritySafeCritical]
             set
             {
                 if (HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject) && !(value is RazorDynamicObject))
-                    currentModel = new RazorDynamicObject
-                                   {
-                                       Model = value, 
-                                       AllowMissingPropertiesOnDynamic = 
-                                            InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic
-                                   };
+                {
+                    //var wrapper = new RazorDynamicObject
+                    //           {
+                    //               Model = value, 
+                    //               AllowMissingPropertiesOnDynamic = 
+                    //                    InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic
+                    //           };
+                    currentModel = new RazorDynamicObject(value, InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic);
+                }
+                //currentModel = new RazorDynamicObject
+                //               {
+                //                   Model = value, 
+                //                   AllowMissingPropertiesOnDynamic = 
+                //                        InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic
+                //               };
                 else
                     currentModel = value;
             }
