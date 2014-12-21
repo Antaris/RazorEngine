@@ -1,7 +1,9 @@
 ﻿using ImpromptuInterface;
 using NUnit.Framework;
+using RazorEngine.Compilation;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
+using RazorEngine.Tests.TestTypes;
 using RazorEngine.Text;
 using System;
 using System.Collections.Generic;
@@ -57,20 +59,28 @@ namespace Test.RazorEngine
         }
 
         /// <summary>
-        /// Tests that the fluent configuration can configure a template service with a specific encoding.
+        /// Test that DynamicActLike also gives access to all previous method.
+        /// This is a remainder that we changed the Impromptu code and make 
+        /// ActLikeProxy inherit from ImpromptuForwarder (and setting the Target property).
+        /// If this test ever fails make sure to fix that because we need this behavior.
         /// </summary>
         [Test]
         public void RazorEngineService_ActLikeTest()
         {
-            Assert.Ignore();
             dynamic m = new ExpandoObject();
             m.Test = new Func<string>(() => "mytest");
             m.More = new Func<string>(() => "mymore");
             dynamic _m = Impromptu.DynamicActLike(m, typeof(IMyInterface));
             Assert.AreEqual("mytest", _m.Test());
+            var __m = (IMyInterface)_m;
+            Assert.AreEqual("mytest", __m.Test());
+
+
             dynamic o = new MyClass();
             dynamic _o = Impromptu.DynamicActLike(o, typeof(IMyInterface));
             Assert.AreEqual("test", _o.Test());
+            var __o = (IMyInterface)_o;
+            Assert.AreEqual("test", __o.Test());
 
             Assert.AreEqual("more", _o.More());
             Assert.AreEqual("mymore", _m.More());
@@ -82,7 +92,6 @@ namespace Test.RazorEngine
         [Test]
         public void RazorEngineService_DynamicIEnumerable()
         {
-            Assert.Ignore();
             RunTestHelper(service =>
             {
                 const string template = @"@Enumerable.Count(Model.Data)";
@@ -92,9 +101,48 @@ namespace Test.RazorEngine
                 string result = service.RunCompileOnDemand(template, "test", null, model, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
-            }, (c) => c.EncodedStringFactory = new RawStringFactory());
+            });
         }
 
+        /// <summary>
+        /// Test that anonymous types within the template work.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_AnonymousTypeWithinTemplate_2()
+        {
+            RunTestHelper(service =>
+            {
+                const string template_child = "@Enumerable.Count(Model.Data)";
+                const string template_parent = @"@Include(""Child"", new { Data = Model.Animals})";
+                const string expected = "3";
+                service.CompileAndCache(template_child, "Child", null);
+                var anonArray = new[] { new Animal { Type = "1" }, new Animal { Type = "2" }, new Animal { Type = "3" } };
+                var model = new AnimalViewModel { Animals = anonArray };
+                string result = service.RunCompileOnDemand(template_parent, "test", typeof(AnimalViewModel), model, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            });
+        }
+
+        /// <summary>
+        /// Test that anonymous types within the template work.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_AnonymousTypeWithinTemplate()
+        {
+            RunTestHelper(service =>
+            {
+                const string template_child = "@Enumerable.Count(Model.Data)";
+                const string template_parent = @"@Include(""Child"", new { Data = Model.Data})";
+                const string expected = "3";
+                service.CompileAndCache(template_child, "Child", null);
+                var anonArray = new[] { new { InnerData = 1 }, new { InnerData = 2 }, new { InnerData = 3 } };
+                var model = new { Data = anonArray.Select(a => a) };
+                string result = service.RunCompileOnDemand(template_parent, "test", null, model, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            });
+        }
 
         /// <summary>
         /// Tests that the fluent configuration can configure a template service with a specific encoding.

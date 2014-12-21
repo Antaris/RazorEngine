@@ -48,8 +48,12 @@ namespace ImpromptuInterface.Build
     /// Base class of Emited ProxiesC:\Documents and Settings\jayt\My Documents\Visual Studio 2010\Projects\impromptuinterface\ImpromptuInterface\Optimization\
     /// </summary>
     [Serializable]
-    public abstract class ActLikeProxy : IActLikeProxyInitialize, ISerializable
+    public abstract class ActLikeProxy : ImpromptuForwarder, IActLikeProxyInitialize, ISerializable
     {
+        public ActLikeProxy() : base(null)
+        {
+
+        }
         /// <summary>
         /// Returns the proxied object
         /// </summary>
@@ -75,7 +79,7 @@ namespace ImpromptuInterface.Build
                 throw new MethodAccessException("Initialize should not be called twice!");
             _init = true;
             ActLikeProxyOriginal = original;
-
+            Target = original;
 
             //Let IDynamicKnowLike know about interfaces
             /* will be deprecated in the future */

@@ -50,7 +50,7 @@ However you can just use 'dynamic' (modelType == null) and we try to make it wor
             }
         }
 
-        internal object GetDynamicModel(Type modelType, object original)
+        internal static object GetDynamicModel(Type modelType, object original, bool allowMissing)
         {
             object result = original;
             if (modelType == null && original != null)
@@ -59,16 +59,16 @@ However you can just use 'dynamic' (modelType == null) and we try to make it wor
                 if (IsAnonymousTypeRecursive(original.GetType()))
                 {
                     // TODO: we should handle Configuration.AllowMissingPropertiesOnDynamic
-                    result = new RazorDynamicObject(original, _allowMissingPropertiesOnDynamic);
+                    result = RazorDynamicObject.Create(original, allowMissing);
                 }
-                else if (_allowMissingPropertiesOnDynamic)
+                else if (allowMissing)
                 {
-                    result = new RazorDynamicObject(original, _allowMissingPropertiesOnDynamic);
+                    result = RazorDynamicObject.Create(original, allowMissing);
                 }
             }
             return result;
         }
-
+        
         public bool IsTemplateCached(ITemplateKey key, Type modelType)
         {
             CheckModelType(modelType);
@@ -84,13 +84,13 @@ However you can just use 'dynamic' (modelType == null) and we try to make it wor
         public void RunCompileOnDemand(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             CheckModelType(modelType);
-            _origin.RunCompileOnDemand(key, writer, modelType, GetDynamicModel(modelType, model), viewBag);
+            _origin.RunCompileOnDemand(key, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
         }
 
         public void RunCachedTemplate(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             CheckModelType(modelType);
-            _origin.RunCachedTemplate(key, writer, modelType, GetDynamicModel(modelType, model), viewBag);
+            _origin.RunCachedTemplate(key, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
         }
 
         public void Dispose()

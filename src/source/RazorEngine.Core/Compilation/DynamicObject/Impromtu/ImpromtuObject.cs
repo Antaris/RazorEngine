@@ -133,6 +133,11 @@ namespace ImpromptuInterface.Dynamic
                       });
 
                     var tDict = tPropReturType.Concat(tMethodReturnType)
+                        .GroupBy(info => info.Name)
+                        .Select(group => {
+                            // TODO: what if we have properties with same name and different types?
+                            return group.First();
+                        })
                         .ToDictionary(info => info.Name, info => info.ReturnType);
 
                     _returnTypHash.Add(_hash, tDict);

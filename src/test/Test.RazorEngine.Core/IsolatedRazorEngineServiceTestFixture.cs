@@ -252,7 +252,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 
                 dynamic model = new ExpandoObject();
                 model.Type = "Cat";
-                var result = service.RunCompileOnDemand(template, "test", null, new RazorDynamicObject(model));
+                var result = service.RunCompileOnDemand(template, "test", null, (object)RazorDynamicObject.Create(model));
                 Assert.AreEqual(expected, result);
             }
         }
@@ -275,7 +275,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 const string expected = "<h1>Animal Type: Cat</h1>";
 
                 dynamic model = new ValueObject(new Dictionary<string, object> { { "Type", "Cat" } });
-                string result = service.RunCompileOnDemand(template, "test", null, new RazorDynamicObject(model));
+                string result = service.RunCompileOnDemand(template, "test", null, (object)RazorDynamicObject.Create(model));
                 Assert.AreEqual(expected, result);
             }
         }

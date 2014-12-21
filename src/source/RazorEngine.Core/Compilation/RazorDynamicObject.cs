@@ -34,7 +34,7 @@
         }
 
         private static BindingFlags Flags =
-            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public;
+            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.DeclaredOnly;
 
 
         public static bool CompatibleWith(ParameterInfo[] parameterInfo, Type[] paramTypes)
@@ -78,6 +78,42 @@
                 component = wrapped;
                 runtimeType = wrapped.GetType();
             }
+
+            private bool TryFindInvokeMember(Type typeToSearch, string name, object[] args, Type[] paramTypes, out object result) {
+                var members = typeToSearch.GetMember(name, RazorDynamicObject.Flags);
+                var found = false;
+                result = null;
+                foreach (var member in members)
+                {
+                    var methodInfo = member as MethodInfo;
+                    if (!found && methodInfo != null && RazorDynamicObject.CompatibleWith(methodInfo.GetParameters(), paramTypes))
+                    {
+                        result = methodInfo.Invoke(component, args);
+                        found = true;
+                        break;
+                    }
+                    var property = member as PropertyInfo;
+                    if (!found && property != null)
+                    {
+                        var setMethod = property.GetSetMethod(true);
+                        if (setMethod != null && RazorDynamicObject.CompatibleWith(setMethod.GetParameters(), paramTypes))
+                        {
+                            result = setMethod.Invoke(component, args);
+                            found = true;
+                            break;
+                        }
+                        var getMethod = property.GetGetMethod(true);
+                        if (getMethod != null && RazorDynamicObject.CompatibleWith(getMethod.GetParameters(), paramTypes))
+                        {
+                            result = getMethod.Invoke(component, args);
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                return found;
+            }
+
             public object GetResult(Invocation invocation)
             {
                 object result = null;
@@ -127,33 +163,23 @@
                         case InvocationKind.Set:
                         case InvocationKind.InvokeMemberUnknown:
                             {
-                                var members = runtimeType.GetMember(name, RazorDynamicObject.Flags);
-                                foreach (var member in members)
+                                if (!found)
                                 {
-                                    var methodInfo = member as MethodInfo;
-                                    if (!found && methodInfo != null && RazorDynamicObject.CompatibleWith(methodInfo.GetParameters(), paramTypes))
+                                    if (!TryFindInvokeMember(runtimeType, name, args, paramTypes, out result))
                                     {
-                                        result = methodInfo.Invoke(component, args);
-                                        found = true;
-                                        break;
+                                        // search all interfaces as well
+                                        foreach (var @interface in runtimeType.GetInterfaces().Where(i => i.IsPublic))
+                                        {
+                                            if (TryFindInvokeMember(@interface, name, args, paramTypes, out result))
+                                            {
+                                                found = true;
+                                                break;
+                                            }
+                                        }
                                     }
-                                    var property = member as PropertyInfo;
-                                    if (!found && property != null)
+                                    else
                                     {
-                                        var setMethod = property.GetSetMethod(true);
-                                        if (setMethod != null && RazorDynamicObject.CompatibleWith(setMethod.GetParameters(), paramTypes))
-                                        {
-                                            result = setMethod.Invoke(component, args);
-                                            found = true;
-                                            break;
-                                        }
-                                        var getMethod = property.GetGetMethod(true);
-                                        if (getMethod != null && RazorDynamicObject.CompatibleWith(getMethod.GetParameters(), paramTypes))
-                                        {
-                                            result = getMethod.Invoke(component, args);
-                                            found = true;
-                                            break;
-                                        }
+                                        found = true;
                                     }
                                 }
                             }
@@ -166,7 +192,7 @@
                     {
                         if (allowMissing)
                         {
-                            return new RazorDynamicObject("", allowMissing);
+                            return RazorDynamicObject.Create("", allowMissing);
                         }
                         throw;
                     }
@@ -177,25 +203,86 @@
                 }
                 else
                 {
-                    return new RazorDynamicObject(result, allowMissing);
+                    return RazorDynamicObject.Create(result, allowMissing);
                 }
             }
-
-
-            //public object CastTo(Type t)
-            //{
-            //    object act = castedObject.ActLike(t);
-            //    return new NewRazorDynamicObject(act);
-            //}
         }
 
 
         private MarshalWrapper component;
-        public RazorDynamicObject(object wrapped, bool allowMissingMembers = false)
+        internal RazorDynamicObject(object wrapped, bool allowMissingMembers = false)
             : base ()
         {
             component = new MarshalWrapper(wrapped, allowMissingMembers);
         }
+
+        public static Type MapType(Type @type)
+        {
+            if (@type.IsPublic)
+            {
+                return @type;
+            }
+            var ints = @type.GetInterfaces().Where(t => t.IsPublic).Select(MapInterface).ToArray();
+            if (ints.Length > 0)
+            {
+                if (ints.Length == 1)
+                {
+                    return ints[0];
+                }
+                else
+                {
+                    var newType = ImpromptuInterface.Build.BuildProxy.BuildType(
+                        typeof(RazorDynamicObject), ints.First(), ints.Skip(1).ToArray());
+                    return newType;
+                }
+            }
+            return typeof(object);
+        }
+
+        public static Type MapInterface(Type @interface)
+        {
+            if (!@interface.IsGenericType)
+            {
+                return @interface;
+            }
+            var genericType = @interface.GetGenericTypeDefinition();
+            var args = @interface.GetGenericArguments().Select(MapType).ToArray();
+            return genericType.MakeGenericType(args);
+        }
+        
+        private static bool IsWrapped(object wrapped)
+        {
+            if (wrapped is RazorDynamicObject)
+            {
+                return true;
+            }
+            else if (wrapped is IActLikeProxy)
+            {
+                var actLike = (IActLikeProxy)wrapped;
+                object orig = actLike.Original;
+                return IsWrapped(orig);
+            }
+            return false;
+        }
+
+        public static object Create(object wrapped, bool allowMissingMembers = false)
+        {
+            if (IsWrapped(wrapped))
+            {
+                return wrapped;
+            }
+            var wrapper = new RazorDynamicObject(wrapped, allowMissingMembers);
+            var interfaces = 
+                wrapped.GetType().GetInterfaces()
+                .Where(t => t.IsPublic && t != typeof(IDynamicMetaObjectProvider))
+                .Select(MapInterface).ToArray();
+            if (interfaces.Length > 0)
+            {
+                return Impromptu.DynamicActLike(wrapper, interfaces);
+            }
+            return wrapper;
+        }
+
         
         /// <summary>
         /// Initializes a new instance of the <see cref="ImpromptuForwarder"/> class.
@@ -207,6 +294,7 @@
         {
             component = info.GetValue<MarshalWrapper>("Component");
         }
+
         /// <summary>
         /// Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.
         /// </summary>

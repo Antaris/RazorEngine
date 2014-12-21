@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security;
 using System.Text;
 
 namespace ImpromptuInterface.Build
@@ -41,6 +42,7 @@ namespace ImpromptuInterface.Build
         /// Returns the actual object that is put into the graph.
         /// </returns>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. The call will not work on a medium trusted server.</exception>
+        [SecurityCritical]
         public object GetRealObject(StreamingContext context)
         {
             var tInterfaces = Interfaces ?? MonoInterfaces.Select(it => Type.GetType(it)).ToArray();

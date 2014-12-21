@@ -158,7 +158,7 @@ namespace RazorEngine.Templating
                 modelType = null;
                 if (isAnon || Configuration.AllowMissingPropertiesOnDynamic)
                 {
-                    model = new RazorDynamicObject(model, Configuration.AllowMissingPropertiesOnDynamic);
+                    model = RazorDynamicObject.Create(model, Configuration.AllowMissingPropertiesOnDynamic);
                 }
             }
             return Tuple.Create(model, modelType);

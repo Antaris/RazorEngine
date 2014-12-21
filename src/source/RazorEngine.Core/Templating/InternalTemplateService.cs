@@ -46,7 +46,12 @@ namespace RazorEngine.Templating
         /// <returns>The resolved template.</returns>
         public ITemplate Resolve(string cacheName, object model, Type modelType, ResolveType resolveType)
         {
-            return _service.ResolveInternal(cacheName, model, modelType, resolveType, _template);
+            DynamicWrapperService.CheckModelType(modelType);
+            return _service.ResolveInternal(
+                cacheName, 
+                DynamicWrapperService.GetDynamicModel(
+                    modelType, model, _service.Configuration.AllowMissingPropertiesOnDynamic),
+                modelType, resolveType, _template);
         }
 
         /// <summary>
