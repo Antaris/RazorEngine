@@ -113,6 +113,7 @@
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
     <Compile Include="Compilation\CompilerServicesUtility.cs" />
+    <Compile Include="Compilation\CrossAppDomainObject.cs" />
     <Compile Include="Compilation\CSharp\CSharpCodeParser.cs" />
     <Compile Include="Compilation\CSharp\CSharpDirectCompilerService.cs" />
     <Compile Include="Compilation\CSharp\CSharpRazorCodeGenerator.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElement.cs" />
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElementCollection.cs" />
     <Compile Include="RazorService.cs" />
+    <Compile Include="Templating\DynamicWrapperService.cs" />
     <Compile Include="Templating\IsolatedRazorEngineService.cs" />
     <Compile Include="Templating\WrapperTemplateManager.cs" />
     <Compile Include="Configuration\Xml\XmlTemplateServiceConfiguration.cs" />

@@ -61,7 +61,7 @@ namespace RazorEngine.Templating
         }
         public static IRazorEngineService Create(ITemplateServiceConfiguration config)
         {
-            return new RazorEngineService(config);
+            return new DynamicWrapperService(new RazorEngineService(config), false, config.AllowMissingPropertiesOnDynamic);
         }
         #endregion
 

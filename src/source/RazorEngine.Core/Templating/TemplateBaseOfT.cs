@@ -59,28 +59,7 @@
         public T Model
         {
             get { return (T)currentModel; }
-            [SecuritySafeCritical]
-            set
-            {
-                if (HasDynamicModel && !(value is DynamicObject) && !(value is ExpandoObject) && !(value is RazorDynamicObject))
-                {
-                    //var wrapper = new RazorDynamicObject
-                    //           {
-                    //               Model = value, 
-                    //               AllowMissingPropertiesOnDynamic = 
-                    //                    InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic
-                    //           };
-                    currentModel = new RazorDynamicObject(value, InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic);
-                }
-                //currentModel = new RazorDynamicObject
-                //               {
-                //                   Model = value, 
-                //                   AllowMissingPropertiesOnDynamic = 
-                //                        InternalTemplateService.Configuration.AllowMissingPropertiesOnDynamic
-                //               };
-                else
-                    currentModel = value;
-            }
+            set { currentModel = value; }
         }
 
         #endregion

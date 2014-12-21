@@ -13,19 +13,57 @@
     using System.Security;
     using System.Security.Permissions;
     
+
     /// <summary>
     /// Provides template parsing and compilation in an isolated application domain.
     /// </summary>
     //[SecuritySafeCritical]
     public class IsolatedRazorEngineService : IRazorEngineService
     {
+        public interface IConfigCreator
+        {
+            ITemplateServiceConfiguration CreateConfiguration();
+        }
+        [Serializable]
+        public class LanguageEncodingConfigCreator : IConfigCreator
+        {
+            Language language; 
+            Encoding encoding;
+            public LanguageEncodingConfigCreator(Language language = Language.CSharp, Encoding encoding = Encoding.Html)
+            {
+                this.language = language;
+                this.encoding = encoding;
+            }
+            public ITemplateServiceConfiguration CreateConfiguration()
+            {
+                return new TemplateServiceConfiguration()
+                {
+                    Language = language,
+                    EncodedStringFactory = RazorEngineService.GetEncodedStringFactory(encoding)
+                };
+            }
+        }
+
+        [Serializable]
+        public class DefaultConfigCreator : IConfigCreator
+        {
+            public DefaultConfigCreator()
+            {
+            }
+            public ITemplateServiceConfiguration CreateConfiguration()
+            {
+                return new TemplateServiceConfiguration();
+            }
+        }
+
         public class SanboxHelper : MarshalByRefObject
         {
             //[SecurityCritical]
-            public IRazorEngineService CreateEngine(Language lang, Encoding enc)
+            public IRazorEngineService CreateEngine(IConfigCreator configCreator)
             {
                 //(new PermissionSet(PermissionState.Unrestricted)).Assert();
-                return RazorEngineService.Create();
+                var config = configCreator.CreateConfiguration();
+                return new RazorEngineService(config);
             }
         }
 
@@ -40,52 +78,14 @@
         /// <summary>
         /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
         /// </summary>
-        [SecurityCritical]
-        public IsolatedRazorEngineService()
-            : this(Language.CSharp, Encoding.Html, (IAppDomainFactory)null) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        [SecurityCritical]
-        public IsolatedRazorEngineService(Language language)
-            : this(language, Encoding.Html, (IAppDomainFactory)null) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
-        /// </summary>
-        /// <param name="encoding">The encoding.</param>
-        [SecurityCritical]
-        public IsolatedRazorEngineService(Encoding encoding)
-            : this(Language.CSharp, encoding, (IAppDomainFactory)null) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
-        /// </summary>
-        /// <param name="appDomainFactory">The application domain factory.</param>
-        [SecurityCritical]
-        public IsolatedRazorEngineService(IAppDomainFactory appDomainFactory)
-            : this(Language.CSharp, Encoding.Html, appDomainFactory) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
-        /// </summary>
-        /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
-        [SecurityCritical]
-        public IsolatedRazorEngineService(Func<AppDomain> appDomainFactory)
-            : this(Language.CSharp, Encoding.Html, appDomainFactory) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>
-        /// </summary>
         /// <param name="language">The code language.</param>
         /// <param name="encoding">The encoding.</param>
         /// <param name="appDomainFactory">The application domain factory.</param>
         [SecurityCritical]
-        public IsolatedRazorEngineService(Language language, Encoding encoding, IAppDomainFactory appDomainFactory)
+        internal IsolatedRazorEngineService(IConfigCreator configCreator, IAppDomainFactory appDomainFactory)
         {
             _appDomain = CreateAppDomain(appDomainFactory ?? new DefaultAppDomainFactory());
+            var config = configCreator ?? new DefaultConfigCreator();
 
             string assemblyName = RazorEngineServiceType.Assembly.FullName;
             string typeName = RazorEngineServiceType.FullName;
@@ -98,39 +98,42 @@
                 );
 
             SanboxHelper helper = (SanboxHelper)handle.Unwrap();
-            _proxy = helper.CreateEngine(language, encoding);
-            //_proxy = (IRazorEngineService)_appDomain.CreateInstance(
-            //    assemblyName, typeName, false, BindingFlags.NonPublic | BindingFlags.Instance,
-            //    null, new object[] { language, encoding }, CultureInfo.CurrentCulture, null).Unwrap();
+            _proxy = helper.CreateEngine(config);
         }
 
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
         [SecurityCritical]
-        public IsolatedRazorEngineService(Language language, Func<AppDomain> appDomainFactory)
-            : this(language, Encoding.Html, new DelegateAppDomainFactory(appDomainFactory)) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
-        /// </summary>
-        /// <param name="language">The code language.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
+        public static IRazorEngineService Create()
+        {
+            return Create(null, (IAppDomainFactory)null);
+        }
         [SecurityCritical]
-        public IsolatedRazorEngineService(Language language, Encoding encoding, Func<AppDomain> appDomainFactory)
-            : this(language, encoding, new DelegateAppDomainFactory(appDomainFactory)) { }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="IsolatedTemplateService"/>.
-        /// </summary>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="appDomainFactory">The delegate used to create an application domain.</param>
+        public static IRazorEngineService Create(IConfigCreator config)
+        {
+            return Create(config, (IAppDomainFactory)null);
+        }
         [SecurityCritical]
-        public IsolatedRazorEngineService(Encoding encoding, Func<AppDomain> appDomainFactory)
-            : this(Language.CSharp, encoding, new DelegateAppDomainFactory(appDomainFactory)) { }
+        public static IRazorEngineService Create(IAppDomainFactory appDomainFactory)
+        {
+            return Create(null, appDomainFactory);
+        }
+        [SecurityCritical]
+        public static IRazorEngineService Create(Func<AppDomain> appDomainFactory)
+        {
+            return Create(null, new DelegateAppDomainFactory(appDomainFactory));
+        }
+        [SecurityCritical]
+        public static IRazorEngineService Create(IConfigCreator configCreator, Func<AppDomain> appDomainFactory)
+        {
+            return Create(configCreator, new DelegateAppDomainFactory(appDomainFactory));
+        }
+        [SecurityCritical]
+        public static IRazorEngineService Create(IConfigCreator configCreator, IAppDomainFactory appDomainFactory)
+        {
+            configCreator = configCreator ?? new DefaultConfigCreator();
+            var config = configCreator.CreateConfiguration();
+            var isolated = new IsolatedRazorEngineService(configCreator, appDomainFactory);
+            return new DynamicWrapperService(isolated, true, config.AllowMissingPropertiesOnDynamic);
+        }
         #endregion
         
         #region Methods

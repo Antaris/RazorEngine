@@ -19,7 +19,7 @@
     /// But this type will also make (static) types work which are not serializable.
     /// </summary>
     [Serializable]
-    internal class RazorDynamicObject : ImpromptuObject
+    public class RazorDynamicObject : ImpromptuObject
     {
         public static dynamic Cast<T>(object o)
         {
@@ -140,14 +140,14 @@
                                     var property = member as PropertyInfo;
                                     if (!found && property != null)
                                     {
-                                        var setMethod = property.SetMethod;
+                                        var setMethod = property.GetSetMethod(true);
                                         if (setMethod != null && RazorDynamicObject.CompatibleWith(setMethod.GetParameters(), paramTypes))
                                         {
                                             result = setMethod.Invoke(component, args);
                                             found = true;
                                             break;
                                         }
-                                        var getMethod = property.GetMethod;
+                                        var getMethod = property.GetGetMethod(true);
                                         if (getMethod != null && RazorDynamicObject.CompatibleWith(getMethod.GetParameters(), paramTypes))
                                         {
                                             result = getMethod.Invoke(component, args);

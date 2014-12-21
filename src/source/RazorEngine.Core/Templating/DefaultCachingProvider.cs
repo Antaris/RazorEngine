@@ -70,13 +70,14 @@ namespace RazorEngine.Templating
         {
             var modelTypeKey = GetModelTypeKey(template.ModelType);
             CacheTemplateHelper(template, templateKey, modelTypeKey);
-            if (template.TemplateType.BaseType.GenericTypeArguments.Length > 0)
+            var typeArgs = template.TemplateType.BaseType.GetGenericArguments();
+            if (typeArgs.Length > 0)
             {
-                var alternativeKey = GetModelTypeKey(template.TemplateType.BaseType.GenericTypeArguments[0]);
+                var alternativeKey = GetModelTypeKey(typeArgs[0]);
                 if (alternativeKey != modelTypeKey)
                 {
                     // could be a template with an @model directive.
-                    CacheTemplateHelper(template, templateKey, template.TemplateType.BaseType.GenericTypeArguments[0]);
+                    CacheTemplateHelper(template, templateKey, typeArgs[0]);
                 }
             }
         }

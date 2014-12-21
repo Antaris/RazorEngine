@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using ImpromptuInterface;
+using NUnit.Framework;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
+using RazorEngine.Text;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -36,6 +38,80 @@ namespace Test.RazorEngine
                 e.CompilationData.DeleteAll();
                 throw;
             }
+        }
+
+        public interface IMyInterface
+        {
+            string Test();
+        }
+        public class MyClass : IMyInterface
+        {
+            public string Test()
+            {
+                return "test";
+            }
+            public string More()
+            {
+                return "more";
+            }
+        }
+
+        /// <summary>
+        /// Tests that the fluent configuration can configure a template service with a specific encoding.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_ActLikeTest()
+        {
+            Assert.Ignore();
+            dynamic m = new ExpandoObject();
+            m.Test = new Func<string>(() => "mytest");
+            m.More = new Func<string>(() => "mymore");
+            dynamic _m = Impromptu.DynamicActLike(m, typeof(IMyInterface));
+            Assert.AreEqual("mytest", _m.Test());
+            dynamic o = new MyClass();
+            dynamic _o = Impromptu.DynamicActLike(o, typeof(IMyInterface));
+            Assert.AreEqual("test", _o.Test());
+
+            Assert.AreEqual("more", _o.More());
+            Assert.AreEqual("mymore", _m.More());
+        }
+
+        /// <summary>
+        /// Tests that the fluent configuration can configure a template service with a specific encoding.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_DynamicIEnumerable()
+        {
+            Assert.Ignore();
+            RunTestHelper(service =>
+            {
+                const string template = @"@Enumerable.Count(Model.Data)";
+                const string expected = "3";
+                var anonArray = new[] { new { InnerData = 1 }, new { InnerData = 2 }, new { InnerData = 3 } };
+                var model = new { Data = anonArray.Select(a => a) };
+                string result = service.RunCompileOnDemand(template, "test", null, model, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }, (c) => c.EncodedStringFactory = new RawStringFactory());
+        }
+
+
+        /// <summary>
+        /// Tests that the fluent configuration can configure a template service with a specific encoding.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_WithSpecificEncoding()
+        {
+            RunTestHelper(service =>
+            {
+                const string template = "<h1>Hello @Model.String</h1>";
+                const string expected = "<h1>Hello Matt & World</h1>";
+
+                var model = new { String = "Matt & World" };
+                string result = service.RunCompileOnDemand(template, "test", null, model, null);
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }, (c) => c.EncodedStringFactory = new RawStringFactory());
         }
 
         /// <summary>

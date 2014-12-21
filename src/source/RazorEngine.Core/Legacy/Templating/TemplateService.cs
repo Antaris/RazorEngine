@@ -34,7 +34,7 @@ namespace RazorEngine.Templating
         public TemplateService(ITemplateServiceConfiguration config)
         {
             Contract.Requires(config != null);
-            _service = (RazorEngineService)RazorEngineService.Create(config);
+            _service = new RazorEngineService(config);
         }
 
         internal TemplateService(RazorEngineService service)
@@ -101,7 +101,7 @@ namespace RazorEngine.Templating
         {
             Contract.Requires(razorTemplate != null);
             Contract.Requires(cacheName != null);
-            _service.CompileAndCache(GetKeyAndAdd(razorTemplate, cacheName), modelType);
+            _service.CompileAndCache(GetKeyAndAdd(razorTemplate, cacheName), CheckModelType(modelType));
         }
 
         /// <summary>
@@ -125,6 +125,45 @@ namespace RazorEngine.Templating
             return _service.Core.CreateInstanceContext(templateType);
         }
 
+        private Type CheckModelType(Type modelType)
+        {
+            if (modelType == null)
+            {
+                return null;
+            }
+            if (DynamicWrapperService.IsAnonymousTypeRecursive(modelType))
+            {
+                //throw new ArgumentException("Cannot use anonymous type as model type.");
+                modelType = null;
+            }
+            if (modelType != null && CompilerServicesUtility.IsDynamicType(modelType))
+            {
+                modelType = null;
+            }
+            return modelType;
+        }
+
+        private Tuple<object, Type> CheckModel(object model)
+        {
+            if (model == null)
+            {
+                return Tuple.Create((object)null, (Type)null);
+            }
+            Type modelType = (model == null) ? typeof(object) : model.GetType();
+
+            bool isAnon = DynamicWrapperService.IsAnonymousTypeRecursive(modelType);
+            if (isAnon ||
+                CompilerServicesUtility.IsDynamicType(modelType))
+            {
+                modelType = null;
+                if (isAnon || Configuration.AllowMissingPropertiesOnDynamic)
+                {
+                    model = new RazorDynamicObject(model, Configuration.AllowMissingPropertiesOnDynamic);
+                }
+            }
+            return Tuple.Create(model, modelType);
+        }
+
         /// <summary>
         /// Creates an instance of <see cref="ITemplate"/> from the specified string template.
         /// </summary>
@@ -143,7 +182,10 @@ namespace RazorEngine.Templating
         {
             var key = GetKeyAndAdd(razorTemplate);
             ICompiledTemplate compiledTemplate;
-            Type modelType = (model == null) ? typeof(object) : model.GetType();
+            var check = CheckModel(model);
+            Type modelType = check.Item2;
+            model = check.Item1;
+            
             if (templateType == null) {
                 compiledTemplate = _service.CompileAndCacheInternal(key, modelType);
             }
@@ -256,7 +298,7 @@ namespace RazorEngine.Templating
         [Pure]
         public virtual Type CreateTemplateType(string razorTemplate, Type modelType)
         {
-            var result = _service.Core.CreateTemplateType(new LoadedTemplateSource(razorTemplate), modelType);
+            var result = _service.Core.CreateTemplateType(new LoadedTemplateSource(razorTemplate), CheckModelType(modelType));
             result.Item2.DeleteAll();
             return result.Item1;
         }
@@ -353,7 +395,12 @@ namespace RazorEngine.Templating
             if (razorTemplate == null)
                 throw new ArgumentNullException("razorTemplate");
             var key = GetKeyAndAdd(razorTemplate, cacheName);
-            return _service.GetTemplate(key, GetTypeFromModelObject(model) , model);
+
+            var check = CheckModel(model);
+            Type modelType = check.Item2;
+            model = check.Item1;
+
+            return _service.GetTemplate(key, modelType, model);
             // return this.GetTemplate<object>(razorTemplate, model, cacheName);
         }
 
@@ -371,6 +418,8 @@ namespace RazorEngine.Templating
             if (razorTemplate == null)
                 throw new ArgumentNullException("razorTemplate");
             var key = GetKeyAndAdd(razorTemplate, cacheName);
+            var check = CheckModel(model);
+            model = check.Item1;
             return _service.GetTemplate(key, typeof(T), model);
         }
 
@@ -445,7 +494,10 @@ namespace RazorEngine.Templating
         public virtual string Parse<T>(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
         {
             using(var writer = new System.IO.StringWriter())
-	        {
+            {
+                var key = GetKeyAndAdd(razorTemplate, cacheName);
+                var check = CheckModel(model);
+                model = check.Item1;
                 _service.RunCompileOnDemand(GetKeyAndAdd(razorTemplate, cacheName), writer, typeof(T), model, viewBag);
                 return writer.ToString();
 	        }
@@ -542,21 +594,7 @@ namespace RazorEngine.Templating
             //CachedTemplateItem item;
             //return _cache.TryRemove(cacheName, out item);
         }
-
-
-        /// <summary>
-        /// This is a helper method to get the type that fits best to a given model object.
-        /// We use this method only on places where we have no modelType (in legacy code).
-        /// </summary>
-        /// <param name="model">the object we try to get the type from</param>
-        /// <param name="modelType">the preferred type of the model (if not null this will be returned.)</param>
-        /// <returns></returns>
-        internal static Type GetTypeFromModelObject(object model, Type modelType = null)
-        {
-            var actualModelType = (model == null) ? null : model.GetType();
-            return modelType ?? actualModelType;
-        }
-
+        
         /// <summary>
         /// Resolves the template with the specified name.
         /// </summary>
@@ -565,8 +603,11 @@ namespace RazorEngine.Templating
         /// <returns>The resolved template.</returns>
         public virtual ITemplate Resolve(string cacheName, object model)
         {
+            var check = CheckModel(model);
+            var modelType = check.Item2;
+            model = check.Item1;
             return _service.GetTemplate(
-                _service.GetKey(cacheName), GetTypeFromModelObject(model), model);
+                _service.GetKey(cacheName), modelType, model);
         }
 
         /// <summary>
@@ -581,8 +622,11 @@ namespace RazorEngine.Templating
             if (string.IsNullOrWhiteSpace(cacheName))
                 throw new ArgumentException("'cacheName' is a required parameter.");
             using(var writer = new System.IO.StringWriter())
-	        {
-                _service.RunCachedTemplate(_service.GetKey(cacheName), writer, GetTypeFromModelObject(model), model, viewBag);
+            {
+                var check = CheckModel(model);
+                var modelType = check.Item2;
+                model = check.Item1;
+                _service.RunCachedTemplate(_service.GetKey(cacheName), writer, modelType, model, viewBag);
                 return writer.ToString();
 	        }
         }

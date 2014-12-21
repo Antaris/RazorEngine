@@ -69,7 +69,7 @@ namespace Test.RazorEngine
         [Test]
         public void IsolatedRazorEngineService_WithNoModel_InSandbox()
         {
-            using (var service = new IsolatedRazorEngineService(SandboxCreator))
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
             {
                 const string template = "<h1>Hello World</h1>";
                 const string expected = template;
@@ -86,7 +86,7 @@ namespace Test.RazorEngine
         [Test]
         public void IsolatedRazorEngineService_BadTemplate_InSandbox()
         {
-            using (var service = new IsolatedRazorEngineService(SandboxCreator))
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
             {
                 string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
                 
@@ -110,7 +110,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_VeryBadTemplate_InSandbox()
         {
-            using (var service = new IsolatedRazorEngineService(SandboxCreator))
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
             {
                 string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
 
@@ -163,7 +163,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CanParseSimpleTemplate_WithNoModel()
         {
-            using (var service = new IsolatedRazorEngineService())
+            using (var service = IsolatedRazorEngineService.Create())
             {
                 const string template = "<h1>Hello World</h1>";
                 const string expected = template;
@@ -180,7 +180,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CanParseSimpleTemplate_WithComplexSerializableModel()
         {
-            using (var service = new IsolatedRazorEngineService())
+            using (var service = IsolatedRazorEngineService.Create())
             {
                 const string template = "<h1>Hello @Model.Forename</h1>";
                 const string expected = "<h1>Hello Matt</h1>";
@@ -198,7 +198,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithComplexNonSerializableModel()
         {
-            using (var service = new IsolatedRazorEngineService())
+            using (var service = IsolatedRazorEngineService.Create())
             {
                 const string template = "<h1>Animal Type: @Model.Type</h1>";
 
@@ -222,7 +222,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithAnonymousModel()
         {
-            using (var service = new IsolatedRazorEngineService())
+            using (var service = IsolatedRazorEngineService.Create())
             {
                 const string template = "<h1>Animal Type: @Model.Type</h1>";
                 const string expected = "<h1>Animal Type: Cat</h1>";
@@ -245,7 +245,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithExpandoModel()
         {
-            using (var service = new IsolatedRazorEngineService())
+            using (var service = IsolatedRazorEngineService.Create())
             {
                 const string template = "<h1>Animal Type: @Model.Type</h1>";
                 const string expected = "<h1>Animal Type: Cat</h1>";
@@ -269,7 +269,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithDynamicModel()
         {
-            using (var service = new IsolatedRazorEngineService())
+            using (var service = IsolatedRazorEngineService.Create())
             {
                 const string template = "<h1>Animal Type: @Model.Type</h1>";
                 const string expected = "<h1>Animal Type: Cat</h1>";
@@ -294,7 +294,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                using (var service = new IsolatedRazorEngineService(() => AppDomain.CurrentDomain))
+                using (var service = IsolatedRazorEngineService.Create(() => AppDomain.CurrentDomain))
                 { }
             });
         }
@@ -313,7 +313,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                using (var service = new IsolatedRazorEngineService(() => null))
+                using (var service = IsolatedRazorEngineService.Create(() => null))
                 { }
             });
         }
