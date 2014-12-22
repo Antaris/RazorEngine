@@ -310,7 +310,7 @@
                 // Success case
                 razorTemplates = new string[] { "Template1", "Template2", "Template3" };
                 templateTypes = new Type[] { null, null, null };
-                IEnumerable<ITemplate> instances = service.CreateTemplates(razorTemplates, templateTypes, null, false);
+                IEnumerable<ITemplate> instances = service.CreateTemplates(razorTemplates, templateTypes, null, null, false);
 
                 index = 0;
                 foreach (ITemplate instance in instances)
@@ -324,7 +324,7 @@
                 // No razorTemplates or templateTypes provided
                 Assert.Throws<ArgumentException>(() =>
                 {
-                    service.CreateTemplates(null, null, null, false);
+                    service.CreateTemplates(null, null, null, null, false);
                 });
 
                 // Unbalanced razorTemplates/templateTypes (templateTypes to small)
@@ -332,7 +332,7 @@
                 {
                     razorTemplates = new string[] { "Template1", "Template2", "Template3" };
                     templateTypes = new Type[] { null, null };
-                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
+                    service.CreateTemplates(razorTemplates, templateTypes, null, null, false);
                 });
 
                 // Unbalanced razorTemplates/templateTypes (templateTypes too large)
@@ -340,7 +340,7 @@
                 {
                     razorTemplates = new string[] { "Template1", "Template2", "Template3" };
                     templateTypes = new Type[] { null, null, null, null };
-                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
+                    service.CreateTemplates(razorTemplates, templateTypes, null, null, false);
                 });
 
                 // Unbalanced razorTemplates/templateTypes (razorTemplates and templateTypes are NULL)
@@ -348,7 +348,7 @@
                 {
                     razorTemplates = new string[] { "Template1", "Template2", null };
                     templateTypes = new Type[] { null, null, null };
-                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
+                    service.CreateTemplates(razorTemplates, templateTypes, null, null, false);
                 });
             }
         }

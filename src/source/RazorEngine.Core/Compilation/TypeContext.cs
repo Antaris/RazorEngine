@@ -41,6 +41,12 @@
         public string TemplateContent { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the template file.
+        /// </summary>
+        /// <value>The name of the template file.</value>
+        public string TemplateFileName { get; set; }
+
+        /// <summary>
         /// Gets or sets the base template type.
         /// </summary>
         public Type TemplateType { get; set; }

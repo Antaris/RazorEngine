@@ -51,7 +51,7 @@
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            var compileUnit = GetCodeCompileUnit(context.ClassName, context.TemplateContent, context.Namespaces,
+            var compileUnit = GetCodeCompileUnit(context.ClassName, context.TemplateContent, context.TemplateFileName, context.Namespaces,
                                                  context.TemplateType, context.ModelType);
 
             var @params = new CompilerParameters
