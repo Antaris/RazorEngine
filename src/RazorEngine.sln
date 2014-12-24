@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Core", "source\RazorEngine.Core\RazorEngine.Core.csproj", "{D268F86D-2DAB-4329-A75F-3BCF6D5BCDC4}"
 EndProject
@@ -40,10 +40,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{A9A2DC20-74A8-4F03-8EDB-A0B6B95F7401}"
 	ProjectSection(SolutionItems) = preProject
 		..\doc\AboutRazor.md = ..\doc\AboutRazor.md
+		Caching.md = Caching.md
 		..\doc\Contributing.md = ..\doc\Contributing.md
 		..\doc\DevelopReadme.md = ..\doc\DevelopReadme.md
 		..\doc\Encoding.md = ..\doc\Encoding.md
 		..\doc\IntellisenseAndResharper.md = ..\doc\IntellisenseAndResharper.md
+		Isolation.md = Isolation.md
 		..\doc\LICENSE.md = ..\doc\LICENSE.md
 		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
 		..\doc\TemplateBasics.md = ..\doc\TemplateBasics.md

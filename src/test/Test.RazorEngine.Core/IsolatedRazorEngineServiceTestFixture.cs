@@ -81,7 +81,7 @@ namespace Test.RazorEngine
         }
 
         /// <summary>
-        /// Tests that a simple template without a model can be parsed.
+        /// Tests that a bad template cannot do stuff
         /// </summary>
         [Test]
         public void IsolatedRazorEngineService_BadTemplate_InSandbox()
@@ -105,7 +105,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         }
 
         /// <summary>
-        /// Tests that a simple template without a model can be parsed.
+        /// Tests that a very bad template cannot change its permissions.
         /// </summary>
         [Test]
         public void IsolatedRazorEngineService_VeryBadTemplate_InSandbox()
@@ -155,7 +155,24 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 File.Delete(file);
             });
         }
-
+        
+        /// <summary>
+        /// Tests that a simple viewbag is working.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_DynamicViewBag()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello @Model.Forename, @ViewBag.Test</h1>";
+                const string expected = "<h1>Hello Matt, TestItem</h1>";
+                dynamic viewbag = new DynamicViewBag();
+                viewbag.Test = "TestItem";
+                var model = new Person { Forename = "Matt" };
+                string result = service.RunCompile(template, "test", typeof(Person), model, (DynamicViewBag)viewbag);
+                Assert.AreEqual(expected, result);
+            }
+        }
 
         /// <summary>
         /// Tests that a simple template without a model can be parsed.

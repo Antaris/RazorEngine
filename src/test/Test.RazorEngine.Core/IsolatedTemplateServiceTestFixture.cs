@@ -24,7 +24,7 @@
         #region Tests
 
         /// <summary>
-        /// Tests that a simple template without a model can be parsed.
+        /// Tests that a bad template cannot write where it wants.
         /// </summary>
         [Test]
         public void IsolatedTemplateService_BadTemplate_InSandbox()
@@ -50,7 +50,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         }
 
         /// <summary>
-        /// Tests that a simple template without a model can be parsed.
+        /// Tests that a very bad template cannot change its permission.
         /// </summary>
         [Test]
         public void IsolatedTemplateService_VeryBadTemplate_InSandbox()

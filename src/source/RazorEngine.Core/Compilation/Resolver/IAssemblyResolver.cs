@@ -18,6 +18,6 @@ namespace RazorEngine.Compilation.Resolver
         /// <param name="context">the context</param>
         /// <param name="includeAssemblies">assemblies which should be included, because requested by the compiler service</param>
         /// <returns></returns>
-        IEnumerable<string> GetReferences(TypeContext context, IEnumerable<string> includeAssemblies);
+        IEnumerable<string> GetReferences(TypeContext context, IEnumerable<string> includeAssemblies = null);
     }
 }

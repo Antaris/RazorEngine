@@ -8,6 +8,7 @@
     /// <summary>
     /// Defines a dynamic view bag.
     /// </summary>
+    [Serializable]
     public class DynamicViewBag : DynamicObject
     {
         #region Fields
