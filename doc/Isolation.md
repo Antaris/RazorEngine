@@ -41,10 +41,10 @@ You can use the above method like this to create an AppDomain with partial trust
             string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
                 
             string template = @"
-@using System.IO
-@{
-File.WriteAllText(""$file$"", ""BAD DATA"");
-}".Replace("$file$", file.Replace("\\", "\\\\"));
+    @using System.IO
+    @{
+    File.WriteAllText(""$file$"", ""BAD DATA"");
+    }".Replace("$file$", file.Replace("\\", "\\\\"));
             Assert.Throws<SecurityException>(() =>
             {
                 service.RunCompile(template, "test");
