@@ -40,12 +40,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{A9A2DC20-74A8-4F03-8EDB-A0B6B95F7401}"
 	ProjectSection(SolutionItems) = preProject
 		..\doc\AboutRazor.md = ..\doc\AboutRazor.md
-		Caching.md = Caching.md
+		..\doc\Caching.md = ..\doc\Caching.md
 		..\doc\Contributing.md = ..\doc\Contributing.md
 		..\doc\DevelopReadme.md = ..\doc\DevelopReadme.md
 		..\doc\Encoding.md = ..\doc\Encoding.md
 		..\doc\IntellisenseAndResharper.md = ..\doc\IntellisenseAndResharper.md
-		Isolation.md = Isolation.md
+		..\doc\Isolation.md = ..\doc\Isolation.md
 		..\doc\LICENSE.md = ..\doc\LICENSE.md
 		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
 		..\doc\TemplateBasics.md = ..\doc\TemplateBasics.md
