@@ -7,11 +7,20 @@ using ImpromptuInterface.Dynamic;
 
 namespace ImpromptuInterface
 {
-
+    /// <summary>
+    /// Extends the <see cref="ImpromptuForwarder"/> class to allow implicit
+    /// and explicit conversions to any interface type.
+    /// </summary>
     public class ActLikeCaster : ImpromptuForwarder
     {
         private List<Type> _interfaceTypes;
 
+        /// <summary>
+        /// handles any conversion call.
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="result"></param>
+        /// <returns>true if successful.</returns>
         public override bool TryConvert(System.Dynamic.ConvertBinder binder, out object result)
         {
             result = null;
@@ -31,7 +40,11 @@ namespace ImpromptuInterface
             return false;
         }
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActLikeCaster"/> type.
+        /// </summary>
+        /// <param name="target">the target object for call forwarding.</param>
+        /// <param name="types">the supported interface types.</param>
         public ActLikeCaster(object target, IEnumerable<Type> types)
             : base(target)
         {
@@ -39,7 +52,11 @@ namespace ImpromptuInterface
         }
 
 #if !SILVERLIGHT
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActLikeCaster"/> type.
+        /// </summary>
+        /// <param name="info">the serialization info.</param>
+        /// <param name="context">the streaming context.</param>
         public ActLikeCaster(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

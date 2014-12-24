@@ -13,7 +13,8 @@ namespace RazorEngine.Templating
 {
 
     /// <summary>
-    /// Defines a template service.
+    /// Defines a template service and the main API for running templates.
+    /// Implements the <see cref="IRazorEngineService"/> interface.
     /// </summary>
     public class RazorEngineService : MarshalByRefObject, IRazorEngineService
     {
@@ -54,11 +55,19 @@ namespace RazorEngine.Templating
         internal RazorEngineService(Language language, Encoding encoding)
             : this(new TemplateServiceConfiguration() { Language = language, EncodedStringFactory = GetEncodedStringFactory(encoding) }) { }
 
-
+        /// <summary>
+        /// Creates a new <see cref="IRazorEngineService"/> instance.
+        /// </summary>
+        /// <returns></returns>
         public static IRazorEngineService Create()
         {
             return Create(new TemplateServiceConfiguration());
         }
+
+        /// <summary>
+        /// Creates a new <see cref="IRazorEngineService"/> instance with the given configuration.
+        /// </summary>
+        /// <returns></returns>
         public static IRazorEngineService Create(ITemplateServiceConfiguration config)
         {
             return new DynamicWrapperService(new RazorEngineService(config), false, config.AllowMissingPropertiesOnDynamic);
@@ -67,6 +76,9 @@ namespace RazorEngine.Templating
 
         #region Properties
 
+        /// <summary>
+        /// The internal core instance.
+        /// </summary>
         internal RazorEngineCore Core
         {
             get { return _core_with_cache; }
@@ -81,12 +93,24 @@ namespace RazorEngine.Templating
 
         #region Methods
 
+
+        /// <summary>
+        /// Checks if a given template is already cached in the <see cref="ICachingProvider"/>.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
         public bool IsTemplateCached(ITemplateKey key, Type modelType)
         {
             ICompiledTemplate template;
             return Configuration.CachingProvider.TryRetrieveTemplate(key, modelType, out template);
         }
 
+        /// <summary>
+        /// Adds a given template to the <see cref="ITemplateManager"/> as dynamic template.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="templateSource"></param>
         public void AddTemplate(ITemplateKey key, ITemplateSource templateSource)
         {
             Configuration.TemplateManager.AddDynamic(key, templateSource);
@@ -134,6 +158,12 @@ namespace RazorEngine.Templating
             }
         }
 
+        /// <summary>
+        /// Compiles the given template, caches it and returns the result.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
         internal ICompiledTemplate CompileAndCacheInternal(ITemplateKey key, Type modelType)
         {
             var compiled = _core_with_cache.Compile(key, modelType);
@@ -141,11 +171,25 @@ namespace RazorEngine.Templating
             return compiled;
         }
 
-        public void CompileAndCache(ITemplateKey key, Type modelType = null)
+        /// <summary>
+        /// Compiles the specified template and caches it.
+        /// </summary>
+        /// <param name="key">The key of the template.</param>
+        /// <param name="modelType">The model type.</param>
+        public void Compile(ITemplateKey key, Type modelType = null)
         {
             CompileAndCacheInternal(key, modelType);
         }
 
+        /// <summary>
+        /// Tries to resolve the template.
+        /// When the cache misses we either throw an exception or compile the template.
+        /// Otherwise the result is returned.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <param name="compileOnCacheMiss"></param>
+        /// <returns></returns>
         internal ICompiledTemplate GetCompiledTemplate(ITemplateKey key, Type modelType, bool compileOnCacheMiss)
         {
             ICompiledTemplate template;
@@ -164,33 +208,60 @@ namespace RazorEngine.Templating
             return template;
         }
 
-        public void RunCompileOnDemand(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// Runs the given cached template.
+        /// When the cache does not contain the template 
+        /// it will be compiled and cached beforehand.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public void RunCompile(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             var template = GetCompiledTemplate(key, modelType, true);
-            RunCachedTemplate(key, writer, modelType, model, viewBag);
+            Run(key, writer, modelType, model, viewBag);
         }
 
-        public void RunCachedTemplate(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// Runs the given cached template.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public void Run(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             var template = GetCompiledTemplate(key, modelType, false);
             _core_with_cache.RunTemplate(template, writer, model, viewBag);
         }
 
+        /// <summary>
+        /// Helper method for the legacy <see cref="TemplateService"/> class.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         internal ITemplate GetTemplate(ITemplateKey key, Type modelType, object model)
         {
             var template = GetCompiledTemplate(key, modelType, true);
             return _core_with_cache.CreateTemplate(template, model);
         }
 
-
+        /// <summary>
+        /// Gets a given key from the <see cref="ITemplateManager"/> implementation.
+        /// See <see cref="ITemplateManager.GetKey"/>.
+        /// </summary>
+        /// <param name="cacheName"></param>
+        /// <param name="resolveType"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public ITemplateKey GetKey(string cacheName, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null)
         {
             return _core_with_cache.GetKey(cacheName, resolveType, context);
-        }
-
-        internal void RunTemplate(ICompiledTemplate template, System.IO.TextWriter writer, object model, DynamicViewBag viewBag)
-        {
-            _core_with_cache.RunTemplate(template, writer, model, viewBag);
         }
         #endregion
     }

@@ -96,6 +96,11 @@ namespace ImpromptuInterface
             IsSpecialName = isSpecialName;
         }
 
+        /// <summary>
+        /// Equalses the specified other.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
         public bool Equals(InvokeMemberName other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -103,6 +108,11 @@ namespace ImpromptuInterface
             return EqualsHelper(other);
         }
 
+        /// <summary>
+        /// Equalses the specified other.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
         private bool EqualsHelper(InvokeMemberName other)
         {
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RazorEngine.Templating
 {
+    /// <summary>
+    /// The type of a resolve action.
+    /// </summary>
     public enum ResolveType
     {
         /// <summary>

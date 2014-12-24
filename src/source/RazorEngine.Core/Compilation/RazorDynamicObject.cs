@@ -21,65 +21,39 @@
     [Serializable]
     public class RazorDynamicObject : ImpromptuObject
     {
-        public static dynamic Cast<T>(object o)
-        {
-            T data = (T)o;
-            return data;
-        }
-
-        public static object DynamicCast(object o, Type targetType)
-        {
-            var castMethod = typeof(RazorDynamicObject).GetMethod("Cast").MakeGenericMethod(targetType);
-            return castMethod.Invoke(null, new object[] { o });
-        }
-
-        private static BindingFlags Flags =
-            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.DeclaredOnly;
-
-
-        public static bool CompatibleWith(ParameterInfo[] parameterInfo, Type[] paramTypes)
-        {
-            if (parameterInfo.Length != paramTypes.Length)
-            {
-                return false;
-            }
-            for (int i = 0; i < paramTypes.Length; i++)
-            {
-                if (!parameterInfo[i].ParameterType.IsAssignableFrom(paramTypes[i]))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public static bool IsPrimitive(object result)
-        {
-            if (result == null)
-            {
-                return true;
-            }
-            var t = result.GetType();
-            return t.IsPrimitive ||
-                result is string ||
-                result is Decimal ||
-                result is DateTime ||
-                result is DateTimeOffset;
-        }
-
+        /// <summary>
+        /// A helper class to make sure the wrapped object does not leave its <see cref="AppDomain"/>.
+        /// </summary>
         internal class MarshalWrapper : MarshalByRefObject
         {
-            object component;
-            bool allowMissing;
-            Type runtimeType;
+            private object _component;
+            private bool _allowMissing;
+            private Type _runtimeType;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MarshalWrapper"/> class.
+            /// </summary>
+            /// <param name="wrapped">the wrapped object.</param>
+            /// <param name="allowMissingMembers">true when we allow missing properties.</param>
             public MarshalWrapper(object wrapped, bool allowMissingMembers)
             {
-                allowMissing = allowMissingMembers;
-                component = wrapped;
-                runtimeType = wrapped.GetType();
+                _allowMissing = allowMissingMembers;
+                _component = wrapped;
+                _runtimeType = wrapped.GetType();
             }
 
-            private bool TryFindInvokeMember(Type typeToSearch, string name, object[] args, Type[] paramTypes, out object result) {
+            /// <summary>
+            /// Tries to find a member with the given name, the given arguments 
+            /// and the given parameter types and invokes that member.
+            /// </summary>
+            /// <param name="typeToSearch">the type we search for that member.</param>
+            /// <param name="name">the name of the member</param>
+            /// <param name="args">the arguments of the member</param>
+            /// <param name="paramTypes">the type of the arguments of the member</param>
+            /// <param name="result">the result of invoking the found member.</param>
+            /// <returns>true if a member was found and invoked.</returns>
+            private bool TryFindInvokeMember(Type typeToSearch, string name, object[] args, Type[] paramTypes, out object result)
+            {
                 var members = typeToSearch.GetMember(name, RazorDynamicObject.Flags);
                 var found = false;
                 result = null;
@@ -88,7 +62,7 @@
                     var methodInfo = member as MethodInfo;
                     if (!found && methodInfo != null && RazorDynamicObject.CompatibleWith(methodInfo.GetParameters(), paramTypes))
                     {
-                        result = methodInfo.Invoke(component, args);
+                        result = methodInfo.Invoke(_component, args);
                         found = true;
                         break;
                     }
@@ -98,14 +72,14 @@
                         var setMethod = property.GetSetMethod(true);
                         if (setMethod != null && RazorDynamicObject.CompatibleWith(setMethod.GetParameters(), paramTypes))
                         {
-                            result = setMethod.Invoke(component, args);
+                            result = setMethod.Invoke(_component, args);
                             found = true;
                             break;
                         }
                         var getMethod = property.GetGetMethod(true);
                         if (getMethod != null && RazorDynamicObject.CompatibleWith(getMethod.GetParameters(), paramTypes))
                         {
-                            result = getMethod.Invoke(component, args);
+                            result = getMethod.Invoke(_component, args);
                             found = true;
                             break;
                         }
@@ -114,6 +88,11 @@
                 return found;
             }
 
+            /// <summary>
+            /// This method is used to delegate the invocation across the <see cref="AppDomain"/>.
+            /// </summary>
+            /// <param name="invocation">The invocation to cross the <see cref="AppDomain"/>.</param>
+            /// <returns>The result of the invocation on the wrapped instance.</returns>
             public object GetResult(Invocation invocation)
             {
                 object result = null;
@@ -123,8 +102,8 @@
                 try
                 {
                     // First we try to resolve via DLR
-                    dynamic target = component;
-                    result = invocation.InvokeWithStoredArgs(component);
+                    dynamic target = _component;
+                    result = invocation.InvokeWithStoredArgs(_component);
                 }
                 catch (RuntimeBinderException)
                 {
@@ -141,7 +120,7 @@
                             // try to find explicit or implicit operator.
                             try
                             {
-                                result = DynamicCast(component, targetType);
+                                result = DynamicCast(_component, targetType);
                                 found = true;
                             }
                             catch (Exception)
@@ -165,10 +144,10 @@
                             {
                                 if (!found)
                                 {
-                                    if (!TryFindInvokeMember(runtimeType, name, args, paramTypes, out result))
+                                    if (!TryFindInvokeMember(_runtimeType, name, args, paramTypes, out result))
                                     {
                                         // search all interfaces as well
-                                        foreach (var @interface in runtimeType.GetInterfaces().Where(i => i.IsPublic))
+                                        foreach (var @interface in _runtimeType.GetInterfaces().Where(i => i.IsPublic))
                                         {
                                             if (TryFindInvokeMember(@interface, name, args, paramTypes, out result))
                                             {
@@ -190,9 +169,9 @@
 
                     if (!found)
                     {
-                        if (allowMissing)
+                        if (_allowMissing)
                         {
-                            return RazorDynamicObject.Create("", allowMissing);
+                            return RazorDynamicObject.Create("", _allowMissing);
                         }
                         throw;
                     }
@@ -203,19 +182,53 @@
                 }
                 else
                 {
-                    return RazorDynamicObject.Create(result, allowMissing);
+                    return RazorDynamicObject.Create(result, _allowMissing);
                 }
             }
         }
 
+        private static BindingFlags Flags =
+            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.DeclaredOnly;
 
-        private MarshalWrapper component;
+
+        private MarshalWrapper _component;
+
         internal RazorDynamicObject(object wrapped, bool allowMissingMembers = false)
             : base ()
         {
-            component = new MarshalWrapper(wrapped, allowMissingMembers);
+            _component = new MarshalWrapper(wrapped, allowMissingMembers);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RazorDynamicObject"/> class.
+        /// </summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
+        protected RazorDynamicObject(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _component = info.GetValue<MarshalWrapper>("Component");
+        }
+
+        /// <summary>
+        /// Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.
+        /// </summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+        [SecurityCritical]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("Component", _component);
+        }
+
+        /// <summary>
+        /// Try to find a type instance which has no references to anonymous types.
+        /// Either we use the type or create a new one which implements the same interfaces.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Type MapType(Type @type)
         {
             if (@type.IsPublic)
@@ -239,6 +252,12 @@
             return typeof(object);
         }
 
+        /// <summary>
+        /// Convert the given interface type instance in another interface 
+        /// type instance which is free of anonymous types.
+        /// </summary>
+        /// <param name="interface"></param>
+        /// <returns></returns>
         public static Type MapInterface(Type @interface)
         {
             if (!@interface.IsGenericType)
@@ -250,6 +269,11 @@
             return genericType.MakeGenericType(args);
         }
         
+        /// <summary>
+        /// Check if an instance is already wrapped with <see cref="RazorDynamicObject"/>.
+        /// </summary>
+        /// <param name="wrapped">the object to check.</param>
+        /// <returns></returns>
         private static bool IsWrapped(object wrapped)
         {
             if (wrapped is RazorDynamicObject)
@@ -265,6 +289,15 @@
             return false;
         }
 
+        /// <summary>
+        /// Create a wrapper around an dynamic object.
+        /// This wrapper ensures that we can cross the <see cref="AppDomain"/>, 
+        /// call internal methods (to make Anonymous types work), 
+        /// or call missing methods (when allowMissingMembers is true).
+        /// </summary>
+        /// <param name="wrapped">The object to wrap.</param>
+        /// <param name="allowMissingMembers">true when we should not throw when missing members are invoked.</param>
+        /// <returns>the wrapped object.</returns>
         public static object Create(object wrapped, bool allowMissingMembers = false)
         {
             if (IsWrapped(wrapped))
@@ -283,37 +316,84 @@
             return wrapper;
         }
 
-        
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImpromptuForwarder"/> class.
+        /// A simple generic cast method. Used for the DynamicCast implementation.
         /// </summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
-        protected RazorDynamicObject(SerializationInfo info, StreamingContext context)
-            : base(info,context)
+        /// <typeparam name="T"></typeparam>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public static dynamic Cast<T>(object o)
         {
-            component = info.GetValue<MarshalWrapper>("Component");
+            T data = (T)o;
+            return data;
         }
 
         /// <summary>
-        /// Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.
+        /// A tricky dynamic cast (Cast in the runtime with dynamic types).
         /// </summary>
-        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
-        /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-        [SecurityCritical]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        /// <param name="o"></param>
+        /// <param name="targetType"></param>
+        /// <returns></returns>
+        public static object DynamicCast(object o, Type targetType)
         {
-            base.GetObjectData(info,context);
-            info.AddValue("Component", component);
+            var castMethod = typeof(RazorDynamicObject).GetMethod("Cast").MakeGenericMethod(targetType);
+            return castMethod.Invoke(null, new object[] { o });
         }
 
+        /// <summary>
+        /// Checks if the fiven ParameterInfo array is compatible with the given type array.
+        /// </summary>
+        /// <param name="parameterInfo"></param>
+        /// <param name="paramTypes"></param>
+        /// <returns></returns>
+        public static bool CompatibleWith(ParameterInfo[] parameterInfo, Type[] paramTypes)
+        {
+            if (parameterInfo.Length != paramTypes.Length)
+            {
+                return false;
+            }
+            for (int i = 0; i < paramTypes.Length; i++)
+            {
+                if (!parameterInfo[i].ParameterType.IsAssignableFrom(paramTypes[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Returnes true when the type of the given result is primitive.
+        /// (ie should not be wrapped in another <see cref="RazorDynamicObject"/> instance)
+        /// </summary>
+        /// <param name="target">the object to check</param>
+        /// <returns></returns>
+        public static bool IsPrimitive(object target)
+        {
+            if (target == null)
+            {
+                return true;
+            }
+            var t = target.GetType();
+            return t.IsPrimitive ||
+                target is string ||
+                target is Decimal ||
+                target is DateTime ||
+                target is DateTimeOffset;
+        }
+
+        /// <summary>
+        /// Captures the invocation and invokes it on the wrapped object (possibly across the <see cref="AppDomain"/> boundary.
+        /// </summary>
+        /// <param name="invocation">The invocation</param>
+        /// <param name="result">the result</param>
+        /// <returns></returns>
         private bool RemoteInvoke(Invocation invocation, out object result)
         {
             result = null;
             try
             {
-                result = component.GetResult(invocation);
+                result = _component.GetResult(invocation);
                 return true;
             }
             catch (RuntimeBinderException)
@@ -322,11 +402,23 @@
             }
         }
 
+        /// <summary>
+        /// Tries to get the member.
+        /// </summary>
+        /// <param name="binder">The binder.</param>
+        /// <param name="result">The result.</param>
+        /// <returns></returns>
         public override bool TryGetMember(System.Dynamic.GetMemberBinder binder, out object result)
         {
             return RemoteInvoke(new Invocation(InvocationKind.Get, binder.Name), out result);
         }
 
+        /// <summary>
+        /// Tries to convert the current instance.
+        /// </summary>
+        /// <param name="binder">The binder.</param>
+        /// <param name="result">The result.</param>
+        /// <returns></returns>
         public override bool TryConvert(System.Dynamic.ConvertBinder binder, out object result)
         {
             var targetType = binder.Type;
@@ -356,10 +448,17 @@
             return false;
         }
 
+        /// <summary>
+        /// Tries to set the member.
+        /// </summary>
+        /// <param name="binder">The binder.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public override bool TrySetMember(System.Dynamic.SetMemberBinder binder, object value)
         {
             return RemoteInvoke(new Invocation(InvocationKind.Set, binder.Name, value), out value);
         }
+
         /// <summary>
         /// Tries the invoke member.
         /// </summary>
@@ -396,6 +495,10 @@
             return RemoteInvoke(new Invocation(InvocationKind.GetIndex, Invocation.IndexBinderName, Util.NameArgsIfNecessary(binder.CallInfo, tCombinedArgs)), out outTemp);
         }
         
+        /// <summary>
+        /// Override ToString and remotely invoke our wrapped instance.
+        /// </summary>
+        /// <returns>Whatever our wrapped instance returns.</returns>
         public override string ToString()
         {
             object result;

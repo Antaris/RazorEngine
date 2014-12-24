@@ -82,14 +82,30 @@
         /// </summary>
         /// <typeparam name="TResolver">The resolve type.</typeparam>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("Please use ManageUsing instead")]
         IConfigurationBuilder ResolveUsing<TResolver>() where TResolver : ITemplateResolver, new();
+
+        /// <summary>
+        /// Sets the manager used to locate unknown templates.
+        /// </summary>
+        /// <typeparam name="TManager">The manager type.</typeparam>
+        /// <returns>The current configuration builder.</returns>
+        IConfigurationBuilder ManageUsing<TManager>() where TManager : ITemplateManager, new();
 
         /// <summary>
         /// Sets the resolver used to locate unknown templates.
         /// </summary>
         /// <param name="resolver">The resolver instance to use.</param>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("Please use ManageUsing instead")]
         IConfigurationBuilder ResolveUsing(ITemplateResolver resolver);
+        
+        /// <summary>
+        /// Sets the manager used to locate unknown templates.
+        /// </summary>
+        /// <param name="manager">The manager instance to use.</param>
+        /// <returns>The current configuration builder.</returns>
+        IConfigurationBuilder ManageUsing(ITemplateManager manager);
 
         /// <summary>
         /// Sets the resolver delegate used to locate unknown templates.

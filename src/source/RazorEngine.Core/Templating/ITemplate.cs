@@ -42,6 +42,7 @@ namespace RazorEngine.Templating
         /// Runs the template and returns the result.
         /// </summary>
         /// <param name="context">The current execution context.</param>
+        /// <param name="writer"></param>
         /// <returns>The merged result of the template.</returns>
         void Run(ExecuteContext context, TextWriter writer);
 

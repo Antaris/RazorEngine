@@ -7,6 +7,10 @@ using System.Text;
 
 namespace RazorEngine.Configuration.Xml
 {
+    /// <summary>
+    /// This is a simple wrapper around an <see cref="ITemplateResolver"/> to provide
+    /// an <see cref="ITemplateManager"/> service.
+    /// </summary>
     public class WrapperTemplateManager : ITemplateManager
     {
         #region Fields
@@ -32,9 +36,9 @@ namespace RazorEngine.Configuration.Xml
 
         #region Methods
         /// <summary>
-        /// Resolves the template content with the specified name.
+        /// Resolves the template content with the specified key.
         /// </summary>
-        /// <param name="name">The name of the template to resolve.</param>
+        /// <param name="key">The key of the template to resolve.</param>
         /// <returns>The template content.</returns>
         public ITemplateSource Resolve(ITemplateKey key)
         {
@@ -47,6 +51,11 @@ namespace RazorEngine.Configuration.Xml
             return new LoadedTemplateSource(templateString);
         }
 
+        /// <summary>
+        /// Adds a template dynamically.
+        /// </summary>
+        /// <param name="key">the key of the template</param>
+        /// <param name="source">the source of the template</param>
         public void AddDynamic(ITemplateKey key, ITemplateSource source)
         {
             _dynamicTemplates.AddOrUpdate(key, source, (k, oldSource) =>
@@ -59,6 +68,14 @@ namespace RazorEngine.Configuration.Xml
             });
         }
 
+        /// <summary>
+        /// Gets the key for a template.
+        /// See <see cref="ITemplateManager.GetKey"/>.
+        /// </summary>
+        /// <param name="name">name of the template</param>
+        /// <param name="templateType">the type of the resolve-context</param>
+        /// <param name="context">the context (ie. parent template).</param>
+        /// <returns></returns>
         public ITemplateKey GetKey(string name, ResolveType templateType, ITemplateKey context)
         {
             return new NameOnlyTemplateKey(name, templateType, context);

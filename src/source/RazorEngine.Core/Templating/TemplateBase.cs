@@ -43,9 +43,15 @@ namespace RazorEngine.Templating
         /// </summary>
         public IInternalTemplateService InternalTemplateService { internal get; set; }
 
+        /// <summary>
+        /// Gets or sets the template service.
+        /// </summary>
         [Obsolete("Only provided for backwards compatibility, use CachedTemplateService instead.")]
         public ITemplateService TemplateService { get; set; }
 
+        /// <summary>
+        /// Gets or sets the current <see cref="IRazorEngineService"/> instance.
+        /// </summary>
         public IRazorEngineService RazorEngine { get; set; }
 
         /// <summary>
@@ -60,6 +66,10 @@ namespace RazorEngine.Templating
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Set the current model.
+        /// </summary>
+        /// <param name="model"></param>
         public virtual void SetModel(object model)
         {
 
@@ -78,14 +88,15 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Includes the template with the specified name.
         /// </summary>
-        /// <param name="cacheName">The name of the template type in cache.</param>
+        /// <param name="name">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
+        /// <param name="modelType"></param>
         /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter Include(string cacheName, object model = null, Type modelType = null)
+        public virtual TemplateWriter Include(string name, object model = null, Type modelType = null)
         {
-            var instance = InternalTemplateService.Resolve(cacheName, model, modelType, ResolveType.Include);
+            var instance = InternalTemplateService.Resolve(name, model, modelType, ResolveType.Include);
             if (instance == null)
-                throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
+                throw new ArgumentException("No template could be resolved with name '" + name + "'");
 
             return new TemplateWriter(tw =>
                 instance.Run(
@@ -146,6 +157,7 @@ namespace RazorEngine.Templating
         /// Runs the template and returns the result.
         /// </summary>
         /// <param name="context">The current execution context.</param>
+        /// <param name="reader"></param>
         /// <returns>The merged result of the template.</returns>
         void ITemplate.Run(ExecuteContext context, TextWriter reader)
         {
@@ -244,6 +256,9 @@ namespace RazorEngine.Templating
         /// Writes an attribute to the result.
         /// </summary>
         /// <param name="name">The name of the attribute.</param>
+        /// <param name="prefix"></param>
+        /// <param name="suffix"></param>
+        /// <param name="values"></param>
         public virtual void WriteAttribute(string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
         {
             WriteAttributeTo(CurrentWriter, name, prefix, suffix, values);
@@ -254,6 +269,9 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="name">The name of the attribute to be written.</param>
+        /// <param name="prefix"></param>
+        /// <param name="suffix"></param>
+        /// <param name="values"></param>
         public virtual void WriteAttributeTo(TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
         {
             bool first = true;
@@ -350,10 +368,10 @@ namespace RazorEngine.Templating
         }
 
         /// <summary>
-        /// Writes a <see cref="PositionTagged{string}" /> literal to the result.
+        /// Writes a <see cref="PositionTagged{}" /> literal to the result.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        /// <param name="literal">The literal to be written.</param>
+        /// <param name="value">The literal to be written.</param>
         private void WritePositionTaggedLiteral(TextWriter writer, PositionTagged<string> value)
         {
             WriteLiteralTo(writer, value.Value);

@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace RazorEngine.Templating
 {
+    /// <summary>
+    /// The default caching provider (See <see cref="ICachingProvider"/>).
+    /// This implementation does a very simple in-memory caching.
+    /// It can handle when the same template is used with multiple model-types.
+    /// </summary>
     public class DefaultCachingProvider : ICachingProvider
     {
         private readonly ConcurrentDictionary<string, ConcurrentDictionary<Type, ICompiledTemplate>> _cache =
@@ -16,11 +21,17 @@ namespace RazorEngine.Templating
         private readonly TypeLoader _loader;
         private readonly ConcurrentBag<Assembly> _assemblies = new ConcurrentBag<Assembly>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultCachingProvider"/> class.
+        /// </summary>
         public DefaultCachingProvider()
         {
             _loader = new TypeLoader(AppDomain.CurrentDomain, _assemblies);
         }
 
+        /// <summary>
+        /// The manages <see cref="TypeLoader"/>. See <see cref="ICachingProvider.TypeLoader"/>
+        /// </summary>
         public TypeLoader TypeLoader
         {
             get
@@ -28,8 +39,10 @@ namespace RazorEngine.Templating
                 return _loader;
             }
         }
-        private class NoModel { }
 
+        /// <summary>
+        /// Get the key used within a dictionary for a modelType.
+        /// </summary>
         public static Type GetModelTypeKey(Type modelType)
         {
             if (modelType == null || 
@@ -66,6 +79,11 @@ namespace RazorEngine.Templating
             });
         }
 
+        /// <summary>
+        /// Caches a template. See <see cref="ICachingProvider.CacheTemplate"/>.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="templateKey"></param>
         public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
         {
             var modelTypeKey = GetModelTypeKey(template.ModelType);
@@ -82,6 +100,13 @@ namespace RazorEngine.Templating
             }
         }
 
+        /// <summary>
+        /// Try to retrieve a template from the cache. See <see cref="ICachingProvider.TryRetrieveTemplate"/>.
+        /// </summary>
+        /// <param name="templateKey"></param>
+        /// <param name="modelType"></param>
+        /// <param name="compiledTemplate"></param>
+        /// <returns></returns>
         public bool TryRetrieveTemplate(ITemplateKey templateKey, Type modelType, out ICompiledTemplate compiledTemplate)
         {
             compiledTemplate = null;
@@ -95,7 +120,9 @@ namespace RazorEngine.Templating
             return dict.TryGetValue(modelTypeKey, out compiledTemplate);
         }
 
-
+        /// <summary>
+        /// Dispose the instance.
+        /// </summary>
         public void Dispose()
         {
             _loader.Dispose();

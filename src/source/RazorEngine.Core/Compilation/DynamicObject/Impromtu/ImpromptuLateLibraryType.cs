@@ -55,6 +55,13 @@ namespace ImpromptuInterface.Dynamic
             {
                 _type = type;
             }
+            /// <summary>
+            /// Tries to invoke.
+            /// </summary>
+            /// <param name="binder"></param>
+            /// <param name="args"></param>
+            /// <param name="result"></param>
+            /// <returns></returns>
             public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
             {
                 result = Impromptu.InvokeConstructor(_type, Util.NameArgsIfNecessary(binder.CallInfo, args));
@@ -79,7 +86,9 @@ namespace ImpromptuInterface.Dynamic
             get { return Target != null; }
         }
 
-
+        /// <summary>
+        /// The call target.
+        /// </summary>
         protected override object CallTarget
         {
             get

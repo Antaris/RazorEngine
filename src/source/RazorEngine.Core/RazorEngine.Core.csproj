@@ -228,7 +228,6 @@
     <Compile Include="Templating\BaseTemplateKey.cs" />
     <Compile Include="Templating\RazorEngineCoreWithCache.cs" />
     <Compile Include="Templating\RazorEngineServiceExtensions.cs" />
-    <Compile Include="Templating\TemplateServiceFactory.cs" />
     <Compile Include="Templating\TemplateSource.cs" />
     <Compile Include="Templating\TypeLoader.cs" />
     <Compile Include="Templating\TemplateParsingException.cs" />

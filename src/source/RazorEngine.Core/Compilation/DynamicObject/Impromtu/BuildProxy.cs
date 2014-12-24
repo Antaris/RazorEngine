@@ -36,8 +36,6 @@ namespace ImpromptuInterface.Build
     ///</summary>
     public static class BuildProxy
     {
-
-
         private static ModuleBuilder _builder;
         internal static ModuleBuilder _tempBuilder;
         internal static AssemblyBuilder _tempSaveAssembly;
@@ -51,11 +49,14 @@ namespace ImpromptuInterface.Build
 
         private static readonly MethodInfo ActLike = typeof(BuildProxy).GetMethod("RecursiveActLike",
                                                                                   new[] { typeof(object) });
-
+        /// <summary>
+        /// Calls ActLike on the given object.
+        /// </summary>
+        /// <typeparam name="TInterface">the interface to act like.</typeparam>
+        /// <param name="target">the object "implementing" the interface (duck typing).</param>
+        /// <returns>the wrapper.</returns>
         public static TInterface RecursiveActLike<TInterface>(object target) where TInterface : class
         {
-
-
             return target.ActLike<TInterface>();
         }
 

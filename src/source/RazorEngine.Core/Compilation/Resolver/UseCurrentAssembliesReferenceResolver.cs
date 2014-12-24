@@ -6,8 +6,17 @@ using System.Text;
 
 namespace RazorEngine.Compilation.Resolver
 {
+    /// <summary>
+    /// Resolves the assemblies by using all currently loaded assemblies. See <see cref="IAssemblyReferenceResolver"/>
+    /// </summary>
     public class UseCurrentAssembliesReferenceResolver : IAssemblyReferenceResolver
     {
+        /// <summary>
+        /// See <see cref="IAssemblyReferenceResolver.GetReferences"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="includeAssemblies"></param>
+        /// <returns></returns>
         public IEnumerable<string> GetReferences(TypeContext context = null, IEnumerable<string> includeAssemblies = null)
         {
             return CompilerServicesUtility

@@ -60,6 +60,9 @@ namespace ImpromptuInterface.Build
             }
         }
 
+        /// <summary>
+        /// The false block.
+        /// </summary>
         public class BranchFalseOverBlock : IDisposable
         {
             private readonly ILGenerator _generator;
@@ -179,6 +182,25 @@ namespace ImpromptuInterface.Build
             return new BranchTrueOverBlock(generator);
         }
 
+        /// <summary>
+        /// Emits branch false. expects using keyword.
+        /// </summary>
+        /// <param name="generator">The generator.</param>
+        /// <param name="condition">The condition.</param>
+        /// <returns></returns>
+        /// <example>
+        /// Using keyword allows you to set the emit code you are branching over and then automatically emits label when disposing
+        /// <code>
+        /// 		<![CDATA[
+        /// using (tIlGen.EmitBranchTrue(g=>g.Emit(OpCodes.Ldsfld, tConvertField)))
+        /// {
+        /// tIlGen.EmitDynamicConvertBinder(CSharpBinderFlags.None, returnType, contextType);
+        /// tIlGen.EmitCallsiteCreate(convertFuncType);
+        /// tIlGen.Emit(OpCodes.Stsfld, tConvertField);
+        /// }
+        /// ]]>
+        /// 	</code>
+        /// </example>
         public static BranchFalseOverBlock EmitBranchFalse(this ILGenerator generator, Action<ILGenerator> condition)
         {
             condition(generator);
@@ -342,6 +364,7 @@ namespace ImpromptuInterface.Build
         /// <param name="generator">The generator.</param>
         /// <param name="flag">The binding flags.</param>
         /// <param name="name">The name.</param>
+        /// <param name="genericParms">The generic parameters.</param>
         /// <param name="context">The context.</param>
         /// <param name="argInfo">The arg info.</param>
         /// <param name="argNames">The arg names.</param>
@@ -533,6 +556,13 @@ namespace ImpromptuInterface.Build
         }
 
 
+        /// <summary>
+        /// Emits the dynamic event binder.
+        /// </summary>
+        /// <param name="generator">The generator.</param>
+        /// <param name="flag">The binding flag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="context">The context.</param>
         public static void EmitDynamicIsEventBinder(this ILGenerator generator, CSharpBinderFlags flag, string name, Type context)
         {
             generator.Emit(OpCodes.Ldc_I4, (int)flag);

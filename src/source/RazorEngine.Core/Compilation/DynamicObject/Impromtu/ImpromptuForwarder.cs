@@ -168,7 +168,11 @@ namespace ImpromptuInterface.Dynamic
         /// Provides the implementation for operations that invoke an object. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations such as invoking an object or a delegate.
         /// </summary>
         /// <param name="binder">Provides information about the invoke operation.</param>
-        /// <param name="args">The arguments that are passed to the object during the invoke operation. For example, for the sampleObject(100) operation, where sampleObject is derived from the <see cref="T:System.Dynamic.DynamicObject"/> class, <paramref name="args[0]"/> is equal to 100.</param>
+        /// <param name="args">
+        /// The arguments that are passed to the object during the invoke operation.
+        /// For example, for the sampleObject(100) operation, where sampleObject is derived 
+        /// from the <see cref="T:System.Dynamic.DynamicObject"/> class, <paramref name="args"/>[0] is equal to 100.
+        /// </param>
         /// <param name="result">The result of the object invocation.</param>
         /// <returns>
         /// true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a language-specific run-time exception is thrown.
@@ -204,6 +208,13 @@ namespace ImpromptuInterface.Dynamic
             return true;
         }
 
+        /// <summary>
+        /// Forwards the invoke operation.
+        /// </summary>
+        /// <param name="binder">the binder</param>
+        /// <param name="args">the arguments</param>
+        /// <param name="result">the result</param>
+        /// <returns>true when successfull</returns>
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             if (CallTarget == null)
@@ -236,7 +247,12 @@ namespace ImpromptuInterface.Dynamic
         }
 
 
-
+        /// <summary>
+        /// Forwards the invoke operation.
+        /// </summary>
+        /// <param name="binder">the binder</param>
+        /// <param name="value">the value</param>
+        /// <returns>true when successfull</returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             if (CallTarget == null)
@@ -272,6 +288,13 @@ namespace ImpromptuInterface.Dynamic
             }
         }
 
+        /// <summary>
+        /// Forwards the invoke operation.
+        /// </summary>
+        /// <param name="binder">the binder</param>
+        /// <param name="indexes">the indexes</param>
+        /// <param name="result">the result</param>
+        /// <returns>true when successfull</returns>
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
             if (CallTarget == null)
@@ -294,6 +317,13 @@ namespace ImpromptuInterface.Dynamic
             }
         }
 
+        /// <summary>
+        /// Forwards the invoke operation.
+        /// </summary>
+        /// <param name="binder">the binder</param>
+        /// <param name="indexes">the indexes</param>
+        /// <param name="value">the value</param>
+        /// <returns>true when successfull</returns>
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
             if (CallTarget == null)
@@ -329,6 +359,11 @@ namespace ImpromptuInterface.Dynamic
             return Equals(other.CallTarget, CallTarget);
         }
 
+        /// <summary>
+        /// Checks if the objects are equal.
+        /// </summary>
+        /// <param name="obj">the other object</param>
+        /// <returns>true when the current instance is equal to the given one.</returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return ReferenceEquals(null, CallTarget);
@@ -337,6 +372,10 @@ namespace ImpromptuInterface.Dynamic
             return Equals((ImpromptuForwarder)obj);
         }
 
+        /// <summary>
+        /// Gets the hashcode of the current instance.
+        /// </summary>
+        /// <returns>the hash code.</returns>
         public override int GetHashCode()
         {
             return (CallTarget != null ? CallTarget.GetHashCode() : 0);

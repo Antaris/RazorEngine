@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace RazorEngine
 {
+    /// <summary>
+    /// Provides quick access to the functionality of the <see cref="RazorEngineService"/> class.
+    /// </summary>
     public static class RazorService
     {
         private static IRazorEngineService _service = RazorEngineService.Create();
@@ -21,234 +24,377 @@ namespace RazorEngine
             }
         }
 
-        public static void CompileAndCache(ITemplateKey key, Type modelType = null)
+        /// <summary>
+        /// Gets a given key from the <see cref="ITemplateManager"/> implementation.
+        /// See <see cref="ITemplateManager.GetKey"/>.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="resolveType"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static ITemplateKey GetKey(string name, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null)
         {
-            _service.CompileAndCache(key, modelType);
+            return _service.GetKey(name, resolveType, context);
         }
 
-        //public static void CompileAndCache<T>(ITemplateKey key)
-        //{
-        //    _service.CompileAndCache<T>(key);
-        //}
-
-        public static void CompileAndCache(string name, Type modelType = null)
+        /// <summary>
+        /// Checks if a given template is already cached.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        public static bool IsTemplateCached(ITemplateKey key, Type modelType)
         {
-            _service.CompileAndCache(name, modelType);
+            return _service.IsTemplateCached(key, modelType);
         }
 
-        //public static void CompileAndCache<T>(string name)
-        //{
-        //    _service.CompileAndCache<T>(name);
-        //}
-
-        public static void CompileAndCache(ITemplateSource templateSource, ITemplateKey key, Type modelType = null)
+        /// <summary>
+        /// Checks if a given template is already cached.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        public static bool IsTemplateCached(string name, Type modelType)
         {
-            _service.CompileAndCache(templateSource, key, modelType);
+            return _service.IsTemplateCached(name, modelType);
         }
 
-        //public static void CompileAndCache<T>(ITemplateSource templateSource, ITemplateKey key)
-        //{
-        //    _service.CompileAndCache<T>(templateSource, key);
-        //}
-
-        public static void CompileAndCache(string templateSource, ITemplateKey key, Type modelType = null)
+        /// <summary>
+        /// Adds a given template to the template manager as dynamic template.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="templateSource"></param>
+        public static void AddTemplate(ITemplateKey key, ITemplateSource templateSource)
         {
-            _service.CompileAndCache(templateSource, key, modelType);
+            _service.AddTemplate(key, templateSource);
         }
 
-        //public static void CompileAndCache<T>(string templateSource, ITemplateKey key)
-        //{
-        //    _service.CompileAndCache<T>(templateSource, key);
-        //}
-
-        public static void CompileAndCache(ITemplateSource templateSource, string name, Type modelType = null)
+        /// <summary>
+        /// Adds a given template to the template manager as dynamic template.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="templateSource"></param>
+        public static void AddTemplate(string name, ITemplateSource templateSource)
         {
-            _service.CompileAndCache(templateSource, name, modelType);
+            _service.AddTemplate(name, templateSource);
         }
 
-        //public static void CompileAndCache<T>(ITemplateSource templateSource, string name)
-        //{
-        //    _service.CompileAndCache<T>(templateSource, name);
-        //}
-
-        public static void CompileAndCache(string templateSource, string name, Type modelType = null)
+        /// <summary>
+        /// Adds a given template to the template manager as dynamic template.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="templateSource"></param>
+        public static void AddTemplate(ITemplateKey key, string templateSource)
         {
-            _service.CompileAndCache(templateSource, name, modelType);
+            _service.AddTemplate(key, templateSource);
         }
 
-        //public static void CompileAndCache<T>(string templateSource, string name)
-        //{
-        //    _service.CompileAndCache<T>(templateSource, name);
-        //}
-
-
-        public static void RunCompileOnDemand(ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// Adds a given template to the template manager as dynamic template.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="templateSource"></param>
+        public static void AddTemplate(string name, string templateSource)
         {
-            _service.RunCompileOnDemand(key, writer, modelType, model, viewBag);
+            _service.AddTemplate(name, templateSource);
         }
 
-        //public static void RunCompileOnDemand<T>(ITemplateKey key, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCompileOnDemand<T>(key, writer, model, viewBag);
-        //}
-
-        public static void RunCompileOnDemand(string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.Compile"/>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        public static void Compile(ITemplateKey key, Type modelType = null)
         {
-            _service.RunCompileOnDemand(name, writer, modelType, model, viewBag);
+            _service.Compile(key, modelType);
         }
 
-        //public static void RunCompileOnDemand<T>(string name, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCompileOnDemand<T>(name, writer, model, viewBag);
-        //}
-
-        public static void RunCompileOnDemand(ITemplateSource templateSource, ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.Compile"/>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        public static void Compile(string name, Type modelType = null)
         {
-            _service.RunCompileOnDemand(templateSource, key, writer, modelType, model, viewBag);
+            _service.Compile(name, modelType);
         }
 
-        //public static void RunCompileOnDemand<T>(ITemplateSource templateSource, ITemplateKey key, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCompileOnDemand<T>(templateSource, key, writer, model, viewBag);
-        //}
-
-        public static void RunCompileOnDemand(string templateSource, ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.Compile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.Compile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        public static void Compile(ITemplateSource templateSource, ITemplateKey key, Type modelType = null)
         {
-            _service.RunCompileOnDemand(templateSource, key, writer, modelType, model, viewBag);
+            _service.Compile(templateSource, key, modelType);
         }
 
-        //public static void RunCompileOnDemand<T>(string templateSource, ITemplateKey key, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCompileOnDemand<T>(templateSource, key, writer, model, viewBag);
-        //}
-
-        public static void RunCompileOnDemand(ITemplateSource templateSource, string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.Compile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.Compile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        public static void Compile(string templateSource, ITemplateKey key, Type modelType = null)
         {
-            _service.RunCompileOnDemand(templateSource, name, writer, modelType, model, viewBag);
+            _service.Compile(templateSource, key, modelType);
         }
 
-        //public static void RunCompileOnDemand<T>(ITemplateSource templateSource, string name, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCompileOnDemand<T>(templateSource, name, writer, model, viewBag);
-        //}
-
-        public static void RunCompileOnDemand(string templateSource, string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.Compile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.Compile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        public static void Compile(ITemplateSource templateSource, string name, Type modelType = null)
         {
-            _service.RunCompileOnDemand(templateSource, name, writer, modelType, model, viewBag);
+            _service.Compile(templateSource, name, modelType);
         }
 
-        //public static void RunCompileOnDemand<T>(string templateSource, string name, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCompileOnDemand<T>(templateSource, name, writer, model, viewBag);
-        //}
-
-
-        public static string RunCompileOnDemand(ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.Compile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.Compile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        public static void Compile(string templateSource, string name, Type modelType = null)
         {
-            return _service.RunCompileOnDemand(key, modelType, model, viewBag);
+            _service.Compile(templateSource, name, modelType);
         }
 
-        //public static string RunCompileOnDemand<T>(ITemplateKey key, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCompileOnDemand<T>(key, model, viewBag);
-        //}
-
-        public static string RunCompileOnDemand(string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void RunCompile(ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            return _service.RunCompileOnDemand(name, modelType, model, viewBag);
+            _service.RunCompile(key, writer, modelType, model, viewBag);
         }
 
-        //public static string RunCompileOnDemand<T>(string name, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCompileOnDemand<T>(name, model, viewBag);
-        //}
-
-        public static string RunCompileOnDemand(ITemplateSource templateSource, ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void RunCompile(string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            return _service.RunCompileOnDemand(templateSource, key, modelType, model, viewBag);
+            _service.RunCompile(name, writer, modelType, model, viewBag);
         }
 
-        //public static string RunCompileOnDemand<T>(ITemplateSource templateSource, ITemplateKey key, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCompileOnDemand<T>(templateSource, key, model, viewBag);
-        //}
-
-        public static string RunCompileOnDemand(string templateSource, ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="key"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void RunCompile(ITemplateSource templateSource, ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            return _service.RunCompileOnDemand(templateSource, key, modelType, model, viewBag);
+            _service.RunCompile(templateSource, key, writer, modelType, model, viewBag);
         }
 
-        //public static string RunCompileOnDemand<T>(string templateSource, ITemplateKey key, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCompileOnDemand<T>(templateSource, key, model, viewBag);
-        //}
-
-        public static string RunCompileOnDemand(ITemplateSource templateSource, string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="key"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void RunCompile(string templateSource, ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            return _service.RunCompileOnDemand(templateSource, name, modelType, model, viewBag);
+            _service.RunCompile(templateSource, key, writer, modelType, model, viewBag);
         }
 
-        //public static string RunCompileOnDemand<T>(ITemplateSource templateSource, string name, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCompileOnDemand<T>(templateSource, name, model, viewBag);
-        //}
-
-        public static string RunCompileOnDemand(string templateSource, string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="name"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void RunCompile(ITemplateSource templateSource, string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            return _service.RunCompileOnDemand(templateSource, name, modelType, model, viewBag);
+            _service.RunCompile(templateSource, name, writer, modelType, model, viewBag);
         }
 
-        //public static string RunCompileOnDemand<T>(string templateSource, string name, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCompileOnDemand<T>(templateSource, name, model, viewBag);
-        //}
-
-
-
-        public static void RunCachedTemplate(ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="name"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void RunCompile(string templateSource, string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            _service.RunCachedTemplate(key, writer, modelType, model, viewBag);
+            _service.RunCompile(templateSource, name, writer, modelType, model, viewBag);
         }
 
-        //public static void RunCachedTemplate<T>(ITemplateKey key, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCachedTemplate<T>(key, writer, model, viewBag);
-        //}
-
-        public static void RunCachedTemplate(string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string RunCompile(ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            _service.RunCachedTemplate(name, writer, modelType, model, viewBag);
+            return _service.RunCompile(key, modelType, model, viewBag);
         }
 
-        //public static void RunCachedTemplate<T>(string name, TextWriter writer, T model, DynamicViewBag viewBag = null)
-        //{
-        //    _service.RunCachedTemplate<T>(name, writer, model, viewBag);
-        //}
-
-
-
-
-        public static string RunCachedTemplate(ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string RunCompile(string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            return _service.RunCachedTemplate(key, modelType, model, viewBag);
+            return _service.RunCompile(name, modelType, model, viewBag);
         }
 
-        //public static string RunCachedTemplate<T>(ITemplateKey key, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCachedTemplate<T>(key, model, viewBag);
-        //}
-
-
-        public static string RunCachedTemplate(string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string RunCompile(ITemplateSource templateSource, ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
-            return _service.RunCachedTemplate(name, modelType, model, viewBag);
+            return _service.RunCompile(templateSource, key, modelType, model, viewBag);
         }
 
-        //public static string RunCachedTemplate<T>(string name, T model, DynamicViewBag viewBag = null)
-        //{
-        //    return _service.RunCachedTemplate<T>(name, model, viewBag);
-        //}
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string RunCompile(string templateSource, ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            return _service.RunCompile(templateSource, key, modelType, model, viewBag);
+        }
 
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string RunCompile(ITemplateSource templateSource, string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            return _service.RunCompile(templateSource, name, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// See <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which calls <see cref="RazorEngineService.AddTemplate"/> before calling <see cref="RazorEngineService.RunCompile"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="templateSource"></param>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string RunCompile(string templateSource, string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            return _service.RunCompile(templateSource, name, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// See <see cref="RazorEngineService.Run"/>.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void Run(ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            _service.Run(key, writer, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// See <see cref="RazorEngineService.Run"/>.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void Run(string name, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            _service.Run(name, writer, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// See <see cref="RazorEngineService.Run"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string Run(ITemplateKey key, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            return _service.Run(key, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// See <see cref="RazorEngineService.Run"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static string Run(string name, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            return _service.Run(name, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// Sets the backend service for the static methods within the <see cref="RazorService"/> class.
+        /// </summary>
+        /// <param name="service">the new backend service.</param>
         public static void SetRazorEngine(IRazorEngineService service)
         {
             Contract.Requires(service != null);

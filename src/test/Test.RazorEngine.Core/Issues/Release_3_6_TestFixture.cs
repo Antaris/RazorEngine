@@ -39,9 +39,9 @@
                 };
                 dynamic collectionOfAnonymous = list.Select(p => new { Number = p.Age }).ToList();
                 var arrayOfAnonymous = collectionOfAnonymous.ToArray();
-                string applied_1 = service.RunCompileOnDemand(template, "test1", null, (object)collectionOfAnonymous);
+                string applied_1 = service.RunCompile(template, "test1", null, (object)collectionOfAnonymous);
                 //string applied_2 = service.RunCompileOnDemand(template, "test2", (Type)collectionOfAnonymous.GetType(), (object)collectionOfAnonymous);
-                string applied_3 = service.RunCompileOnDemand(template, "test3", null, (object)arrayOfAnonymous);
+                string applied_3 = service.RunCompile(template, "test3", null, (object)arrayOfAnonymous);
                 //string applied_4 = service.RunCompileOnDemand(template, "test4", (Type)arrayOfAnonymous.GetType(), (object)arrayOfAnonymous);
 
                 Assert.AreEqual(expected, applied_1);

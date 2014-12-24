@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace RazorEngine.Templating
 {
+    /// <summary>
+    /// A wrapper around an <see cref="IRazorEngineService"/> instance to provide support for anonymous classes.
+    /// </summary>
     internal class DynamicWrapperService : IRazorEngineService
     {
         private readonly IRazorEngineService _origin;
@@ -18,6 +21,7 @@ namespace RazorEngine.Templating
             _mustSerialize = mustSerialize;
             _allowMissingPropertiesOnDynamic = allowMissingPropertiesOnDynamic;
         }
+
         public ITemplateKey GetKey(string name, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null)
         {
             return _origin.GetKey(name, resolveType, context);
@@ -28,35 +32,38 @@ namespace RazorEngine.Templating
             _origin.AddTemplate(key, templateSource);
         }
 
-        internal static bool IsAnonymousTypeRecursive(Type t)
-        {
-            return t != null && (CompilerServicesUtility.IsAnonymousType(t) ||
-                // part of generic
-                t.GetGenericArguments().Any(arg => IsAnonymousTypeRecursive(arg)) ||
-                // Array is special
-                (t.IsArray && IsAnonymousTypeRecursive(t.GetElementType())));
-        }
-
+        /// <summary>
+        /// Checks if the given model-type has a reference to an anonymous type and throws.
+        /// </summary>
+        /// <param name="modelType">the type to check</param>
         internal static void CheckModelType(Type modelType)
         {
             if (modelType == null)
             {
                 return;
             }
-            if (IsAnonymousTypeRecursive(modelType))
+            if (CompilerServicesUtility.IsAnonymousTypeRecursive(modelType))
             {
                 throw new ArgumentException(@"We cannot support anonymous model types as those are internal! 
 However you can just use 'dynamic' (modelType == null) and we try to make it work for you (at the cost of performance).");
             }
         }
 
+        /// <summary>
+        /// Checks if we need to wrap the given model in
+        /// an <see cref="RazorDynamicObject"/> instance and wraps it.
+        /// </summary>
+        /// <param name="modelType">the model-type</param>
+        /// <param name="original">the original model</param>
+        /// <param name="allowMissing">true when we should allow missing properties on dynamic models.</param>
+        /// <returns>the original model or an wrapper object.</returns>
         internal static object GetDynamicModel(Type modelType, object original, bool allowMissing)
         {
             object result = original;
             if (modelType == null && original != null)
             {
                 // We try to make some things work:
-                if (IsAnonymousTypeRecursive(original.GetType()))
+                if (CompilerServicesUtility.IsAnonymousTypeRecursive(original.GetType()))
                 {
                     // TODO: we should handle Configuration.AllowMissingPropertiesOnDynamic
                     result = RazorDynamicObject.Create(original, allowMissing);
@@ -75,22 +82,22 @@ However you can just use 'dynamic' (modelType == null) and we try to make it wor
             return _origin.IsTemplateCached(key, modelType);
         }
 
-        public void CompileAndCache(ITemplateKey key, Type modelType = null)
+        public void Compile(ITemplateKey key, Type modelType = null)
         {
             CheckModelType(modelType);
-            _origin.CompileAndCache(key, modelType);
+            _origin.Compile(key, modelType);
         }
 
-        public void RunCompileOnDemand(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        public void RunCompile(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             CheckModelType(modelType);
-            _origin.RunCompileOnDemand(key, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
+            _origin.RunCompile(key, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
         }
 
-        public void RunCachedTemplate(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        public void Run(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
             CheckModelType(modelType);
-            _origin.RunCachedTemplate(key, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
+            _origin.Run(key, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
         }
 
         public void Dispose()

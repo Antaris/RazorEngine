@@ -290,9 +290,9 @@
         }
 
         /// <summary>
-        /// Sets the template resolver.
+        /// Sets the template manager.
         /// </summary>
-        /// <param name="templateResolverType">The template resolver type.</param>
+        /// <param name="templateManagerType">The template manager type.</param>
         private void SetTemplateManager(string templateManagerType)
         {
             var type = GetType(templateManagerType);

@@ -17,25 +17,38 @@
     using System.Security;
 
 
-    [SecurityCritical]
-    public class ParserBaseCreator
-    {
-        private Func<ParserBase> creator;
-        public ParserBaseCreator(Func<ParserBase> creator)
-        {
-            this.creator = creator ?? (() => new HtmlMarkupParser());
-        }
-        public ParserBase Create()
-        {
-            return this.creator();
-        }
-    }
-
     /// <summary>
     /// Provides a base implementation of a compiler service.
     /// </summary>
     public abstract class CompilerServiceBase : MarshalByRefObject, ICompilerService
     {
+        /// <summary>
+        /// This class only exists because we cannot use Func&lt;ParserBase&gt; in non security-critical class.
+        /// </summary>
+        [SecurityCritical]
+        public class ParserBaseCreator
+        {
+            /// <summary>
+            /// The parser creator.
+            /// </summary>
+            private Func<ParserBase> creator;
+            /// <summary>
+            /// Create a new ParserBaseCreator instance.
+            /// </summary>
+            /// <param name="creator">The parser creator.</param>
+            public ParserBaseCreator(Func<ParserBase> creator)
+            {
+                this.creator = creator ?? (() => new HtmlMarkupParser());
+            }
+            /// <summary>
+            /// Execute the given delegate.
+            /// </summary>
+            /// <returns></returns>
+            public ParserBase Create()
+            {
+                return this.creator();
+            }
+        }
 
         #region Constructor
         /// <summary>

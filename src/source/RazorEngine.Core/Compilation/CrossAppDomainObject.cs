@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace RazorEngine.Compilation
-{/// <summary>
+{
+    /// <summary>
     /// Enables access to objects across application domain boundaries.
     /// This type differs from <see cref="MarshalByRefObject"/> by ensuring that the
     /// service lifetime is managed deterministically by the consumer.
@@ -15,6 +16,9 @@ namespace RazorEngine.Compilation
     {
         private bool _disposed;
 
+        /// <summary>
+        /// Cleans up the <see cref="CrossAppDomainObject"/> instance.
+        /// </summary>
         ~CrossAppDomainObject()
         {
             Dispose(false);
@@ -28,6 +32,10 @@ namespace RazorEngine.Compilation
             RemotingServices.Disconnect(this);
         }
 
+        /// <summary>
+        /// initializes the lifetime service for the current instance.
+        /// </summary>
+        /// <returns>null</returns>
         public sealed override object InitializeLifetimeService()
         {
             //
@@ -38,12 +46,19 @@ namespace RazorEngine.Compilation
             return null;
         }
 
+        /// <summary>
+        /// Disposes the current instance.
+        /// </summary>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
             Dispose(true);
         }
 
+        /// <summary>
+        /// Disposes the current instance via the disposable pattern.
+        /// </summary>
+        /// <param name="disposing">true when Dispose() was called manually.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)

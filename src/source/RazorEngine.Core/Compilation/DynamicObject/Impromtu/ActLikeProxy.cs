@@ -50,6 +50,9 @@ namespace ImpromptuInterface.Build
     [Serializable]
     public abstract class ActLikeProxy : ImpromptuForwarder, IActLikeProxyInitialize, ISerializable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActLikeProxy"/> class.
+        /// </summary>
         public ActLikeProxy() : base(null)
         {
 
@@ -159,7 +162,7 @@ namespace ImpromptuInterface.Build
         /// <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
         [SecurityCritical]
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.SetType(typeof(ActLikeProxySerializationHelper));
 

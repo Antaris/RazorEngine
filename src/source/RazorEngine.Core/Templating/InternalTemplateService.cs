@@ -41,14 +41,16 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Resolves the template with the specified name.
         /// </summary>
-        /// <param name="cacheName">The name of the template type in cache.</param>
+        /// <param name="name">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
+        /// <param name="modelType"></param>
+        /// <param name="resolveType"></param>
         /// <returns>The resolved template.</returns>
-        public ITemplate Resolve(string cacheName, object model, Type modelType, ResolveType resolveType)
+        public ITemplate Resolve(string name, object model, Type modelType, ResolveType resolveType)
         {
             DynamicWrapperService.CheckModelType(modelType);
             return _service.ResolveInternal(
-                cacheName, 
+                name, 
                 DynamicWrapperService.GetDynamicModel(
                     modelType, model, _service.Configuration.AllowMissingPropertiesOnDynamic),
                 modelType, resolveType, _template);

@@ -17,7 +17,7 @@ namespace RazorEngine.Configuration
     /// </summary>
     public class TemplateServiceConfiguration : ITemplateServiceConfiguration
     {
-        ITemplateResolver resolver;
+        private ITemplateResolver resolver;
 
         #region Constructor
         /// <summary>

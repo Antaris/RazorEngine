@@ -129,7 +129,7 @@
         /// </summary>
         /// <param name="viewBag">The view bag.</param>
         /// <returns>The instance of <see cref="ExecuteContext"/></returns>
-        ExecuteContext ITemplateService.CreateExecuteContext(DynamicViewBag viewBag = null)
+        ExecuteContext ITemplateService.CreateExecuteContext(DynamicViewBag viewBag)
         {
             throw new NotSupportedException("This operation is not supported directly by the IsolatedTemplateService.");
         }

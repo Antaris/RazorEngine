@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RazorEngine.Templating
 {
+    /// <summary>
+    /// A internal contract for the <see cref="TemplateBase"/> class.
+    /// </summary>
     public interface IInternalTemplateService
     {
         /// <summary>
@@ -24,6 +27,9 @@ namespace RazorEngine.Templating
         /// Resolves the template, this is for internal use only
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="model"></param>
+        /// <param name="modelType"></param>
+        /// <param name="resolveType"></param>
         /// <returns></returns>
         ITemplate Resolve(string name, object model, Type modelType, ResolveType resolveType);
 

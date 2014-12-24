@@ -101,7 +101,7 @@ namespace RazorEngine.Templating
         {
             Contract.Requires(razorTemplate != null);
             Contract.Requires(cacheName != null);
-            _service.CompileAndCache(GetKeyAndAdd(razorTemplate, cacheName), CheckModelType(modelType));
+            _service.Compile(GetKeyAndAdd(razorTemplate, cacheName), CheckModelType(modelType));
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace RazorEngine.Templating
             {
                 return null;
             }
-            if (DynamicWrapperService.IsAnonymousTypeRecursive(modelType))
+            if (CompilerServicesUtility.IsAnonymousTypeRecursive(modelType))
             {
                 //throw new ArgumentException("Cannot use anonymous type as model type.");
                 modelType = null;
@@ -151,7 +151,7 @@ namespace RazorEngine.Templating
             }
             Type modelType = (model == null) ? typeof(object) : model.GetType();
 
-            bool isAnon = DynamicWrapperService.IsAnonymousTypeRecursive(modelType);
+            bool isAnon = CompilerServicesUtility.IsAnonymousTypeRecursive(modelType);
             if (isAnon ||
                 CompilerServicesUtility.IsDynamicType(modelType))
             {
@@ -498,7 +498,7 @@ namespace RazorEngine.Templating
                 var key = GetKeyAndAdd(razorTemplate, cacheName);
                 var check = CheckModel(model);
                 model = check.Item1;
-                _service.RunCompileOnDemand(GetKeyAndAdd(razorTemplate, cacheName), writer, typeof(T), model, viewBag);
+                _service.RunCompile(GetKeyAndAdd(razorTemplate, cacheName), writer, typeof(T), model, viewBag);
                 return writer.ToString();
 	        }
         }
@@ -626,7 +626,7 @@ namespace RazorEngine.Templating
                 var check = CheckModel(model);
                 var modelType = check.Item2;
                 model = check.Item1;
-                _service.RunCachedTemplate(_service.GetKey(cacheName), writer, modelType, model, viewBag);
+                _service.Run(_service.GetKey(cacheName), writer, modelType, model, viewBag);
                 return writer.ToString();
 	        }
         }

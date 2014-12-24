@@ -27,6 +27,11 @@
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Resolves a template.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public string Resolve(string name)
         {
             return _resolver(name);

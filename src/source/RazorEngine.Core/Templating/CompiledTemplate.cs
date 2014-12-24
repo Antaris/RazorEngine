@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RazorEngine.Templating
 {
+    /// <summary>
+    /// A simple readonly implementation of <see cref="ICompiledTemplate"/>.
+    /// </summary>
     internal class CompiledTemplate : ICompiledTemplate
     {
         private readonly CompilationData _tempFiles;
@@ -15,6 +18,7 @@ namespace RazorEngine.Templating
         private readonly ITemplateKey _key;
         private readonly Type _templateType;
         private readonly Type _modelType;
+
         public CompiledTemplate(CompilationData tempFiles, ITemplateKey key, ITemplateSource source, Type templateType, Type modelType)
         {
             _tempFiles = tempFiles;
@@ -23,6 +27,7 @@ namespace RazorEngine.Templating
             _templateType = templateType;
             _modelType = modelType;
         }
+
         public CompilationData CompilationData
         {
             get { return _tempFiles; }

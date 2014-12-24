@@ -26,7 +26,7 @@
         /// Gets a exact error message of the given error collection
         /// </summary>
         /// <param name="errors"></param>
-        /// <param name="sourceCode"></param>
+        /// <param name="files"></param>
         /// <param name="template"></param>
         /// <returns></returns>
         internal static string GetMessage(CompilerErrorCollection errors, CompilationData files, ITemplateSource template)
@@ -76,7 +76,7 @@ More details about the error:
         /// Initialises a new instance of <see cref="TemplateCompilationException"/>.
         /// </summary>
         /// <param name="errors">The set of compiler errors.</param>
-        /// <param name="sourceCode">The source code that wasn't compiled.</param>
+        /// <param name="files">The source code that wasn't compiled.</param>
         /// <param name="template">The source template that wasn't compiled.</param>
         internal TemplateCompilationException(CompilerErrorCollection errors, CompilationData files, ITemplateSource template)
             : base(TemplateCompilationException.GetMessage(errors, files, template))

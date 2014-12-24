@@ -199,11 +199,14 @@
  the generated console output together with a result and its static type.
 </summary>
 </member>
-<member name="F:FSharp.Literate.FSharp.Literate.FsiEvaluator.valueTransformations">
+<member name="F:FSharp.Literate.FsiEvaluator.valueTransformations">
 <summary>
  Registered transformations for pretty printing values
  (the default formats value as a string and emits single CodeBlock)
 </summary>
+</member>
+<member name="">
+
 </member>
 <member name="">
 
@@ -351,18 +354,18 @@
  (ooking for `*.fsx` and `*.md` files).
 </summary>
 </member>
-<member name="F:FSharp.Literate.FSharp.Literate.LiterateCodeOptions.Visibility">
+<member name="P:FSharp.Literate.LiterateCodeOptions.Visibility">
 <summary>
  Specifies the visibility of the snippet in the generated HTML
 </summary>
 </member>
-<member name="F:FSharp.Literate.FSharp.Literate.LiterateCodeOptions.OutputName">
+<member name="P:FSharp.Literate.LiterateCodeOptions.OutputName">
 <summary>
  Specifies the name of the output produced by this snippet
  Use the (*** define-output:foo ***) command to set this value
 </summary>
 </member>
-<member name="F:FSharp.Literate.FSharp.Literate.LiterateCodeOptions.Evaluate">
+<member name="P:FSharp.Literate.LiterateCodeOptions.Evaluate">
 <summary>
  Specifies whether the snippet is evalauted while processing
  Use (*** do-not-eval ***) command to set this to `false`
@@ -558,7 +561,7 @@
  Specifies a context that is passed to functions that generate the output
 </summary>
 </member>
-<member name="F:FSharp.Literate.FSharp.Literate.RazorRender.ViewBag@">
+<member name="F:FSharp.Literate.RazorRender.ViewBag@">
 <summary>
  Dynamic object with more properties (?)
 </summary>
@@ -958,6 +961,11 @@
 <summary>
  Depending on the template file, use either Razor engine
  or simple Html engine with {replacements} to format the document
+</summary>
+</member>
+<member name="P:FSharp.Literate.Templating.razorCache">
+<summary>
+ Very basic and simple caching mechanism for RazorRender instances.
 </summary>
 </member>
 <member name="M:FSharp.Literate.Templating.replaceParameters(System.String,System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}},Microsoft.FSharp.Core.FSharpOption{System.String})">

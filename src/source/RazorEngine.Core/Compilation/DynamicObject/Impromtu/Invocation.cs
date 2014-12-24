@@ -175,6 +175,11 @@ namespace ImpromptuInterface.Dynamic
             return Equals(other.Kind, Kind) && Equals(other.Name, Name) && (Equals(other.Args, Args) || Enumerable.SequenceEqual(other.Args, Args));
         }
 
+        /// <summary>
+        /// Equalses the specified other.
+        /// </summary>
+        /// <param name="obj">The other.</param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -183,6 +188,10 @@ namespace ImpromptuInterface.Dynamic
             return Equals((Invocation)obj);
         }
 
+        /// <summary>
+        /// Get the hash code.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             unchecked

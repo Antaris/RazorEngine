@@ -41,6 +41,11 @@
         #endregion
         
         #region Methods
+
+        /// <summary>
+        /// Tries to create and return a unique temporary directory.
+        /// </summary>
+        /// <returns>the (already created) temporary directory</returns>
         public static string GetTemporaryDirectory()
         {
             var created = false;

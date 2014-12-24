@@ -74,7 +74,7 @@ namespace Test.RazorEngine
                 const string template = "<h1>Hello World</h1>";
                 const string expected = template;
 
-                string result = service.RunCompileOnDemand(template, "test");
+                string result = service.RunCompile(template, "test");
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -97,7 +97,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
                 Assert.Throws<SecurityException>(() =>
                 {
-                    service.RunCompileOnDemand(template, "test");
+                    service.RunCompile(template, "test");
                 });
 
                 Assert.IsFalse(File.Exists(file));
@@ -124,7 +124,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
                 Assert.Throws<InvalidOperationException>(() =>
                 { // cannot create a file in template
-                    service.RunCompileOnDemand(template, "test");
+                    service.RunCompile(template, "test");
                 });
 
                 Assert.IsFalse(File.Exists(file));
@@ -149,7 +149,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 (new PermissionSet(PermissionState.Unrestricted)).Assert();
 File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
-                var test = service.RunCompileOnDemand(template, "test");
+                var test = service.RunCompile(template, "test");
                 
                 Assert.IsTrue(File.Exists(file));
                 File.Delete(file);
@@ -168,7 +168,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 const string template = "<h1>Hello World</h1>";
                 const string expected = template;
 
-                string result = service.RunCompileOnDemand(template, "test");
+                string result = service.RunCompile(template, "test");
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -186,7 +186,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 const string expected = "<h1>Hello Matt</h1>";
 
                 var model = new Person { Forename = "Matt" };
-                string result = service.RunCompileOnDemand(template, "test", typeof(Person), model);
+                string result = service.RunCompile(template, "test", typeof(Person), model);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -205,7 +205,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 Assert.Throws<SerializationException>(() =>
                 {
                     var model = new Animal { Type = "Cat" };
-                    service.RunCompileOnDemand(template, "test", typeof(Animal), model);
+                    service.RunCompile(template, "test", typeof(Animal), model);
                 });
             }
         }
@@ -228,7 +228,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 const string expected = "<h1>Animal Type: Cat</h1>";
 
                 var model = new { Type = "Cat" };
-                var result = service.RunCompileOnDemand(template, "test", null, new RazorDynamicObject(model));
+                var result = service.RunCompile(template, "test", null, new RazorDynamicObject(model));
                 Assert.AreEqual(expected, result);
             }
         }
@@ -252,7 +252,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 
                 dynamic model = new ExpandoObject();
                 model.Type = "Cat";
-                var result = service.RunCompileOnDemand(template, "test", null, (object)RazorDynamicObject.Create(model));
+                var result = service.RunCompile(template, "test", null, (object)RazorDynamicObject.Create(model));
                 Assert.AreEqual(expected, result);
             }
         }
@@ -275,7 +275,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 const string expected = "<h1>Animal Type: Cat</h1>";
 
                 dynamic model = new ValueObject(new Dictionary<string, object> { { "Type", "Cat" } });
-                string result = service.RunCompileOnDemand(template, "test", null, (object)RazorDynamicObject.Create(model));
+                string result = service.RunCompile(template, "test", null, (object)RazorDynamicObject.Create(model));
                 Assert.AreEqual(expected, result);
             }
         }

@@ -4,7 +4,7 @@
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// Provides an <see cref="ITemplateResolver"/> that supports delegated template resolution.
+    /// Provides an <see cref="ITemplateManager"/> that supports delegated template resolution.
     /// </summary>
     public class DelegateTemplateManager : ITemplateManager
     {
@@ -32,7 +32,7 @@
         /// <summary>
         /// Resolves the template content with the specified name.
         /// </summary>
-        /// <param name="name">The name of the template to resolve.</param>
+        /// <param name="key">The key of the template to resolve.</param>
         /// <returns>The template content.</returns>
         public ITemplateSource Resolve(ITemplateKey key)
         {
@@ -45,6 +45,11 @@
             return new LoadedTemplateSource(templateString);
         }
 
+        /// <summary>
+        /// Dynamically add a new template.
+        /// </summary>
+        /// <param name="key">the key of the template</param>
+        /// <param name="source">the source-code of the template</param>
         public void AddDynamic(ITemplateKey key, ITemplateSource source)
         {
             _dynamicTemplates.AddOrUpdate(key, source, (k, oldSource) =>
@@ -57,6 +62,13 @@
             });
         }
 
+        /// <summary>
+        /// Creates a template-key instance (see also <see cref="ITemplateManager.GetKey"/>).
+        /// </summary>
+        /// <param name="name">The name of the template.</param>
+        /// <param name="templateType">the type of the resolve context.</param>
+        /// <param name="context">The context of the template (ie parent template).</param>
+        /// <returns>The template-key.</returns>
         public ITemplateKey GetKey(string name, ResolveType templateType, ITemplateKey context)
         {
             return new NameOnlyTemplateKey(name, templateType, context);

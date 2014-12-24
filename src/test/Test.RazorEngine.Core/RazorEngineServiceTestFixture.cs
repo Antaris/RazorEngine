@@ -98,7 +98,7 @@ namespace Test.RazorEngine
                 const string expected = "3";
                 var anonArray = new[] { new { InnerData = 1 }, new { InnerData = 2 }, new { InnerData = 3 } };
                 var model = new { Data = anonArray.Select(a => a) };
-                string result = service.RunCompileOnDemand(template, "test", null, model, null);
+                string result = service.RunCompile(template, "test", null, model, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             });
@@ -115,10 +115,10 @@ namespace Test.RazorEngine
                 const string template_child = "@Enumerable.Count(Model.Data)";
                 const string template_parent = @"@Include(""Child"", new { Data = Model.Animals})";
                 const string expected = "3";
-                service.CompileAndCache(template_child, "Child", null);
+                service.Compile(template_child, "Child", null);
                 var anonArray = new[] { new Animal { Type = "1" }, new Animal { Type = "2" }, new Animal { Type = "3" } };
                 var model = new AnimalViewModel { Animals = anonArray };
-                string result = service.RunCompileOnDemand(template_parent, "test", typeof(AnimalViewModel), model, null);
+                string result = service.RunCompile(template_parent, "test", typeof(AnimalViewModel), model, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             });
@@ -135,10 +135,10 @@ namespace Test.RazorEngine
                 const string template_child = "@Enumerable.Count(Model.Data)";
                 const string template_parent = @"@Include(""Child"", new { Data = Model.Data})";
                 const string expected = "3";
-                service.CompileAndCache(template_child, "Child", null);
+                service.Compile(template_child, "Child", null);
                 var anonArray = new[] { new { InnerData = 1 }, new { InnerData = 2 }, new { InnerData = 3 } };
                 var model = new { Data = anonArray.Select(a => a) };
-                string result = service.RunCompileOnDemand(template_parent, "test", null, model, null);
+                string result = service.RunCompile(template_parent, "test", null, model, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             });
@@ -156,7 +156,7 @@ namespace Test.RazorEngine
                 const string expected = "<h1>Hello Matt & World</h1>";
 
                 var model = new { String = "Matt & World" };
-                string result = service.RunCompileOnDemand(template, "test", null, model, null);
+                string result = service.RunCompile(template, "test", null, model, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }, (c) => c.EncodedStringFactory = new RawStringFactory());
@@ -173,7 +173,7 @@ namespace Test.RazorEngine
                 const string template = "@foreach (var i in Model.Unknown) { @i }";
                 var exn = Assert.Throws<TemplateCompilationException>(() =>
                 {
-                    string result = service.RunCompileOnDemand(template, "test", typeof(object), new object());
+                    string result = service.RunCompile(template, "test", typeof(object), new object());
                 });
                 exn.CompilationData.DeleteAll();
                 var msg = exn.Message;
@@ -214,7 +214,7 @@ namespace Test.RazorEngine
                     var source = new LoadedTemplateSource(template, file);
                     var exn = Assert.Throws<Microsoft.CSharp.RuntimeBinder.RuntimeBinderException>(() =>
                     {
-                        string result = service.RunCompileOnDemand(source, "test", null, new object());
+                        string result = service.RunCompile(source, "test", null, new object());
                     });
                     // We now have a reference to our template in the stacktrace
                     var stack = exn.StackTrace.ToLowerInvariant();

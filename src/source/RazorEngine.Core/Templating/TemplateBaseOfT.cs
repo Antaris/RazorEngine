@@ -63,7 +63,10 @@
         }
 
         #endregion
-
+        /// <summary>
+        /// Set the model.
+        /// </summary>
+        /// <param name="model"></param>
         public override void SetModel(object model)
         {
             Model = (T)model;
@@ -74,6 +77,7 @@
         /// </summary>
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
+        /// <param name="modelType"></param>
         /// <returns>The template writer helper.</returns>
         public override TemplateWriter Include(string cacheName, object model = null, Type modelType = null)
         {

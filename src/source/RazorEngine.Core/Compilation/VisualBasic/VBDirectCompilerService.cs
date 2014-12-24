@@ -27,6 +27,9 @@
                 markupParserFactory) { }
         #endregion
 
+        /// <summary>
+        /// Extension of a source file without dot ("cs" for C# files or "vb" for VB.NET files).
+        /// </summary>
         public override string SourceFileExtension
         {
             get

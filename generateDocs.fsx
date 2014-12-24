@@ -120,6 +120,7 @@ let buildAllDocumentation outDocDir website_root =
             sourceRepo = github_url + "/blob/master/",
             sourceFolder = "./",
             publicOnly = true, 
+            markDownComments = false, // <see cref=""/> support 
             ?assemblyReferences = references )
 
     CleanDirs [ outDocDir ]

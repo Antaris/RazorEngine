@@ -714,6 +714,12 @@ namespace ImpromptuInterface
 
         internal static readonly IDictionary<Type, Delegate> CompiledExpressions = new Dictionary<Type, Delegate>();
 
+        /// <summary>
+        /// Coerce to delegate.
+        /// </summary>
+        /// <param name="invokeableObject"></param>
+        /// <param name="delegateType"></param>
+        /// <returns></returns>
         public static dynamic CoerceToDelegate(object invokeableObject, Type delegateType)
         {
             if (!typeof(Delegate).IsAssignableFrom(delegateType.BaseType))
