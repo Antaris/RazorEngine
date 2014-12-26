@@ -21,7 +21,7 @@ namespace RazorEngine.Compilation.Resolver
         {
             return CompilerServicesUtility
                    .GetLoadedAssemblies()
-                   .Where(a => !a.IsDynamic && File.Exists(a.Location))
+                   .Where(a => !a.IsDynamic && File.Exists(a.Location) && !a.Location.Contains(CompilerServiceBase.DynamicTemplateNamespace))
                    .GroupBy(a => a.GetName().Name).Select(grp => grp.First(y => y.GetName().Version == grp.Max(x => x.GetName().Version))) // only select distinct assemblies based on FullName to avoid loading duplicate assemblies
                    .Select(a => a.Location)
                    .Concat(includeAssemblies ?? Enumerable.Empty<string>());

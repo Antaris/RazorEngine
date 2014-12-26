@@ -168,11 +168,16 @@
             var result = Compile(context);
             var compileResult = result.Item1;
 
-            CompilationData tmpDir = new CompilationData(result.Item2, null);
+            CompilationData tmpDir;
             if (compileResult.TempFiles != null)
             {
                 tmpDir = new CompilationData(result.Item2, compileResult.TempFiles.TempDir);
             }
+            else
+            {
+                tmpDir = new CompilationData(result.Item2, null);
+            }
+
             if (compileResult.Errors != null && compileResult.Errors.HasErrors)
             {
                 throw new TemplateCompilationException(compileResult.Errors, tmpDir, context.TemplateContent);
