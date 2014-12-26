@@ -29,8 +29,6 @@
         [Test]
         public void IsolatedTemplateService_BadTemplate_InSandbox()
         {
-            if (IsolatedRazorEngineServiceTestFixture.IsRunningOnMono())
-                Assert.Ignore("IsolatedRazorEngineServiceTestFixture is not supported on mono");
             using (var service = new IsolatedTemplateService(IsolatedRazorEngineServiceTestFixture.SandboxCreator))
             {
                 string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
@@ -55,9 +53,6 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         [Test]
         public void IsolatedTemplateService_VeryBadTemplate_InSandbox()
         {
-            if (IsolatedRazorEngineServiceTestFixture.IsRunningOnMono())
-                Assert.Ignore("IsolatedRazorEngineServiceTestFixture is not supported on mono");
-
             using (var service = new IsolatedTemplateService(IsolatedRazorEngineServiceTestFixture.SandboxCreator))
             {
                 string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());

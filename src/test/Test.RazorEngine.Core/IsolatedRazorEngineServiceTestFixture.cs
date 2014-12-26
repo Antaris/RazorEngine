@@ -26,8 +26,7 @@ namespace Test.RazorEngine
             return Type.GetType("Mono.Runtime") != null;
         }
 
-        [SetUp]
-        public void SetUp()
+        public static void CheckMono()
         {
             if (!SecurityManager.SecurityEnabled)
                 Assert.Ignore("SecurityManager.SecurityEnabled is OFF");
@@ -37,6 +36,7 @@ namespace Test.RazorEngine
 
         public static AppDomain SandboxCreator()
         {
+            CheckMono();
 #if MONO
             // Mono has no AddHostEvidence or GetHostEvidence.
             // We do not run the tests anyway.
