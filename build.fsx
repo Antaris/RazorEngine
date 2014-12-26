@@ -175,7 +175,7 @@ MyTarget "ReleaseGithubDoc" (fun isSingle ->
         CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" github_user)@@"html") "gh-pages" true |> printfn "%A"
         StageAll "gh-pages"
         Commit "gh-pages" (sprintf "Update generated documentation %s" release.NugetVersion)
-        printf "gh-pages branch updated in the gh-pages directory, push that branch now? (y,n): "
+        printf "gh-pages branch updated in the gh-pages directory, push that branch to %s now? (y,n): " repro
         let line = System.Console.ReadLine()
         if line = "y" then
             Branches.pushBranch "gh-pages" "origin" "gh-pages"
