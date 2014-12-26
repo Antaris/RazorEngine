@@ -99,6 +99,7 @@
                 GenerateExecutable = false,
                 IncludeDebugInformation = Debug,
                 TreatWarningsAsErrors = false,
+                TempFiles = new TempFileCollection(GetTemporaryDirectory(), true),
                 CompilerOptions = "/target:library /optimize /define:RAZORENGINE"
             };
 
@@ -109,13 +110,15 @@
                 .Distinct(StringComparer.InvariantCultureIgnoreCase);
 
             @params.ReferencedAssemblies.AddRange(assemblies.ToArray());
-
+            var tempDir = @params.TempFiles.TempDir;
+            var assemblyName = Path.Combine(tempDir,
+                String.Format("{0}.{1}.dll", DynamicTemplateNamespace, context.ClassName));
+            @params.TempFiles.AddFile(assemblyName, true);
+            @params.OutputAssembly = assemblyName;
+            
             string sourceCode = null;
             if (Debug)
             {
-                //@params.GenerateInMemory = false;
-                @params.TempFiles = new TempFileCollection(GetTemporaryDirectory(), true);
-                @params.IncludeDebugInformation = true;
                 var builder = new StringBuilder();
                 using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))
                 {
@@ -174,12 +177,11 @@
             {
                 throw new TemplateCompilationException(compileResult.Errors, tmpDir, context.TemplateContent);
             }
-            // Make sure we load the assembly from a file (or it will be fully trusted!)
+            // Make sure we load the assembly from a file and not with
+            // Load(byte[]) (or it will be fully trusted!)
             var assemblyPath = compileResult.PathToAssembly;
             compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
-            //compileResult.CompiledAssembly = AppDomain.CurrentDomain.Load(File.ReadAllBytes(assemblyPath));
-            var type = compileResult.CompiledAssembly.GetType("CompiledRazorTemplates.Dynamic." + context.ClassName);
-            //CodeAccessPermission.RevertAssert();
+            var type = compileResult.CompiledAssembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
             return Tuple.Create(type, tmpDir);
         }
 

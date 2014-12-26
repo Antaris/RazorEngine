@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security;
+using System.Security.Permissions;
 
 namespace RazorEngine.Compilation
 {
@@ -11,6 +14,7 @@ namespace RazorEngine.Compilation
     /// </summary>
     public class CompilationData : IDisposable
     {
+        private bool _disposed;
         /// <summary>
         /// The temporary folder for the compilation process
         /// </summary>
@@ -44,8 +48,68 @@ namespace RazorEngine.Compilation
         /// <summary>
         /// Deletes all remaining files
         /// </summary>
+        [SecuritySafeCritical]
         public void DeleteAll()
         {
+            (new PermissionSet(PermissionState.Unrestricted)).Assert();
+            if (tmpFolder != null)
+            {
+                try
+                {
+                    foreach (var item in Directory.EnumerateFiles(tmpFolder))
+                    {
+                        try
+                        {
+                            File.Delete(item);
+                        }
+                        catch (IOException)
+                        {
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                        }
+                    }
+                }
+                catch (IOException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+                try
+                {
+                    foreach (var item in Directory.EnumerateDirectories(tmpFolder))
+                    {
+                        try
+                        {
+                            Directory.Delete(item, true);
+                        }
+                        catch (IOException)
+                        {
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                        }
+                    }
+                }
+                catch (IOException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+                try
+                {
+                    Directory.Delete(tmpFolder, true);
+                }
+                catch (IOException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+
+            }
         }
 
         /// <summary>
@@ -59,12 +123,30 @@ namespace RazorEngine.Compilation
             }
         }
 
+        ~CompilationData()
+        {
+            Dispose(false);
+        }
+
         /// <summary>
         /// Clean up the compilation (ie delete temporary files).
         /// </summary>
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
+            Dispose(true);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
             DeleteAll();
+
+            _disposed = true;
         }
     }
 }

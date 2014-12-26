@@ -20,8 +20,17 @@
     /// <summary>
     /// Provides a base implementation of a compiler service.
     /// </summary>
-    public abstract class CompilerServiceBase : MarshalByRefObject, ICompilerService
+    public abstract class CompilerServiceBase : ICompilerService
     {
+        /// <summary>
+        /// The namespace for dynamic templates.
+        /// </summary>
+        protected internal const string DynamicTemplateNamespace = "CompiledRazorTemplates.Dynamic";
+        /// <summary>
+        /// A prefix for all dynamically created classes.
+        /// </summary>
+        protected internal const string ClassNamePrefix = "RazorEngine_";
+
         /// <summary>
         /// This class only exists because we cannot use Func&lt;ParserBase&gt; in non security-critical class.
         /// </summary>
@@ -145,7 +154,7 @@
                                DefaultModelType = modelType,
                                DefaultBaseClass = BuildTypeName(templateType),
                                DefaultClassName = className,
-                               DefaultNamespace = "CompiledRazorTemplates.Dynamic",
+                               DefaultNamespace = DynamicTemplateNamespace,
                                GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
                                                                                  "WriteTo", "WriteLiteralTo",
                                                                                  "RazorEngine.Templating.TemplateWriter",

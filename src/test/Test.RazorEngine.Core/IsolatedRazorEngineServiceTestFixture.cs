@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using System.Security;
 using System.Security.Permissions;
@@ -56,9 +57,11 @@ namespace Test.RazorEngine
             // code will be transparent (this is where we get a lot of exceptions, because we now have different security attributes)
             // To work around this we give Razor full trust in the sandbox as well.
             StrongName razorAssembly = typeof(RazorTemplateEngine).Assembly.Evidence.GetHostEvidence<StrongName>();
+            // We trust ourself as well
+            StrongName testAssembly = typeof(IsolatedRazorEngineServiceTestFixture).Assembly.Evidence.GetHostEvidence<StrongName>();
             AppDomainSetup adSetup = new AppDomainSetup();
             adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            AppDomain newDomain = AppDomain.CreateDomain("Sandbox", null, adSetup, permSet, razorEngineAssembly, razorAssembly);
+            AppDomain newDomain = AppDomain.CreateDomain("Sandbox", null, adSetup, permSet, razorEngineAssembly, razorAssembly, testAssembly);
             return newDomain;
 #endif
         }
@@ -77,6 +80,42 @@ namespace Test.RazorEngine
                 string result = service.RunCompile(template, "test");
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that a simple viewbag is working.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_DynamicViewBag_InSandBox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello @ViewBag.Test</h1>";
+                const string expected = "<h1>Hello TestItem</h1>";
+                dynamic viewbag = new DynamicViewBag();
+                viewbag.Test = "TestItem";
+
+                string result = service.RunCompile(template, "test", (Type)null, (object)null, (DynamicViewBag)viewbag);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that a simple viewbag is working.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_Dynamic_InSandBox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello @Model.Forename, @ViewBag.Test</h1>";
+                const string expected = "<h1>Hello Matt, TestItem</h1>";
+                dynamic viewbag = new DynamicViewBag();
+                viewbag.Test = "TestItem";
+                viewbag.Forename = "Matt";
+                string result = service.RunCompile(template, "test", null, (object)viewbag, (DynamicViewBag)viewbag);
+                Assert.AreEqual(expected, result);
             }
         }
 
@@ -101,6 +140,77 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 });
 
                 Assert.IsFalse(File.Exists(file));
+            }
+        }
+
+        public class AssemblyChecker : global::RazorEngine.CrossAppDomainObject
+        {
+            /// <summary>
+            /// The assemblies are called "@(namespace).@(class).dll"
+            /// </summary>
+            const string CompiledAssemblyPrefix = CompilerServiceBase.DynamicTemplateNamespace + "." + CompilerServiceBase.ClassNamePrefix;
+            
+            public bool ExistsCompiledAssembly() {
+                (new PermissionSet(PermissionState.Unrestricted)).Assert();
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var razorEngine = 
+                    assemblies
+                    .Where(a => a.FullName.StartsWith(CompiledAssemblyPrefix))
+                    .FirstOrDefault();
+                return razorEngine != null;
+            }
+
+            public void IsolatedRazorEngineService_CleanUpWorks()
+            {
+                var appDomain = SandboxCreator();
+                using (var service = IsolatedRazorEngineService.Create(() => appDomain))
+                {
+                    string template = @"@Model.Name";
+
+                    var result = service.RunCompile(template, "test", null, new { Name = "test" });
+                    Assert.AreEqual("test", result);
+
+
+                    ObjectHandle handle =
+                        Activator.CreateInstanceFrom(
+                            appDomain, typeof(AssemblyChecker).Assembly.ManifestModule.FullyQualifiedName,
+                            typeof(AssemblyChecker).FullName
+                        );
+
+                    using (var localHelper = new AssemblyChecker())
+                    {
+                        Assert.False(localHelper.ExistsCompiledAssembly());
+                    }
+                    using (var remoteHelper = (AssemblyChecker)handle.Unwrap())
+                    {
+                        Assert.IsTrue(remoteHelper.ExistsCompiledAssembly());
+                    }
+                }
+                Assert.Throws<AppDomainUnloadedException>(() => { Console.WriteLine(appDomain.FriendlyName); });
+                using (var localHelper = new AssemblyChecker())
+                {
+                    Assert.False(localHelper.ExistsCompiledAssembly());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tests that a bad template cannot do stuff
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_CleanUpWorks()
+        {
+            var current = AppDomain.CurrentDomain;
+            var appDomain = AppDomain.CreateDomain("TestDomain.IsolatedRazorEngineService_CleanUpWorks", current.Evidence, current.SetupInformation);
+
+            ObjectHandle handle =
+                Activator.CreateInstanceFrom(
+                    appDomain, typeof(AssemblyChecker).Assembly.ManifestModule.FullyQualifiedName,
+                    typeof(AssemblyChecker).FullName
+                );
+            using (var remoteHelper = (AssemblyChecker)handle.Unwrap())
+            {
+                remoteHelper.IsolatedRazorEngineService_CleanUpWorks();
             }
         }
 
@@ -155,24 +265,6 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 File.Delete(file);
             });
         }
-        
-        /// <summary>
-        /// Tests that a simple viewbag is working.
-        /// </summary>
-        [Test]
-        public void IsolatedRazorEngineService_DynamicViewBag()
-        {
-            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
-            {
-                const string template = "<h1>Hello @Model.Forename, @ViewBag.Test</h1>";
-                const string expected = "<h1>Hello Matt, TestItem</h1>";
-                dynamic viewbag = new DynamicViewBag();
-                viewbag.Test = "TestItem";
-                var model = new Person { Forename = "Matt" };
-                string result = service.RunCompile(template, "test", typeof(Person), model, (DynamicViewBag)viewbag);
-                Assert.AreEqual(expected, result);
-            }
-        }
 
         /// <summary>
         /// Tests that a simple template without a model can be parsed.
@@ -188,6 +280,99 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 string result = service.RunCompile(template, "test");
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
+            }
+        }
+
+        /// <summary>
+        /// Test that we can not access security critical types.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_StaticSecurityCriticalModel_InSandbox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello World @Model.Forename</h1>";
+                const string expected = "<h1>Hello World TestForename</h1>";
+                var model = new Person { Forename = "TestForename" };
+                Assert.Throws<MethodAccessException>(() =>
+                { // Because we cannot access the template constructor (as there is a SecurityCritical type argument)
+                    string result = service.RunCompile(template, "test", typeof(Person), model);
+                    Assert.AreEqual(expected, result);
+                });
+            }
+        }
+
+        /// <summary>
+        /// Test that we can not access security critical members in model.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_StaticSecurityCriticalModelDynamicType_InSandBox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello @Model.Forename</h1>";
+                const string expected = "<h1>Hello Matt</h1>";
+
+                var model = new Person { Forename = "Matt" };
+                Assert.Throws<SecurityException>(() =>
+                { // this time we have no security critical type argument but we still should not be able to access it...
+                    string result = service.RunCompile(template, "test", null, model);
+                    Assert.AreEqual(expected, result);
+                });
+            }
+        }
+
+
+        /// <summary>
+        /// Test that we can not access security critical types.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_StaticSecurityCriticalModelWrapped_InSandbox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello World @Model.Forename</h1>";
+                const string expected = "<h1>Hello World TestForename</h1>";
+                var model = new Person { Forename = "TestForename" };
+
+                string result = service.RunCompile(template, "test", null, new RazorDynamicObject(model));
+                Assert.AreEqual(expected, result);
+                
+            }
+        }
+
+        /// <summary>
+        /// Test that we can access security transparent static models in a sandbox.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_StaticModel_InSandbox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello World @Model.Name</h1>";
+                const string expected = "<h1>Hello World TestForename</h1>";
+                // We "abuse" NameOnlyTemplateKey because it is SecurityTransparent and serializable.
+                var model = new NameOnlyTemplateKey("TestForename", ResolveType.Global, null);
+                string result = service.RunCompile(template, "test", typeof(NameOnlyTemplateKey), model);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Test that we can access security transparent static models via "dynamic" in a sandbox.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_StaticModelDynamicType_InSandBox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello @Model.Name</h1>";
+                const string expected = "<h1>Hello Matt</h1>";
+                // We "abuse" NameOnlyTemplateKey because it is SecurityTransparent and serializable.
+                var model = new NameOnlyTemplateKey("Matt", ResolveType.Global, null);
+                string result = service.RunCompile(template, "test", null, model);
+                Assert.AreEqual(expected, result);
+                
             }
         }
 
@@ -228,16 +413,10 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         }
 
         /// <summary>
-        /// Tests that a simple template with an anonymous model cannot be parsed.
+        /// Tests that a simple template with an anonymous model can be parsed.
         /// </summary>
-        /// <remarks>
-        /// This may seem pointless to test, as the <see cref="IsolatedTemplateService"/> will explicitly
-        /// check and throw the exception, it's worth creating a test for future reference. It's also
-        /// something we can check should we ever find a way to support dynamic/anonymous objects
-        /// across application domain boundaries.
-        /// </remarks>
         [Test]
-        public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithAnonymousModel()
+        public void IsolatedRazorEngineService_ParseSimpleTemplate_WithAnonymousModel()
         {
             using (var service = IsolatedRazorEngineService.Create())
             {
@@ -251,6 +430,24 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         }
 
         /// <summary>
+        /// Tests that a simple template with an anonymous model can be parsed within a sandbox.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_Sandbox_WithAnonymousModel()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Animal Type: @Model.Type</h1>";
+                const string expected = "<h1>Animal Type: Cat</h1>";
+
+                var model = new { Type = "Cat" };
+                var result = service.RunCompile(template, "test", null, new RazorDynamicObject(model));
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+
+        /// <summary>
         /// Tests that a simple template with an expando model cannot be parsed.
         /// </summary>
         /// <remarks>
@@ -260,7 +457,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         /// across application domain boundaries.
         /// </remarks>
         [Test]
-        public void IsolatedRazorEngineService_CannotParseSimpleTemplate_WithExpandoModel()
+        public void IsolatedRazorEngineService_ParseSimpleTemplate_WithExpandoModel()
         {
             using (var service = IsolatedRazorEngineService.Create())
             {

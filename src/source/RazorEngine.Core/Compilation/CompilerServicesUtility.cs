@@ -95,7 +95,7 @@ namespace RazorEngine.Compilation
         public static string GenerateClassName()
         {
             Guid guid = Guid.NewGuid();
-            return String.Format("RazorEngine_{0}", guid.ToString("N"));
+            return String.Format("{0}{1}", CompilerServiceBase.ClassNamePrefix, guid.ToString("N"));
         }
 
         /// <summary>

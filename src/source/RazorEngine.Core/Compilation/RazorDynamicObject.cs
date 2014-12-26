@@ -13,18 +13,19 @@
     using System.Reflection;
     using System.Runtime.Serialization;
     using System.Security;
+    using System.Security.Permissions;
 
     /// <summary>
     /// Wraps a dynamic object for serialization of dynamic objects and anonymous type support.
     /// But this type will also make (static) types work which are not serializable.
     /// </summary>
     [Serializable]
-    public class RazorDynamicObject : ImpromptuObject
+    public class RazorDynamicObject : ImpromptuObject, IDisposable
     {
         /// <summary>
         /// A helper class to make sure the wrapped object does not leave its <see cref="AppDomain"/>.
         /// </summary>
-        internal class MarshalWrapper : MarshalByRefObject
+        internal class MarshalWrapper : CrossAppDomainObject
         {
             private object _component;
             private bool _allowMissing;
@@ -93,8 +94,10 @@
             /// </summary>
             /// <param name="invocation">The invocation to cross the <see cref="AppDomain"/>.</param>
             /// <returns>The result of the invocation on the wrapped instance.</returns>
+            [SecuritySafeCritical]
             public object GetResult(Invocation invocation)
             {
+                (new PermissionSet(PermissionState.Unrestricted)).Assert();
                 object result = null;
                 string name = invocation.Name.Name;
                 object[] args = invocation.Args;
@@ -192,6 +195,7 @@
 
 
         private MarshalWrapper _component;
+        private bool _disposed;
 
         internal RazorDynamicObject(object wrapped, bool allowMissingMembers = false)
             : base ()
@@ -507,5 +511,40 @@
                 out result);
             return (string)result;
         }
+
+        
+        /// <summary>
+        /// Cleans up the <see cref="RazorDynamicObject"/> instance.
+        /// </summary>
+        ~RazorDynamicObject()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Disposes the current instance.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Disposes the current instance via the disposable pattern.
+        /// </summary>
+        /// <param name="disposing">true when Dispose() was called manually.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                _component.Dispose();
+            }
+            _disposed = true;
+        }
+
     }
 }

@@ -11,6 +11,7 @@ namespace RazorEngine.Templating
     /// This implementation assumes that the template-names are unique and returns the name as unique key.
     /// (So this implementation is used by <see cref="DelegateTemplateManager"/> and <see cref="RazorEngine.Configuration.Xml.WrapperTemplateManager"/>.
     /// </summary>
+    [Serializable]
     public class NameOnlyTemplateKey : BaseTemplateKey
     {
         /// <summary>

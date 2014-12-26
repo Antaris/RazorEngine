@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RazorEngine.Compilation
+namespace RazorEngine
 {
     /// <summary>
     /// Enables access to objects across application domain boundaries.
@@ -27,6 +28,7 @@ namespace RazorEngine.Compilation
         /// <summary>
         /// Disconnects the remoting channel(s) of this object and all nested objects.
         /// </summary>
+        [SecuritySafeCritical]
         private void Disconnect()
         {
             RemotingServices.Disconnect(this);
@@ -36,6 +38,7 @@ namespace RazorEngine.Compilation
         /// initializes the lifetime service for the current instance.
         /// </summary>
         /// <returns>null</returns>
+        [SecurityCritical]
         public sealed override object InitializeLifetimeService()
         {
             //

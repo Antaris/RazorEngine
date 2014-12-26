@@ -113,7 +113,7 @@
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
     <Compile Include="Compilation\CompilerServicesUtility.cs" />
-    <Compile Include="Compilation\CrossAppDomainObject.cs" />
+    <Compile Include="Common\CrossAppDomainObject.cs" />
     <Compile Include="Compilation\CSharp\CSharpCodeParser.cs" />
     <Compile Include="Compilation\CSharp\CSharpDirectCompilerService.cs" />
     <Compile Include="Compilation\CSharp\CSharpRazorCodeGenerator.cs" />

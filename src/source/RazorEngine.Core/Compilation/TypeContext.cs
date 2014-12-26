@@ -7,7 +7,7 @@
     /// <summary>
     /// Defines a type context that describes a template to compile.
     /// </summary>
-    public class TypeContext : MarshalByRefObject
+    public class TypeContext
     {
         #region Constructor
         /// <summary>

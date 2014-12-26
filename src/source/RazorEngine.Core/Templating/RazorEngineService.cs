@@ -16,7 +16,7 @@ namespace RazorEngine.Templating
     /// Defines a template service and the main API for running templates.
     /// Implements the <see cref="IRazorEngineService"/> interface.
     /// </summary>
-    public class RazorEngineService : MarshalByRefObject, IRazorEngineService
+    public class RazorEngineService : CrossAppDomainObject, IRazorEngineService
     {
         #region Fields
         private readonly ITemplateServiceConfiguration _config;

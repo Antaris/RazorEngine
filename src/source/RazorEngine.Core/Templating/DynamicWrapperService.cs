@@ -22,6 +22,14 @@ namespace RazorEngine.Templating
             _allowMissingPropertiesOnDynamic = allowMissingPropertiesOnDynamic;
         }
 
+        internal IRazorEngineService Origin
+        {
+            get
+            {
+                return _origin;
+            }
+        }
+
         public ITemplateKey GetKey(string name, ResolveType resolveType = ResolveType.Global, ITemplateKey context = null)
         {
             return _origin.GetKey(name, resolveType, context);

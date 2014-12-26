@@ -16,7 +16,7 @@ namespace RazorEngine.Templating
     using Text;
     using System.Security;
     using System.Security.Permissions;
-    internal class RazorEngineCore : MarshalByRefObject, IRazorEngineCore
+    internal class RazorEngineCore : IRazorEngineCore
     {
         private readonly ITemplateServiceConfiguration _config;
         /// <summary>

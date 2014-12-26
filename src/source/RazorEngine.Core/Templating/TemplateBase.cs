@@ -7,11 +7,14 @@ namespace RazorEngine.Templating
     using System.Security;
     using System.Text;
     using Text;
-
+    
     /// <summary>
     /// Provides a base implementation of a template.
+    /// NOTE: This class is not serializable to prevent subtle errors 
+    /// in user IActivator implementations which would break the sandbox.
+    /// (because executed in the wrong <see cref="AppDomain"/>)
     /// </summary>
-    public abstract class TemplateBase : MarshalByRefObject, ITemplate
+    public abstract class TemplateBase : ITemplate
     {
         #region Fields
         protected ExecuteContext _context;

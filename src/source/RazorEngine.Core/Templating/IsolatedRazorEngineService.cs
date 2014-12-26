@@ -95,7 +95,7 @@
         /// A simple sandbox helper to create the <see cref="IRazorEngineService"/>
         /// in the new <see cref="AppDomain"/>.
         /// </summary>
-        public class SanboxHelper : MarshalByRefObject
+        public class SanboxHelper : CrossAppDomainObject
         {
             /// <summary>
             /// Create the <see cref="IRazorEngineService"/> in the new <see cref="AppDomain"/>.
@@ -110,7 +110,6 @@
         }
 
         #region Fields
-        private static readonly Type RazorEngineServiceType = typeof(RazorEngineService);
         private readonly IRazorEngineService _proxy;
         private readonly AppDomain _appDomain;
         private bool _disposed;
@@ -127,19 +126,25 @@
         {
             _appDomain = CreateAppDomain(appDomainFactory ?? new DefaultAppDomainFactory());
             var config = configCreator ?? new DefaultConfigCreator();
-
-            string assemblyName = RazorEngineServiceType.Assembly.FullName;
-            string typeName = RazorEngineServiceType.FullName;
-
-
+            
             ObjectHandle handle = 
                 Activator.CreateInstanceFrom(
                     _appDomain, typeof(SanboxHelper).Assembly.ManifestModule.FullyQualifiedName,
                     typeof(SanboxHelper).FullName
                 );
 
-            SanboxHelper helper = (SanboxHelper)handle.Unwrap();
-            _proxy = helper.CreateEngine(config);
+            using (var helper = (SanboxHelper)handle.Unwrap())
+            {
+                _proxy = helper.CreateEngine(config);
+            }
+        }
+
+        internal IRazorEngineService Proxy
+        {
+            get
+            {
+                return _proxy;
+            }
         }
 
         /// <summary>

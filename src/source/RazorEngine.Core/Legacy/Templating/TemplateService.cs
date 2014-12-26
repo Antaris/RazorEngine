@@ -19,7 +19,7 @@ namespace RazorEngine.Templating
     /// Defines a template service.
     /// </summary>
     [Obsolete("Use RazorEngineService instead")]
-    public class TemplateService : MarshalByRefObject, ITemplateService
+    public class TemplateService : CrossAppDomainObject, ITemplateService
     {
         #region Fields
         private readonly RazorEngineService _service;

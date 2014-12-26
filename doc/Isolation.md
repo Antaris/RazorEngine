@@ -54,5 +54,84 @@ You can use the above method like this to create an AppDomain with partial trust
         }
     }
 
-As you can see this template will throw a SecurityException as there is no way for it
+As you can see this template will throw a `SecurityException` as there is no way for it
 to write into a file of the local harddrive.
+
+## SecurityException and MethodAccessException.
+
+One important thing to understand is how .NET handles partial trust scenarios.
+You should definitely read http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional.
+However to give some RazorEngine specific hints/additions:
+
+If your assembly is running with full trust all your code (types/members) will be SecurityCritical!
+If you add your own assembly to the list of full trust assemblies the template is not able to use types within that assembly as model.
+You can work around that by extracting the types to another assembly (with partial trust)
+or work with the `AllowPartiallyTrustedCallers` attribute.
+
+Another way is to use `dynamic` and wrap your instance in an `RazorDynamicObject`.
+Of course you can also just remove your assembly from the full trust list if you dont need full trust within the sandbox.
+
+## SerializationException
+
+Whenever you are in an isolation scenario all your models need to traverse into another AppDomain, that means your model needs to be serializable!
+When you call methods on your model and you use an MarshalByRef scenario all your parameters and return types must be serializable as well!
+
+If you want to use a model instance which is not serializable you can use `dynamic` and wrap it in an `RazorDynamicObject` 
+this should magically take care of everything for you.
+The only thing not supported is to cast the model within the template in its type (all interfaces will work however).
+You can even call methods with serializable parameters (return type must not be serializable).
+
+## Configuration
+
+RazorEngine provides an `IConfigCreator` interface to configure an `IsolatedRazorEngineService`.
+
+    /// <summary>
+    /// A helper interface to get a custom configuration into a new AppDomain.
+    /// Classes inheriting this interface should be Serializable 
+    /// (and not inherit from MarshalByRefObject).
+    /// </summary>
+    public interface IConfigCreator
+    {
+        /// <summary>
+        /// Create a new configuration instance.
+        /// This method should be executed in the new AppDomain.
+        /// </summary>
+        /// <returns></returns>
+        ITemplateServiceConfiguration CreateConfiguration();
+    }
+
+    /// <summary>
+    /// A simple <see cref="IConfigCreator"/> implementation to configure the <see cref="Language"/> and the <see cref="Encoding"/>.
+    /// </summary>
+    [Serializable]
+    public class LanguageEncodingConfigCreator : IConfigCreator
+    {
+        private Language language;
+        private Encoding encoding;
+
+        /// <summary>
+        /// Initializes a new <see cref="LanguageEncodingConfigCreator"/> instance
+        /// </summary>
+        /// <param name="language"></param>
+        /// <param name="encoding"></param>
+        public LanguageEncodingConfigCreator(Language language = Language.CSharp, Encoding encoding = Encoding.Html)
+        {
+            this.language = language;
+            this.encoding = encoding;
+        }
+
+        /// <summary>
+        /// Create the configuration.
+        /// </summary>
+        /// <returns></returns>
+        public ITemplateServiceConfiguration CreateConfiguration()
+        {
+            return new TemplateServiceConfiguration()
+            {
+                Language = language,
+                EncodedStringFactory = RazorEngineService.GetEncodedStringFactory(encoding)
+            };
+        }
+    }
+
+The only thing to mention here is that the implementation must me serializable but not inherit from `MarshalByRefObject`.

@@ -10,7 +10,8 @@ namespace RazorEngine.Templating
     /// You only need to provide the <see cref="ITemplateKey.GetUniqueKeyString()"/> 
     /// implementation which depends on the <see cref="ITemplateManager"/> implementation.
     /// </summary>
-    public abstract class BaseTemplateKey : MarshalByRefObject, ITemplateKey
+    [Serializable]
+    public abstract class BaseTemplateKey : ITemplateKey
     {
         /// <summary>
         /// See <see cref="ITemplateKey.Name"/>.
