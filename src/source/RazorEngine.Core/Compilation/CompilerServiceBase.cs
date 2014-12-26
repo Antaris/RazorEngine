@@ -14,24 +14,64 @@
     using Inspectors;
     using Templating;
     using RazorEngine.Compilation.Resolver;
+    using System.Security;
+
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
     /// </summary>
-    public abstract class CompilerServiceBase : MarshalByRefObject, ICompilerService
+    public abstract class CompilerServiceBase : ICompilerService
     {
+        /// <summary>
+        /// The namespace for dynamic templates.
+        /// </summary>
+        protected internal const string DynamicTemplateNamespace = "CompiledRazorTemplates.Dynamic";
+        /// <summary>
+        /// A prefix for all dynamically created classes.
+        /// </summary>
+        protected internal const string ClassNamePrefix = "RazorEngine_";
+
+        /// <summary>
+        /// This class only exists because we cannot use Func&lt;ParserBase&gt; in non security-critical class.
+        /// </summary>
+        [SecurityCritical]
+        public class ParserBaseCreator
+        {
+            /// <summary>
+            /// The parser creator.
+            /// </summary>
+            private Func<ParserBase> creator;
+            /// <summary>
+            /// Create a new ParserBaseCreator instance.
+            /// </summary>
+            /// <param name="creator">The parser creator.</param>
+            public ParserBaseCreator(Func<ParserBase> creator)
+            {
+                this.creator = creator ?? (() => new HtmlMarkupParser());
+            }
+            /// <summary>
+            /// Execute the given delegate.
+            /// </summary>
+            /// <returns></returns>
+            public ParserBase Create()
+            {
+                return this.creator();
+            }
+        }
+
         #region Constructor
         /// <summary>
         /// Initialises a new instance of <see cref="CompilerServiceBase"/>
         /// </summary>
         /// <param name="codeLanguage">The code language.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
-        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory)
+        [SecurityCritical]
+        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory)
         {
             Contract.Requires(codeLanguage != null);
 
             CodeLanguage = codeLanguage;
-            MarkupParserFactory = markupParserFactory ?? (() => new HtmlMarkupParser());
+            MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
         }
         #endregion
@@ -50,7 +90,7 @@
         /// <summary>
         /// Gets the code language.
         /// </summary>
-        public RazorCodeLanguage CodeLanguage { get; private set; }
+        public RazorCodeLanguage CodeLanguage { [SecurityCritical] get; [SecurityCritical] private set; }
 
         /// <summary>
         /// Gets or sets whether the compiler service is operating in debug mode.
@@ -60,7 +100,12 @@
         /// <summary>
         /// Gets the markup parser.
         /// </summary>
-        public Func<ParserBase> MarkupParserFactory { get; private set; }
+        public ParserBaseCreator MarkupParserFactory { [SecurityCritical] get; [SecurityCritical] private set; }
+
+        /// <summary>
+        /// Extension of a source file without dot ("cs" for C# files or "vb" for VB.NET files).
+        /// </summary>
+        public abstract string SourceFileExtension { get; }
         #endregion
 
         #region Methods
@@ -89,7 +134,8 @@
         /// </summary>
         /// <param name="context">The type context which defines the type to compile.</param>
         /// <returns>The compiled type.</returns>
-        public abstract Tuple<Type, Assembly> CompileType(TypeContext context);
+        [SecurityCritical]
+        public abstract Tuple<Type, CompilationData> CompileType(TypeContext context);
 
         /// <summary>
         /// Creates a <see cref="RazorEngineHost"/> used for class generation.
@@ -98,15 +144,17 @@
         /// <param name="modelType">The model type.</param>
         /// <param name="className">The class name.</param>
         /// <returns>An instance of <see cref="RazorEngineHost"/>.</returns>
+
+        [SecurityCritical]
         private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
         {
-            var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory)
+            var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory.Create)
                            {
                                DefaultBaseTemplateType = templateType,
                                DefaultModelType = modelType,
                                DefaultBaseClass = BuildTypeName(templateType),
                                DefaultClassName = className,
-                               DefaultNamespace = "CompiledRazorTemplates.Dynamic",
+                               DefaultNamespace = DynamicTemplateNamespace,
                                GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
                                                                                  "WriteTo", "WriteLiteralTo",
                                                                                  "RazorEngine.Templating.TemplateWriter",
@@ -157,13 +205,13 @@
         /// <param name="templateType">The template type.</param>
         /// <param name="modelType">The model type.</param>
         /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
-        [Pure]
-        public CodeCompileUnit GetCodeCompileUnit(string className, string template, ISet<string> namespaceImports, Type templateType, Type modelType)
+        [Pure][SecurityCritical]
+        public CodeCompileUnit GetCodeCompileUnit(string className, ITemplateSource template, ISet<string> namespaceImports, Type templateType, Type modelType)
         {
             if (string.IsNullOrEmpty(className))
                 throw new ArgumentException("Class name is required.");
 
-            if (string.IsNullOrEmpty(template))
+            if (template == null)
                 throw new ArgumentException("Template is required.");
 
             namespaceImports = namespaceImports ?? new HashSet<string>();
@@ -181,7 +229,7 @@
 
             // Add the dynamic model attribute if the type is an anonymous type.
             var type = result.GeneratedCode.Namespaces[0].Types[0];
-            if (modelType != null && CompilerServicesUtility.IsAnonymousType(modelType))
+            if (modelType != null && CompilerServicesUtility.IsDynamicType(modelType))
                 type.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(HasDynamicModelAttribute))));
 
             // Generate any constructors required by the base template type.
@@ -199,13 +247,32 @@
         /// <param name="host">The razor engine host.</param>
         /// <param name="template">The template.</param>
         /// <returns>The generator result.</returns>
-        private static GeneratorResults GetGeneratorResult(RazorEngineHost host, string template)
+        [SecurityCritical]
+        private GeneratorResults GetGeneratorResult(RazorEngineHost host, ITemplateSource template)
         {
             var engine = new RazorTemplateEngine(host);
             GeneratorResults result;
-            using (var reader = new StringReader(template))
-                result = engine.GenerateCode(reader);
+            using (var reader = template.GetTemplateReader())
+                result = engine.GenerateCode(reader, null, null, template.TemplateFile);
 
+            if (template.TemplateFile == null)
+            {
+                // Allow to step into the template code by removing the "#line hidden" pragmas
+                foreach (CodeNamespace @namespace in result.GeneratedCode.Namespaces.Cast<CodeNamespace>().ToList())
+                {
+                    foreach (CodeTypeDeclaration @type in @namespace.Types.Cast<CodeTypeDeclaration>().ToList())
+                    {
+                        foreach (CodeTypeMember member in @type.Members.Cast<CodeTypeMember>().ToList())
+                        {
+                            var snippet = member as CodeSnippetTypeMember;
+                            if (snippet != null && snippet.Text == "#line hidden")
+                            {
+                                @type.Members.Remove(snippet);
+                            }
+                        }
+                    }
+                }
+            }
             return result;
         }
 

@@ -4,14 +4,17 @@ namespace RazorEngine.Templating
     using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.IO;
+    using System.Security;
     using System.Text;
-
     using Text;
-
+    
     /// <summary>
     /// Provides a base implementation of a template.
+    /// NOTE: This class is not serializable to prevent subtle errors 
+    /// in user IActivator implementations which would break the sandbox.
+    /// (because executed in the wrong <see cref="AppDomain"/>)
     /// </summary>
-    public abstract class TemplateBase : MarshalByRefObject, ITemplate
+    public abstract class TemplateBase : ITemplate
     {
         #region Fields
         protected ExecuteContext _context;
@@ -30,10 +33,29 @@ namespace RazorEngine.Templating
         /// </summary>
         public string Layout { get; set; }
 
+        internal virtual Type ModeType
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the template service.
         /// </summary>
+        public IInternalTemplateService InternalTemplateService { internal get; set; }
+
+        /// <summary>
+        /// Gets or sets the template service.
+        /// </summary>
+        [Obsolete("Only provided for backwards compatibility, use CachedTemplateService instead.")]
         public ITemplateService TemplateService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IRazorEngineService"/> instance.
+        /// </summary>
+        public IRazorEngineService RazorEngine { get; set; }
 
         /// <summary>
         /// Gets the viewbag that allows sharing state between layout and child templates.
@@ -48,6 +70,15 @@ namespace RazorEngine.Templating
 
         #region Methods
         /// <summary>
+        /// Set the current model.
+        /// </summary>
+        /// <param name="model"></param>
+        public virtual void SetModel(object model)
+        {
+
+        }
+
+        /// <summary>
         /// Defines a section that can written out to a layout.
         /// </summary>
         /// <param name="name">The name of the section.</param>
@@ -60,18 +91,19 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Includes the template with the specified name.
         /// </summary>
-        /// <param name="cacheName">The name of the template type in cache.</param>
+        /// <param name="name">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
+        /// <param name="modelType"></param>
         /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter Include(string cacheName, object model = null)
+        public virtual TemplateWriter Include(string name, object model = null, Type modelType = null)
         {
-            var instance = TemplateService.Resolve(cacheName, model);
+            var instance = InternalTemplateService.Resolve(name, model, modelType, ResolveType.Include);
             if (instance == null)
-                throw new ArgumentException("No template could be resolved with name '" + cacheName + "'");
+                throw new ArgumentException("No template could be resolved with name '" + name + "'");
 
             return new TemplateWriter(tw =>
-                tw.Write(instance.Run(
-                    TemplateService.CreateExecuteContext(ViewBag))));
+                instance.Run(
+                    InternalTemplateService.CreateExecuteContext(ViewBag), tw));
         }
 
         /// <summary>
@@ -109,45 +141,66 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected virtual ITemplate ResolveLayout(string name)
         {
-            return TemplateService.Resolve(name, null);
+            return InternalTemplateService.Resolve(name, null, null, ResolveType.Layout);
+        }
+
+        private static void StreamToTextWriter(MemoryStream memory, TextWriter writer)
+        {
+            memory.Position = 0;
+            using (var r = new StreamReader(memory))
+            {
+                while (!r.EndOfStream)
+                {
+                    writer.Write(r.ReadToEnd());
+                }
+            }
         }
 
         /// <summary>
         /// Runs the template and returns the result.
         /// </summary>
         /// <param name="context">The current execution context.</param>
+        /// <param name="reader"></param>
         /// <returns>The merged result of the template.</returns>
-        string ITemplate.Run(ExecuteContext context)
+        void ITemplate.Run(ExecuteContext context, TextWriter reader)
         {
             _context = context;
 
-            var builder = new StringBuilder();
-            using (var writer = new StringWriter(builder))
+            using (var memory = new MemoryStream())
             {
-                _context.CurrentWriter = writer;
-                Execute();
-                _context.CurrentWriter = null;
-            }
-
-            if (Layout != null)
-            {
-                // Get the layout template.
-                var layout = ResolveLayout(Layout);
-
-                if (layout == null)
+                using (var writer = new StreamWriter(memory))
                 {
-                    throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
+                    _context.CurrentWriter = writer;
+                    Execute();
+                    writer.Flush();
+                    _context.CurrentWriter = null;
+
+
+                    if (Layout != null)
+                    {
+                        // Get the layout template.
+                        var layout = ResolveLayout(Layout);
+
+                        if (layout == null)
+                        {
+                            throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
+                        }
+
+                        // Push the current body instance onto the stack for later execution.
+                        var body = new TemplateWriter(tw =>
+                        {
+                            StreamToTextWriter(memory, tw);
+                        });
+                        context.PushBody(body);
+                        context.PushSections();
+
+                        layout.Run(context, reader);
+                        return;
+                    }
+
+                    StreamToTextWriter(memory, reader);
                 }
-
-                // Push the current body instance onto the stack for later execution.
-                var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
-                context.PushBody(body);
-                context.PushSections();
-
-                return layout.Run(context);
             }
-
-            return builder.ToString();
         }
 
         /// <summary>
@@ -206,6 +259,9 @@ namespace RazorEngine.Templating
         /// Writes an attribute to the result.
         /// </summary>
         /// <param name="name">The name of the attribute.</param>
+        /// <param name="prefix"></param>
+        /// <param name="suffix"></param>
+        /// <param name="values"></param>
         public virtual void WriteAttribute(string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
         {
             WriteAttributeTo(CurrentWriter, name, prefix, suffix, values);
@@ -216,6 +272,9 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="name">The name of the attribute to be written.</param>
+        /// <param name="prefix"></param>
+        /// <param name="suffix"></param>
+        /// <param name="values"></param>
         public virtual void WriteAttributeTo(TextWriter writer, string name, PositionTagged<string> prefix, PositionTagged<string> suffix, params AttributeValue[] values)
         {
             bool first = true;
@@ -312,10 +371,10 @@ namespace RazorEngine.Templating
         }
 
         /// <summary>
-        /// Writes a <see cref="PositionTagged{string}" /> literal to the result.
+        /// Writes a <see cref="PositionTagged{}" /> literal to the result.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        /// <param name="literal">The literal to be written.</param>
+        /// <param name="value">The literal to be written.</param>
         private void WritePositionTaggedLiteral(TextWriter writer, PositionTagged<string> value)
         {
             WriteLiteralTo(writer, value.Value);
@@ -340,7 +399,7 @@ namespace RazorEngine.Templating
             }
             else
             {
-                encodedString = TemplateService.EncodedStringFactory.CreateEncodedString(value);
+                encodedString = InternalTemplateService.EncodedStringFactory.CreateEncodedString(value);
                 writer.Write(encodedString);
             }
         }

@@ -13,6 +13,7 @@
     /// <summary>
     /// Provides template parsing and compilation in an isolated application domain.
     /// </summary>
+    [Obsolete("Please use the IsolatedRazorEngine class instead.")]
     public class IsolatedTemplateService : ITemplateService
     {
         #region Fields
@@ -128,7 +129,7 @@
         /// </summary>
         /// <param name="viewBag">The view bag.</param>
         /// <returns>The instance of <see cref="ExecuteContext"/></returns>
-        ExecuteContext ITemplateService.CreateExecuteContext(DynamicViewBag viewBag = null)
+        ExecuteContext ITemplateService.CreateExecuteContext(DynamicViewBag viewBag)
         {
             throw new NotSupportedException("This operation is not supported directly by the IsolatedTemplateService.");
         }

@@ -63,6 +63,10 @@
         /// Gets the reference resolver.
         /// </summary>
         public IAssemblyReferenceResolver ReferenceResolver { get; private set; }
+        /// <summary>
+        /// Gets the caching provider.
+        /// </summary>
+        public ICachingProvider CachingProvider { get; private set; }
 
         /// <summary>
         /// Gets the compiler service factory.
@@ -92,7 +96,13 @@
         /// <summary>
         /// Gets the template resolver.
         /// </summary>
+        [Obsolete("Please use the TemplateManager property instead")]
         public ITemplateResolver Resolver { get; private set; }
+
+        /// <summary>
+        /// Gets the template resolver.
+        /// </summary>
+        public ITemplateManager TemplateManager { get; private set; }
         #endregion
 
         #region Methods
@@ -182,6 +192,15 @@
             // Sets the template resolver.
             SetTemplateResolver(config.TemplateResolverType);
 
+            if (Resolver != null)
+            {
+                TemplateManager = new WrapperTemplateManager(Resolver);
+            }
+
+            // Sets the template manager.
+            SetTemplateManager(config.TemplateManagerType);
+
+
             // Set the language.
             Language = config.DefaultLanguage;
 
@@ -268,6 +287,17 @@
             var type = GetType(templateResolverType);
             if (type != null)
                 Resolver = GetInstance<ITemplateResolver>(type);
+        }
+
+        /// <summary>
+        /// Sets the template manager.
+        /// </summary>
+        /// <param name="templateManagerType">The template manager type.</param>
+        private void SetTemplateManager(string templateManagerType)
+        {
+            var type = GetType(templateManagerType);
+            if (type != null)
+                TemplateManager = GetInstance<ITemplateManager>(type);
         }
         #endregion
     }

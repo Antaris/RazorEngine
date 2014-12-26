@@ -12,8 +12,11 @@ Everybody familiar with Razor can start building templates very quickly.
 
 ### Issues / Features / TODOs
 
-Issues and TODOs are tracked on github:
-See: https://github.com/Anatris/RazorEngine/issues or https://github.com/matthid/RazorEngine/issues
+New features are accepted via github pull requests (so just fork away right now!): https://github.com/Anatris/RazorEngine.
+
+Issues and TODOs are tracked on github, see: https://github.com/Anatris/RazorEngine/issues.
+
+Discussions/Forums can be found here: https://groups.google.com/forum/#!forum/razorengine. 
 
 ### Versioning: 
 
@@ -87,9 +90,7 @@ Not clear.
 	Nuget packages required by the build process.
 
 
-
 Each project should have has a corresponding project with the name "Test.${ProjectName}" in the test folder.
-This test project provides unit tests for the project "${ProjectName}". 
-Often unit tests are written agains interfaces and used by multiple implementations of the interface.
-Sometimes these unit tests can be used even by custom code (inheriting from the corresponding test-class and overriding an Create* method). 
+This test project provides unit tests for the project "${ProjectName}".
+
 

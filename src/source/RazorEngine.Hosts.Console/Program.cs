@@ -5,30 +5,114 @@
 
     using Compilation;
     using Templating;
+    using RazorEngine.Text;
+    using RazorEngine.Configuration;
+    public class MyHtmlHelper
+    {
+        public IEncodedString Raw(string rawString)
+        {
+            return new RawString(rawString);
+        }
+    }
+
+    public abstract class MyClassImplementingTemplateBase<T> : TemplateBase<T>
+    {
+        public MyClassImplementingTemplateBase()
+        {
+            Html = new MyHtmlHelper();
+        }
+
+        public MyHtmlHelper Html { get; set; }
+    }
 
     class Program
     {
-        static void Main(string[] args)
+
+        static void QuickStart_1()
         {
-            CompilerServiceBuilder.SetCompilerServiceFactory(new DefaultCompilerServiceFactory());
+            string template = "Hello @Model.Name, welcome to RazorEngine!";
+            var result =
+                RazorService.RunCompile(template, "templateKey", null, new { Name = "World" });
 
-            using (var service = new TemplateService())
+            Console.WriteLine("Template: {0}", template);
+            Console.WriteLine("Result: {0}", result);
+        }
+
+        static void QuickStart_2()
+        {
+            var result =
+                RazorService.Run("templateKey", null, new { Name = "Max" });
+
+            Console.WriteLine("Result (templateKey): {0}", result);
+        }
+
+
+        public class MyTemplateManager : ITemplateManager
+        {
+            public ITemplateSource Resolve(ITemplateKey key)
             {
-                const string template = "<h1>Age: @Model.Age</h1>";
-                var expected = Enumerable.Range(1, 10).Select(i => string.Format("<h1>Age: {0}</h1>", i)).ToList();
-                var templates = Enumerable.Repeat(template, 10).ToList();
-                var models = Enumerable.Range(1, 10).Select(i => new Person { Age = i });
-
-                var results = service.ParseMany(templates, models, null, null, true).ToList();
-
-                for (int i = 0; i < 10; i++)
-                {
-                    Console.WriteLine(templates[i]);
-                    Console.WriteLine(expected[i]);
-                    Console.WriteLine(results[i]);
-                }
+                // Resolve your template here
+                string template = "Hello @Model.Name, welcome to RazorEngine!";
+                // Provide a non-null file to improve debugging
+                return new LoadedTemplateSource(template, null);
             }
 
+            public ITemplateKey GetKey(string name, ResolveType resolveType, ITemplateKey context)
+            {
+                // If you can have different templates with the same name depending on the 
+                // context or the resolveType you need your own implementation here!
+                // Otherwise you can just use NameOnlyTemplateKey.
+                return new NameOnlyTemplateKey(name, resolveType, context);
+            }
+
+            public void AddDynamic(ITemplateKey key, ITemplateSource source)
+            {
+                // You can disable dynamic templates completely, but 
+                // then all convenience methods (Compile and RunCompile) with
+                // a TemplateSource will no longer work (they are not really needed anyway).
+                throw new NotImplementedException("dynamic templates are not supported!");
+            }
+        }
+        static void QuickStart_TemplateManager()
+        {
+            var result =
+                RazorService.Run("templateKey", null, new { Name = "Max" });
+
+            Console.WriteLine("Result (templateKey): {0}", result);
+        }
+
+        static void RawEncoding()
+        {
+            string template = "@Raw(Model.Data)";
+            var model = new { Data = "My raw double quotes appears here \"hello!\"" };
+
+            string result = RazorService.RunCompile(template, "rawTemplate", null, model);
+            Console.WriteLine("Template: {0}", template);
+            Console.WriteLine("Result: {0}", result);
+        }
+
+        static void HtmlRawEncoding()
+        {
+            var config = new TemplateServiceConfiguration();
+            config.BaseTemplateType = typeof(MyClassImplementingTemplateBase<>);
+            using (var service = RazorEngineService.Create(config))
+            {
+                string template = "@Html.Raw(Model.Data)";
+                var model = new { Data = "My raw double quotes appears here \"hello!\"" };
+
+                string result = service.RunCompile(template, "htmlRawTemplate", null, model);
+                Console.WriteLine("Template: {0}", template);
+                Console.WriteLine("Result: {0}", result);
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            QuickStart_1();
+            QuickStart_2();
+            QuickStart_TemplateManager();
+            RawEncoding();
+            HtmlRawEncoding();
             Console.ReadKey();
         }
     }

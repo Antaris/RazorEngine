@@ -9,6 +9,7 @@
     /// <summary>
     /// Defines the required contract for implementing a template service.
     /// </summary>
+    [Obsolete("Please use IRazorEngineService instead.")]
     public interface ITemplateService : IDisposable
     {
         #region Properties
@@ -138,7 +139,7 @@
         /// <param name="cacheName">The name of the template type in cache.</param>
         /// <returns>Whether or not the template has been removed.</returns>
         bool RemoveTemplate(string cacheName);
-        
+
         /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>

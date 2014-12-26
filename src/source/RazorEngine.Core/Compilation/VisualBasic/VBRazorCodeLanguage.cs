@@ -1,11 +1,15 @@
 ﻿namespace RazorEngine.Compilation.VisualBasic
 {
+    using System.Security;
     using System.Web.Razor;
     using System.Web.Razor.Generator;
 
     /// <summary>
     /// Provides a razor code language that supports the VB language.
     /// </summary>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
+    [SecurityCritical]
+#endif
     public class VBRazorCodeLanguage : System.Web.Razor.VBRazorCodeLanguage
     {
         #region Constructor
@@ -35,6 +39,9 @@
         /// <param name="sourceFileName">Name of the source file.</param>
         /// <param name="host">The host.</param>
         /// <returns>An instance of <see cref="RazorCodeGenerator"/>.</returns>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
+        [SecurityCritical]
+#endif
         public override RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespaceName, string sourceFileName, RazorEngineHost host)
         {
             return new VBRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, StrictMode);

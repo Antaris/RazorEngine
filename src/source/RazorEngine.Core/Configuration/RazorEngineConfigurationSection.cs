@@ -1,7 +1,7 @@
 ﻿namespace RazorEngine.Configuration
 {
+    using System;
     using System.Configuration;
-
     using Xml;
 
     /// <summary>
@@ -17,6 +17,9 @@
         private const string NamespacesElement = "namespaces";
         private const string SectionPath = "razorEngine";
         private const string TemplateResolverAttribute = "templateResolverType";
+        private const string TemplateManagerAttribute = "templateManagerType";
+        private const string CachingProviderAttribute = "cachingProviderType";
+        private const string ReferenceResolverAttribute = "referenceResolverType";
         private const string TemplateServicesElement = "templateServices";
         #endregion
 
@@ -70,12 +73,21 @@
         /// <summary>
         /// Gets the template resolver type.
         /// </summary>
+        [Obsolete("Please use the TemplateManagerType property instead")]
         [ConfigurationProperty(TemplateResolverAttribute, IsRequired = false)]
         public string TemplateResolverType
         {
             get { return (string)this[TemplateResolverAttribute]; }
         }
 
+        /// <summary>
+        /// Gets the template resolver type.
+        /// </summary>
+        [ConfigurationProperty(TemplateManagerAttribute, IsRequired = false)]
+        public string TemplateManagerType
+        {
+            get { return (string)this[TemplateManagerAttribute]; }
+        }
         /// <summary>
         /// Gets the collection of template service configurations.
         /// </summary>

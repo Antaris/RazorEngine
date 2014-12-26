@@ -6,6 +6,7 @@
     /// <summary>
     /// Provides an <see cref="ITemplateResolver"/> that supports delegated template resolution.
     /// </summary>
+    [Obsolete("please use DelegateTemplateManager instead!")]
     public class DelegateTemplateResolver : ITemplateResolver
     {
         #region Fields
@@ -27,10 +28,10 @@
 
         #region Methods
         /// <summary>
-        /// Resolves the template content with the specified name.
+        /// Resolves a template.
         /// </summary>
-        /// <param name="name">The name of the template to resolve.</param>
-        /// <returns>The template content.</returns>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public string Resolve(string name)
         {
             return _resolver(name);

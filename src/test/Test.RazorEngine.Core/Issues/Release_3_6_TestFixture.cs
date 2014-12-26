@@ -1,6 +1,7 @@
 ﻿namespace RazorEngine.Tests.TestTypes.Issues
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using Microsoft.CSharp.RuntimeBinder;
 
@@ -8,6 +9,8 @@
 
     using Configuration;
     using Templating;
+    using System.Dynamic;
+    using Test.RazorEngine;
 
     /// <summary>
     /// Provides tests for the Release 3.6
@@ -15,6 +18,39 @@
     [TestFixture]
     public class Release_3_6_TestFixture
     {
+        /// <summary>
+        /// Anonymous classes do not work when wrapped in dynamic (via a method call).
+        /// 
+        /// Issue 67: https://github.com/Antaris/RazorEngine/issues/67
+        /// </summary>
+        [Test]
+        public void Issue67_CollectionOfAnonymous()
+        {
+            RazorEngineServiceTestFixture.RunTestHelper(service =>
+            {
+                const string template = @"@foreach(var x in Model){
+@x.Number
+}";
+                string expected = "123";
+                var list = new List<Person>() {
+                    new Person() { Age = 1 },
+                    new Person() { Age = 2 },
+                    new Person() { Age = 3 }
+                };
+                dynamic collectionOfAnonymous = list.Select(p => new { Number = p.Age }).ToList();
+                var arrayOfAnonymous = collectionOfAnonymous.ToArray();
+                string applied_1 = service.RunCompile(template, "test1", null, (object)collectionOfAnonymous);
+                //string applied_2 = service.RunCompileOnDemand(template, "test2", (Type)collectionOfAnonymous.GetType(), (object)collectionOfAnonymous);
+                string applied_3 = service.RunCompile(template, "test3", null, (object)arrayOfAnonymous);
+                //string applied_4 = service.RunCompileOnDemand(template, "test4", (Type)arrayOfAnonymous.GetType(), (object)arrayOfAnonymous);
+
+                Assert.AreEqual(expected, applied_1);
+                //Assert.AreEqual(expected, applied_2);
+                Assert.AreEqual(expected, applied_3);
+                //Assert.AreEqual(expected, applied_4);
+            });
+        }
+
         /// <summary>
         /// Using @Raw within href attribute doesn't work.
         /// 
@@ -78,7 +114,7 @@
         /// Issue 163: https://github.com/Antaris/RazorEngine/issues/163
         /// </summary>
         [Test]
-        public void Issue163_SectionRedefenition()
+        public void Issue163_SectionRedefinition()
         {
             TemplateServiceTestFixture.RunTestHelper(service =>
             {

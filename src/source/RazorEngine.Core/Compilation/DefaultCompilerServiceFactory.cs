@@ -5,6 +5,7 @@
 
     using CSharp;
     using VisualBasic;
+    using System.Security;
 
     /// <summary>
     /// Provides a default implementation of a <see cref="ICompilerServiceFactory"/>.
@@ -18,6 +19,7 @@
         /// <param name="language">The <see cref="Language"/>.</param>
         /// <returns>An instance of <see cref="ICompilerService"/>.</returns>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        [SecuritySafeCritical]
         public ICompilerService CreateCompilerService(Language language)
         {
             switch (language)

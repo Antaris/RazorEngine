@@ -160,16 +160,17 @@ MyTarget "LocalDoc" (fun _ ->
 )
 
 
-MyTarget "ReleaseGithubDoc" (fun isSingle -> 
+MyTarget "ReleaseGithubDoc" (fun isSingle ->
+    let repro = (sprintf "git@github.com:%s/%s.git" github_user github_project)  
     let doAction =
         if isSingle then true
         else
-            printf "update github docs? (y,n): "
+            printf "update github docs to %s? (y,n): " repro
             let line = System.Console.ReadLine()
             line = "y"
     if doAction then
         CleanDir "gh-pages"
-        cloneSingleBranch "" (sprintf "git@github.com:%s/%s.git" github_user github_project) "gh-pages" "gh-pages"
+        cloneSingleBranch "" repro "gh-pages" "gh-pages"
         fullclean "gh-pages"
         CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" github_user)@@"html") "gh-pages" true |> printfn "%A"
         StageAll "gh-pages"
@@ -195,7 +196,6 @@ MyTarget "VersionBump" (fun _ ->
         if line = "y" then
             StageAll ""
             Commit "" (sprintf "Bump version to %s" release.NugetVersion)
-            Branches.push ""
         
             printf "create tag? (y,n): "
             let line = System.Console.ReadLine()
@@ -206,7 +206,7 @@ MyTarget "VersionBump" (fun _ ->
             printf "push branch? (y,n): "
             let line = System.Console.ReadLine()
             if line = "y" then
-                Branches.push "gh-pages"
+                Branches.push ""
 )
 
 Target "Release" (fun _ ->

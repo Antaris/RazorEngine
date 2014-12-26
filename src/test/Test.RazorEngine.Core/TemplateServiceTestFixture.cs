@@ -38,9 +38,9 @@ namespace RazorEngine.Tests
             }
             catch (TemplateCompilationException e)
             {
-                var source = e.SourceCode;
-                if (System.IO.File.Exists(e.SourceCode)) { source = System.IO.File.ReadAllText(source); }
-                Console.WriteLine("Generated source file: \n\n{0}", source);
+                var source = e.CompilationData.SourceCode;
+                Console.WriteLine("Generated source file: \n\n{0}", source ?? "SOURCE CODE NOT AVAILABLE!");
+                e.CompilationData.DeleteAll();
                 throw;
             }
         }
