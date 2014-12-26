@@ -65,17 +65,17 @@ let buildAllDocumentation outDocDir website_root =
     
     let projInfo =
         [ "root", website_root
-          "page-description", "RazorEngine implementation"
-          "page-author", "Matthias Dittrich"
+          "page-description", projectDescription
+          "page-author", page_author
           "github-link", github_url
-          "project-name", "RazorEngine"
+          "project-name", projectName
           "project-summary", projectSummary 
           "project-commit", commitHash
           "project-author", authors |> Seq.head
           "project-github", github_url
           "project-issues", sprintf "%s/issues" github_url
           "project-new-issue", sprintf "%s/issues/new" github_url
-          "project-nuget", "https://www.nuget.org/packages/RazorEngine.N/"]
+          "project-nuget", nuget_url]
 
       
     // Copy static files and CSS + JS from F# Formatting
