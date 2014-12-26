@@ -68,7 +68,8 @@
             _config.Activator = new DelegateActivator(activator);
             return this;
         }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Adds the specified code inspector.
         /// </summary>
@@ -92,6 +93,7 @@
             _config.CodeInspectors.Add(inspector);
             return this;
         }
+#endif
 
         /// <summary>
         /// Sets that dynamic models should be fault tollerant in accepting missing properties.

@@ -32,7 +32,9 @@ namespace RazorEngine.Configuration
             Activator = xmlConfig.Activator ?? new DefaultActivator();
             CompilerServiceFactory = xmlConfig.CompilerServiceFactory ?? new DefaultCompilerServiceFactory();
             EncodedStringFactory = xmlConfig.EncodedStringFactory ?? new HtmlEncodedStringFactory();
+#if !RAZOR4
             CodeInspectors = xmlConfig.CodeInspectors != null ? xmlConfig.CodeInspectors.ToList()  : new List<ICodeInspector>();
+#endif
             Language = xmlConfig.Language;
             ReferenceResolver = xmlConfig.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
             CachingProvider = xmlConfig.CachingProvider ?? new DefaultCachingProvider();
@@ -72,16 +74,18 @@ namespace RazorEngine.Configuration
         /// Gets or sets the base template type.
         /// </summary>
         public Type BaseTemplateType { get; set; }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
         IEnumerable<ICodeInspector> ITemplateServiceConfiguration.CodeInspectors { get { return CodeInspectors; } }
-
+        
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
         public IList<ICodeInspector> CodeInspectors { get; private set; }
+#endif
 
         /// <summary>
         /// Gets the reference resolver.

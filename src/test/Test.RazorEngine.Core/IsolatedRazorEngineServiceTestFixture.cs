@@ -14,7 +14,11 @@ using System.Security.Permissions;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+#if RAZOR4
+using Microsoft.AspNet.Razor;
+#else
 using System.Web.Razor;
+#endif
 
 namespace Test.RazorEngine
 {
@@ -37,6 +41,10 @@ namespace Test.RazorEngine
         public static AppDomain SandboxCreator()
         {
             CheckMono();
+#if RAZOR4
+            Assert.Ignore("IsolatedRazorEngineServiceTestFixture is not tested with razor 4 as it is not signed!");
+#endif
+
 #if MONO
             // Mono has no AddHostEvidence or GetHostEvidence.
             // We do not run the tests anyway.

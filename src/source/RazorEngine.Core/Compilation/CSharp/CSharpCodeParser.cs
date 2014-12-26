@@ -1,8 +1,16 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
+#if RAZOR4
+    using Microsoft.AspNet.Razor.Generator;
+    using Microsoft.AspNet.Razor.Text;
+    using Microsoft.AspNet.Razor.Parser;
+    using RazorCSharpCodeParser = Microsoft.AspNet.Razor.Parser.CSharpCodeParser;
+#else
     using System.Web.Razor.Generator;
     using System.Web.Razor.Text;
     using System.Web.Razor.Parser;
+    using RazorCSharpCodeParser = System.Web.Razor.Parser.CSharpCodeParser;
+#endif
     using CodeGenerators;
     using System.Security;
 
@@ -12,10 +20,9 @@
 #if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
 #endif
-    public class CSharpCodeParser : System.Web.Razor.Parser.CSharpCodeParser
+    public class CSharpCodeParser : RazorCSharpCodeParser
     {
         #region Fields
-        private const string GenericTypeFormatString = "{0}<{1}>";
         private SourceLocation? _endInheritsLocation;
         private bool _modelStatementFound;
         #endregion
@@ -87,7 +94,9 @@
 #endif
         private SpanCodeGenerator CreateModelCodeGenerator(string model)
         {
-            return new SetModelTypeCodeGenerator(model, GenericTypeFormatString);
+            return new SetModelTypeCodeGenerator(model, (templateType, modelTypeName) => {
+                return CompilerServicesUtility.CSharpCreateGenericType(templateType, modelTypeName, true);    
+            });
         }
         #endregion
     }

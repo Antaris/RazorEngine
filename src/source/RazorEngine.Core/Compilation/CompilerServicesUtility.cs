@@ -199,6 +199,58 @@ namespace RazorEngine.Compilation
             var domain = AppDomain.CurrentDomain;
             return domain.GetAssemblies();
         }
+
+
+        public static string CSharpGetRawTypeName(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("templateType");
+
+            if (!type.IsGenericTypeDefinition || !type.IsGenericType)
+                return type.FullName;
+
+            var templateTypeName =
+                type.Namespace
+                   + "."
+                   + type.Name.Substring(0, type.Name.IndexOf('`'));
+            return templateTypeName;
+        }
+
+        public static string VBGetRawTypeName(Type type) { return CSharpGetRawTypeName(type); }
+
+        public static string CSharpCreateGenericType(Type templateType, string modelTypeName, bool throwWhenNotGeneric)
+        {
+
+            var templateTypeName = CSharpGetRawTypeName(templateType);
+
+            if (!templateType.IsGenericTypeDefinition || !templateType.IsGenericType)
+            {
+                if (throwWhenNotGeneric)
+                {
+                    throw new NotSupportedException("The given base type is not generic!");
+                }
+                return templateTypeName;
+            }
+
+            return templateTypeName + "<" + modelTypeName + ">";
+        }
+
+        public static string VBCreateGenericType(Type templateType, string modelTypeName, bool throwWhenNotGeneric)
+        {
+            var templateTypeName = VBGetRawTypeName(templateType);
+
+            if (!templateType.IsGenericTypeDefinition || !templateType.IsGenericType)
+            {
+                if (throwWhenNotGeneric)
+                {
+                    throw new NotSupportedException("The given base type is not generic!");
+                }
+                return templateTypeName;
+            }
+
+            return templateTypeName + "(Of " + modelTypeName + ")";
+        }
+
         #endregion
     }
 }

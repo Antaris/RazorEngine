@@ -74,8 +74,9 @@ MyTarget "SetVersions" (fun _ ->
         [Attribute.Company "RazorEngine"
          Attribute.Product "RazorEngine"
          Attribute.Copyright "Copyright © RazorEngine Project 2011-2014"
-         Attribute.Version BuildConfig.version
-         Attribute.FileVersion version]
+         Attribute.Version version
+         Attribute.FileVersion version
+         Attribute.InformationalVersion version_nuget]
     CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
 )
 
@@ -84,8 +85,9 @@ MyTarget "SetVersions_Razor4" (fun _ ->
         [Attribute.Company "RazorEngine"
          Attribute.Product "RazorEngine"
          Attribute.Copyright "Copyright © RazorEngine Project 2011-2014"
-         Attribute.Version BuildConfig.version_razor4
-         Attribute.FileVersion version_razor4]
+         Attribute.Version version_razor4
+         Attribute.FileVersion version_razor4
+         Attribute.InformationalVersion version_razor4_nuget]
     CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
 )
 
@@ -159,7 +161,7 @@ MyTarget "NuGet" (fun _ ->
             Project = projectName
             Summary = projectSummary
             Description = projectDescription
-            Version = release.NugetVersion
+            Version = version_nuget
             ReleaseNotes = toLines release.Notes
             Tags = tags
             OutputPath = outDir
@@ -171,6 +173,20 @@ MyTarget "NuGet" (fun _ ->
                   { FrameworkVersion = "net45"; 
                     Dependencies = [ "Microsoft.AspNet.Razor", "3.2.2.0" ] }  ] })
         "nuget/RazorEngine.nuspec"
+    NuGet (fun p -> 
+        { p with   
+            Authors = authors
+            Project = projectName
+            Summary = projectSummary
+            Description = projectDescription
+            Version = version_razor4_nuget
+            ReleaseNotes = toLines release.Notes
+            Tags = tags
+            OutputPath = outDir
+            AccessKey = getBuildParamOrDefault "nugetkey" ""
+            Publish = hasBuildParam "nugetkey"
+            Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta1" ] })
+        "nuget/RazorEngine-razor4.nuspec"
 )
 
 // Documentation 

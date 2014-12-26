@@ -11,8 +11,13 @@
     using System.Security;
     using System.Security.Permissions;
     using System.Text;
+#if RAZOR4
+    using Microsoft.AspNet.Razor;
+    using Microsoft.AspNet.Razor.Parser;
+#else
     using System.Web.Razor;
     using System.Web.Razor.Parser;
+#endif
     using Templating;
 
     /// <summary>
@@ -39,7 +44,16 @@
             _codeDomProvider = codeDomProvider;
         }
         #endregion
-        
+
+        #region Properties
+#if !RAZOR4
+        /// <summary>
+        /// The underlaying CodeDomProvider instance.
+        /// </summary>
+        public override CodeDomProvider CodeDomProvider { get { return _codeDomProvider; } }
+#endif
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -90,7 +104,7 @@
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            var compileUnit = GetCodeCompileUnit(context.ClassName, context.TemplateContent, context.Namespaces,
+            var sourceCode = GetCodeCompileUnit(context.ClassName, context.TemplateContent, context.Namespaces,
                                                  context.TemplateType, context.ModelType);
 
             var @params = new CompilerParameters
@@ -116,18 +130,7 @@
             @params.TempFiles.AddFile(assemblyName, true);
             @params.OutputAssembly = assemblyName;
             
-            string sourceCode = null;
-            if (Debug)
-            {
-                var builder = new StringBuilder();
-                using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))
-                {
-                    _codeDomProvider.GenerateCodeFromCompileUnit(compileUnit, writer, new CodeGeneratorOptions());
-                    sourceCode = builder.ToString();
-                }
-            }
-            
-            var results = _codeDomProvider.CompileAssemblyFromDom(@params, compileUnit);
+            var results = _codeDomProvider.CompileAssemblyFromSource(@params, new [] { sourceCode });
             if (Debug)
             {
                 bool written = false;

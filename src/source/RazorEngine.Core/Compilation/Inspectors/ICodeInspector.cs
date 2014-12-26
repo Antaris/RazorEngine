@@ -1,7 +1,7 @@
 ﻿namespace RazorEngine.Compilation.Inspectors
 {
     using System.CodeDom;
-
+#if !RAZOR4
     /// <summary>
     /// Defines the required contract for implementing a code inspector.
     /// </summary>
@@ -18,4 +18,5 @@
         void Inspect(CodeCompileUnit unit, CodeNamespace ns, CodeTypeDeclaration type, CodeMemberMethod executeMethod);
         #endregion
     }
+#endif
 }

@@ -5,6 +5,12 @@
     using System.Dynamic;
     using System.IO;
 
+#if RAZOR4
+    using SectionAction = System.Action<System.IO.TextWriter>;
+#else
+    using SectionAction = System.Action;
+#endif
+
     /// <summary>
     /// Defines a context for tracking template execution.
     /// </summary>
@@ -38,7 +44,7 @@
         #region Fields
         private readonly Stack<ISet<string>> _currentSectionStack = new Stack<ISet<string>>();
         private ISet<string> _currentSections = new HashSet<string>();
-        private readonly IDictionary<string, Stack<Action>> _definedSections = new Dictionary<string, Stack<Action>>();
+        private readonly IDictionary<string, Stack<SectionAction>> _definedSections = new Dictionary<string, Stack<SectionAction>>();
         private readonly Stack<TemplateWriter> _bodyWriters = new Stack<TemplateWriter>();
         private readonly dynamic _viewBag; 
         #endregion
@@ -62,7 +68,7 @@
         /// </summary>
         /// <param name="name">The name of the section.</param>
         /// <param name="action">The delegate action used to write the section at a later stage in the template execution.</param>
-        public void DefineSection(string name, Action action)
+        public void DefineSection(string name, SectionAction action)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("A name is required to define a section.");
@@ -70,10 +76,10 @@
 	            throw new ArgumentException("A section has already been defined with name '" + name + "'");
 
             _currentSections.Add(name);
-            Stack<Action> sectionStack;
+            Stack<SectionAction> sectionStack;
             if (!_definedSections.TryGetValue(name, out sectionStack))
             {
-                sectionStack = new Stack<Action>();
+                sectionStack = new Stack<SectionAction>();
                 _definedSections.Add(name, sectionStack);
             }
             sectionStack.Push(action);
@@ -84,7 +90,7 @@
         /// </summary>
         /// <param name="name">The name of the section.</param>
         /// <returns>The section delegate.</returns>
-        public Action GetSectionDelegate(string name)
+        public SectionAction GetSectionDelegate(string name)
         {
             if (_definedSections.ContainsKey(name) && _definedSections[name].Count > 0)
                 return _definedSections[name].Peek();
@@ -97,17 +103,22 @@
         /// This is required for nesting sections.
         /// </summary>
         /// <param name="inner">the executing section delegate.</param>
-        internal void PopSections(Action inner)
+        /// <param name="innerArg">the parameter for the delegate.</param>
+        internal void PopSections(SectionAction inner, TextWriter innerArg)
         {
             var oldsections = _currentSections;
             _currentSections = _currentSectionStack.Pop();
-            var poppedSections = new List<Tuple<string, Action>>();
+            var poppedSections = new List<Tuple<string, SectionAction>>();
             foreach (var section in _currentSections)
             {
                 var item = _definedSections[section].Pop();
                 poppedSections.Add(Tuple.Create(section, item));
             }
+#if RAZOR4
+            inner(innerArg);
+#else
             inner();
+#endif
             foreach (var item in poppedSections)
 	        {
 		        _definedSections[item.Item1].Push(item.Item2);

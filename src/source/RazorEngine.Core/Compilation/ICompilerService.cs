@@ -14,10 +14,12 @@
     public interface ICompilerService
     {
         #region Properties
+#if !RAZOR4
         /// <summary>
         /// Gets or sets the set of code inspectors.
         /// </summary>
         IEnumerable<ICodeInspector> CodeInspectors { get; set; }
+#endif
 
         /// <summary>
         /// Gets or sets the reference resolver.
@@ -31,13 +33,6 @@
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Builds a type name for the specified template type.
-        /// </summary>
-        /// <param name="templateType">The template type.</param>
-        /// <returns>The string type name (including namespace).</returns>
-        string BuildTypeName(Type templateType);
-
         /// <summary>
         /// Compiles the type defined in the specified type context.
         /// </summary>

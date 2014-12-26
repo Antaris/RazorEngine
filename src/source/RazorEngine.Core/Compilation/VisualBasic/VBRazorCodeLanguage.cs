@@ -1,8 +1,11 @@
 ﻿namespace RazorEngine.Compilation.VisualBasic
 {
+#if !RAZOR4 // no support for VB.net in Razor4?
     using System.Security;
+
     using System.Web.Razor;
     using System.Web.Razor.Generator;
+    using OriginalVBRazorCodeLanguage = System.Web.Razor.VBRazorCodeLanguage;
 
     /// <summary>
     /// Provides a razor code language that supports the VB language.
@@ -10,7 +13,7 @@
 #if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
 #endif
-    public class VBRazorCodeLanguage : System.Web.Razor.VBRazorCodeLanguage
+    public class VBRazorCodeLanguage : OriginalVBRazorCodeLanguage
     {
         #region Constructor
         /// <summary>
@@ -48,4 +51,5 @@
         }
         #endregion
     }
+#endif
 }

@@ -64,7 +64,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly Condition="!$(DefineConstants.Contains('RAZOR4'))">true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>RazorEngine.snk</AssemblyOriginatorKeyFile>

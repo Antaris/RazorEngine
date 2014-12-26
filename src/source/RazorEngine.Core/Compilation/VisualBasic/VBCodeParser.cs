@@ -1,6 +1,7 @@
 ﻿
 namespace RazorEngine.Compilation.VisualBasic
 {
+#if !RAZOR4 // no support for VB.net in Razor4?
     using System;
     using System.Linq;
     using System.Web.Razor.Generator;
@@ -109,7 +110,9 @@ namespace RazorEngine.Compilation.VisualBasic
             }
 
             string baseType = String.Concat(Span.Symbols.Select(s => s.Content)).Trim();
-            Span.CodeGenerator = new SetModelTypeCodeGenerator(baseType, GenericTypeFormatString);
+            Span.CodeGenerator = new SetModelTypeCodeGenerator(baseType, (templateType, modelTypeName) => {
+                return CompilerServicesUtility.VBCreateGenericType(templateType, modelTypeName, true);    
+            });
 
             CheckForInheritsAndModelStatements();
             Output(SpanKind.Code);
@@ -117,4 +120,5 @@ namespace RazorEngine.Compilation.VisualBasic
         }
         #endregion
     }
+#endif
 }

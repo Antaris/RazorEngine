@@ -14,6 +14,10 @@ namespace RazorEngine.Templating
     using Configuration;
     using Parallel;
     using Text;
+    using System.Threading.Tasks;
+#if RAZOR4
+    using System.Runtime.ExceptionServices;
+#endif
 
     /// <summary>
     /// Defines a template service.
@@ -631,6 +635,7 @@ namespace RazorEngine.Templating
 	        }
         }
 
+        
         /// <summary>
         /// Runs the specified template and returns the result.
         /// </summary>
@@ -644,7 +649,18 @@ namespace RazorEngine.Templating
 
             using (var writer = new System.IO.StringWriter())
             {
+#if RAZOR4
+                try
+                {
+                    template.Run(CreateExecuteContext(viewBag), writer).Wait();
+                }
+                catch (AggregateException ex)
+                {
+                    ExceptionDispatchInfo.Capture(ex.Flatten().InnerExceptions.First()).Throw();
+                }
+#else
                 template.Run(CreateExecuteContext(viewBag), writer);
+#endif
                 return writer.ToString();
             }
         }

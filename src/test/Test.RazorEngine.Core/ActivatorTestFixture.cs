@@ -29,6 +29,10 @@
         [Test]
         public void TemplateService_CanSupportCustomActivator_WithUnity()
         {
+#if RAZOR4
+            Assert.Ignore("We need to add roslyn to generate custom constructors!");
+#endif
+
             var container = new UnityContainer();
             container.RegisterType(typeof(ITextFormatter), typeof(ReverseTextFormatter));
 

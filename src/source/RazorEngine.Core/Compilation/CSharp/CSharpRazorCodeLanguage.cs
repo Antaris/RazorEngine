@@ -1,8 +1,15 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
     using System.Security;
+#if RAZOR4
+    using Microsoft.AspNet.Razor;
+    using Microsoft.AspNet.Razor.Generator;
+    using OriginalCSharpRazorCodeLanguage = Microsoft.AspNet.Razor.CSharpRazorCodeLanguage;
+#else
     using System.Web.Razor;
     using System.Web.Razor.Generator;
+    using OriginalCSharpRazorCodeLanguage = System.Web.Razor.CSharpRazorCodeLanguage;
+#endif
 
     /// <summary>
     /// Provides a razor code language that supports the C# language.
@@ -10,7 +17,7 @@
 #if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
 #endif
-    public class CSharpRazorCodeLanguage : System.Web.Razor.CSharpRazorCodeLanguage
+    public class CSharpRazorCodeLanguage : OriginalCSharpRazorCodeLanguage
     {
         #region Constructor
         /// <summary>
