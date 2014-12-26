@@ -12,20 +12,39 @@
     public class DynamicViewBag : DynamicObject
     {
         #region Fields
-        private readonly IDictionary<string, object> _dict = new Dictionary<string, object>();
+        private readonly IDictionary<string, object> _dict;
         #endregion
 
         /// <summary>
         /// Initialises a new instance of <see cref="DynamicViewBag"/>
         /// </summary>
-        /// <param name="viewbag">The parent view bag.</param>
-        public DynamicViewBag(DynamicViewBag viewbag = null)
+        public DynamicViewBag()
+            : this((IDictionary<string, object>)null)
         {
-            if (viewbag != null)
+        }
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="DynamicViewBag"/>
+        /// </summary>
+        /// <param name="viewbag">The parent view bag.</param>
+        public DynamicViewBag(DynamicViewBag viewbag)
+            : this(viewbag == null ? (IDictionary<string,object>) null : viewbag._dict)
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="DynamicViewBag"/>
+        /// </summary>
+        /// <param name="dictionary">A dictionary to copy.</param>
+        public DynamicViewBag(IDictionary<string, object> dictionary)
+        {
+            if (dictionary != null)
             {
-                // Add the viewbag to the current dictionary.
-                foreach (var pair in viewbag._dict)
-                    _dict.Add(pair);
+                _dict = new Dictionary<string, object>(dictionary);
+            }
+            else
+            {
+                _dict = new Dictionary<string, object>();
             }
         }
 
