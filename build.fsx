@@ -79,6 +79,17 @@ MyTarget "SetVersions" (fun _ ->
     CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
 )
 
+MyTarget "SetVersions_Razor4" (fun _ -> 
+    let info =
+        [Attribute.Company "RazorEngine"
+         Attribute.Product "RazorEngine"
+         Attribute.Copyright "Copyright © RazorEngine Project 2011-2014"
+         Attribute.Version BuildConfig.version_razor4
+         Attribute.FileVersion version_razor4]
+    CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
+)
+
+
 MyTarget "BuildApp_45" (fun _ ->
     buildApp net45Params
 )
@@ -103,13 +114,25 @@ MyTarget "Test_40" (fun _ ->
     runTests net40Params
 )
 
+MyTarget "BuildApp_Razor4" (fun _ ->
+    buildApp razor4Params
+)
+
+MyTarget "BuildTest_Razor4" (fun _ ->
+    buildTests razor4Params
+)
+
+MyTarget "Test_Razor4" (fun _ ->
+    runTests razor4Params
+)
+
 MyTarget "CopyToRelease" (fun _ ->
     trace "Copying to release because test was OK."
     CleanDirs [ outLibDir ]
     System.IO.Directory.CreateDirectory(outLibDir) |> ignore
 
     // Copy RazorEngine.dll to release directory
-    [ "net40"; "net45" ] 
+    [ "net40"; "net45"; "razor4" ] 
         |> Seq.map (fun t -> buildDir @@ t, t)
         |> Seq.filter (fun (p, t) -> Directory.Exists p)
         |> Seq.iter (fun (source, target) ->
@@ -221,12 +244,19 @@ Target "Release" (fun _ ->
 
 "Clean"
   ==> "RestorePackages"
+  ==> "SetVersions_Razor4" 
   ==> "SetVersions" 
-
+  
+"SetVersions_Razor4"
+  ==> "BuildApp_Razor4"
 "SetVersions"
   ==> "BuildApp_40"
 "SetVersions"
   ==> "BuildApp_45"
+  
+"BuildApp_Razor4"
+  ==> "BuildTest_Razor4"
+  ==> "Test_Razor4"
 
 "BuildApp_40"
   ==> "BuildTest_40"
@@ -236,6 +266,9 @@ Target "Release" (fun _ ->
   ==> "BuildTest_45"
   ==> "Test_45"
   
+  
+"Test_Razor4"
+  ==> "All"
 "Test_40"
   ==> "All"
 "Test_45"

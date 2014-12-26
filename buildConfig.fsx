@@ -33,6 +33,7 @@ let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
 let page_author = "Matthias Dittrich"
 let mail = "matthew.abbott@outlook.com"
 let version = "3.5.0.0"
+let version_razor4 = "4.0.0.0"
 let commitHash = Information.getCurrentSHA1(".")
 
 //let buildTargets = environVarOrDefault "BUILDTARGETS" ""
@@ -140,6 +141,11 @@ let net45Params = {
     OutDirName = "net45"; 
     TargetName = (if isMono then "v4.5" else "v4.5.1"); 
     DefineConstants = if isMono then "NET45 MONO" else "NET45" }
+let razor4Params = { 
+    OutDirName = "razor4"; 
+    TargetName = (if isMono then "v4.5" else "v4.5.1"); 
+    DefineConstants = if isMono then "NET45 MONO RAZOR4" else "NET45 RAZOR4" }
+
 
 // Documentation 
 let buildDocumentationTarget target =

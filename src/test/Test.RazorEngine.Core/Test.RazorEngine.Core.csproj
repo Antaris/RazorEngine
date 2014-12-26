@@ -83,6 +83,15 @@
     </When>
   </Choose>
   <Choose>
+    <When Condition="$(DefineConstants.Contains('RAZOR4'))">
+      <ItemGroup>
+        <Reference Include="Microsoft.AspNet.Razor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\.nuget\packages\Microsoft.AspNet.Razor.4.0.0-beta1\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
+          <Private>true</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
       <ItemGroup>
         <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
