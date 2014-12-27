@@ -10,7 +10,7 @@
     /// <summary>
     /// Provides quick access to template functions.
     /// </summary>
-    [Obsolete("Please use the RazorService class instead.")]
+    [Obsolete("Please use the Engine.Razor instance instead.")]
     public static class Razor
     {
         #region Fields

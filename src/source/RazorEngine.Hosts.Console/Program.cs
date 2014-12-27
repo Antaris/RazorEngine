@@ -32,7 +32,7 @@
         {
             string template = "Hello @Model.Name, welcome to RazorEngine!";
             var result =
-                RazorService.RunCompile(template, "templateKey", null, new { Name = "World" });
+                Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
 
             Console.WriteLine("Template: {0}", template);
             Console.WriteLine("Result: {0}", result);
@@ -41,7 +41,7 @@
         static void QuickStart_2()
         {
             var result =
-                RazorService.Run("templateKey", null, new { Name = "Max" });
+                Engine.Razor.Run("templateKey", null, new { Name = "Max" });
 
             Console.WriteLine("Result (templateKey): {0}", result);
         }
@@ -76,7 +76,7 @@
         static void QuickStart_TemplateManager()
         {
             var result =
-                RazorService.Run("templateKey", null, new { Name = "Max" });
+                Engine.Razor.Run("templateKey", null, new { Name = "Max" });
 
             Console.WriteLine("Result (templateKey): {0}", result);
         }
@@ -86,7 +86,7 @@
             string template = "@Raw(Model.Data)";
             var model = new { Data = "My raw double quotes appears here \"hello!\"" };
 
-            string result = RazorService.RunCompile(template, "rawTemplate", null, model);
+            string result = Engine.Razor.RunCompile(template, "rawTemplate", null, model);
             Console.WriteLine("Template: {0}", template);
             Console.WriteLine("Result: {0}", result);
         }

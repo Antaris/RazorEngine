@@ -22,25 +22,25 @@ First install the nuget package (>=3.5.0).
 	Install-Package RazorEngine
 
 A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
-All you need to do is use the static `RazorService` class:
+All you need to do is use the static `Engine` class (the `Engine.Razor` instance):
 
 	[lang=csharp]
     string template = "Hello @Model.Name, welcome to RazorEngine!";
     var result =
-		RazorService.RunCompile(template, "templateKey", null, new { Name = "World" });
+		Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
 
 The `"templateKey"` must be unique and after running the above example you can re-run the cached template with this key.
 
 	[lang=csharp]
     var result =
-		RazorService.Run("templateKey", null, new { Name = "Max" });
+		Engine.Razor.Run("templateKey", null, new { Name = "Max" });
 
 The null parameter is the `modelType` and `null` in this case means we use `dynamic` as the type of the model.
 You can use a static model as well by providing a type object.
 
 	[lang=csharp]
     var result =
-		RazorService.RunCompile("templateKey", typeof(Person), new Person { Name = "Max" });
+		Engine.Razor.RunCompile("templateKey", typeof(Person), new Person { Name = "Max" });
 
 Note that we now re-compile the model with a different type. 
 When you do not run the same template a lot of times (like several 1000 times), compiling uses the most time.
@@ -60,10 +60,10 @@ You can configure RazorEngine with the `TemplateServiceConfiguration` class.
 	
 	var service = RazorEngineService.Create(config);
 
-If you want to use the static `RazorService` class with this new configuration:
+If you want to use the static `Engine` class with this new configuration:
 
     [lang=csharp]
-    RazorService.SetRazorEngine(service);
+    Engine.Razor = service;
 
 
 ### General Configuration
@@ -93,7 +93,7 @@ To provide RazorEngine with the necessary information you need to tell where the
     string template = "Hello @Model.Name, welcome to RazorEngine!";
 	string templateFile = "C:/mytemplate.cshtml"
     var result =
-		RazorService.RunCompile(new LoadedTemplateSource(template, templateFile), "templateKey", null, new { Name = "World" });
+		Engine.Razor.RunCompile(new LoadedTemplateSource(template, templateFile), "templateKey", null, new { Name = "World" });
 
 This time when debugging the template you will jump right into the template file.
 
@@ -163,7 +163,7 @@ You can get and modify this list (and return it in your own implementation if yo
 
 ## General API design
 
-While the static `RazorService` class is a good and quick way to start I recommend 
+While the static `Engine` class is a good and quick way to start I recommend 
 using the instance based API (`RazorEngineService.Create`) sooner or later.
 
 On the right side you can find links to advanced topics and additional documentation.

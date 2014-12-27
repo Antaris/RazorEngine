@@ -6,13 +6,13 @@ Please read the Quick intro first!
 
 RazorEngine provides a base implementation of a template class, the `TemplateBase`, this is normally superseded by the model specific template class, 
 the `TemplateBase<T>`. For most use cases, we're hoping this will be enough. 
-To get started with template using RazorEngine, you can simply use the static `RazorService` type:
+To get started with template using RazorEngine, you can simply use the static `Engine` type (the `Engine.Razor` instance):
 
     [lang=csharp]
     string template = "<div>Hello @Model.Name</div>";
     var model = new Person { Name = "Matt" };
 
-    string result = RazorService.RunCompile(template, "key", typeof(Person), model);
+    string result = Engine.Razor.RunCompile(template, "key", typeof(Person), model);
 
 Which should result in:
 
@@ -30,7 +30,7 @@ The set of statements to use an anonymous model, is exactly the same as a static
     string template = "<div>Hello @Model.Name</div>";
     var model = new { Name = "Matt" };
 
-    string result = RazorService.RunCompile(template, "key", null, model);
+    string result = Engine.Razor.RunCompile(template, "key", null, model);
 
 Because the generated anonymous type is internal so RazorEngine needs to use some tricks to make this work. 
 This is also the reason you can't use `model.GetType()` in this situation.
@@ -50,7 +50,7 @@ All you need to do is to use `null` for the `modelType` parameter (so the same t
     dynamic model = new ExpandoObject();
     model.Name = "Matt";
 
-    string result = RazorService.RunCompile(template, "key", null, (object)model);
+    string result = Engine.Razor.RunCompile(template, "key", null, (object)model);
 
 > Note: You can run into problems when not casting the model to object.
 
