@@ -178,7 +178,7 @@ namespace RazorEngine.Templating
         /// <param name="reader"></param>
         /// <returns>The merged result of the template.</returns>
 #if RAZOR4
-        async Task ITemplate.Run(ExecuteContext context, TextWriter reader)
+        public async Task Run(ExecuteContext context, TextWriter reader)
 #else
         void ITemplate.Run(ExecuteContext context, TextWriter reader)
 #endif
