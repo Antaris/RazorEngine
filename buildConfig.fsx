@@ -55,7 +55,7 @@ let nuget_url = "https://www.nuget.org/packages/RazorEngine/"
 
 let tags = "C# razor template engine programming"
 
-let buildMode = if isMono then "Release" else "Debug"
+let buildMode = "Release" // if isMono then "Release" else "Debug"
 
 // Where to look for *.cshtml templates (in this order)
 let layoutRoots =
