@@ -7,7 +7,7 @@ By default RazorEngine is configured to encode as Html. This sometimes this pres
     string template = "@Raw(Model.Data)";
     var model = new { Data = "My raw double quotes appears here \"hello!\"" };
 
-    string result = RazorService.RunCompile(template, "templateKey", null, model);
+    string result = Engine.Razor.RunCompile(template, "templateKey", null, model);
 
 Which should result in:
 
