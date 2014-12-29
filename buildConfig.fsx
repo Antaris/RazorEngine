@@ -136,7 +136,15 @@ let runTests  (buildParams:BuildParams) =
     let testDir = testDir @@ buildParams.OutDirName
     let logs = System.IO.Path.Combine(testDir, "logs")
     System.IO.Directory.CreateDirectory(logs) |> ignore
-    !! (testDir + "/Test.*.dll") 
+    let files = !! (testDir + "/Test.*.dll")
+    let files =
+        (if isMono then
+            // While everything seems to work roslyn will sigsegv mono: 
+            // https://travis-ci.org/Antaris/RazorEngine/builds/45375847
+            files 
+            -- (testDir + "/Test.*.Roslyn.dll")
+         else files)
+    files
         |> NUnit (fun p ->
             {p with
                 //NUnitParams.WorkingDir = working
