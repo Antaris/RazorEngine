@@ -16,6 +16,10 @@ To activate roslyn all you need to do is set the `CompilerServiceFactory` proper
 ## Known Limitation/Bugs
 
 - Debugging symbols do not work currently (If you know how Roslyn works please send a pull request!).
+- Debug symbols cannot be created on mono/unix:
+
+         error: (0, 0) Unexpected error writing debug information -- 'The requested feature is not implemented.'
+
 - No support for the net40 build as the roslyn nuget package doesn't support net40!
 - Only C# support (VB.net support is kind of gone as Razor4 doesn't support VB.net).
 - If you find more please open a issue!

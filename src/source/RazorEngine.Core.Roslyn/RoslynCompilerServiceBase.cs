@@ -155,6 +155,15 @@ namespace RazorEngine.Roslyn.CSharp
         public abstract CompilationOptions CreateOptions(TypeContext context);
 
         /// <summary>
+        /// Check for mono runtime as Roslyn doesn't support generating debug symbols on mono/unix
+        /// </summary>
+        /// <returns></returns>
+        private static bool IsMono()
+        {
+            return Type.GetType("Mono.Runtime") != null;
+        }
+
+        /// <summary>
         /// Configures and runs the compiler.
         /// </summary>
         /// <param name="context"></param>
@@ -190,11 +199,17 @@ namespace RazorEngine.Roslyn.CSharp
          
             var assemblyPdbFile = Path.Combine(tempDir, String.Format("{0}.pdb", assemblyName));
             var compilationData = new CompilationData(sourceCode, tempDir);
+            
             using (var assemblyStream = File.OpenWrite(assemblyFile))
             using (var pdbStream = File.OpenWrite(assemblyPdbFile))
             {
                 var opts = new EmitOptions().WithPdbFilePath(assemblyPdbFile);
-                var result = compilation.Emit(assemblyStream, pdbStream, options: opts);
+                var pdbStreamHelper = pdbStream;
+                if (IsMono())
+                {
+                    pdbStreamHelper = null;
+                }
+                var result = compilation.Emit(assemblyStream, pdbStreamHelper, options: opts);
                 if (!result.Success)
                 {
                     var errors =
@@ -213,7 +228,11 @@ namespace RazorEngine.Roslyn.CSharp
                     throw new Templating.TemplateCompilationException(errors, compilationData, context.TemplateContent);
                 }
             }
-            
+
+            if (IsMono() && File.Exists(assemblyPdbFile))
+            {
+                File.Delete(assemblyPdbFile);
+            }
 
             // load file and return loaded type.
             var assembly = Assembly.LoadFrom(assemblyFile);
