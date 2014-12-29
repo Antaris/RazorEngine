@@ -2,7 +2,9 @@
 {
     using RazorEngine.Compilation;
     using System;
+#if !RAZOR4
     using System.CodeDom.Compiler;
+#endif
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
@@ -13,10 +15,20 @@
     [Serializable]
     public class RazorEngineCompilerError
     {
-        public string Message { get; private set; }
-        public RazorEngineCompilerError(string message)
+        public string ErrorText { get; private set; }
+        public string FileName { get; private set; }
+        public int Line { get; private set; }
+        public int Column { get; private set; }
+        public string ErrorNumber { get; private set; }
+        public bool IsWarning { get; private set; }
+        public RazorEngineCompilerError(string errorText, string fileName, int line, int column, string errorNumber, bool isWarning)
         {
-            Message = message;
+            ErrorText = errorText;
+            FileName = fileName;
+            Line = line;
+            Column = column;
+            ErrorNumber = errorNumber;
+            IsWarning = isWarning;
         }
     }
 
@@ -41,7 +53,11 @@
         /// <returns></returns>
         internal static string GetMessage(IEnumerable<RazorEngineCompilerError> errors, CompilationData files, ITemplateSource template)
         {
-            var errorMsgs = string.Join("\n\t", errors.Select(error => error.Message));
+            var errorMsgs = string.Join("\n\t", errors.Select(error =>
+                string.Format(
+                    " - {0}: ({1}, {2}) {3}", 
+                    error.IsWarning ? "warning" : "error", 
+                    error.Line, error.Column, error.ErrorText)));
 
             const string rawTemplateFileMsg = "The template-file we tried to compile is: {0}\n";
             const string rawTemplate = "The template we tried to compile is: {0}\n";
@@ -92,7 +108,7 @@ More details about the error:
             : base(TemplateCompilationException.GetMessage(errors, files, template))
         {
             var list = errors.ToList();
-            Errors = new ReadOnlyCollection<RazorEngineCompilerError>(list);
+            CompilerErrors = new ReadOnlyCollection<RazorEngineCompilerError>(list);
             CompilationData = files;
             Template = template.Template;
         }
@@ -111,10 +127,10 @@ More details about the error:
 
             for (int i = 0; i < count; i++)
             {
-                list.Add((RazorEngineCompilerError)info.GetValue("Errors[" + i + "]", type));
+                list.Add((RazorEngineCompilerError)info.GetValue("CompilerErrors[" + i + "]", type));
             }
 
-            Errors = new ReadOnlyCollection<RazorEngineCompilerError>(list);
+            CompilerErrors = new ReadOnlyCollection<RazorEngineCompilerError>(list);
             var sourceCode = info.GetString("SourceCode");
             if (string.IsNullOrEmpty(sourceCode))
             {
@@ -134,7 +150,22 @@ More details about the error:
         /// <summary>
         /// Gets the set of compiler errors.
         /// </summary>
-        public ReadOnlyCollection<RazorEngineCompilerError> Errors { get; private set; }
+        public ReadOnlyCollection<RazorEngineCompilerError> CompilerErrors { get; private set; }
+
+#if !RAZOR4
+        /// <summary>
+        /// Gets the set of compiler errors.
+        /// </summary>
+        [Obsolete("Use CompilerErrors instead, will be removed in 4.0.0")]
+        public ReadOnlyCollection<CompilerError> Errors
+        {
+            get
+            {
+                return new ReadOnlyCollection<CompilerError>(
+                    CompilerErrors.Select(error => new CompilerError(error.FileName, error.Line, error.Column, error.ErrorNumber, error.ErrorText)).ToList());
+            }
+        }
+#endif
 
         /// <summary>
         /// Gets some copilation specific (temporary) data.
@@ -169,10 +200,10 @@ More details about the error:
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("Count", Errors.Count);
+            info.AddValue("Count", CompilerErrors.Count);
 
-            for (int i = 0; i < Errors.Count; i++)
-                info.AddValue("Errors[" + i + "]", Errors[i]);
+            for (int i = 0; i < CompilerErrors.Count; i++)
+                info.AddValue("CompilerErrors[" + i + "]", CompilerErrors[i]);
 
             info.AddValue("SourceCode", CompilationData.SourceCode ?? string.Empty);
             info.AddValue("TmpFolder", CompilationData.TmpFolder ?? string.Empty);

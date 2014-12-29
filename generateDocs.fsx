@@ -48,8 +48,8 @@ let buildAllDocumentation outDocDir website_root =
     let references =
         if isMono then
             // Workaround compiler errors in Razor-ViewEngine
-            let d = RazorEngine.Compilation.Resolver.UseCurrentAssembliesReferenceResolver()
-            let loadedList = d.GetReferences () |> Seq.cache
+            let d = RazorEngine.Compilation.ReferenceResolver.UseCurrentAssembliesReferenceResolver()
+            let loadedList = d.GetReferences() |> Seq.map (fun c -> c.GetFile()) |> Seq.cache
             //// We replace the list and add required items manually as mcs doesn't like duplicates...
             let getItem name =
                 loadedList |> Seq.find (fun l -> l.Contains name)

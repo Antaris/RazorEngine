@@ -250,10 +250,12 @@
                     .Cast<CompilerError>()
                     .Select(error => 
                         new RazorEngineCompilerError(
-                            string.Format(
-                            " - {0}: ({1}, {2}) {3}", 
-                            error.IsWarning ? "warning" : "error", 
-                            error.Line, error.Column, error.ErrorText))), 
+                            error.ErrorText,
+                            error.FileName,
+                            error.Line,
+                            error.Column,
+                            error.ErrorNumber,
+                            error.IsWarning)), 
                     tmpDir, context.TemplateContent);
             }
             // Make sure we load the assembly from a file and not with

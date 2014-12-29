@@ -199,7 +199,17 @@ namespace RazorEngine.Roslyn.CSharp
                 {
                     var errors =
                         result.Diagnostics.Select(diag =>
-                            new Templating.RazorEngineCompilerError(string.Format("{0}", diag.GetMessage())));
+                        {
+                            var lineSpan = diag.Location.GetLineSpan();
+                            return new Templating.RazorEngineCompilerError(
+                                string.Format("{0}", diag.GetMessage()),
+                                lineSpan.Path, 
+                                lineSpan.StartLinePosition.Line, 
+                                lineSpan.StartLinePosition.Character, 
+                                diag.Id, 
+                                diag.Severity != DiagnosticSeverity.Error); ;
+                        });
+                            
                     throw new Templating.TemplateCompilationException(errors, compilationData, context.TemplateContent);
                 }
             }

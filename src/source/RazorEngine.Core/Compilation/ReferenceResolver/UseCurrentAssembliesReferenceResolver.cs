@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace RazorEngine.Compilation.ReferenceResolver
 {
     /// <summary>
-    /// Resolves the assemblies by using all currently loaded assemblies. See <see cref="IAssemblyResolver"/>
+    /// Resolves the assemblies by using all currently loaded assemblies. See <see cref="IReferenceResolver"/>
     /// </summary>
     public class UseCurrentAssembliesReferenceResolver : IReferenceResolver
     {
