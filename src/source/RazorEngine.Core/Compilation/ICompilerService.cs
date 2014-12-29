@@ -5,7 +5,7 @@
     using System.Reflection;
 
     using Inspectors;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
 
     /// <summary>
@@ -24,8 +24,8 @@
         /// <summary>
         /// Gets or sets the reference resolver.
         /// </summary>
-        IAssemblyReferenceResolver ReferenceResolver { get; set; }
-
+        IReferenceResolver ReferenceResolver { get; set; }
+        
         /// <summary>
         /// Gets or sets whether the compiler service is operating in debug mode.
         /// </summary>

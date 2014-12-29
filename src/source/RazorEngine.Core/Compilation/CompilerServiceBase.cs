@@ -20,7 +20,7 @@
 
     using Inspectors;
     using Templating;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
     using System.Globalization;
     using System.Text;
@@ -95,7 +95,7 @@
         /// <summary>
         /// Gets or sets the assembly resolver.
         /// </summary>
-        public IAssemblyReferenceResolver ReferenceResolver { get; set; }
+        public IReferenceResolver ReferenceResolver { get; set; }
 
         /// <summary>
         /// Gets the code language.
@@ -117,15 +117,45 @@
         /// </summary>
         public abstract string SourceFileExtension { get; }
         
-#if !RAZOR4
-        /// <summary>
-        /// The underlaying CodeDomProvider instance.
-        /// </summary>
-        public abstract CodeDomProvider CodeDomProvider { get; }
-#endif
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Tries to create and return a unique temporary directory.
+        /// </summary>
+        /// <returns>the (already created) temporary directory</returns>
+        protected static string GetTemporaryDirectory()
+        {
+            var created = false;
+            var tried = 0;
+            string tempDirectory = "";
+            while (!created && tried < 10)
+            {
+                tried++;
+                try
+                {
+                    tempDirectory = Path.Combine(Path.GetTempPath(), "RazorEngine_" + Path.GetRandomFileName());
+                    if (!Directory.Exists(tempDirectory))
+                    {
+                        Directory.CreateDirectory(tempDirectory);
+                        created = Directory.Exists(tempDirectory);
+                    }
+                }
+                catch (IOException)
+                {
+                    if (tried > 8)
+                    {
+                        throw;
+                    }
+                }
+            }
+            if (!created)
+            {
+                throw new Exception("Could not create a temporary directory! Maybe all names are already used?");
+            }
+            return tempDirectory;
+        }
 
         /// <summary>
         /// Builds a type name for the specified template type.
@@ -176,54 +206,75 @@
             return host;
         }
 
+        
         /// <summary>
-        /// Generates any required contructors for the specified type.
-        /// </summary>
-        /// <param name="constructors">The set of constructors.</param>
-        /// <param name="codeType">The code type declaration.</param>
-        [Pure]
-        private static void GenerateConstructors(IEnumerable<ConstructorInfo> constructors, CodeTypeDeclaration codeType)
-        {
-            if (constructors == null || !constructors.Any())
-                return;
-
-            var existingConstructors = codeType.Members.OfType<CodeConstructor>().ToArray();
-            foreach (var existingConstructor in existingConstructors)
-                codeType.Members.Remove(existingConstructor);
-
-            foreach (var constructor in constructors)
-            {
-                var ctor = new CodeConstructor();
-                ctor.Attributes = MemberAttributes.Public;
-
-                foreach (var param in constructor.GetParameters())
-                {
-                    ctor.Parameters.Add(new CodeParameterDeclarationExpression(param.ParameterType, param.Name));
-                    ctor.BaseConstructorArgs.Add(new CodeSnippetExpression(param.Name));
-                }
-
-                codeType.Members.Add(ctor);
-            }
-        }
-
-        /// <summary>
-        /// Gets the code compile unit used to compile a type.
+        /// Gets the source code from Razor for the given template.
         /// </summary>
         /// <param name="className">The class name.</param>
         /// <param name="template">The template to compile.</param>
         /// <param name="namespaceImports">The set of namespace imports.</param>
         /// <param name="templateType">The template type.</param>
         /// <param name="modelType">The model type.</param>
-        /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
+        /// <returns></returns>
         [Pure][SecurityCritical]
         public string GetCodeCompileUnit(string className, ITemplateSource template, ISet<string> namespaceImports, Type templateType, Type modelType)
         {
+            var typeContext =
+                new TypeContext(className, namespaceImports)
+                {
+                    TemplateContent = template,
+                    TemplateType = templateType,
+                    ModelType = modelType
+                };
+            return GetCodeCompileUnit(typeContext);
+        }
+
+        /// <summary>
+        /// Helper method to generate the prefered assembly name.
+        /// </summary>
+        /// <param name="context">the context of the current compilation.</param>
+        /// <returns></returns>
+        protected string GetAssemblyName(TypeContext context)
+        {
+            return String.Format("{0}.{1}", DynamicTemplateNamespace, context.ClassName);
+        }
+
+        /// <summary>
+        /// Inspects the source and returns the source code.
+        /// </summary>
+        /// <param name="results"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        [SecurityCritical]
+#if RAZOR4
+        public virtual string InspectSource(GeneratorResults results, TypeContext context)
+        {
+            return results.GeneratedCode;
+        }
+#else
+        public abstract string InspectSource(GeneratorResults results, TypeContext context);
+#endif
+
+        /// <summary>
+        /// Gets the code compile unit used to compile a type.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
+        [Pure][SecurityCritical]
+        public string GetCodeCompileUnit(TypeContext context)
+        {
+            string className = context.ClassName;
+            ITemplateSource template = context.TemplateContent;
+            ISet<string> namespaceImports = context.Namespaces;
+            Type templateType = context.TemplateType;
+            Type modelType = context.ModelType;
+
             if (string.IsNullOrEmpty(className))
                 throw new ArgumentException("Class name is required.");
 
             if (template == null)
                 throw new ArgumentException("Template is required.");
-
+            
             namespaceImports = namespaceImports ?? new HashSet<string>();
             templateType = templateType ?? ((modelType == null) ? typeof(TemplateBase) : typeof(TemplateBase<>));
 
@@ -235,81 +286,23 @@
                 host.NamespaceImports.Add(ns);
 
             // Gets the generator result.
-            var result = GetGeneratorResult(host, template);
-
-#if RAZOR4
-            // TODO: implement inspections and add constructors via ROSLYN
-            // We should then be able to remove the code below
-            return result;
-#else
-            // Add the dynamic model attribute if the type is an anonymous type.
-            var type = result.GeneratedCode.Namespaces[0].Types[0];
-            if (modelType != null && CompilerServicesUtility.IsDynamicType(modelType))
-                type.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(HasDynamicModelAttribute))));
-
-            // Generate any constructors required by the base template type.
-            GenerateConstructors(CompilerServicesUtility.GetConstructors(templateType), type);
-
-            // Despatch any inspectors
-            Inspect(result.GeneratedCode);
-            
-            string generatedCode;
-            var builder = new StringBuilder();
-            using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))
-            {
-                CodeDomProvider.GenerateCodeFromCompileUnit(result.GeneratedCode, writer, new CodeGeneratorOptions());
-                generatedCode = builder.ToString();
-            }
-            return generatedCode;
-#endif
+            return GetGeneratorResult(host, context);
         }
 
         /// <summary>
         /// Gets the generator result.
         /// </summary>
         /// <param name="host">The razor engine host.</param>
-        /// <param name="template">The template.</param>
+        /// <param name="context">The compile context.</param>
         /// <returns>The generator result.</returns>
         [SecurityCritical]
-#if RAZOR4
-        private string GetGeneratorResult(RazorEngineHost host, ITemplateSource template)
-#else
-        private GeneratorResults GetGeneratorResult(RazorEngineHost host, ITemplateSource template)
-#endif
+        private string GetGeneratorResult(RazorEngineHost host, TypeContext context)
         {
             var engine = new RazorTemplateEngine(host);
             GeneratorResults result;
-            using (var reader = template.GetTemplateReader())
-                result = engine.GenerateCode(reader, null, null, template.TemplateFile);
-
-#if RAZOR4
-            string generatedCode = result.GeneratedCode;
-            if (template.TemplateFile == null)
-            {
-                generatedCode = generatedCode.Replace("#line hidden", "");
-            }
-            return generatedCode;
-#else
-            if (template.TemplateFile == null) 
-            {
-                // Allow to step into the template code by removing the "#line hidden" pragmas
-                foreach (CodeNamespace @namespace in result.GeneratedCode.Namespaces.Cast<CodeNamespace>().ToList())
-                {
-                    foreach (CodeTypeDeclaration @type in @namespace.Types.Cast<CodeTypeDeclaration>().ToList())
-                    {
-                        foreach (CodeTypeMember member in @type.Members.Cast<CodeTypeMember>().ToList())
-                        {
-                            var snippet = member as CodeSnippetTypeMember;
-                            if (snippet != null && snippet.Text == "#line hidden")
-                            {
-                                @type.Members.Remove(snippet);
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
-#endif
+            using (var reader = context.TemplateContent.GetTemplateReader())
+                result = engine.GenerateCode(reader, null, null, context.TemplateContent.TemplateFile);
+            return InspectSource(result, context);
         }
 
         /// <summary>
@@ -333,11 +326,34 @@
         /// Returns a set of assemblies that must be referenced by the compiled template.
         /// </summary>
         /// <returns>The set of assemblies.</returns>
+        [Obsolete("Use IncludeReferences instead")]
         public virtual IEnumerable<string> IncludeAssemblies()
         {
             return Enumerable.Empty<string>();
         }
-        
+
+        /// <summary>
+        /// Returns a set of references that must be referenced by the compiled template.
+        /// </summary>
+        /// <returns>The set of references.</returns>
+        public virtual IEnumerable<CompilerReference> IncludeReferences()
+        {
+            return Enumerable.Empty<CompilerReference>();
+        }
+
+        /// <summary>
+        /// Helper method to get all references for the given compilation.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        protected IEnumerable<CompilerReference> GetAllReferences(TypeContext context) { 
+            return ReferenceResolver.GetReferences(
+                context,
+                IncludeAssemblies()
+                    .Select(RazorEngine.Compilation.ReferenceResolver.CompilerReference.From)
+                    .Concat(IncludeReferences()));
+        }
+
 #if !RAZOR4
         /// <summary>
         /// Inspects the generated code compile unit.

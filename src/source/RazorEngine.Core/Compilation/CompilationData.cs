@@ -28,7 +28,7 @@ namespace RazorEngine.Compilation
         /// </summary>
         /// <param name="sourceCode">The generated source code for the template.</param>
         /// <param name="tmpFolder">The temporary folder for the compilation process</param>
-        internal CompilationData(string sourceCode, string tmpFolder)
+        public CompilationData(string sourceCode, string tmpFolder)
         {
             this.tmpFolder = tmpFolder;
             this.srcCode = sourceCode;

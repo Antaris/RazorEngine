@@ -102,6 +102,7 @@ let buildAllDocumentation outDocDir website_root =
     let referenceBinaries =
         [
             "RazorEngine.dll"
+            "RazorEngine.Roslyn.dll"
         ]
 
     let buildReference () =

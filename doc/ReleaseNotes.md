@@ -7,4 +7,5 @@
 * Improved Isolation (AppDomain Sandboxing) support.
 * Caching API.
 * Fixed most open bugs.
-* 4.0.0: Razor 4 dependency
+* Razor 4 support (in 4.0.0)
+* Roslyn Support (via RazorEngine.Roslyn, not supported on net40)

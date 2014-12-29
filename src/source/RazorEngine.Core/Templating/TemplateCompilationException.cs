@@ -10,6 +10,16 @@
     using System.Runtime.Serialization;
     using System.Security;
 
+    [Serializable]
+    public class RazorEngineCompilerError
+    {
+        public string Message { get; private set; }
+        public RazorEngineCompilerError(string message)
+        {
+            Message = message;
+        }
+    }
+
     /// <summary>
     /// Defines an exception that occurs during compilation of the template.
     /// </summary>
@@ -29,9 +39,9 @@
         /// <param name="files"></param>
         /// <param name="template"></param>
         /// <returns></returns>
-        internal static string GetMessage(CompilerErrorCollection errors, CompilationData files, ITemplateSource template)
+        internal static string GetMessage(IEnumerable<RazorEngineCompilerError> errors, CompilationData files, ITemplateSource template)
         {
-            var errorMsgs = string.Join("\n\t", errors.Cast<CompilerError>().Select(error => string.Format(" - {0}: ({1}, {2}) {3}", error.IsWarning ? "warning" : "error", error.Line, error.Column, error.ErrorText)));
+            var errorMsgs = string.Join("\n\t", errors.Select(error => error.Message));
 
             const string rawTemplateFileMsg = "The template-file we tried to compile is: {0}\n";
             const string rawTemplate = "The template we tried to compile is: {0}\n";
@@ -78,11 +88,11 @@ More details about the error:
         /// <param name="errors">The set of compiler errors.</param>
         /// <param name="files">The source code that wasn't compiled.</param>
         /// <param name="template">The source template that wasn't compiled.</param>
-        internal TemplateCompilationException(CompilerErrorCollection errors, CompilationData files, ITemplateSource template)
+        public TemplateCompilationException(IEnumerable<RazorEngineCompilerError> errors, CompilationData files, ITemplateSource template)
             : base(TemplateCompilationException.GetMessage(errors, files, template))
         {
-            var list = errors.Cast<CompilerError>().ToList();
-            Errors = new ReadOnlyCollection<CompilerError>(list);
+            var list = errors.ToList();
+            Errors = new ReadOnlyCollection<RazorEngineCompilerError>(list);
             CompilationData = files;
             Template = template.Template;
         }
@@ -96,15 +106,15 @@ More details about the error:
         {
             int count = info.GetInt32("Count");
 
-            var list = new List<CompilerError>();
-            var type = typeof(CompilerError);
+            var list = new List<RazorEngineCompilerError>();
+            var type = typeof(RazorEngineCompilerError);
 
             for (int i = 0; i < count; i++)
             {
-                list.Add((CompilerError)info.GetValue("Errors[" + i + "]", type));
+                list.Add((RazorEngineCompilerError)info.GetValue("Errors[" + i + "]", type));
             }
 
-            Errors = new ReadOnlyCollection<CompilerError>(list);
+            Errors = new ReadOnlyCollection<RazorEngineCompilerError>(list);
             var sourceCode = info.GetString("SourceCode");
             if (string.IsNullOrEmpty(sourceCode))
             {
@@ -124,7 +134,7 @@ More details about the error:
         /// <summary>
         /// Gets the set of compiler errors.
         /// </summary>
-        public ReadOnlyCollection<CompilerError> Errors { get; private set; }
+        public ReadOnlyCollection<RazorEngineCompilerError> Errors { get; private set; }
 
         /// <summary>
         /// Gets some copilation specific (temporary) data.

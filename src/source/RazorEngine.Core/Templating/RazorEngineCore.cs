@@ -17,6 +17,7 @@ namespace RazorEngine.Templating
     using System.Security;
     using System.Security.Permissions;
     using System.Threading.Tasks;
+    using RazorEngine.Compilation.ReferenceResolver;
     internal class RazorEngineCore
     {
         private readonly ITemplateServiceConfiguration _config;
@@ -111,7 +112,7 @@ namespace RazorEngine.Templating
 #if !RAZOR4
             service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
 #endif
-            service.ReferenceResolver = _config.ReferenceResolver ?? new Compilation.Resolver.UseCurrentAssembliesReferenceResolver();
+            service.ReferenceResolver = _config.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
 
             var result = service.CompileType(context);
 
