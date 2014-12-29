@@ -85,7 +85,7 @@
             var rawMessage = @"Errors while compiling a Template.
 Please try the following to solve the situation:
   * If the problem is about missing references either try to load the missing references manually (in the compiling appdomain!) or
-    Specify your references manually by providing your own IAssemblyReferenceResolver implementation.
+    Specify your references manually by providing your own IReferenceResolver implementation.
     Currently all references have to be available as files!
   * If you get 'class' does not contain a definition for 'member': 
         try another modelType (for example 'null' or 'typeof(DynamicObject)' to make the model dynamic).
