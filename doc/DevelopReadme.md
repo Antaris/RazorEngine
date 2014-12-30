@@ -151,21 +151,22 @@ please only make breaking changes when the change was never included in a releas
  - do `build NuGet_single` to generate the nuget packages
  - Edit `C:/Projects/FSharp.Formatting/paket.lock` so that it loads the RazorEngine nuget package from disk:
 
-		 NUGET
-		  remote: http://nuget.org/api/v2
-		  specs:
-			CommandLineParser (1.9.71)
-			FAKE (3.12.2)
-			FSharp.Compiler.Service (0.0.67)
-			Microsoft.AspNet.Razor (2.0.30506.0)
-			NuGet.CommandLine (2.8.3)
-			NUnit (2.6.4)
-			NUnit.Runners (2.6.4)
-		  remote: C:\\Projects\\RazorEngine\\release\\nuget
-		  specs:
-			RazorEngine (3.5.0-beta1)
-			  Microsoft.AspNet.Razor (>= 3.2.2.0) - net45
-			  Microsoft.AspNet.Razor (2.0.30506.0) - net40
+        [lang=markup]
+        NUGET
+          remote: http://nuget.org/api/v2
+          specs:
+            CommandLineParser (1.9.71)
+            FAKE (3.12.2)
+            FSharp.Compiler.Service (0.0.67)
+            Microsoft.AspNet.Razor (2.0.30506.0)
+            NuGet.CommandLine (2.8.3)
+            NUnit (2.6.4)
+            NUnit.Runners (2.6.4)
+          remote: C:\Projects\RazorEngine\release\nuget
+          specs:
+            RazorEngine (3.5.0-beta1)
+              Microsoft.AspNet.Razor (>= 3.2.2.0) - net45
+              Microsoft.AspNet.Razor (2.0.30506.0) - net40
 
  - Delete `C:/Projects/FSharp.Formatting/packages/RazorEngine` if it exists.
  - Build FSharp.Formatting.
