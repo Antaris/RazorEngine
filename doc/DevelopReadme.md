@@ -128,6 +128,23 @@ You can execute a single step with `build #Step#_single`: For example to build t
 There is another (hidden) step `CleanAll` which will clean everything up (even build dependencies and the downloaded Nuget.exe), 
 this step is only needed when build dependencies change. `git clean -d -x -f` is also a good way to do that
 
+## Visual Studio / Monodevelop
+
+As mentioned above you need to `build` at least once before you can open the 
+solution file (`src/RazorEngine.sln`) with Visual Studio / Monodevelop.
+
+The default is that Visual Studio is configured for the latest build (`razor4`).
+If you want to build another target with Visual Studio / Monodevelop do the following:
+
+ - Close the solution
+ - Open `src/buildConfig.targets` and change the `CustomBuildName` entry (near the top) to `razor4`, `net45` or `net40`.
+   The line should then look like this:
+
+        [lang=markup]
+        <CustomBuildName Condition=" '$(CustomBuildName)' == '' ">net45</CustomBuildName> 
+
+ - Save the `src/buildConfig.targets` file and re-open the solution.
+
 ## Documentation generation
 
 For the docs we use a custom build of FSharp.Formatting (because of improved C# support and to make use of the latest RazorEngine features!)

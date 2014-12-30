@@ -85,18 +85,16 @@ let MyTarget name body =
 
 type BuildParams =
     {
-        OutDirName : string
-        TargetName : string
-        DefineConstants : string
+        CustomBuildName : string
     }
 
 let buildApp (buildParams:BuildParams) =
-    let buildDir = buildDir @@ buildParams.OutDirName
+    let buildDir = buildDir @@ buildParams.CustomBuildName
     CleanDirs [ buildDir ]
     // build app
     let files = !! "src/source/**/*.csproj"
     let files =
-        (if buildParams.OutDirName = "net40" then
+        (if buildParams.CustomBuildName = "net40" then
             // dont build roslyn on net40
             files 
             -- "src/**/RazorEngine.Core.Roslyn.csproj"
@@ -109,17 +107,16 @@ let buildApp (buildParams:BuildParams) =
      else files)
         |> MSBuild buildDir "Build" 
             [   "Configuration", buildMode
-                "TargetFrameworkVersion", buildParams.TargetName 
-                "DefineConstants", buildParams.DefineConstants ]
+                "CustomBuildName", buildParams.CustomBuildName ]
         |> Log "AppBuild-Output: "
 
 let buildTests (buildParams:BuildParams) =
-    let testDir = testDir @@ buildParams.OutDirName
+    let testDir = testDir @@ buildParams.CustomBuildName
     CleanDirs [ testDir ]
     // build tests
     let files = !! "src/test/**/Test.*.csproj"
     let files =
-        (if buildParams.OutDirName = "net40" then
+        (if buildParams.CustomBuildName = "net40" then
             // dont build roslyn on net40
             files 
             -- "src/**/Test.RazorEngine.Core.Roslyn.csproj"
@@ -128,15 +125,17 @@ let buildTests (buildParams:BuildParams) =
     files
         |> MSBuild testDir "Build" 
             [   "Configuration", buildMode
-                "TargetFrameworkVersion", buildParams.TargetName 
-                "DefineConstants", buildParams.DefineConstants ]
+                "CustomBuildName", buildParams.CustomBuildName ]
         |> Log "TestBuild-Output: "
     
 let runTests  (buildParams:BuildParams) =
-    let testDir = testDir @@ buildParams.OutDirName
+    let testDir = testDir @@ buildParams.CustomBuildName
     let logs = System.IO.Path.Combine(testDir, "logs")
     System.IO.Directory.CreateDirectory(logs) |> ignore
-    let files = !! (testDir + "/Test.*.dll")
+    let files = 
+        !! (testDir + "/Test.*.dll")
+        // not working currently
+        -- (testDir + "/Test.RazorEngine.FSharp.dll")
     let files =
         (if isMono then
             // While everything seems to work roslyn will sigsegv mono: 
@@ -160,18 +159,9 @@ let runTests  (buildParams:BuildParams) =
                 OutputFile = "logs/TestResults.xml" })
 
     
-let net40Params = { 
-    OutDirName = "net40"; 
-    TargetName = "v4.0"; 
-    DefineConstants = if isMono then "NET40 MONO" else "NET40" }
-let net45Params = { 
-    OutDirName = "net45"; 
-    TargetName = (if isMono then "v4.5" else "v4.5.1"); 
-    DefineConstants = if isMono then "NET45 MONO" else "NET45" }
-let razor4Params = { 
-    OutDirName = "razor4"; 
-    TargetName = (if isMono then "v4.5" else "v4.5.1"); 
-    DefineConstants = if isMono then "NET45 MONO RAZOR4" else "NET45 RAZOR4" }
+let net40Params = { CustomBuildName = "net40" }
+let net45Params = { CustomBuildName = "net45" }
+let razor4Params = { CustomBuildName = "razor4" }
 
 
 // Documentation 
