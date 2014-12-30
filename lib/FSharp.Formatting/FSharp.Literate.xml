@@ -459,6 +459,11 @@
  uses an F# discriminated union type and so is best used from F#.
 </summary>
 </member>
+<member name="T:FSharp.Literate.LiterateParagraph.RawBlock">
+<summary>
+ Block simply emitted without any formatting equivalent to &lt;pre&gt; tag in html
+</summary>
+</member>
 <member name="T:FSharp.Literate.LiterateParagraph.LanguageTaggedCode">
 <summary>
  Ordinary formatted code snippet in non-F# language (tagged with language code)
