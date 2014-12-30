@@ -3,6 +3,7 @@ using System;
 using System.IO;
 namespace RazorEngine.Templating
 {
+#if DISABLED
     /// <summary>
     /// Defines an internal contract for compiling and running templates without caching.
     /// </summary>
@@ -39,4 +40,5 @@ namespace RazorEngine.Templating
         /// <param name="viewBag"></param>
         void RunTemplate(ICompiledTemplate template, TextWriter writer, object model, DynamicViewBag viewBag);
     }
+#endif
 }

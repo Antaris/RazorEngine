@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 namespace RazorEngine.Templating
 {
     /// <summary>
@@ -36,7 +37,11 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Executes the compiled template.
         /// </summary>
+#if RAZOR4
+        Task Execute();
+#else
         void Execute();
+#endif
 
         /// <summary>
         /// Runs the template and returns the result.
@@ -44,7 +49,11 @@ namespace RazorEngine.Templating
         /// <param name="context">The current execution context.</param>
         /// <param name="writer"></param>
         /// <returns>The merged result of the template.</returns>
+#if RAZOR4
+        Task Run(ExecuteContext context, TextWriter writer);
+#else
         void Run(ExecuteContext context, TextWriter writer);
+#endif
 
         /// <summary>
         /// Writes the specified object to the result.

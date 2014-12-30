@@ -88,6 +88,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{CF6DB8E1-245
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{77852C68-A0DB-4644-A1B4-17E101DFE9B1}"
 	ProjectSection(SolutionItems) = preProject
+		..\nuget\RazorEngine-razor4.nuspec = ..\nuget\RazorEngine-razor4.nuspec
 		..\nuget\RazorEngine.nuspec = ..\nuget\RazorEngine.nuspec
 	EndProjectSection
 EndProject

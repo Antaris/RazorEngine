@@ -54,10 +54,12 @@
         /// </summary>
         public Type BaseTemplateType { get; private set; }
 
+#if !RAZOR4
         /// <summary>
         /// Gets the code inspectors.
         /// </summary>
         public IEnumerable<ICodeInspector> CodeInspectors { get; private set; }
+#endif
 
         /// <summary>
         /// Gets the reference resolver.

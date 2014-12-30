@@ -1,5 +1,6 @@
 ﻿namespace RazorEngine.Compilation.VisualBasic
 {
+#if !RAZOR4 // no support for VB.net in Razor4?
     using System.Security;
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
@@ -51,4 +52,5 @@
         }
         #endregion
     }
+#endif
 }

@@ -29,11 +29,13 @@
         /// Gets the base template type.
         /// </summary>
         Type BaseTemplateType { get; }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Gets the code inspectors.
         /// </summary>
         IEnumerable<ICodeInspector> CodeInspectors { get; }
+#endif
 
         /// <summary>
         /// Gets the reference resolver.

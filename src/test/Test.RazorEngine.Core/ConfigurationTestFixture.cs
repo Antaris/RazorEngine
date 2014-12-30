@@ -48,7 +48,8 @@
                 Assert.AreEqual(expected.ToString(), result);
             }
         }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Tests that the fluent configuration can configure a template service with a specific code language.
         /// </summary>
@@ -81,6 +82,7 @@
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
+#endif
 
         /// <summary>
         /// Tests that the fluent configuration can configure a template service with a specific encoding.

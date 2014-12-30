@@ -16,7 +16,8 @@ namespace RazorEngine.Templating
     using Text;
     using System.Security;
     using System.Security.Permissions;
-    internal class RazorEngineCore : IRazorEngineCore
+    using System.Threading.Tasks;
+    internal class RazorEngineCore
     {
         private readonly ITemplateServiceConfiguration _config;
         /// <summary>
@@ -107,7 +108,9 @@ namespace RazorEngine.Templating
                 .CompilerServiceFactory
                 .CreateCompilerService(_config.Language);
             service.Debug = _config.Debug;
+#if !RAZOR4
             service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
+#endif
             service.ReferenceResolver = _config.ReferenceResolver ?? new Compilation.Resolver.UseCurrentAssembliesReferenceResolver();
 
             var result = service.CompileType(context);
@@ -124,14 +127,22 @@ namespace RazorEngine.Templating
         /// <param name="model"></param>
         /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
         /// <returns>The string result of the template.</returns>
-        //[SecurityCritical]
+#if RAZOR4
+        public async Task RunTemplate(ICompiledTemplate template, System.IO.TextWriter writer, object model, DynamicViewBag viewBag)
+        
+#else
         public void RunTemplate(ICompiledTemplate template, System.IO.TextWriter writer, object model, DynamicViewBag viewBag)
+#endif
         {
             if (template == null)
                 throw new ArgumentNullException("template");
 
             var instance = CreateTemplate(template, model);
+#if RAZOR4
+            await instance.Run(CreateExecuteContext(viewBag), writer);
+#else
             instance.Run(CreateExecuteContext(viewBag), writer);
+#endif
         }
 
         /// <summary>

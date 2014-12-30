@@ -6,8 +6,14 @@ namespace RazorEngine.Templating
     using System.IO;
     using System.Security;
     using System.Text;
+    using System.Threading.Tasks;
     using Text;
-    
+#if RAZOR4
+    using SectionAction = System.Action<System.IO.TextWriter>;
+#else
+    using SectionAction = System.Action;
+#endif
+
     /// <summary>
     /// Provides a base implementation of a template.
     /// NOTE: This class is not serializable to prevent subtle errors 
@@ -83,7 +89,7 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="name">The name of the section.</param>
         /// <param name="action">The delegate used to write the section.</param>
-        public void DefineSection(string name, Action action)
+        public void DefineSection(string name, SectionAction action)
         {
             _context.DefineSection(name, action);
         }
@@ -101,9 +107,14 @@ namespace RazorEngine.Templating
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + name + "'");
 
+            // TODO: make TemplateWriter async?
             return new TemplateWriter(tw =>
                 instance.Run(
-                    InternalTemplateService.CreateExecuteContext(ViewBag), tw));
+                    InternalTemplateService.CreateExecuteContext((DynamicViewBag)ViewBag), tw)
+#if RAZOR4
+                    .Wait()
+#endif
+                    );
         }
 
         /// <summary>
@@ -122,7 +133,11 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Executes the compiled template.
         /// </summary>
+#if RAZOR4
+        public virtual async Task Execute() { }
+#else
         public virtual void Execute() { }
+#endif
 
         /// <summary>
         /// Returns the specified string as a raw string. This will ensure it is not encoded.
@@ -162,7 +177,11 @@ namespace RazorEngine.Templating
         /// <param name="context">The current execution context.</param>
         /// <param name="reader"></param>
         /// <returns>The merged result of the template.</returns>
+#if RAZOR4
+        public async Task Run(ExecuteContext context, TextWriter reader)
+#else
         void ITemplate.Run(ExecuteContext context, TextWriter reader)
+#endif
         {
             _context = context;
 
@@ -171,7 +190,11 @@ namespace RazorEngine.Templating
                 using (var writer = new StreamWriter(memory))
                 {
                     _context.CurrentWriter = writer;
+#if RAZOR4
+                    await Execute();
+#else
                     Execute();
+#endif
                     writer.Flush();
                     _context.CurrentWriter = null;
 
@@ -194,8 +217,12 @@ namespace RazorEngine.Templating
                         context.PushBody(body);
                         context.PushSections();
 
+#if RAZOR4
+                        await layout.Run(context, reader);
+#else
                         layout.Run(context, reader);
-                        return;
+#endif
+                    return;
                     }
 
                     StreamToTextWriter(memory, reader);
@@ -218,10 +245,15 @@ namespace RazorEngine.Templating
             if (action == null && isRequired)
                 throw new ArgumentException("No section has been defined with name '" + name + "'");
 
-            if (action == null) action = () => { };
+            if (action == null) 
+#if RAZOR4
+                action = (tw) => { };
+#else
+                action = () => { };
+#endif
 
             return new TemplateWriter(tw => {
-                _context.PopSections(action);
+                _context.PopSections(action, tw);
             });
         }
 

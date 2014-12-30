@@ -7,15 +7,23 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+#if RAZOR4
+    using Microsoft.AspNet.Razor;
+    using Microsoft.AspNet.Razor.Generator;
+    using Microsoft.AspNet.Razor.Parser;
+#else
     using System.Web.Razor;
     using System.Web.Razor.Generator;
     using System.Web.Razor.Parser;
+    using System.CodeDom.Compiler;
+#endif
 
     using Inspectors;
     using Templating;
     using RazorEngine.Compilation.Resolver;
     using System.Security;
-
+    using System.Globalization;
+    using System.Text;
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
@@ -77,10 +85,12 @@
         #endregion
 
         #region Properties
+#if !RAZOR4
         /// <summary>
         /// Gets or sets the set of code inspectors.
         /// </summary>
         public IEnumerable<ICodeInspector> CodeInspectors { get; set; }
+#endif
 
         /// <summary>
         /// Gets or sets the assembly resolver.
@@ -106,6 +116,13 @@
         /// Extension of a source file without dot ("cs" for C# files or "vb" for VB.NET files).
         /// </summary>
         public abstract string SourceFileExtension { get; }
+        
+#if !RAZOR4
+        /// <summary>
+        /// The underlaying CodeDomProvider instance.
+        /// </summary>
+        public abstract CodeDomProvider CodeDomProvider { get; }
+#endif
         #endregion
 
         #region Methods
@@ -116,18 +133,7 @@
         /// <param name="templateType">The template type.</param>
         /// <returns>The string type name (including namespace).</returns>
         [Pure]
-        public virtual string BuildTypeName(Type templateType)
-        {
-            if (templateType == null)
-                throw new ArgumentNullException("templateType");
-
-            if (!templateType.IsGenericTypeDefinition || !templateType.IsGenericType)
-                return templateType.FullName;
-
-            return templateType.Namespace
-                   + "."
-                   + templateType.Name.Substring(0, templateType.Name.IndexOf('`'));
-        }
+        public abstract string BuildTypeName(Type templateType, Type modelType);
 
         /// <summary>
         /// Compiles the type defined in the specified type context.
@@ -152,13 +158,17 @@
                            {
                                DefaultBaseTemplateType = templateType,
                                DefaultModelType = modelType,
-                               DefaultBaseClass = BuildTypeName(templateType),
+                               DefaultBaseClass = BuildTypeName(templateType, modelType),
                                DefaultClassName = className,
                                DefaultNamespace = DynamicTemplateNamespace,
                                GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
                                                                                  "WriteTo", "WriteLiteralTo",
                                                                                  "RazorEngine.Templating.TemplateWriter",
-                                                                                 "DefineSection") {
+                                                                                 "DefineSection"
+#if RAZOR4
+                                                                                 , new GeneratedTagHelperContext()
+#endif
+                                                                                 ) {
                                                                                      ResolveUrlMethodName = "ResolveUrl"
                                                                                  }
                            };
@@ -206,7 +216,7 @@
         /// <param name="modelType">The model type.</param>
         /// <returns>A <see cref="CodeCompileUnit"/> used to compile a type.</returns>
         [Pure][SecurityCritical]
-        public CodeCompileUnit GetCodeCompileUnit(string className, ITemplateSource template, ISet<string> namespaceImports, Type templateType, Type modelType)
+        public string GetCodeCompileUnit(string className, ITemplateSource template, ISet<string> namespaceImports, Type templateType, Type modelType)
         {
             if (string.IsNullOrEmpty(className))
                 throw new ArgumentException("Class name is required.");
@@ -225,8 +235,13 @@
                 host.NamespaceImports.Add(ns);
 
             // Gets the generator result.
-            GeneratorResults result = GetGeneratorResult(host, template);
+            var result = GetGeneratorResult(host, template);
 
+#if RAZOR4
+            // TODO: implement inspections and add constructors via ROSLYN
+            // We should then be able to remove the code below
+            return result;
+#else
             // Add the dynamic model attribute if the type is an anonymous type.
             var type = result.GeneratedCode.Namespaces[0].Types[0];
             if (modelType != null && CompilerServicesUtility.IsDynamicType(modelType))
@@ -237,8 +252,16 @@
 
             // Despatch any inspectors
             Inspect(result.GeneratedCode);
-
-            return result.GeneratedCode;
+            
+            string generatedCode;
+            var builder = new StringBuilder();
+            using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))
+            {
+                CodeDomProvider.GenerateCodeFromCompileUnit(result.GeneratedCode, writer, new CodeGeneratorOptions());
+                generatedCode = builder.ToString();
+            }
+            return generatedCode;
+#endif
         }
 
         /// <summary>
@@ -248,14 +271,26 @@
         /// <param name="template">The template.</param>
         /// <returns>The generator result.</returns>
         [SecurityCritical]
+#if RAZOR4
+        private string GetGeneratorResult(RazorEngineHost host, ITemplateSource template)
+#else
         private GeneratorResults GetGeneratorResult(RazorEngineHost host, ITemplateSource template)
+#endif
         {
             var engine = new RazorTemplateEngine(host);
             GeneratorResults result;
             using (var reader = template.GetTemplateReader())
                 result = engine.GenerateCode(reader, null, null, template.TemplateFile);
 
+#if RAZOR4
+            string generatedCode = result.GeneratedCode;
             if (template.TemplateFile == null)
+            {
+                generatedCode = generatedCode.Replace("#line hidden", "");
+            }
+            return generatedCode;
+#else
+            if (template.TemplateFile == null) 
             {
                 // Allow to step into the template code by removing the "#line hidden" pragmas
                 foreach (CodeNamespace @namespace in result.GeneratedCode.Namespaces.Cast<CodeNamespace>().ToList())
@@ -274,6 +309,7 @@
                 }
             }
             return result;
+#endif
         }
 
         /// <summary>
@@ -301,7 +337,8 @@
         {
             return Enumerable.Empty<string>();
         }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Inspects the generated code compile unit.
         /// </summary>
@@ -317,6 +354,7 @@
             foreach (var inspector in CodeInspectors)
                 inspector.Inspect(unit, ns, type, executeMethod);
         }
+#endif
         #endregion
     }
 }

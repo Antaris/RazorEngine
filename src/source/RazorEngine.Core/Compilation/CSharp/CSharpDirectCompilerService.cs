@@ -4,11 +4,16 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+#if RAZOR4
+    using Microsoft.AspNet.Razor.Parser;
+#else
     using System.Web.Razor.Parser;
+#endif
 
     using Microsoft.CSharp;
     using Microsoft.CSharp.RuntimeBinder;
     using System.Security;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Defines a direct compiler service for the C# syntax.
@@ -51,6 +56,23 @@
             // Ensure the Microsoft.CSharp assembly is referenced to support dynamic typing.
             return new[] { typeof(Binder).Assembly.Location };
         }
+
+
+        /// <summary>
+        /// Builds a type name for the specified template type.
+        /// </summary>
+        /// <param name="templateType">The template type.</param>
+        /// <returns>The string type name (including namespace).</returns>
+        [Pure]
+        public override string BuildTypeName(Type templateType, Type modelType)
+        {
+            if (templateType == null)
+                throw new ArgumentNullException("templateType");
+
+            var modelTypeName = CompilerServicesUtility.ResolveCSharpTypeName(modelType);
+            return CompilerServicesUtility.CSharpCreateGenericType(templateType, modelTypeName, false);
+        }
+
         #endregion
     }
 }

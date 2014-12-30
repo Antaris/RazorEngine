@@ -33,7 +33,8 @@
         /// <param name="activator">The activator delegate.</param>
         /// <returns>The current configuration builder.</returns>
         IConfigurationBuilder ActivateUsing(Func<InstanceContext, ITemplate> activator);
-
+        
+#if !RAZOR4
         /// <summary>
         /// Adds the specified code inspector.
         /// </summary>
@@ -47,6 +48,7 @@
         /// <param name="inspector">The code inspector.</param>
         /// <returns>The current configuration builder.</returns>
         IConfigurationBuilder AddInspector(ICodeInspector inspector);
+#endif
 
         /// <summary>
         /// Sets the compiler service factory.

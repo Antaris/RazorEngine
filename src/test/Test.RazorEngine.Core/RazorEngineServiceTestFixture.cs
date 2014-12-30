@@ -193,7 +193,7 @@ namespace Test.RazorEngine
                 Assert.IsTrue(msg.Contains("Temporary files of the compilation can be found"),
                     string.Format(errorMessage, "temp files"));
                 // C# source code
-                Assert.IsTrue(msg.Contains("namespace " + CompilerServiceBase.DynamicTemplateNamespace + " {"),
+                Assert.IsTrue(msg.Contains("namespace " + CompilerServiceBase.DynamicTemplateNamespace),
                     string.Format(errorMessage, "C# source"));
             });
         }

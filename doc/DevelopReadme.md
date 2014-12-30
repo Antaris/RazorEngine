@@ -3,7 +3,8 @@
 ## Building
 
 Open the ``.sln`` file or run ``./build``.
-NOTE: It is possible that you can only build the ``.sln`` file AFTER doing an initial ``./build`` (because nuget dependencies have to be resolved).
+
+> NOTE: It is possible that you can only build the ``.sln`` file AFTER doing an initial ``./build`` (because nuget dependencies have to be resolved).
 
 ## General overview:
 
@@ -20,8 +21,8 @@ Discussions/Forums can be found here: https://groups.google.com/forum/#!forum/ra
 
 ### Versioning: 
 
-Not clear.
- 
+http://semver.org/
+
 ### High level documentation ordered by project.
 
 - RazorEngine.Core
