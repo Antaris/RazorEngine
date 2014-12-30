@@ -8,7 +8,7 @@
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Defines a fluent template service configuration
@@ -56,7 +56,8 @@
         {
             get { return _innerConfig.BaseTemplateType; }
         }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
@@ -64,13 +65,23 @@
         {
             get { return _innerConfig.CodeInspectors; }
         }
-
+#endif
+        
         /// <summary>
         /// Gets the reference resolver.
         /// </summary>
-        public IAssemblyReferenceResolver ReferenceResolver
+        public IReferenceResolver ReferenceResolver
         {
             get { return _innerConfig.ReferenceResolver; }
+        }
+
+
+        /// <summary>
+        /// Gets the caching provider.
+        /// </summary>
+        public ICachingProvider CachingProvider
+        {
+            get { return _innerConfig.CachingProvider; }
         }
 
         /// <summary>
@@ -116,9 +127,18 @@
         /// <summary>
         /// Gets the resolver.
         /// </summary>
+        [Obsolete("Please use the TemplateManager property instead")]
         public ITemplateResolver Resolver
         {
             get { return _innerConfig.Resolver; }
+        }
+
+        /// <summary>
+        /// Gets the template manager.
+        /// </summary>
+        public ITemplateManager TemplateManager
+        {
+            get { return _innerConfig.TemplateManager; }
         }
         #endregion
     }

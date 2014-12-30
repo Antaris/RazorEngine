@@ -29,9 +29,16 @@ open AssemblyInfoFile
 let projectName = "RazorEngine"
 let projectSummary = "Simple templating using Razor syntax."
 let projectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
+let projectName_roslyn = "RazorEngine.Roslyn"
+let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
+let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEngine."
 let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
+let page_author = "Matthias Dittrich"
 let mail = "matthew.abbott@outlook.com"
 let version = "3.5.0.0"
+let version_nuget = "3.5.0-beta1"
+let version_razor4 = "4.0.0.0"
+let version_razor4_nuget = "4.0.0-beta1"
 let commitHash = Information.getCurrentSHA1(".")
 
 //let buildTargets = environVarOrDefault "BUILDTARGETS" ""
@@ -47,10 +54,11 @@ let packageDir  = "./.nuget/packages"
 
 let github_user = "Antaris"
 let github_project = "RazorEngine"
+let nuget_url = "https://www.nuget.org/packages/RazorEngine/"
 
 let tags = "C# razor template engine programming"
 
-let buildMode = if isMono then "Release" else "Debug"
+let buildMode = "Release" // if isMono then "Release" else "Debug"
 
 // Where to look for *.cshtml templates (in this order)
 let layoutRoots =
@@ -77,16 +85,21 @@ let MyTarget name body =
 
 type BuildParams =
     {
-        OutDirName : string
-        TargetName : string
-        DefineConstants : string
+        CustomBuildName : string
     }
 
 let buildApp (buildParams:BuildParams) =
-    let buildDir = buildDir @@ buildParams.OutDirName
+    let buildDir = buildDir @@ buildParams.CustomBuildName
     CleanDirs [ buildDir ]
     // build app
     let files = !! "src/source/**/*.csproj"
+    let files =
+        (if buildParams.CustomBuildName = "net40" then
+            // dont build roslyn on net40
+            files 
+            -- "src/**/RazorEngine.Core.Roslyn.csproj"
+         else files)
+
     (if isMono then
       files
       // Don't build the mvc project on mono
@@ -94,27 +107,43 @@ let buildApp (buildParams:BuildParams) =
      else files)
         |> MSBuild buildDir "Build" 
             [   "Configuration", buildMode
-                "TargetFrameworkVersion", buildParams.TargetName 
-                "DefineConstants", buildParams.DefineConstants ]
+                "CustomBuildName", buildParams.CustomBuildName ]
         |> Log "AppBuild-Output: "
 
 let buildTests (buildParams:BuildParams) =
-    let testDir = testDir @@ buildParams.OutDirName
+    let testDir = testDir @@ buildParams.CustomBuildName
     CleanDirs [ testDir ]
     // build tests
     let files = !! "src/test/**/Test.*.csproj"
+    let files =
+        (if buildParams.CustomBuildName = "net40" then
+            // dont build roslyn on net40
+            files 
+            -- "src/**/Test.RazorEngine.Core.Roslyn.csproj"
+         else files)
+
     files
         |> MSBuild testDir "Build" 
             [   "Configuration", buildMode
-                "TargetFrameworkVersion", buildParams.TargetName 
-                "DefineConstants", buildParams.DefineConstants ]
+                "CustomBuildName", buildParams.CustomBuildName ]
         |> Log "TestBuild-Output: "
     
 let runTests  (buildParams:BuildParams) =
-    let testDir = testDir @@ buildParams.OutDirName
+    let testDir = testDir @@ buildParams.CustomBuildName
     let logs = System.IO.Path.Combine(testDir, "logs")
     System.IO.Directory.CreateDirectory(logs) |> ignore
-    !! (testDir + "/Test.*.dll") 
+    let files = 
+        !! (testDir + "/Test.*.dll")
+        // not working currently
+        -- (testDir + "/Test.RazorEngine.FSharp.dll")
+    let files =
+        (if isMono then
+            // While everything seems to work roslyn will sigsegv mono: 
+            // https://travis-ci.org/Antaris/RazorEngine/builds/45375847
+            files 
+            -- (testDir + "/Test.*.Roslyn.dll")
+         else files)
+    files
         |> NUnit (fun p ->
             {p with
                 //NUnitParams.WorkingDir = working
@@ -130,8 +159,10 @@ let runTests  (buildParams:BuildParams) =
                 OutputFile = "logs/TestResults.xml" })
 
     
-let net40Params = { OutDirName = "net40"; TargetName = "v4.0"; DefineConstants = "NET40" }
-let net45Params = { OutDirName = "net45"; TargetName = (if isMono then "v4.5" else "v4.5.1"); DefineConstants = "NET45" }
+let net40Params = { CustomBuildName = "net40" }
+let net45Params = { CustomBuildName = "net45" }
+let razor4Params = { CustomBuildName = "razor4" }
+
 
 // Documentation 
 let buildDocumentationTarget target =

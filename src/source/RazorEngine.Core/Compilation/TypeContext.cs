@@ -1,12 +1,13 @@
 ﻿namespace RazorEngine.Compilation
 {
+    using RazorEngine.Templating;
     using System;
     using System.Collections.Generic;
 
     /// <summary>
     /// Defines a type context that describes a template to compile.
     /// </summary>
-    public class TypeContext : MarshalByRefObject
+    public class TypeContext
     {
         #region Constructor
         /// <summary>
@@ -16,6 +17,17 @@
         {
             ClassName = CompilerServicesUtility.GenerateClassName();
             Namespaces = new HashSet<string>();
+        }
+
+        /// <summary>
+        /// Creates a new TypeContext instance with the given classname and the given namespaces.
+        /// </summary>
+        /// <param name="className"></param>
+        /// <param name="namespaces"></param>
+        internal TypeContext(string className, ISet<string> namespaces)
+        {
+            ClassName = className;
+            Namespaces = namespaces;
         }
         #endregion
 
@@ -38,7 +50,7 @@
         /// <summary>
         /// Gets or sets the template content.
         /// </summary>
-        public string TemplateContent { get; set; }
+        public ITemplateSource TemplateContent { get; set; }
 
         /// <summary>
         /// Gets or sets the base template type.

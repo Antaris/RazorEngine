@@ -44,6 +44,21 @@ namespace RazorEngine.Compilation
         }
 
         /// <summary>
+        /// Checks if the given type is a anonymous type or a generic type containing a 
+        /// reference type as generic type argument
+        /// </summary>
+        /// <param name="t">the type to check</param>
+        /// <returns>true when there exists a reference to an anonymous type.</returns>
+        public static bool IsAnonymousTypeRecursive(Type t)
+        {
+            return t != null && (CompilerServicesUtility.IsAnonymousType(t) ||
+                // part of generic
+                t.GetGenericArguments().Any(arg => IsAnonymousTypeRecursive(arg)) ||
+                // Array is special
+                (t.IsArray && IsAnonymousTypeRecursive(t.GetElementType())));
+        }
+
+        /// <summary>
         /// Determines if the specified type is a dynamic type.
         /// </summary>
         /// <param name="type">The type to check.</param>
@@ -80,7 +95,7 @@ namespace RazorEngine.Compilation
         public static string GenerateClassName()
         {
             Guid guid = Guid.NewGuid();
-            return Regex.Replace(guid.ToString("N"), @"[^A-Za-z]*", "");
+            return String.Format("{0}{1}", CompilerServiceBase.ClassNamePrefix, guid.ToString("N"));
         }
 
         /// <summary>
@@ -99,6 +114,11 @@ namespace RazorEngine.Compilation
             return constructors;
         }
 
+        /// <summary>
+        /// Resolves the C# name of the given type.
+        /// </summary>
+        /// <param name="type">the type to emit.</param>
+        /// <returns>The full type name or dynamic if the type is an instance of an dynamic type.</returns>
         public static string ResolveCSharpTypeName(Type type)
         {
             if (IsIteratorType(type))
@@ -118,6 +138,11 @@ namespace RazorEngine.Compilation
                   + ">";
         }
 
+        /// <summary>
+        /// Resolves the VB.net name of the given type.
+        /// </summary>
+        /// <param name="type">the type to emit.</param>
+        /// <returns>The full type name or Object if the type is an instance of an dynamic type.</returns>
         public static string ResolveVBTypeName(Type type)
         {
             if (IsIteratorType(type))
@@ -174,6 +199,58 @@ namespace RazorEngine.Compilation
             var domain = AppDomain.CurrentDomain;
             return domain.GetAssemblies();
         }
+
+
+        public static string CSharpGetRawTypeName(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("templateType");
+
+            if (!type.IsGenericTypeDefinition || !type.IsGenericType)
+                return type.FullName;
+
+            var templateTypeName =
+                type.Namespace
+                   + "."
+                   + type.Name.Substring(0, type.Name.IndexOf('`'));
+            return templateTypeName;
+        }
+
+        public static string VBGetRawTypeName(Type type) { return CSharpGetRawTypeName(type); }
+
+        public static string CSharpCreateGenericType(Type templateType, string modelTypeName, bool throwWhenNotGeneric)
+        {
+
+            var templateTypeName = CSharpGetRawTypeName(templateType);
+
+            if (!templateType.IsGenericTypeDefinition || !templateType.IsGenericType)
+            {
+                if (throwWhenNotGeneric)
+                {
+                    throw new NotSupportedException("The given base type is not generic!");
+                }
+                return templateTypeName;
+            }
+
+            return templateTypeName + "<" + modelTypeName + ">";
+        }
+
+        public static string VBCreateGenericType(Type templateType, string modelTypeName, bool throwWhenNotGeneric)
+        {
+            var templateTypeName = VBGetRawTypeName(templateType);
+
+            if (!templateType.IsGenericTypeDefinition || !templateType.IsGenericType)
+            {
+                if (throwWhenNotGeneric)
+                {
+                    throw new NotSupportedException("The given base type is not generic!");
+                }
+                return templateTypeName;
+            }
+
+            return templateTypeName + "(Of " + modelTypeName + ")";
+        }
+
         #endregion
     }
 }

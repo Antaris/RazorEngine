@@ -10,13 +10,15 @@ namespace RazorEngine.Configuration
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Provides a default implementation of a template service configuration.
     /// </summary>
     public class TemplateServiceConfiguration : ITemplateServiceConfiguration
     {
+        private ITemplateResolver resolver;
+
         #region Constructor
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateServiceConfiguration"/>.
@@ -30,9 +32,21 @@ namespace RazorEngine.Configuration
             Activator = xmlConfig.Activator ?? new DefaultActivator();
             CompilerServiceFactory = xmlConfig.CompilerServiceFactory ?? new DefaultCompilerServiceFactory();
             EncodedStringFactory = xmlConfig.EncodedStringFactory ?? new HtmlEncodedStringFactory();
+#if !RAZOR4
             CodeInspectors = xmlConfig.CodeInspectors != null ? xmlConfig.CodeInspectors.ToList()  : new List<ICodeInspector>();
+#endif
             Language = xmlConfig.Language;
             ReferenceResolver = xmlConfig.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
+            CachingProvider = xmlConfig.CachingProvider ?? new DefaultCachingProvider();
+            Resolver = xmlConfig.Resolver;
+            TemplateManager =
+                xmlConfig.TemplateManager ?? 
+                new DelegateTemplateManager(name => {
+                    throw new ArgumentException(
+                        string.Format(
+                            "Please either set a template manager to resolve templates or add the template '{0}'!",
+                            name));
+                });
 
             Namespaces = new HashSet<string>
                              {
@@ -60,26 +74,28 @@ namespace RazorEngine.Configuration
         /// Gets or sets the base template type.
         /// </summary>
         public Type BaseTemplateType { get; set; }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
         IEnumerable<ICodeInspector> ITemplateServiceConfiguration.CodeInspectors { get { return CodeInspectors; } }
-
+        
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
         public IList<ICodeInspector> CodeInspectors { get; private set; }
+#endif
+        
+        /// <summary>
+        /// Gets or sets the reference resolver
+        /// </summary>
+        public IReferenceResolver ReferenceResolver { get; set; }
 
         /// <summary>
-        /// Gets the reference resolver.
+        /// Gets or sets the caching provider.
         /// </summary>
-        IAssemblyReferenceResolver ITemplateServiceConfiguration.ReferenceResolver { get { return ReferenceResolver; } }
-
-        /// <summary>
-        /// Gets or sets the reference resolver.
-        /// </summary>
-        public IAssemblyReferenceResolver ReferenceResolver { get; set; }
+        public ICachingProvider CachingProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the compiler service factory.
@@ -109,7 +125,24 @@ namespace RazorEngine.Configuration
         /// <summary>
         /// Gets or sets the template resolver.
         /// </summary>
-        public ITemplateResolver Resolver { get; set; }
+        [Obsolete("Please use the TemplateManager property instead")]
+        public ITemplateResolver Resolver { 
+            get { 
+                return resolver;
+            } 
+            set { 
+                resolver = value;
+                if (value != null)
+                {
+                    TemplateManager = new WrapperTemplateManager(value);
+                }
+            } 
+        }
+
+        /// <summary>
+        /// Gets or sets the template resolver.
+        /// </summary>
+        public ITemplateManager TemplateManager { get; set; }
         #endregion
     }
 }

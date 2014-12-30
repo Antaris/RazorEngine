@@ -48,8 +48,8 @@ let buildAllDocumentation outDocDir website_root =
     let references =
         if isMono then
             // Workaround compiler errors in Razor-ViewEngine
-            let d = RazorEngine.Compilation.Resolver.UseCurrentAssembliesReferenceResolver()
-            let loadedList = d.GetReferences () |> Seq.cache
+            let d = RazorEngine.Compilation.ReferenceResolver.UseCurrentAssembliesReferenceResolver()
+            let loadedList = d.GetReferences() |> Seq.map (fun c -> c.GetFile()) |> Seq.cache
             //// We replace the list and add required items manually as mcs doesn't like duplicates...
             let getItem name =
                 loadedList |> Seq.find (fun l -> l.Contains name)
@@ -65,17 +65,17 @@ let buildAllDocumentation outDocDir website_root =
     
     let projInfo =
         [ "root", website_root
-          "page-description", "RazorEngine implementation"
-          "page-author", "Matthias Dittrich"
+          "page-description", projectDescription
+          "page-author", page_author
           "github-link", github_url
-          "project-name", "RazorEngine"
+          "project-name", projectName
           "project-summary", projectSummary 
           "project-commit", commitHash
           "project-author", authors |> Seq.head
           "project-github", github_url
           "project-issues", sprintf "%s/issues" github_url
           "project-new-issue", sprintf "%s/issues/new" github_url
-          "project-nuget", "https://www.nuget.org/packages/RazorEngine.N/"]
+          "project-nuget", nuget_url]
 
       
     // Copy static files and CSS + JS from F# Formatting
@@ -102,6 +102,7 @@ let buildAllDocumentation outDocDir website_root =
     let referenceBinaries =
         [
             "RazorEngine.dll"
+            "RazorEngine.Roslyn.dll"
         ]
 
     let buildReference () =
@@ -120,6 +121,7 @@ let buildAllDocumentation outDocDir website_root =
             sourceRepo = github_url + "/blob/master/",
             sourceFolder = "./",
             publicOnly = true, 
+            markDownComments = false, // <see cref=""/> support 
             ?assemblyReferences = references )
 
     CleanDirs [ outDocDir ]

@@ -7,7 +7,7 @@
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Defines the required contract for implementing template service configuration.
@@ -29,16 +29,23 @@
         /// Gets the base template type.
         /// </summary>
         Type BaseTemplateType { get; }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Gets the code inspectors.
         /// </summary>
         IEnumerable<ICodeInspector> CodeInspectors { get; }
+#endif
 
         /// <summary>
         /// Gets the reference resolver.
         /// </summary>
-        IAssemblyReferenceResolver ReferenceResolver { get; }
+        IReferenceResolver ReferenceResolver { get; }
+        
+        /// <summary>
+        /// Gets the caching provider.
+        /// </summary>
+        ICachingProvider CachingProvider { get; }
 
         /// <summary>
         /// Gets the compiler service factory.
@@ -68,7 +75,13 @@
         /// <summary>
         /// Gets the template resolver.
         /// </summary>
+        [Obsolete("Please use the TemplateManager property instead")]
         ITemplateResolver Resolver { get; }
+        
+        /// <summary>
+        /// Gets the template resolver.
+        /// </summary>
+        ITemplateManager TemplateManager { get; }
         #endregion
 
     }

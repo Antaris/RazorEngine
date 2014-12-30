@@ -366,7 +366,7 @@
 <member name="">
 
 </member>
-<member name="F:FSharp.MetadataFormat.FSharp.MetadataFormat.RazorRender.ViewBag@">
+<member name="F:FSharp.MetadataFormat.RazorRender.ViewBag@">
 <summary>
  Dynamic object with more properties (?)
 </summary>
@@ -628,7 +628,43 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="T:FSharp.MetadataFormat.Reader">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
 
 </member>
 <member name="">

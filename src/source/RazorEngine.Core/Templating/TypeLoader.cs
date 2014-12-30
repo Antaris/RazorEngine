@@ -7,10 +7,13 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Security;
+    using System.Security.Permissions;
 
     /// <summary>
     /// Defines a type loader.
     /// </summary>
+    //[SecuritySafeCritical]
     public class TypeLoader : IDisposable
     {
         #region Fields
@@ -27,6 +30,7 @@
         /// </summary>
         /// <param name="appDomain">The application domain.</param>
         /// <param name="assemblies">The set of assemblies.</param>
+        [SecuritySafeCritical]
         public TypeLoader(AppDomain appDomain, IEnumerable<Assembly> assemblies)
         {
             Contract.Requires(appDomain != null);
@@ -62,6 +66,7 @@
         /// Releases resources used by this instance.
         /// </summary>
         /// <param name="disposing">Flag to determine whether this instance is being disposed of explicitly.</param>
+        [SecuritySafeCritical]
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed && disposing)
@@ -97,12 +102,16 @@
         /// </summary>
         /// <param name="type">The template type.</param>
         /// <returns>The delegate instance.</returns>
+        [SecuritySafeCritical]
         private static Func<ITemplate> GetConstructorInternal(Type type)
         {
+            (new PermissionSet(PermissionState.Unrestricted)).Assert();
             var method = type.GetConstructor(new Type[0]);
 
-            return Expression.Lambda<Func<ITemplate>>(
+            var result = Expression.Lambda<Func<ITemplate>>(
                 Expression.New(method)).Compile();
+            //CodeAccessPermission.RevertAssert();
+            return result;
         }
 
         /// <summary>

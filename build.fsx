@@ -74,10 +74,23 @@ MyTarget "SetVersions" (fun _ ->
         [Attribute.Company "RazorEngine"
          Attribute.Product "RazorEngine"
          Attribute.Copyright "Copyright © RazorEngine Project 2011-2014"
-         Attribute.Version BuildConfig.version
-         Attribute.FileVersion version]
+         Attribute.Version version
+         Attribute.FileVersion version
+         Attribute.InformationalVersion version_nuget]
     CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
 )
+
+MyTarget "SetVersions_Razor4" (fun _ -> 
+    let info =
+        [Attribute.Company "RazorEngine"
+         Attribute.Product "RazorEngine"
+         Attribute.Copyright "Copyright © RazorEngine Project 2011-2014"
+         Attribute.Version version_razor4
+         Attribute.FileVersion version_razor4
+         Attribute.InformationalVersion version_razor4_nuget]
+    CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
+)
+
 
 MyTarget "BuildApp_45" (fun _ ->
     buildApp net45Params
@@ -103,23 +116,38 @@ MyTarget "Test_40" (fun _ ->
     runTests net40Params
 )
 
+MyTarget "BuildApp_Razor4" (fun _ ->
+    buildApp razor4Params
+)
+
+MyTarget "BuildTest_Razor4" (fun _ ->
+    buildTests razor4Params
+)
+
+MyTarget "Test_Razor4" (fun _ ->
+    runTests razor4Params
+)
+
 MyTarget "CopyToRelease" (fun _ ->
     trace "Copying to release because test was OK."
     CleanDirs [ outLibDir ]
     System.IO.Directory.CreateDirectory(outLibDir) |> ignore
 
     // Copy RazorEngine.dll to release directory
-    [ "net40"; "net45" ] 
+    [ "net40"; "net45"; "razor4" ] 
         |> Seq.map (fun t -> buildDir @@ t, t)
         |> Seq.filter (fun (p, t) -> Directory.Exists p)
         |> Seq.iter (fun (source, target) ->
             let outDir = outLibDir @@ target 
             ensureDirectory outDir
             [ "RazorEngine.dll"
-              "RazorEngine.xml" ]
-            |> Seq.iter (fun file ->
-                let newFile = outDir @@ Path.GetFileName file
-                File.Copy(source @@ file, newFile))
+              "RazorEngine.xml"
+              "RazorEngine.Roslyn.dll"
+              "RazorEngine.Roslyn.xml" ]
+            |> Seq.filter (fun (file) -> File.Exists (source @@ file))
+            |> Seq.iter (fun (file) ->
+                let newfile = outDir @@ Path.GetFileName file
+                File.Copy(source @@ file, newfile))
         )
 
     // TODO: Copy documentation
@@ -136,7 +164,7 @@ MyTarget "NuGet" (fun _ ->
             Project = projectName
             Summary = projectSummary
             Description = projectDescription
-            Version = release.NugetVersion
+            Version = version_nuget
             ReleaseNotes = toLines release.Notes
             Tags = tags
             OutputPath = outDir
@@ -148,6 +176,57 @@ MyTarget "NuGet" (fun _ ->
                   { FrameworkVersion = "net45"; 
                     Dependencies = [ "Microsoft.AspNet.Razor", "3.2.2.0" ] }  ] })
         "nuget/RazorEngine.nuspec"
+    NuGet (fun p -> 
+        { p with   
+            Authors = authors
+            Project = projectName
+            Summary = projectSummary
+            Description = projectDescription
+            Version = version_razor4_nuget
+            ReleaseNotes = toLines release.Notes
+            Tags = tags
+            OutputPath = outDir
+            AccessKey = getBuildParamOrDefault "nugetkey" ""
+            Publish = hasBuildParam "nugetkey"
+            Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta1" ] })
+        "nuget/RazorEngine-razor4.nuspec"
+
+    // Roslyn
+    NuGet (fun p -> 
+        { p with   
+            Authors = authors
+            Project = projectName_roslyn
+            Summary = projectSummary_roslyn
+            Description = projectDescription_roslyn
+            Version = version_nuget
+            ReleaseNotes = toLines release.Notes
+            Tags = tags
+            OutputPath = outDir
+            AccessKey = getBuildParamOrDefault "nugetkey" ""
+            Publish = hasBuildParam "nugetkey"
+            Dependencies =
+              [ projectName, version_nuget
+                "Microsoft.AspNet.Razor", "3.2.2.0"
+                "Microsoft.CodeAnalysis", "1.0.0-beta1-20141031-01" ] })
+        "nuget/RazorEngine.Roslyn.nuspec"
+    NuGet (fun p -> 
+        { p with   
+            Authors = authors
+            Project = projectName_roslyn
+            Summary = projectSummary_roslyn
+            Description = projectDescription_roslyn
+            Version = version_razor4_nuget
+            ReleaseNotes = toLines release.Notes
+            Tags = tags
+            OutputPath = outDir
+            AccessKey = getBuildParamOrDefault "nugetkey" ""
+            Publish = hasBuildParam "nugetkey"
+            Dependencies =
+              [ projectName, version_razor4_nuget
+                "Microsoft.AspNet.Razor", "4.0.0-beta1"
+                "Microsoft.CodeAnalysis", "1.0.0-beta1-20141031-01" ] })
+        "nuget/RazorEngine.Roslyn-razor4.nuspec"
+
 )
 
 // Documentation 
@@ -160,21 +239,22 @@ MyTarget "LocalDoc" (fun _ ->
 )
 
 
-MyTarget "ReleaseGithubDoc" (fun isSingle -> 
+MyTarget "ReleaseGithubDoc" (fun isSingle ->
+    let repro = (sprintf "git@github.com:%s/%s.git" github_user github_project)  
     let doAction =
         if isSingle then true
         else
-            printf "update github docs? (y,n): "
+            printf "update github docs to %s? (y,n): " repro
             let line = System.Console.ReadLine()
             line = "y"
     if doAction then
         CleanDir "gh-pages"
-        cloneSingleBranch "" (sprintf "git@github.com:%s/%s.git" github_user github_project) "gh-pages" "gh-pages"
+        cloneSingleBranch "" repro "gh-pages" "gh-pages"
         fullclean "gh-pages"
         CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" github_user)@@"html") "gh-pages" true |> printfn "%A"
         StageAll "gh-pages"
         Commit "gh-pages" (sprintf "Update generated documentation %s" release.NugetVersion)
-        printf "gh-pages branch updated in the gh-pages directory, push that branch now? (y,n): "
+        printf "gh-pages branch updated in the gh-pages directory, push that branch to %s now? (y,n): " repro
         let line = System.Console.ReadLine()
         if line = "y" then
             Branches.pushBranch "gh-pages" "origin" "gh-pages"
@@ -195,7 +275,6 @@ MyTarget "VersionBump" (fun _ ->
         if line = "y" then
             StageAll ""
             Commit "" (sprintf "Bump version to %s" release.NugetVersion)
-            Branches.push ""
         
             printf "create tag? (y,n): "
             let line = System.Console.ReadLine()
@@ -206,7 +285,7 @@ MyTarget "VersionBump" (fun _ ->
             printf "push branch? (y,n): "
             let line = System.Console.ReadLine()
             if line = "y" then
-                Branches.push "gh-pages"
+                Branches.push ""
 )
 
 Target "Release" (fun _ ->
@@ -219,16 +298,41 @@ Target "Release" (fun _ ->
 "Clean_single" 
   ==> "CleanAll_single"
 
-// Dependencies
-"Clean" 
+"Clean"
   ==> "RestorePackages"
+  ==> "SetVersions_Razor4" 
   ==> "SetVersions" 
+  
+"SetVersions_Razor4"
+  ==> "BuildApp_Razor4"
+"SetVersions"
   ==> "BuildApp_40"
+"SetVersions"
+  ==> "BuildApp_45"
+  
+"BuildApp_Razor4"
+  ==> "BuildTest_Razor4"
+  ==> "Test_Razor4"
+
+"BuildApp_40"
   ==> "BuildTest_40"
   ==> "Test_40"
-  ==> "BuildApp_45"
+  
+"BuildApp_45"
   ==> "BuildTest_45"
   ==> "Test_45"
+  
+  
+"Test_Razor4"
+  ==> "All"
+"Test_40"
+  ==> "All"
+"Test_45"
+  ==> "All"
+
+
+// Dependencies
+"Clean" 
   ==> "CopyToRelease"
   ==> "LocalDoc"
   ==> "All"

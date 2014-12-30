@@ -68,7 +68,8 @@
             _config.Activator = new DelegateActivator(activator);
             return this;
         }
-
+        
+#if !RAZOR4
         /// <summary>
         /// Adds the specified code inspector.
         /// </summary>
@@ -92,6 +93,7 @@
             _config.CodeInspectors.Add(inspector);
             return this;
         }
+#endif
 
         /// <summary>
         /// Sets that dynamic models should be fault tollerant in accepting missing properties.
@@ -175,9 +177,21 @@
         /// </summary>
         /// <typeparam name="TResolver">The resolve type.</typeparam>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("Please use the ManageUsing method instead.")]
         public IConfigurationBuilder ResolveUsing<TResolver>() where TResolver : ITemplateResolver, new()
         {
             _config.Resolver = new TResolver();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resolve used to locate unknown templates.
+        /// </summary>
+        /// <typeparam name="TResolver">The resolve type.</typeparam>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder ManageUsing<TResolver>() where TResolver : ITemplateManager, new()
+        {
+            _config.TemplateManager = new TResolver();
             return this;
         }
 
@@ -186,11 +200,25 @@
         /// </summary>
         /// <param name="resolver">The resolver instance to use.</param>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("Please use the ManageUsing method instead.")]
         public IConfigurationBuilder ResolveUsing(ITemplateResolver resolver)
         {
             Contract.Requires(resolver != null);
 
             _config.Resolver = resolver;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the resolver used to locate unknown templates.
+        /// </summary>
+        /// <param name="resolver">The resolver instance to use.</param>
+        /// <returns>The current configuration builder.</returns>
+        public IConfigurationBuilder ManageUsing(ITemplateManager resolver)
+        {
+            Contract.Requires(resolver != null);
+
+            _config.TemplateManager = resolver;
             return this;
         }
 
@@ -203,7 +231,7 @@
         {
             Contract.Requires(resolver != null);
 
-            _config.Resolver = new DelegateTemplateResolver(resolver);
+            _config.TemplateManager = new DelegateTemplateManager(resolver);
             return this;
         }
 

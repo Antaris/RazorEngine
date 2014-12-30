@@ -9,7 +9,7 @@
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Represents a template service configuration that supports the xml configuration mechanism.
@@ -54,15 +54,22 @@
         /// </summary>
         public Type BaseTemplateType { get; private set; }
 
+#if !RAZOR4
         /// <summary>
         /// Gets the code inspectors.
         /// </summary>
         public IEnumerable<ICodeInspector> CodeInspectors { get; private set; }
+#endif
 
         /// <summary>
         /// Gets the reference resolver.
         /// </summary>
-        public IAssemblyReferenceResolver ReferenceResolver { get; private set; }
+        public IReferenceResolver ReferenceResolver { get; private set; }
+
+        /// <summary>
+        /// Gets the caching provider.
+        /// </summary>
+        public ICachingProvider CachingProvider { get; private set; }
 
         /// <summary>
         /// Gets the compiler service factory.
@@ -92,7 +99,13 @@
         /// <summary>
         /// Gets the template resolver.
         /// </summary>
+        [Obsolete("Please use the TemplateManager property instead")]
         public ITemplateResolver Resolver { get; private set; }
+
+        /// <summary>
+        /// Gets the template resolver.
+        /// </summary>
+        public ITemplateManager TemplateManager { get; private set; }
         #endregion
 
         #region Methods
@@ -179,8 +192,20 @@
             // Sets the compiler service factory.
             SetCompilerServiceFactory(config.CompilerServiceFactoryType);
 
+            // Sets the reference resolver.
+            SetReferenceResolver(config.ReferenceResolverType);
+
             // Sets the template resolver.
             SetTemplateResolver(config.TemplateResolverType);
+
+            if (Resolver != null)
+            {
+                TemplateManager = new WrapperTemplateManager(Resolver);
+            }
+
+            // Sets the template manager.
+            SetTemplateManager(config.TemplateManagerType);
+
 
             // Set the language.
             Language = config.DefaultLanguage;
@@ -245,7 +270,7 @@
         {
             var type = GetType(referenceResolverType);
             if (type != null)
-                ReferenceResolver = GetInstance<IAssemblyReferenceResolver>(type);
+                ReferenceResolver = GetInstance<IReferenceResolver>(type);
         }
 
         /// <summary>
@@ -268,6 +293,17 @@
             var type = GetType(templateResolverType);
             if (type != null)
                 Resolver = GetInstance<ITemplateResolver>(type);
+        }
+
+        /// <summary>
+        /// Sets the template manager.
+        /// </summary>
+        /// <param name="templateManagerType">The template manager type.</param>
+        private void SetTemplateManager(string templateManagerType)
+        {
+            var type = GetType(templateManagerType);
+            if (type != null)
+                TemplateManager = GetInstance<ITemplateManager>(type);
         }
         #endregion
     }

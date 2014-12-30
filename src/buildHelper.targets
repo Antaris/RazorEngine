@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" InitialTargets="ThrowErrorForUnknownBuild" DefaultTargets="ThrowErrorForUnknownBuild"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="ThrowErrorForUnknownBuild" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>The Buildname "{0}" is unknown!</ErrorText>
+    </PropertyGroup>
+    <Error Condition=" '$(CustomBuildName)' == ''" Text="$([System.String]::Format('$(ErrorText)', '$(CustomBuildNameStart)'))" />
+  </Target>
+</Project>

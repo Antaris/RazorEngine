@@ -4,15 +4,25 @@ using System.Linq;
 namespace RazorEngine.Compilation.CSharp
 {
     using System.CodeDom;
+    using System.Security;
+#if RAZOR4
+    using Microsoft.AspNet.Razor;
+    using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+    using OriginalCSharpRazorCodeGenerator = Microsoft.AspNet.Razor.Generator.CSharpRazorCodeGenerator;
+#else
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
-
+    using OriginalCSharpRazorCodeGenerator = System.Web.Razor.Generator.CSharpRazorCodeGenerator;
+#endif
     using Templating;
 
     /// <summary>
     /// Defines a code generator that supports C# syntax.
     /// </summary>
-    public class CSharpRazorCodeGenerator : System.Web.Razor.Generator.CSharpRazorCodeGenerator
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
+    [SecurityCritical]
+#endif
+    public class CSharpRazorCodeGenerator : OriginalCSharpRazorCodeGenerator
     {
         #region Constructor
         /// <summary>
@@ -27,24 +37,6 @@ namespace RazorEngine.Compilation.CSharp
             : base(className, rootNamespaceName, sourceFileName, host)
         {
             StrictMode = strictMode;
-            var mvcHost = host as Compilation.RazorEngineHost;
-            if (mvcHost != null)
-            {
-                SetBaseTypeFromHost(mvcHost);
-            }
-        }
-
-        private void SetBaseTypeFromHost(Compilation.RazorEngineHost mvcHost)
-        {
-            if (!mvcHost.DefaultBaseTemplateType.IsGenericType)
-            {
-                SetBaseType(mvcHost.DefaultBaseTemplateType.FullName);
-            }
-            else
-            {
-                var modelTypeName = CompilerServicesUtility.ResolveCSharpTypeName(mvcHost.DefaultModelType);
-                SetBaseType(mvcHost.DefaultBaseClass + "<" + modelTypeName + ">");
-            }
         }
 
         #endregion
@@ -57,17 +49,13 @@ namespace RazorEngine.Compilation.CSharp
         #endregion
 
         #region Methods
-        private void SetBaseType(string baseTypeName)
-        {
-            var baseType = new CodeTypeReference(baseTypeName);
-            Context.GeneratedClass.BaseTypes.Clear();
-            Context.GeneratedClass.BaseTypes.Add(baseType);
-        }
-
         /// <summary>
         /// Visits an error generated through parsing.
         /// </summary>
         /// <param name="err">The error that was generated.</param>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
+        [SecurityCritical]
+#endif
         public override void VisitError(RazorError err)
         {
             if (StrictMode)

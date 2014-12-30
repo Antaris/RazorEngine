@@ -1,5 +1,7 @@
 ﻿namespace RazorEngine.Compilation.VisualBasic
 {
+#if !RAZOR4 // no support for VB.net in Razor4?
+    using System.Security;
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
     using Templating;
@@ -7,6 +9,9 @@
     /// <summary>
     /// Defines a code generator that supports VB syntax.
     /// </summary>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
+    [SecurityCritical]
+#endif
     public class VBRazorCodeGenerator : System.Web.Razor.Generator.VBRazorCodeGenerator
     {
         #region Constructor
@@ -37,6 +42,9 @@
         /// Visits an error generated through parsing.
         /// </summary>
         /// <param name="err">The error that was generated.</param>
+#if NET45 // Razor 2 has [assembly: SecurityTransparent]
+        [SecurityCritical]
+#endif
         public override void VisitError(RazorError err)
         {
             if (StrictMode)
@@ -44,4 +52,5 @@
         }
         #endregion
     }
+#endif
 }
