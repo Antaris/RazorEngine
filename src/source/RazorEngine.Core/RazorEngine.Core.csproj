@@ -165,9 +165,10 @@
     <Compile Include="Compilation\ICompilerServiceFactory.cs" />
     <Compile Include="Compilation\RazorDynamicObject.cs" />
     <Compile Include="Compilation\RazorEngineHost.cs" />
-    <Compile Include="Compilation\Resolver\IAssemblyResolver.cs" />
-    <Compile Include="Compilation\Resolver\UseCurrentAssembliesReferenceResolver.cs" />
+    <Compile Include="Compilation\ReferenceResolver\CompilerReference.cs" />
+    <Compile Include="Compilation\ReferenceResolver\IReferenceResolver.cs" />
     <Compile Include="Compilation\CompilationData.cs" />
+    <Compile Include="Compilation\ReferenceResolver\UseCurrentAssembliesReferenceResolver.cs" />
     <Compile Include="Compilation\TypeContext.cs" />
     <Compile Include="Compilation\VisualBasic\VBCodeParser.cs" />
     <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />

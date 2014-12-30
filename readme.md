@@ -134,7 +134,7 @@ The main interface to provide RazorEngine with templates is the `ITemplateManage
     }
 
 
-### Set a reference manager 
+### Set a reference resolver 
 
 Templates are first transformed to a source code file and then dynamically compiled by invoking the compiler.
 Because you can use source code within the template itself you are free to use any libraries within a template.
@@ -142,15 +142,21 @@ However the compiler needs to be able to resolve everything and the default stra
 This can lead to problems when you want to use a library (in the template) which is not referenced in the 
 hosting code or not loaded by the runtime (because it is unused).
 It is also possible that you run into problems on Mono because mcs behaves differently.
-To be able to resolve such issues you can control this behaviour and set your own `IAssemblyReferenceResolver` implementation.
+To be able to resolve such issues you can control this behaviour and set your own `IReferenceResolver` implementation.
 
     [lang=csharp]
 	config.ReferenceResolver = new MyIReferenceResolver();
 
-	class MyIReferenceResolver : IAssemblyReferenceResolver {
-	    public IEnumerable<string> GetReferences(TypeContext context, IEnumerable<string> includeAssemblies) {
+	class MyIReferenceResolver : IReferenceResolver {
+	    public IEnumerable<CompilerReference> GetReferences(TypeContext context, IEnumerable<CompilerReference> includeAssemblies) {
+			// TypeContext gives you some context for the compilation (which templates, which namespaces and types)
 			// My templates need some special reference to compile.
-			return new [] { "Path-to-my-custom-assembly"; };
+			return new [] { 
+				CompilerReference.From("Path-to-my-custom-assembly"), // file path (string)
+				CompilerReference.From(typeof(MyType).Assembly), // Assembly
+				CompilerReference.From(assemblyInByteArray), // byte array (roslyn only)
+				CompilerReference.From(File.OpenRead(assembly)), // stream (roslyn only)
+			};
 		}
 	}
 
@@ -161,10 +167,8 @@ You can get and modify this list (and return it in your own implementation if yo
     [lang=csharp]
 	var loadedList = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null)
 
-## General API design
-
-While the static `Engine` class is a good and quick way to start I recommend 
-using the instance based API (`RazorEngineService.Create`) sooner or later.
+## More
 
 On the right side you can find links to advanced topics and additional documentation.
 You should definitely read "About Razor" and "Template basics".
+

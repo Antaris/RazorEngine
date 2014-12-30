@@ -14,6 +14,7 @@
     using Microsoft.CSharp.RuntimeBinder;
     using System.Security;
     using System.Diagnostics.Contracts;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Defines a direct compiler service for the C# syntax.
@@ -51,10 +52,10 @@
         /// Returns a set of assemblies that must be referenced by the compiled template.
         /// </summary>
         /// <returns>The set of assemblies.</returns>
-        public override IEnumerable<string> IncludeAssemblies()
+        public override IEnumerable<CompilerReference> IncludeReferences()
         {
             // Ensure the Microsoft.CSharp assembly is referenced to support dynamic typing.
-            return new[] { typeof(Binder).Assembly.Location };
+            return new[] { CompilerReference.From(typeof(Binder).Assembly) };
         }
 
 

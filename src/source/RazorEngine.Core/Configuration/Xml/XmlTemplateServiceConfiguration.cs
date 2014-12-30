@@ -9,7 +9,7 @@
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Represents a template service configuration that supports the xml configuration mechanism.
@@ -64,7 +64,8 @@
         /// <summary>
         /// Gets the reference resolver.
         /// </summary>
-        public IAssemblyReferenceResolver ReferenceResolver { get; private set; }
+        public IReferenceResolver ReferenceResolver { get; private set; }
+
         /// <summary>
         /// Gets the caching provider.
         /// </summary>
@@ -191,6 +192,9 @@
             // Sets the compiler service factory.
             SetCompilerServiceFactory(config.CompilerServiceFactoryType);
 
+            // Sets the reference resolver.
+            SetReferenceResolver(config.ReferenceResolverType);
+
             // Sets the template resolver.
             SetTemplateResolver(config.TemplateResolverType);
 
@@ -266,7 +270,7 @@
         {
             var type = GetType(referenceResolverType);
             if (type != null)
-                ReferenceResolver = GetInstance<IAssemblyReferenceResolver>(type);
+                ReferenceResolver = GetInstance<IReferenceResolver>(type);
         }
 
         /// <summary>

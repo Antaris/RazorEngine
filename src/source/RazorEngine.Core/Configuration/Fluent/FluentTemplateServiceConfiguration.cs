@@ -8,7 +8,7 @@
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Defines a fluent template service configuration
@@ -70,10 +70,11 @@
         /// <summary>
         /// Gets the reference resolver.
         /// </summary>
-        public IAssemblyReferenceResolver ReferenceResolver
+        public IReferenceResolver ReferenceResolver
         {
             get { return _innerConfig.ReferenceResolver; }
         }
+
 
         /// <summary>
         /// Gets the caching provider.

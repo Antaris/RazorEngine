@@ -10,7 +10,7 @@ namespace RazorEngine.Configuration
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Provides a default implementation of a template service configuration.
@@ -86,16 +86,11 @@ namespace RazorEngine.Configuration
         /// </summary>
         public IList<ICodeInspector> CodeInspectors { get; private set; }
 #endif
-
+        
         /// <summary>
-        /// Gets the reference resolver.
+        /// Gets or sets the reference resolver
         /// </summary>
-        IAssemblyReferenceResolver ITemplateServiceConfiguration.ReferenceResolver { get { return ReferenceResolver; } }
-
-        /// <summary>
-        /// Gets or sets the reference resolver.
-        /// </summary>
-        public IAssemblyReferenceResolver ReferenceResolver { get; set; }
+        public IReferenceResolver ReferenceResolver { get; set; }
 
         /// <summary>
         /// Gets or sets the caching provider.

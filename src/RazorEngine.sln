@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{A9A2DC20-74A
 		..\doc\Isolation.md = ..\doc\Isolation.md
 		..\doc\LICENSE.md = ..\doc\LICENSE.md
 		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
+		..\doc\Roslyn.md = ..\doc\Roslyn.md
 		..\doc\TemplateBasics.md = ..\doc\TemplateBasics.md
 	EndProjectSection
 EndProject
@@ -90,7 +91,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{77852C68
 	ProjectSection(SolutionItems) = preProject
 		..\nuget\RazorEngine-razor4.nuspec = ..\nuget\RazorEngine-razor4.nuspec
 		..\nuget\RazorEngine.nuspec = ..\nuget\RazorEngine.nuspec
+		..\nuget\RazorEngine.Roslyn-razor4.nuspec = ..\nuget\RazorEngine.Roslyn-razor4.nuspec
+		..\nuget\RazorEngine.Roslyn.nuspec = ..\nuget\RazorEngine.Roslyn.nuspec
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorEngine.Core.Roslyn", "source\RazorEngine.Core.Roslyn\RazorEngine.Core.Roslyn.csproj", "{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.RazorEngine.Core.Roslyn", "test\Test.RazorEngine.Core.Roslyn\Test.RazorEngine.Core.Roslyn.csproj", "{7CB02F9F-7E88-448B-A25B-7985058296C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,6 +149,26 @@ Global
 		{BC7891A1-8459-4A69-A37C-F40824E28C70}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BC7891A1-8459-4A69-A37C-F40824E28C70}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BC7891A1-8459-4A69-A37C-F40824E28C70}.Release|x86.ActiveCfg = Release|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9}.Release|x86.ActiveCfg = Release|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7CB02F9F-7E88-448B-A25B-7985058296C5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +184,8 @@ Global
 		{3AC5DA61-ED58-45FA-975B-4FDB23387B7A} = {A9A2DC20-74A8-4F03-8EDB-A0B6B95F7401}
 		{CF6DB8E1-2459-4EFC-84D0-BCBB4834DAB8} = {3AC5DA61-ED58-45FA-975B-4FDB23387B7A}
 		{77852C68-A0DB-4644-A1B4-17E101DFE9B1} = {57FF23EF-C0CC-42F2-9CF7-5A468FC50C89}
+		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9} = {AB84CBF8-2E91-46B4-8803-8CF529CDA7E7}
+		{7CB02F9F-7E88-448B-A25B-7985058296C5} = {AE7E811A-2B9F-45BC-9752-0FB4D1DEE12D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35

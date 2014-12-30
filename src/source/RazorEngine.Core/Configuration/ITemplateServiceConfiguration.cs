@@ -7,7 +7,7 @@
     using Compilation.Inspectors;
     using Templating;
     using Text;
-    using RazorEngine.Compilation.Resolver;
+    using RazorEngine.Compilation.ReferenceResolver;
 
     /// <summary>
     /// Defines the required contract for implementing template service configuration.
@@ -40,8 +40,8 @@
         /// <summary>
         /// Gets the reference resolver.
         /// </summary>
-        IAssemblyReferenceResolver ReferenceResolver { get; }
-
+        IReferenceResolver ReferenceResolver { get; }
+        
         /// <summary>
         /// Gets the caching provider.
         /// </summary>

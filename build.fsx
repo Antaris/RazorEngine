@@ -141,10 +141,13 @@ MyTarget "CopyToRelease" (fun _ ->
             let outDir = outLibDir @@ target 
             ensureDirectory outDir
             [ "RazorEngine.dll"
-              "RazorEngine.xml" ]
-            |> Seq.iter (fun file ->
-                let newFile = outDir @@ Path.GetFileName file
-                File.Copy(source @@ file, newFile))
+              "RazorEngine.xml"
+              "RazorEngine.Roslyn.dll"
+              "RazorEngine.Roslyn.xml" ]
+            |> Seq.filter (fun (file) -> File.Exists (source @@ file))
+            |> Seq.iter (fun (file) ->
+                let newfile = outDir @@ Path.GetFileName file
+                File.Copy(source @@ file, newfile))
         )
 
     // TODO: Copy documentation
@@ -187,6 +190,43 @@ MyTarget "NuGet" (fun _ ->
             Publish = hasBuildParam "nugetkey"
             Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta1" ] })
         "nuget/RazorEngine-razor4.nuspec"
+
+    // Roslyn
+    NuGet (fun p -> 
+        { p with   
+            Authors = authors
+            Project = projectName_roslyn
+            Summary = projectSummary_roslyn
+            Description = projectDescription_roslyn
+            Version = version_nuget
+            ReleaseNotes = toLines release.Notes
+            Tags = tags
+            OutputPath = outDir
+            AccessKey = getBuildParamOrDefault "nugetkey" ""
+            Publish = hasBuildParam "nugetkey"
+            Dependencies =
+              [ projectName, version_nuget
+                "Microsoft.AspNet.Razor", "3.2.2.0"
+                "Microsoft.CodeAnalysis", "1.0.0-beta1-20141031-01" ] })
+        "nuget/RazorEngine.Roslyn.nuspec"
+    NuGet (fun p -> 
+        { p with   
+            Authors = authors
+            Project = projectName_roslyn
+            Summary = projectSummary_roslyn
+            Description = projectDescription_roslyn
+            Version = version_razor4_nuget
+            ReleaseNotes = toLines release.Notes
+            Tags = tags
+            OutputPath = outDir
+            AccessKey = getBuildParamOrDefault "nugetkey" ""
+            Publish = hasBuildParam "nugetkey"
+            Dependencies =
+              [ projectName, version_razor4_nuget
+                "Microsoft.AspNet.Razor", "4.0.0-beta1"
+                "Microsoft.CodeAnalysis", "1.0.0-beta1-20141031-01" ] })
+        "nuget/RazorEngine.Roslyn-razor4.nuspec"
+
 )
 
 // Documentation 

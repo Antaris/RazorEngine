@@ -1,4 +1,4 @@
-﻿### New in 3.5.0 / 4.0.0 (To be released) 
+﻿### New in 3.5.0-beta1 / 4.0.0-beta1 (To be released) 
 * documentation website based on FSharp.Formatting (https://matthid.github.io/RazorEngine), can be build locally
 * travis and appveyor build systems to automatically build on mono and windows.
 * build environment to build and release the project, the documentation and the nuget package.
@@ -7,4 +7,6 @@
 * Improved Isolation (AppDomain Sandboxing) support.
 * Caching API.
 * Fixed most open bugs.
-* 4.0.0: Razor 4 dependency
+* Razor 4 support (in 4.0.0)
+* Roslyn Support (via RazorEngine.Roslyn, not supported on net40)
+* Please report breaking changes in 3.5.0-beta1 (from 3.4.x) and open an issue!

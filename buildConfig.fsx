@@ -29,6 +29,9 @@ open AssemblyInfoFile
 let projectName = "RazorEngine"
 let projectSummary = "Simple templating using Razor syntax."
 let projectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
+let projectName_roslyn = "RazorEngine.Roslyn"
+let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
+let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEngine."
 let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
 let page_author = "Matthias Dittrich"
 let mail = "matthew.abbott@outlook.com"
@@ -92,6 +95,13 @@ let buildApp (buildParams:BuildParams) =
     CleanDirs [ buildDir ]
     // build app
     let files = !! "src/source/**/*.csproj"
+    let files =
+        (if buildParams.OutDirName = "net40" then
+            // dont build roslyn on net40
+            files 
+            -- "src/**/RazorEngine.Core.Roslyn.csproj"
+         else files)
+
     (if isMono then
       files
       // Don't build the mvc project on mono
@@ -108,6 +118,13 @@ let buildTests (buildParams:BuildParams) =
     CleanDirs [ testDir ]
     // build tests
     let files = !! "src/test/**/Test.*.csproj"
+    let files =
+        (if buildParams.OutDirName = "net40" then
+            // dont build roslyn on net40
+            files 
+            -- "src/**/Test.RazorEngine.Core.Roslyn.csproj"
+         else files)
+
     files
         |> MSBuild testDir "Build" 
             [   "Configuration", buildMode
@@ -119,7 +136,15 @@ let runTests  (buildParams:BuildParams) =
     let testDir = testDir @@ buildParams.OutDirName
     let logs = System.IO.Path.Combine(testDir, "logs")
     System.IO.Directory.CreateDirectory(logs) |> ignore
-    !! (testDir + "/Test.*.dll") 
+    let files = !! (testDir + "/Test.*.dll")
+    let files =
+        (if isMono then
+            // While everything seems to work roslyn will sigsegv mono: 
+            // https://travis-ci.org/Antaris/RazorEngine/builds/45375847
+            files 
+            -- (testDir + "/Test.*.Roslyn.dll")
+         else files)
+    files
         |> NUnit (fun p ->
             {p with
                 //NUnitParams.WorkingDir = working

@@ -63,6 +63,8 @@
         }
 
         #endregion
+
+        #region Methods
         /// <summary>
         /// Set the model.
         /// </summary>
@@ -85,7 +87,6 @@
             return base.Include(cacheName, model ?? Model, model == null ? ModeType: modelType);
         }
 
-        #region Methods
         /// <summary>
         /// Resolves the layout template.
         /// </summary>

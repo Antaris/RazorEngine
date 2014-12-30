@@ -52,6 +52,15 @@
         }
 
         /// <summary>
+        /// Gets the compiler service factory type.
+        /// </summary>
+        [ConfigurationProperty(ReferenceResolverAttribute, IsRequired = false)]
+        public string ReferenceResolverType
+        {
+            get { return (string)this[ReferenceResolverAttribute]; }
+        }
+
+        /// <summary>
         /// Gets or sets the default language.
         /// </summary>
         [ConfigurationProperty(DefaultLanguageAttribute, DefaultValue = Language.CSharp, IsRequired = false)]

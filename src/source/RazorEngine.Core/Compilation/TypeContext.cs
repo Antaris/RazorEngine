@@ -18,6 +18,17 @@
             ClassName = CompilerServicesUtility.GenerateClassName();
             Namespaces = new HashSet<string>();
         }
+
+        /// <summary>
+        /// Creates a new TypeContext instance with the given classname and the given namespaces.
+        /// </summary>
+        /// <param name="className"></param>
+        /// <param name="namespaces"></param>
+        internal TypeContext(string className, ISet<string> namespaces)
+        {
+            ClassName = className;
+            Namespaces = namespaces;
+        }
         #endregion
 
         #region Properties

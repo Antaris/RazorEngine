@@ -17,7 +17,7 @@ namespace RazorEngine.Templating
         /// <summary>
         /// OBSOLETE: Sets the template service.
         /// </summary>
-        [Obsolete("Only provided for backwards compatibility, use CachedTemplateService instead.")]
+        [Obsolete("Only provided for backwards compatibility, use RazorEngine instead.")]
         ITemplateService TemplateService { set; }
 
         /// <summary>

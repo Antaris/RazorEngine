@@ -1,17 +1,20 @@
-﻿namespace RazorEngine.Compilation
+﻿using RazorEngine.Compilation;
+using RazorEngine.Roslyn.CSharp;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Security;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RazorEngine.Roslyn
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-
-    using CSharp;
-    using VisualBasic;
-    using System.Security;
-
     /// <summary>
-    /// Provides a default implementation of a <see cref="ICompilerServiceFactory"/>.
+    /// Provides a implementation of <see cref="ICompilerServiceFactory"/> for the Roslyn implementation.
     /// </summary>
     [Serializable]
-    public class DefaultCompilerServiceFactory : ICompilerServiceFactory
+    public class RoslynCompilerServiceFactory : ICompilerServiceFactory
     {
         #region Methods
         /// <summary>
@@ -26,14 +29,14 @@
             switch (language)
             {
                 case Language.CSharp:
-                    return new CSharpDirectCompilerService();
+                    return new CSharpRoslynCompilerService();
 
                 case Language.VisualBasic:
-#if RAZOR4
+//#if RAZOR4
                     throw new NotSupportedException("Razor4 doesn't support VB.net apparently.");
-#else
-                    return new VBDirectCompilerService();
-#endif
+//#else
+//                    return new VBRoslynCompilerService();
+//#endif
 
                 default:
                     throw new ArgumentException("Unsupported language: " + language);
