@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Templating
+﻿using System.Security;
+
+namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -57,6 +59,7 @@
         /// </summary>
         /// <param name="info">The serialisation info.</param>
         /// <param name="context">The streaming context.</param>
+        [SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
