@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>IsolatedRazorEngineService - RazorEngine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/style.css" />
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/prism.css" />
+    <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/tips.js"></script>
+	<script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/prism.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://Antaris.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+
+
+
+<h1>IsolatedRazorEngineService </h1>
+<div class="xmldoc">
+    Defined in RazorEngine.dll.
+</div>
+<div class="xmldoc">
+
+            Provides template parsing and compilation in an isolated application domain.
+            </br></div>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '705', 705)" onmouseover="showTip(event, '705', 705)">
+            AddTemplate(key, templateSource)
+          </code>
+          <div class="tip" id="705">
+            <strong>Signature:</strong> (key:ITemplateKey * templateSource:ITemplateSource) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Adds a given template to the template manager as dynamic template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '706', 706)" onmouseover="showTip(event, '706', 706)">
+            Compile(key, modelType)
+          </code>
+          <div class="tip" id="706">
+            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Compiles the specified template and caches it.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '707', 707)" onmouseover="showTip(event, '707', 707)">
+            Dispose()
+          </code>
+          <div class="tip" id="707">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Releases resources used by this instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '708', 708)" onmouseover="showTip(event, '708', 708)">
+            GetKey(name, resolveType, context)
+          </code>
+          <div class="tip" id="708">
+            <strong>Signature:</strong> (name:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets a given key from the <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> implementation.
+            See <a href="razorengine-templating-itemplatemanager.html">ITemplateManager.GetKey</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '709', 709)" onmouseover="showTip(event, '709', 709)">
+            IsTemplateCached(key, modelType)
+          </code>
+          <div class="tip" id="709">
+            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Checks if a given template is already cached.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '710', 710)" onmouseover="showTip(event, '710', 710)">
+            Run(...)
+          </code>
+          <div class="tip" id="710">
+            <strong>Signature:</strong> (key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Runs the given cached template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '711', 711)" onmouseover="showTip(event, '711', 711)">
+            RunCompile(...)
+          </code>
+          <div class="tip" id="711">
+            <strong>Signature:</strong> (key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Runs the given cached template.
+            When the cache does not contain the template 
+            it will be compiled and cached beforehand.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '712', 712)" onmouseover="showTip(event, '712', 712)">
+            Create()
+          </code>
+          <div class="tip" id="712">
+            <strong>Signature:</strong> unit -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance which executes the templates in a new <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '713', 713)" onmouseover="showTip(event, '713', 713)">
+            Create(config)
+          </code>
+          <div class="tip" id="713">
+            <strong>Signature:</strong> config:IConfigCreator -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance which executes the templates in a new <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '714', 714)" onmouseover="showTip(event, '714', 714)">
+            Create(appDomainFactory)
+          </code>
+          <div class="tip" id="714">
+            <strong>Signature:</strong> appDomainFactory:IAppDomainFactory -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance which executes the templates in a new <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '715', 715)" onmouseover="showTip(event, '715', 715)">
+            Create(appDomainFactory)
+          </code>
+          <div class="tip" id="715">
+            <strong>Signature:</strong> appDomainFactory:Func&lt;AppDomain&gt; -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '716', 716)" onmouseover="showTip(event, '716', 716)">
+            Create(configCreator, appDomainFactory)
+          </code>
+          <div class="tip" id="716">
+            <strong>Signature:</strong> (configCreator:IConfigCreator * appDomainFactory:Func&lt;AppDomain&gt;) -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '717', 717)" onmouseover="showTip(event, '717', 717)">
+            Create(configCreator, appDomainFactory)
+          </code>
+          <div class="tip" id="717">
+            <strong>Signature:</strong> (configCreator:IConfigCreator * appDomainFactory:IAppDomainFactory) -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance which executes the templates in a new <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+        </div>
+        <div class="span3">
+          <a href="https://Antaris.github.io/RazorEngine/index.html">
+            <img src="https://Antaris.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/Antaris/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

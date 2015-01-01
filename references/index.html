@@ -39,22 +39,648 @@
 <h1>RazorEngine</h1>
 
 <h2><a name="Overview" class="anchor" href="#Overview">Overview</a></h2>
+    <a href="#ImpromptuInterface">ImpromptuInterface</a><br />
+    <a href="#ImpromptuInterface.Build">ImpromptuInterface.Build</a><br />
+    <a href="#ImpromptuInterface.Dynamic">ImpromptuInterface.Dynamic</a><br />
+    <a href="#ImpromptuInterface.InvokeExt">ImpromptuInterface.InvokeExt</a><br />
+    <a href="#ImpromptuInterface.Optimization">ImpromptuInterface.Optimization</a><br />
     <a href="#RazorEngine">RazorEngine</a><br />
     <a href="#RazorEngine.CodeGenerators">RazorEngine.CodeGenerators</a><br />
     <a href="#RazorEngine.Common">RazorEngine.Common</a><br />
     <a href="#RazorEngine.Compilation">RazorEngine.Compilation</a><br />
     <a href="#RazorEngine.Compilation.CSharp">RazorEngine.Compilation.CSharp</a><br />
     <a href="#RazorEngine.Compilation.Inspectors">RazorEngine.Compilation.Inspectors</a><br />
-    <a href="#RazorEngine.Compilation.Resolver">RazorEngine.Compilation.Resolver</a><br />
+    <a href="#RazorEngine.Compilation.ReferenceResolver">RazorEngine.Compilation.ReferenceResolver</a><br />
     <a href="#RazorEngine.Compilation.VisualBasic">RazorEngine.Compilation.VisualBasic</a><br />
     <a href="#RazorEngine.Configuration">RazorEngine.Configuration</a><br />
     <a href="#RazorEngine.Configuration.Xml">RazorEngine.Configuration.Xml</a><br />
+    <a href="#RazorEngine.Roslyn">RazorEngine.Roslyn</a><br />
+    <a href="#RazorEngine.Roslyn.CSharp">RazorEngine.Roslyn.CSharp</a><br />
     <a href="#RazorEngine.Templating">RazorEngine.Templating</a><br />
     <a href="#RazorEngine.Templating.Parallel">RazorEngine.Templating.Parallel</a><br />
     <a href="#RazorEngine.Text">RazorEngine.Text</a><br />
     <a href="#System">System</a><br />
     <a href="#global">global</a><br />
 
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface" class="anchor" href="#ImpromptuInterface">ImpromptuInterface Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-actlikecaster.html">ActLikeCaster</a>
+          </td>
+          <td class="xmldoc">
+            Extends the <a href="impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a> class to allow implicit
+            and explicit conversions to any interface type.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-aliasattribute.html">AliasAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Alias to swap method/property/event call name invoked on original
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-iactlikeproxy.html">IActLikeProxy</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used to access the original content of your emitted type;
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-impromptu.html">Impromptu</a>
+          </td>
+          <td class="xmldoc">
+            Main API
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-invokearg-1.html">InvokeArg<'T></a>
+          </td>
+          <td class="xmldoc">
+            InvokeArg that makes it easier to Cast from any IDictionaryValue
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-invokearg.html">InvokeArg</a>
+          </td>
+          <td class="xmldoc">
+            Use for Named arguments passed to InvokeMethods
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-invokecontext.html">InvokeContext</a>
+          </td>
+          <td class="xmldoc">
+            Object that stores a context with a target for dynamic invocation
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-invokemembername.html">InvokeMemberName</a>
+          </td>
+          <td class="xmldoc">
+            Name of Member with associated Generic parameterss
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-nonrecursiveinterfaceattribute.html">NonRecursiveInterfaceAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Attribute on Inteface to stop proxy from recursively
+            proxying other interfaces
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-staticcontext.html">StaticContext</a>
+          </td>
+          <td class="xmldoc">
+            Specific version of InvokeContext which declares a type to be used to invoke static methods.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-string_or_invokemembername.html">String_OR_InvokeMemberName</a>
+          </td>
+          <td class="xmldoc">
+            String or InvokeMemberName
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-usenamedargumentattribute.html">UseNamedArgumentAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Attribute for Methods and Parameters on Custom Interfaces designed to be used with a dynamic implementation
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.Build" class="anchor" href="#ImpromptuInterface.Build">ImpromptuInterface.Build Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-build-actlikeproxy.html">ActLikeProxy</a>
+          </td>
+          <td class="xmldoc">
+            Base class of Emited ProxiesC:\Documents and Settings\jayt\My Documents\Visual Studio 2010\Projects\impromptuinterface\ImpromptuInterface\Optimization\
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-build-actlikeproxyattribute.html">ActLikeProxyAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Meta info describing proxy usage. Can be used to preload proxy.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-build-actlikeproxyserializationhelper.html">ActLikeProxySerializationHelper</a>
+          </td>
+          <td class="xmldoc">
+            Support Deserializing the proxy since on separate runs of an executable
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-build-buildproxy.html">BuildProxy</a>
+          </td>
+          <td class="xmldoc">
+             Does most of the work buiding and caching proxies
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-build-emitextensions.html">EmitExtensions</a>
+          </td>
+          <td class="xmldoc">
+             Extension Methods that make emiting code easier and easier to read
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-build-iactlikeproxyinitialize.html">IActLikeProxyInitialize</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used to define your own custom proxy if you preload it.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-build-typehash.html">TypeHash</a>
+          </td>
+          <td class="xmldoc">
+            Type that Encompasses Hashing a group of Types in various ways
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.Dynamic" class="anchor" href="#ImpromptuInterface.Dynamic">ImpromptuInterface.Dynamic Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-iactlike.html">IActLike</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used on your custom dynamic objects if you want impromptu interfaces without casting to object or using the static method syntax of ActLike.
+            Also if you want to change the behavior for slightly for specific types as this will take precident when using the dynamic keyword or your specific type is known staticly.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-icustomtypeprovider.html">ICustomTypeProvider</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-idynamicknowlike.html">IDynamicKnowLike</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used on your custom dynamic objects if you want to know the interface you are impromptu-ly implementing.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-iforwarder.html">IForwarder</a>
+          </td>
+          <td class="xmldoc">
+            Get access to target of original proxy
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a>
+          </td>
+          <td class="xmldoc">
+            Proxies Calls allows subclasser to override do extra actions before or after base invocation
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-impromptuforwarderaddremove.html">ImpromptuForwarderAddRemove</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-impromptulatelibrarytype.html">ImpromptuLateLibraryType</a>
+          </td>
+          <td class="xmldoc">
+            Late bind types from libraries not not at compile type
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-impromptuobject.html">ImpromptuObject</a>
+          </td>
+          <td class="xmldoc">
+            Dynamic Object that knows about the Impromtu Interface return types;
+            Override Typical Dynamic Object methods, and use TypeForName to get the return type of an interface member.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-invocation.html">Invocation</a>
+          </td>
+          <td class="xmldoc">
+            Storable representation of an invocation without the target
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-invocationkind.html">InvocationKind</a>
+          </td>
+          <td class="xmldoc">
+            Type of Invocation
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction.html">ThisAction</a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-1.html">ThisAction<'T1></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-2.html">ThisAction<'T1, 'T2></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-3.html">ThisAction<'T1, 'T2, 'T3></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-4.html">ThisAction<'T1, 'T2, 'T3, 'T4></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-5.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-6.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-7.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-8.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-9.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-10.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-11.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-12.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-13.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-14.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-15.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisaction-16.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'T16></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisdelegate.html">ThisDelegate</a>
+          </td>
+          <td class="xmldoc">
+            Extension method for Dealing with Special Delegate Type
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-1.html">ThisFunc<'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-2.html">ThisFunc<'T1, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-3.html">ThisFunc<'T1, 'T2, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-4.html">ThisFunc<'T1, 'T2, 'T3, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-5.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-6.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-7.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-8.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-9.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-10.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-11.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-12.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-13.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-14.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-15.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-16.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-dynamic-thisfunc-17.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'T16, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.InvokeExt" class="anchor" href="#ImpromptuInterface.InvokeExt">ImpromptuInterface.InvokeExt Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-invokeext-invokeext.html">InvokeExt</a>
+          </td>
+          <td class="xmldoc">
+            Various extension methods for add
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.Optimization" class="anchor" href="#ImpromptuInterface.Optimization">ImpromptuInterface.Optimization Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-optimization-bareboneslist-1.html">BareBonesList<'T></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-optimization-binderhash.html">BinderHash</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-optimization-binderhash-1.html">BinderHash<'T></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-optimization-dummmynull.html">DummmyNull</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-optimization-genericbinderhashbase.html">GenericBinderHashBase</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-optimization-invokehelper.html">InvokeHelper</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="impromptuinterface-optimization-util.html">Util</a>
+          </td>
+          <td class="xmldoc">
+            Utility Class
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
     <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine Namespace</a></h2>
     <div>
         <table class="table table-bordered type-list">
@@ -70,15 +696,37 @@
         </tr>
         <tr>
           <td class="type-name">
+            <a href="razorengine-crossappdomainobject.html">CrossAppDomainObject</a>
+          </td>
+          <td class="xmldoc">
+            Enables access to objects across application domain boundaries.
+            This type differs from <a href="http://msdn.microsoft.com/en-us/library/System.MarshalByRefObject">MarshalByRefObject</a> by ensuring that the
+            service lifetime is managed deterministically by the consumer.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="razorengine-encoding.html">Encoding</a>
           </td>
-          <td class="xmldoc"></td>
+          <td class="xmldoc">
+            Defines the possible values for encoding.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-engine.html">Engine</a>
+          </td>
+          <td class="xmldoc">
+            Provides quick access to the functionality of the <a href="razorengine-templating-razorengineservice.html">RazorEngineService</a> class.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-language.html">Language</a>
           </td>
-          <td class="xmldoc"></td>
+          <td class="xmldoc">
+            Defines the possible supported code languages.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
@@ -90,8 +738,9 @@
           <td class="type-name">
             <a href="razorengine-razor.html">Razor</a>
           </td>
-          <td class="xmldoc"><p>Provides quick access to template functions.</p>
-</td>
+          <td class="xmldoc">
+            Provides quick access to template functions.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -140,80 +789,100 @@
     <tbody>
         <tr>
           <td class="type-name">
+            <a href="razorengine-compilation-compilationdata.html">CompilationData</a>
+          </td>
+          <td class="xmldoc">
+            Provides (temporary) data about an compilation process.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="razorengine-compilation-compilerservicebase.html">CompilerServiceBase</a>
           </td>
-          <td class="xmldoc"><p>Provides a base implementation of a compiler service.</p>
-</td>
+          <td class="xmldoc">
+            Provides a base implementation of a compiler service.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-compilerservicebuilder.html">CompilerServiceBuilder</a>
           </td>
-          <td class="xmldoc"><p>Manages creation of  instances.</p>
-</td>
+          <td class="xmldoc">
+            Manages creation of <a href="razorengine-compilation-icompilerservice.html">ICompilerService</a> instances.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-compilerservicesutility.html">CompilerServicesUtility</a>
           </td>
-          <td class="xmldoc"><p>Provides service methods for compilation.</p>
-</td>
+          <td class="xmldoc">
+            Provides service methods for compilation.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-defaultcompilerservicefactory.html">DefaultCompilerServiceFactory</a>
           </td>
-          <td class="xmldoc"><p>Provides a default implementation of a .</p>
-</td>
+          <td class="xmldoc">
+            Provides a default implementation of a <a href="razorengine-compilation-icompilerservicefactory.html">ICompilerServiceFactory</a>.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-directcompilerservicebase.html">DirectCompilerServiceBase</a>
           </td>
-          <td class="xmldoc"><p>Provides a base implementation of a direct compiler service.</p>
-</td>
+          <td class="xmldoc">
+            Provides a base implementation of a direct compiler service.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-hasdynamicmodelattribute.html">HasDynamicModelAttribute</a>
           </td>
-          <td class="xmldoc"><p>Defines an attribute that marks the presence of a dynamic model in a template.</p>
-</td>
+          <td class="xmldoc">
+            Defines an attribute that marks the presence of a dynamic model in a template.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-icompilerservice.html">ICompilerService</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a compiler service.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a compiler service.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-icompilerservicefactory.html">ICompilerServiceFactory</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a compiler service factory.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a compiler service factory.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-razordynamicobject.html">RazorDynamicObject</a>
           </td>
-          <td class="xmldoc"><p>Defines a dynamic object.</p>
-</td>
+          <td class="xmldoc">
+            Wraps a dynamic object for serialization of dynamic objects and anonymous type support.
+            But this type will also make (static) types work which are not serializable.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-razorenginehost.html">RazorEngineHost</a>
           </td>
-          <td class="xmldoc"><p>Defines the custom razor engine host.</p>
-</td>
+          <td class="xmldoc">
+            Defines the custom razor engine host.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-typecontext.html">TypeContext</a>
           </td>
-          <td class="xmldoc"><p>Defines a type context that describes a template to compile.</p>
-</td>
+          <td class="xmldoc">
+            Defines a type context that describes a template to compile.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -230,29 +899,33 @@
           <td class="type-name">
             <a href="razorengine-compilation-csharp-csharpcodeparser.html">CSharpCodeParser</a>
           </td>
-          <td class="xmldoc"><p>Defines a code parser that supports the C# syntax.</p>
-</td>
+          <td class="xmldoc">
+            Defines a code parser that supports the C# syntax.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-csharp-csharpdirectcompilerservice.html">CSharpDirectCompilerService</a>
           </td>
-          <td class="xmldoc"><p>Defines a direct compiler service for the C# syntax.</p>
-</td>
+          <td class="xmldoc">
+            Defines a direct compiler service for the C# syntax.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-csharp-csharprazorcodegenerator.html">CSharpRazorCodeGenerator</a>
           </td>
-          <td class="xmldoc"><p>Defines a code generator that supports C# syntax.</p>
-</td>
+          <td class="xmldoc">
+            Defines a code generator that supports C# syntax.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-csharp-csharprazorcodelanguage.html">CSharpRazorCodeLanguage</a>
           </td>
-          <td class="xmldoc"><p>Provides a razor code language that supports the C# language.</p>
-</td>
+          <td class="xmldoc">
+            Provides a razor code language that supports the C# language.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -269,14 +942,15 @@
           <td class="type-name">
             <a href="razorengine-compilation-inspectors-icodeinspector.html">ICodeInspector</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a code inspector.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a code inspector.
+            </br></td>
         </tr>
     </tbody>
   </table>
 
     </div>
-    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Compilation.Resolver" class="anchor" href="#RazorEngine.Compilation.Resolver">RazorEngine.Compilation.Resolver Namespace</a></h2>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Compilation.ReferenceResolver" class="anchor" href="#RazorEngine.Compilation.ReferenceResolver">RazorEngine.Compilation.ReferenceResolver Namespace</a></h2>
     <div>
         <table class="table table-bordered type-list">
     <thead>
@@ -285,15 +959,26 @@
     <tbody>
         <tr>
           <td class="type-name">
-            <a href="razorengine-compilation-resolver-iassemblyreferenceresolver.html">IAssemblyReferenceResolver</a>
+            <a href="razorengine-compilation-referenceresolver-compilerreference.html">CompilerReference</a>
           </td>
-          <td class="xmldoc"></td>
+          <td class="xmldoc">
+            Represents a reference for the compiler
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
-            <a href="razorengine-compilation-resolver-usecurrentassembliesreferenceresolver.html">UseCurrentAssembliesReferenceResolver</a>
+            <a href="razorengine-compilation-referenceresolver-ireferenceresolver.html">IReferenceResolver</a>
           </td>
-          <td class="xmldoc"></td>
+          <td class="xmldoc">
+            Tries to resolve the references for a given compilation option.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-referenceresolver-usecurrentassembliesreferenceresolver.html">UseCurrentAssembliesReferenceResolver</a>
+          </td>
+          <td class="xmldoc">
+            Resolves the assemblies by using all currently loaded assemblies. See <a href="razorengine-compilation-referenceresolver-ireferenceresolver.html">IReferenceResolver</a></br></td>
         </tr>
     </tbody>
   </table>
@@ -310,29 +995,33 @@
           <td class="type-name">
             <a href="razorengine-compilation-visualbasic-vbcodeparser.html">VBCodeParser</a>
           </td>
-          <td class="xmldoc"><p>Defines a code parser that supports the VB syntax.</p>
-</td>
+          <td class="xmldoc">
+            Defines a code parser that supports the VB syntax.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-visualbasic-vbdirectcompilerservice.html">VBDirectCompilerService</a>
           </td>
-          <td class="xmldoc"><p>Defines a direct compiler service for the VB syntax.</p>
-</td>
+          <td class="xmldoc">
+            Defines a direct compiler service for the VB syntax.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-visualbasic-vbrazorcodegenerator.html">VBRazorCodeGenerator</a>
           </td>
-          <td class="xmldoc"><p>Defines a code generator that supports VB syntax.</p>
-</td>
+          <td class="xmldoc">
+            Defines a code generator that supports VB syntax.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-compilation-visualbasic-vbrazorcodelanguage.html">VBRazorCodeLanguage</a>
           </td>
-          <td class="xmldoc"><p>Provides a razor code language that supports the VB language.</p>
-</td>
+          <td class="xmldoc">
+            Provides a razor code language that supports the VB language.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -349,43 +1038,49 @@
           <td class="type-name">
             <a href="razorengine-configuration-fluentconfigurationbuilder.html">FluentConfigurationBuilder</a>
           </td>
-          <td class="xmldoc"><p>Provides a default implementation of a .</p>
-</td>
+          <td class="xmldoc">
+            Provides a default implementation of a <a href="razorengine-configuration-iconfigurationbuilder.html">IConfigurationBuilder</a>.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-fluenttemplateserviceconfiguration.html">FluentTemplateServiceConfiguration</a>
           </td>
-          <td class="xmldoc"><p>Defines a fluent template service configuration</p>
-</td>
+          <td class="xmldoc">
+            Defines a fluent template service configuration
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-iconfigurationbuilder.html">IConfigurationBuilder</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a configuration builder.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a configuration builder.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-itemplateserviceconfiguration.html">ITemplateServiceConfiguration</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing template service configuration.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing template service configuration.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-razorengineconfigurationsection.html">RazorEngineConfigurationSection</a>
           </td>
-          <td class="xmldoc"><p>Defines the main configuration section for the RazorEngine.</p>
-</td>
+          <td class="xmldoc">
+            Defines the main configuration section for the RazorEngine.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-templateserviceconfiguration.html">TemplateServiceConfiguration</a>
           </td>
-          <td class="xmldoc"><p>Provides a default implementation of a template service configuration.</p>
-</td>
+          <td class="xmldoc">
+            Provides a default implementation of a template service configuration.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -402,36 +1097,96 @@
           <td class="type-name">
             <a href="razorengine-configuration-xml-namespaceconfigurationelement.html">NamespaceConfigurationElement</a>
           </td>
-          <td class="xmldoc"><p>Defines a configuration of a namespace.</p>
-</td>
+          <td class="xmldoc">
+            Defines a configuration of a namespace.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-xml-namespaceconfigurationelementcollection.html">NamespaceConfigurationElementCollection</a>
           </td>
-          <td class="xmldoc"><p>Defines a collection of  instances.</p>
-</td>
+          <td class="xmldoc">
+            Defines a collection of <a href="razorengine-configuration-xml-namespaceconfigurationelement.html">NamespaceConfigurationElement</a> instances.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-xml-templateserviceconfigurationelement.html">TemplateServiceConfigurationElement</a>
           </td>
-          <td class="xmldoc"><p>Defines a configuration of a template service.</p>
-</td>
+          <td class="xmldoc">
+            Defines a configuration of a template service.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-xml-templateserviceconfigurationelementcollection.html">TemplateServiceConfigurationElementCollection</a>
           </td>
-          <td class="xmldoc"><p>Defines a collection of  instances.</p>
-</td>
+          <td class="xmldoc">
+            Defines a collection of <a href="razorengine-configuration-xml-templateserviceconfigurationelement.html">TemplateServiceConfigurationElement</a> instances.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-configuration-xml-wrappertemplatemanager.html">WrapperTemplateManager</a>
+          </td>
+          <td class="xmldoc">
+            This is a simple wrapper around an <a href="razorengine-templating-itemplateresolver.html">ITemplateResolver</a> to provide
+            an <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> service.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-configuration-xml-xmltemplateserviceconfiguration.html">XmlTemplateServiceConfiguration</a>
           </td>
-          <td class="xmldoc"><p>Represents a template service configuration that supports the xml configuration mechanism.</p>
-</td>
+          <td class="xmldoc">
+            Represents a template service configuration that supports the xml configuration mechanism.
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Roslyn" class="anchor" href="#RazorEngine.Roslyn">RazorEngine.Roslyn Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-roslyn-roslyncompilerservicefactory.html">RoslynCompilerServiceFactory</a>
+          </td>
+          <td class="xmldoc">
+            Provides a implementation of <a href="razorengine-compilation-icompilerservicefactory.html">ICompilerServiceFactory</a> for the Roslyn implementation.
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Roslyn.CSharp" class="anchor" href="#RazorEngine.Roslyn.CSharp">RazorEngine.Roslyn.CSharp Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-roslyn-csharp-csharproslyncompilerservice.html">CSharpRoslynCompilerService</a>
+          </td>
+          <td class="xmldoc">
+            A concrete <a href="razorengine-compilation-icompilerservice.html">ICompilerService</a> implementation for C# by using the Roslyn compiler.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-roslyn-csharp-roslyncompilerservicebase.html">RoslynCompilerServiceBase</a>
+          </td>
+          <td class="xmldoc">
+            Base compiler service class for roslyn compilers
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -446,186 +1201,385 @@
     <tbody>
         <tr>
           <td class="type-name">
+            <a href="razorengine-templating-basetemplatekey.html">BaseTemplateKey</a>
+          </td>
+          <td class="xmldoc">
+            A base implementation for <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a>. 
+            You only need to provide the <a href="razorengine-templating-itemplatekey.html">ITemplateKey.GetUniqueKeyString</a> 
+            implementation which depends on the <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> implementation.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="razorengine-templating-cachedtemplateitem.html">CachedTemplateItem</a>
           </td>
-          <td class="xmldoc"><p>Defines a cached template item.</p>
-</td>
+          <td class="xmldoc">
+            Defines a cached template item.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-compiledtemplate.html">CompiledTemplate</a>
+          </td>
+          <td class="xmldoc">
+            A simple readonly implementation of <a href="razorengine-templating-icompiledtemplate.html">ICompiledTemplate</a>.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-defaultactivator.html">DefaultActivator</a>
           </td>
-          <td class="xmldoc"><p>Provides a default implementation of an .</p>
-</td>
+          <td class="xmldoc">
+            Provides a default implementation of an <a href="razorengine-templating-iactivator.html">IActivator</a>.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-defaultappdomainfactory.html">DefaultAppDomainFactory</a>
           </td>
-          <td class="xmldoc"><p>Provides a default implementation of an  factory.</p>
-</td>
+          <td class="xmldoc">
+            Provides a default implementation of an <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a> factory.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-defaultcachingprovider.html">DefaultCachingProvider</a>
+          </td>
+          <td class="xmldoc">
+            The default caching provider (See <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>).
+            This implementation does a very simple in-memory caching.
+            It can handle when the same template is used with multiple model-types.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-delegateactivator.html">DelegateActivator</a>
           </td>
-          <td class="xmldoc"><p>Defines an activator that supports delegated activation.</p>
-</td>
+          <td class="xmldoc">
+            Defines an activator that supports delegated activation.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-delegateappdomainfactory.html">DelegateAppDomainFactory</a>
           </td>
-          <td class="xmldoc"><p>Provides an  factory that supports delegated  creation.</p>
-</td>
+          <td class="xmldoc">
+            Provides an <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a> factory that supports delegated <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a> creation.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-delegatetemplatemanager.html">DelegateTemplateManager</a>
+          </td>
+          <td class="xmldoc">
+            Provides an <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> that supports delegated template resolution.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-delegatetemplateresolver.html">DelegateTemplateResolver</a>
           </td>
-          <td class="xmldoc"><p>Provides an  that supports delegated template resolution.</p>
-</td>
+          <td class="xmldoc">
+            Provides an <a href="razorengine-templating-itemplateresolver.html">ITemplateResolver</a> that supports delegated template resolution.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-dynamicviewbag.html">DynamicViewBag</a>
           </td>
-          <td class="xmldoc"><p>Defines a dynamic view bag.</p>
-</td>
+          <td class="xmldoc">
+            Defines a dynamic view bag.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-dynamicwrapperservice.html">DynamicWrapperService</a>
+          </td>
+          <td class="xmldoc">
+            A wrapper around an <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance to provide support for anonymous classes.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-executecontext.html">ExecuteContext</a>
           </td>
-          <td class="xmldoc"><p>Defines a context for tracking template execution.</p>
-</td>
+          <td class="xmldoc">
+            Defines a context for tracking template execution.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-htmltemplatebase-1.html">HtmlTemplateBase<'T></a>
           </td>
-          <td class="xmldoc"><p>Provides a base implementation of an html template with a model.</p>
-</td>
+          <td class="xmldoc">
+            Provides a base implementation of an html template with a model.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-iactivator.html">IActivator</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing an activator.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing an activator.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-iappdomainfactory.html">IAppDomainFactory</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing an  factory.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing an <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a> factory.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>
+          </td>
+          <td class="xmldoc">
+            This interface represents the caching layer.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-icompiledtemplate.html">ICompiledTemplate</a>
+          </td>
+          <td class="xmldoc">
+            Represents a compiled template.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-iinternaltemplateservice.html">IInternalTemplateService</a>
+          </td>
+          <td class="xmldoc">
+            A internal contract for the <a href="razorengine-templating-templatebase.html">TemplateBase</a> class.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a>
+          </td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a template service.
+            The main API for running templates.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-itemplate.html">ITemplate</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a template.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a template.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-itemplate-1.html">ITemplate<'T></a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a template with a model.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a template with a model.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a>
+          </td>
+          <td class="xmldoc">
+            With a template key a template can be resolved and loaded.
+            Implementations of this interface are provided along with the ITemplateManager implementation.
+            See <a href="razorengine-templating-basetemplatekey.html">BaseTemplateKey</a> for a base implementation.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a>
+          </td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a template-manager.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-itemplateresolver.html">ITemplateResolver</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a template resolver.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a template resolver.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-itemplateservice.html">ITemplateService</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a template service.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a template service.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-itemplatesource.html">ITemplateSource</a>
+          </td>
+          <td class="xmldoc">
+            Represents a template source (ie the source code of a template).
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-instancecontext.html">InstanceContext</a>
           </td>
-          <td class="xmldoc"><p>Defines contextual information for a template instance.</p>
-</td>
+          <td class="xmldoc">
+            Defines contextual information for a template instance.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-internaltemplateservice.html">InternalTemplateService</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-isolatedrazorengineservice.html">IsolatedRazorEngineService</a>
+          </td>
+          <td class="xmldoc">
+            Provides template parsing and compilation in an isolated application domain.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-isolatedtemplateservice.html">IsolatedTemplateService</a>
           </td>
-          <td class="xmldoc"><p>Provides template parsing and compilation in an isolated application domain.</p>
-</td>
+          <td class="xmldoc">
+            Provides template parsing and compilation in an isolated application domain.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-loadedtemplatesource.html">LoadedTemplateSource</a>
+          </td>
+          <td class="xmldoc">
+            A simple <a href="razorengine-templating-itemplatesource.html">ITemplateSource</a> implementation which represents an in-memory string.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-nameonlytemplatekey.html">NameOnlyTemplateKey</a>
+          </td>
+          <td class="xmldoc">
+            A simple <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a> implementation inheriting from <a href="razorengine-templating-basetemplatekey.html">BaseTemplateKey</a>.
+            This implementation assumes that the template-names are unique and returns the name as unique key.
+            (So this implementation is used by <a href="razorengine-templating-delegatetemplatemanager.html">DelegateTemplateManager</a> and <a href="razorengine-configuration-xml-wrappertemplatemanager.html">WrapperTemplateManager</a>.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-razorenginecompilererror.html">RazorEngineCompilerError</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-razorenginecore.html">RazorEngineCore</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-razorenginecorewithcache.html">RazorEngineCoreWithCache</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-razorengineservice.html">RazorEngineService</a>
+          </td>
+          <td class="xmldoc">
+            Defines a template service and the main API for running templates.
+            Implements the <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> interface.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-razorengineserviceextensions.html">RazorEngineServiceExtensions</a>
+          </td>
+          <td class="xmldoc">
+            Extensions for the <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a>.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-requirenamespacesattribute.html">RequireNamespacesAttribute</a>
           </td>
-          <td class="xmldoc"><p>Allows base templates to define require template imports when
-generating templates.</p>
-</td>
+          <td class="xmldoc">
+            Allows base templates to define require template imports when
+            generating templates.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-resolvetype.html">ResolveType</a>
+          </td>
+          <td class="xmldoc">
+            The type of a resolve action.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-templatebase.html">TemplateBase</a>
           </td>
-          <td class="xmldoc"><p>Provides a base implementation of a template.</p>
-</td>
+          <td class="xmldoc">
+            Provides a base implementation of a template.
+            NOTE: This class is not serializable to prevent subtle errors 
+            in user IActivator implementations which would break the sandbox.
+            (because executed in the wrong <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>)
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-templatebase-1.html">TemplateBase<'T></a>
           </td>
-          <td class="xmldoc"><p>Provides a base implementation of a template with a model.</p>
-</td>
+          <td class="xmldoc">
+            Provides a base implementation of a template with a model.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-templatecompilationexception.html">TemplateCompilationException</a>
           </td>
-          <td class="xmldoc"><p>Defines an exception that occurs during compilation of the template.</p>
-</td>
+          <td class="xmldoc">
+            Defines an exception that occurs during compilation of the template.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-templateparsingexception.html">TemplateParsingException</a>
           </td>
-          <td class="xmldoc"><p>Defines an exception that occurs during template parsing.</p>
-</td>
+          <td class="xmldoc">
+            Defines an exception that occurs during template parsing.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-templateservice.html">TemplateService</a>
           </td>
-          <td class="xmldoc"><p>Defines a template service.</p>
-</td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="razorengine-templating-templateservicefactory.html">TemplateServiceFactory</a>
-          </td>
-          <td class="xmldoc"><p>Provides factory methods for creating  instances.</p>
-</td>
+          <td class="xmldoc">
+            Defines a template service.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-templatewriter.html">TemplateWriter</a>
           </td>
-          <td class="xmldoc"><p>Defines a template writer used for helper templates.</p>
-</td>
+          <td class="xmldoc">
+            Defines a template writer used for helper templates.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-typeloader.html">TypeLoader</a>
           </td>
-          <td class="xmldoc"><p>Defines a type loader.</p>
-</td>
+          <td class="xmldoc">
+            Defines a type loader.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -642,15 +1596,17 @@ generating templates.</p>
           <td class="type-name">
             <a href="razorengine-templating-parallel-defaultparallelqueryplan-1.html">DefaultParallelQueryPlan<'T></a>
           </td>
-          <td class="xmldoc"><p>Represents a default parallel query plan.</p>
-</td>
+          <td class="xmldoc">
+            Represents a default parallel query plan.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-templating-parallel-iparallelqueryplan-1.html">IParallelQueryPlan<'T></a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a parallel query plan.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a parallel query plan.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -667,43 +1623,49 @@ generating templates.</p>
           <td class="type-name">
             <a href="razorengine-text-htmlencodedstring.html">HtmlEncodedString</a>
           </td>
-          <td class="xmldoc"><p>Represents a Html-encoded string.</p>
-</td>
+          <td class="xmldoc">
+            Represents a Html-encoded string.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-text-htmlencodedstringfactory.html">HtmlEncodedStringFactory</a>
           </td>
-          <td class="xmldoc"><p>Represents a factory that creates  instances.</p>
-</td>
+          <td class="xmldoc">
+            Represents a factory that creates <a href="razorengine-text-htmlencodedstring.html">HtmlEncodedString</a> instances.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-text-iencodedstring.html">IEncodedString</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing an encoded string.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing an encoded string.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-text-iencodedstringfactory.html">IEncodedStringFactory</a>
           </td>
-          <td class="xmldoc"><p>Defines the required contract for implementing a factory for building encoded strings.</p>
-</td>
+          <td class="xmldoc">
+            Defines the required contract for implementing a factory for building encoded strings.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-text-rawstring.html">RawString</a>
           </td>
-          <td class="xmldoc"><p>Represents an unencoded string.</p>
-</td>
+          <td class="xmldoc">
+            Represents an unencoded string.
+            </br></td>
         </tr>
         <tr>
           <td class="type-name">
             <a href="razorengine-text-rawstringfactory.html">RawStringFactory</a>
           </td>
-          <td class="xmldoc"><p>Represents a factory that creates  instances.</p>
-</td>
+          <td class="xmldoc">
+            Represents a factory that creates <a href="razorengine-text-rawstring.html">RawString</a> instances.
+            </br></td>
         </tr>
     </tbody>
   </table>
@@ -735,7 +1697,55 @@ generating templates.</p>
     <tbody>
         <tr>
           <td class="type-name">
+            <a href="global-__f__anonymoustype0-2.html"><>f__AnonymousType0<'<Name>j__TPar, '<ReturnType>j__TPar></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="global-__f__anonymoustype1-2.html"><>f__AnonymousType1<'<tType>j__TPar, '<tAttributes>j__TPar></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="global-__f__anonymoustype2-2.html"><>f__AnonymousType2<'<Type>j__TPar, '<Impromptu>j__TPar></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="global-__f__anonymoustype3-2.html"><>f__AnonymousType3<'<i>j__TPar, '<p>j__TPar></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="global-__f__anonymoustype4-2.html"><>f__AnonymousType4<'<Type>j__TPar, '<Gen>j__TPar></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="global-__f__anonymoustype5-2.html"><>f__AnonymousType5<'<p>j__TPar, '<n>j__TPar></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="global-__f__anonymoustype6-2.html"><>f__AnonymousType6<'<key>j__TPar, '<value>j__TPar></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="global-_module_.html"><Module></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="global-_module_-0.html"><Module></a>
           </td>
           <td class="xmldoc"></td>
         </tr>
@@ -755,7 +1765,7 @@ generating templates.</p>
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -764,13 +1774,16 @@ generating templates.</p>
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               

@@ -43,8 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-<p>Represents a template service configuration that supports the xml configuration mechanism.</p>
-</div>
+
+            Represents a template service configuration that supports the xml configuration mechanism.
+            </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -54,32 +55,34 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '200', 200)" onmouseover="showTip(event, '200', 200)">
+          <code onmouseout="hideTip(event, '576', 576)" onmouseover="showTip(event, '576', 576)">
             new()
           </code>
-          <div class="tip" id="200">
+          <div class="tip" id="576">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Initialises a new instance of  that only reads the global config values and
-ignores any template service configuration element.</p>
-
+          
+            Initialises a new instance of <a href="razorengine-configuration-xml-xmltemplateserviceconfiguration.html">XmlTemplateServiceConfiguration</a> that only reads the global config values and
+            ignores any template service configuration element.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '201', 201)" onmouseover="showTip(event, '201', 201)">
+          <code onmouseout="hideTip(event, '577', 577)" onmouseover="showTip(event, '577', 577)">
             new(name)
           </code>
-          <div class="tip" id="201">
+          <div class="tip" id="577">
             <strong>Signature:</strong> name:string -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Initialises a new instance of .</p>
-
+          
+            Initialises a new instance of <a href="razorengine-configuration-xml-xmltemplateserviceconfiguration.html">XmlTemplateServiceConfiguration</a>.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -93,177 +96,222 @@ ignores any template service configuration element.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '202', 202)" onmouseover="showTip(event, '202', 202)">
+          <code onmouseout="hideTip(event, '578', 578)" onmouseover="showTip(event, '578', 578)">
             Activator()
           </code>
-          <div class="tip" id="202">
+          <div class="tip" id="578">
             <strong>Signature:</strong> unit -&gt; IActivator<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the activator.</p>
-
+          
+            Gets the activator.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '203', 203)" onmouseover="showTip(event, '203', 203)">
+          <code onmouseout="hideTip(event, '579', 579)" onmouseover="showTip(event, '579', 579)">
             AllowMissingPropertiesOnDynamic()
           </code>
-          <div class="tip" id="203">
+          <div class="tip" id="579">
             <strong>Signature:</strong> unit -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets or sets whether to allow missing properties on dynamic models.</p>
-
+          
+            Gets or sets whether to allow missing properties on dynamic models.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '204', 204)" onmouseover="showTip(event, '204', 204)">
+          <code onmouseout="hideTip(event, '580', 580)" onmouseover="showTip(event, '580', 580)">
             BaseTemplateType()
           </code>
-          <div class="tip" id="204">
+          <div class="tip" id="580">
             <strong>Signature:</strong> unit -&gt; Type<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the base template type.</p>
-
+          
+            Gets the base template type.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '205', 205)" onmouseover="showTip(event, '205', 205)">
+          <code onmouseout="hideTip(event, '581', 581)" onmouseover="showTip(event, '581', 581)">
+            CachingProvider()
+          </code>
+          <div class="tip" id="581">
+            <strong>Signature:</strong> unit -&gt; ICachingProvider<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the caching provider.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '582', 582)" onmouseover="showTip(event, '582', 582)">
             CodeInspectors()
           </code>
-          <div class="tip" id="205">
+          <div class="tip" id="582">
             <strong>Signature:</strong> unit -&gt; IEnumerable&lt;ICodeInspector&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the code inspectors.</p>
-
+          
+            Gets the code inspectors.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '206', 206)" onmouseover="showTip(event, '206', 206)">
+          <code onmouseout="hideTip(event, '583', 583)" onmouseover="showTip(event, '583', 583)">
             CompilerServiceFactory()
           </code>
-          <div class="tip" id="206">
+          <div class="tip" id="583">
             <strong>Signature:</strong> unit -&gt; ICompilerServiceFactory<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the compiler service factory.</p>
-
+          
+            Gets the compiler service factory.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '207', 207)" onmouseover="showTip(event, '207', 207)">
+          <code onmouseout="hideTip(event, '584', 584)" onmouseover="showTip(event, '584', 584)">
             Debug()
           </code>
-          <div class="tip" id="207">
+          <div class="tip" id="584">
             <strong>Signature:</strong> unit -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets whether the template service is operating in debug mode.</p>
-
+          
+            Gets whether the template service is operating in debug mode.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '208', 208)" onmouseover="showTip(event, '208', 208)">
+          <code onmouseout="hideTip(event, '585', 585)" onmouseover="showTip(event, '585', 585)">
             EncodedStringFactory()
           </code>
-          <div class="tip" id="208">
+          <div class="tip" id="585">
             <strong>Signature:</strong> unit -&gt; IEncodedStringFactory<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the encoded string factory.</p>
-
+          
+            Gets the encoded string factory.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '209', 209)" onmouseover="showTip(event, '209', 209)">
+          <code onmouseout="hideTip(event, '586', 586)" onmouseover="showTip(event, '586', 586)">
             Language()
           </code>
-          <div class="tip" id="209">
+          <div class="tip" id="586">
             <strong>Signature:</strong> unit -&gt; Language<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the language.</p>
-
+          
+            Gets the language.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '210', 210)" onmouseover="showTip(event, '210', 210)">
+          <code onmouseout="hideTip(event, '587', 587)" onmouseover="showTip(event, '587', 587)">
             Namespaces()
           </code>
-          <div class="tip" id="210">
+          <div class="tip" id="587">
             <strong>Signature:</strong> unit -&gt; ISet&lt;string&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the namespaces.</p>
-
+          
+            Gets the namespaces.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '211', 211)" onmouseover="showTip(event, '211', 211)">
+          <code onmouseout="hideTip(event, '588', 588)" onmouseover="showTip(event, '588', 588)">
             ReferenceResolver()
           </code>
-          <div class="tip" id="211">
-            <strong>Signature:</strong> unit -&gt; IAssemblyReferenceResolver<br />
+          <div class="tip" id="588">
+            <strong>Signature:</strong> unit -&gt; IReferenceResolver<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the reference resolver.</p>
-
+          
+            Gets the reference resolver.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '212', 212)" onmouseover="showTip(event, '212', 212)">
+          <code onmouseout="hideTip(event, '589', 589)" onmouseover="showTip(event, '589', 589)">
             Resolver()
           </code>
-          <div class="tip" id="212">
+          <div class="tip" id="589">
             <strong>Signature:</strong> unit -&gt; ITemplateResolver<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the template resolver.</p>
+          
+            Gets the template resolver.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
 
+          <code onmouseout="hideTip(event, '590', 590)" onmouseover="showTip(event, '590', 590)">
+            TemplateManager()
+          </code>
+          <div class="tip" id="590">
+            <strong>Signature:</strong> unit -&gt; ITemplateManager<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the template resolver.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -280,7 +328,7 @@ ignores any template service configuration element.</p>
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -289,13 +337,16 @@ ignores any template service configuration element.</p>
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               

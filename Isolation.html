@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>RazorEngine Isolation API
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple templating using Razor syntax.">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/style.css" />
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/prism.css" />
+    <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/tips.js"></script>
+	<script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/prism.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://Antaris.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="RazorEngine-Isolation-API" class="anchor" href="#RazorEngine-Isolation-API">RazorEngine Isolation API</a></h1>
+
+<p>RazorEngine provides an additional layer of security by allowing you to run the generated code within an secured sandbox.
+All you need to do is use <code>IsolatedRazorEngineService.Create</code> instead of <code>RazorEngineService.Create</code>. 
+This will immediately switch the compilation and execution to another AppDomain.
+However this new AppDomain still has no permission restrictions so what you want to do is provide either your own IAppDomainFactory 
+or use the Func<AppDomain> overloads of <code>IsolatedRazorEngineService.Create</code>:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">public static AppDomain SandboxCreator()
+{
+    Evidence ev = new Evidence();
+    ev.AddHostEvidence(new Zone(SecurityZone.Internet));
+    PermissionSet permSet = SecurityManager.GetStandardSandbox(ev);
+    // We have to load ourself with full trust
+    StrongName razorEngineAssembly = typeof(RazorEngineService).Assembly.Evidence.GetHostEvidence&lt;StrongName&gt;();
+    // We have to load Razor with full trust (so all methods are SecurityCritical)
+    // This is because we apply AllowPartiallyTrustedCallers to RazorEngine, because
+    // We need the untrusted (transparent) code to be able to inherit TemplateBase.
+    // Because in the normal environment/appdomain we run as full trust and the Razor assembly has no security attributes
+    // it will be completely SecurityCritical. 
+    // This means we have to mark a lot of our members SecurityCritical (which is fine).
+    // However in the sandbox domain we have partial trust and because razor has no Security attributes that means the
+    // code will be transparent (this is where we get a lot of exceptions, because we now have different security attributes)
+    // To work around this we give Razor full trust in the sandbox as well.
+    StrongName razorAssembly = typeof(RazorTemplateEngine).Assembly.Evidence.GetHostEvidence&lt;StrongName&gt;();
+    AppDomainSetup adSetup = new AppDomainSetup();
+    adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+    AppDomain newDomain = AppDomain.CreateDomain(&quot;Sandbox&quot;, null, adSetup, permSet, razorEngineAssembly, razorAssembly);
+    return newDomain;
+}</code></pre>
+
+<p>You can use the above method like this to create an AppDomain with partial trust (internet security zone):</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">public void IsolatedRazorEngineService_BadTemplate_InSandbox()
+{
+    using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+    {
+        string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+
+        string template = @&quot;
+@using System.IO
+@{
+File.WriteAllText(&quot;&quot;$file$&quot;&quot;, &quot;&quot;BAD DATA&quot;&quot;);
+}&quot;.Replace(&quot;$file$&quot;, file.Replace(&quot;\\&quot;, &quot;\\\\&quot;));
+        Assert.Throws&lt;SecurityException&gt;(() =&gt;
+        {
+            service.RunCompile(template, &quot;test&quot;);
+        });
+
+        Assert.IsFalse(File.Exists(file));
+    }
+}</code></pre>
+
+<p>As you can see this template will throw a <code>SecurityException</code> as there is no way for it
+to write into a file of the local harddrive.</p>
+
+<h2><a name="SecurityException-and-MethodAccessException" class="anchor" href="#SecurityException-and-MethodAccessException">SecurityException and MethodAccessException.</a></h2>
+
+<p>One important thing to understand is how .NET handles partial trust scenarios.
+You should definitely read <a href="http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional.
+However">http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional.
+However</a> to give some RazorEngine specific hints/additions:</p>
+
+<p>If your assembly is running with full trust all your code (types/members) will be SecurityCritical!
+If you add your own assembly to the list of full trust assemblies the template is not able to use types within that assembly as model.
+You can work around that by extracting the types to another assembly (with partial trust)
+or work with the <code>AllowPartiallyTrustedCallers</code> attribute.</p>
+
+<p>Another way is to use <code>dynamic</code> and wrap your instance in an <code>RazorDynamicObject</code>.
+Of course you can also just remove your assembly from the full trust list if you dont need full trust within the sandbox.</p>
+
+<h2><a name="SerializationException" class="anchor" href="#SerializationException">SerializationException</a></h2>
+
+<p>Whenever you are in an isolation scenario all your models need to traverse into another AppDomain, that means your model needs to be serializable!
+When you call methods on your model and you use an MarshalByRef scenario all your parameters and return types must be serializable as well!</p>
+
+<p>If you want to use a model instance which is not serializable you can use <code>dynamic</code> and wrap it in an <code>RazorDynamicObject</code> 
+this should magically take care of everything for you.
+The only thing not supported is to cast the model within the template in its type (all interfaces will work however).
+You can even call methods with serializable parameters (return type must not be serializable).</p>
+
+<h2><a name="Configuration" class="anchor" href="#Configuration">Configuration</a></h2>
+
+<p>RazorEngine provides an <code>IConfigCreator</code> interface to configure an <code>IsolatedRazorEngineService</code>.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+<span class="l">23: </span>
+<span class="l">24: </span>
+<span class="l">25: </span>
+<span class="l">26: </span>
+<span class="l">27: </span>
+<span class="l">28: </span>
+<span class="l">29: </span>
+<span class="l">30: </span>
+<span class="l">31: </span>
+<span class="l">32: </span>
+<span class="l">33: </span>
+<span class="l">34: </span>
+<span class="l">35: </span>
+<span class="l">36: </span>
+<span class="l">37: </span>
+<span class="l">38: </span>
+<span class="l">39: </span>
+<span class="l">40: </span>
+<span class="l">41: </span>
+<span class="l">42: </span>
+<span class="l">43: </span>
+<span class="l">44: </span>
+<span class="l">45: </span>
+<span class="l">46: </span>
+<span class="l">47: </span>
+<span class="l">48: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="c">/// &lt;summary&gt;</span>
+<span class="c">/// A helper interface to get a custom configuration into a new AppDomain.</span>
+<span class="c">/// Classes inheriting this interface should be Serializable </span>
+<span class="c">/// (and not inherit from MarshalByRefObject).</span>
+<span class="c">/// &lt;/summary&gt;</span>
+<span class="k">public</span> <span class="k">interface</span> <span class="i">IConfigCreator</span>
+{
+    <span class="c">/// &lt;summary&gt;</span>
+    <span class="c">/// Create a new configuration instance.</span>
+    <span class="c">/// This method should be executed in the new AppDomain.</span>
+    <span class="c">/// &lt;/summary&gt;</span>
+    <span class="c">/// &lt;returns&gt;&lt;/returns&gt;</span>
+    <span class="i">ITemplateServiceConfiguration</span> <span class="i">CreateConfiguration</span>();
+}
+
+<span class="c">/// &lt;summary&gt;</span>
+<span class="c">/// A simple &lt;see cref=&quot;IConfigCreator&quot;/&gt; implementation to configure the &lt;see cref=&quot;Language&quot;/&gt; and the &lt;see cref=&quot;Encoding&quot;/&gt;.</span>
+<span class="c">/// &lt;/summary&gt;</span>
+[<span class="i">Serializable</span>]
+<span class="k">public</span> <span class="k">class</span> <span class="i">LanguageEncodingConfigCreator</span> <span class="o">:</span> <span class="i">IConfigCreator</span>
+{
+    <span class="k">private</span> <span class="i">Language</span> <span class="i">language</span>;
+    <span class="k">private</span> <span class="i">Encoding</span> <span class="i">encoding</span>;
+
+    <span class="c">/// &lt;summary&gt;</span>
+    <span class="c">/// Initializes a new &lt;see cref=&quot;LanguageEncodingConfigCreator&quot;/&gt; instance</span>
+    <span class="c">/// &lt;/summary&gt;</span>
+    <span class="c">/// &lt;param name=&quot;language&quot;&gt;&lt;/param&gt;</span>
+    <span class="c">/// &lt;param name=&quot;encoding&quot;&gt;&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="i">LanguageEncodingConfigCreator</span>(<span class="i">Language</span> <span class="i">language</span> <span class="o">=</span> <span class="i">Language</span><span class="o">.</span><span class="i">CSharp</span>, <span class="i">Encoding</span> <span class="i">encoding</span> <span class="o">=</span> <span class="i">Encoding</span><span class="o">.</span><span class="i">Html</span>)
+    {
+        <span class="i">this</span><span class="o">.</span><span class="i">language</span> <span class="o">=</span> <span class="i">language</span>;
+        <span class="i">this</span><span class="o">.</span><span class="i">encoding</span> <span class="o">=</span> <span class="i">encoding</span>;
+    }
+
+    <span class="c">/// &lt;summary&gt;</span>
+    <span class="c">/// Create the configuration.</span>
+    <span class="c">/// &lt;/summary&gt;</span>
+    <span class="c">/// &lt;returns&gt;&lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="i">ITemplateServiceConfiguration</span> <span class="i">CreateConfiguration</span>()
+    {
+        <span class="k">return</span> <span class="k">new</span> <span class="i">TemplateServiceConfiguration</span>()
+        {
+            <span class="i">Language</span> <span class="o">=</span> <span class="i">language</span>,
+            <span class="i">EncodedStringFactory</span> <span class="o">=</span> <span class="i">RazorEngineService</span><span class="o">.</span><span class="i">GetEncodedStringFactory</span>(<span class="i">encoding</span>)
+        };
+    }
+}</pre>
+</td>
+</tr>
+</table>
+
+<p>The only thing to mention here is that the implementation must me serializable but not inherit from <code>MarshalByRefObject</code>.</p>
+
+
+        </div>
+        <div class="span3">
+          <a href="https://Antaris.github.io/RazorEngine/index.html">
+            <img src="https://Antaris.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/Antaris/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

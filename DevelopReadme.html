@@ -40,8 +40,11 @@
 
 <h2><a name="Building" class="anchor" href="#Building">Building</a></h2>
 
-<p>Open the <code>.sln</code> file or run <code>./build</code>.
-NOTE: It is possible that you can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because nuget dependencies have to be resolved).</p>
+<p>Open the <code>.sln</code> file or run <code>./build</code>.</p>
+
+<blockquote>
+  <p>NOTE: It is possible that you can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because nuget dependencies have to be resolved).</p>
+</blockquote>
 
 <h2><a name="General-overview" class="anchor" href="#General-overview">General overview:</a></h2>
 
@@ -50,22 +53,23 @@ Everybody familiar with Razor can start building templates very quickly.</p>
 
 <h3><a name="Issues-Features-TODOs" class="anchor" href="#Issues-Features-TODOs">Issues / Features / TODOs</a></h3>
 
-<p>Issues and TODOs are tracked on github:
-See: <a href="https://github.com/Anatris/RazorEngine/issues">https://github.com/Anatris/RazorEngine/issues</a> or <a href="https://github.com/matthid/RazorEngine/issues">https://github.com/matthid/RazorEngine/issues</a></p>
+<p>New features are accepted via github pull requests (so just fork away right now!): <a href="https://github.com/Anatris/RazorEngine.">https://github.com/Anatris/RazorEngine.</a></p>
+
+<p>Issues and TODOs are tracked on github, see: <a href="https://github.com/Anatris/RazorEngine/issues.">https://github.com/Anatris/RazorEngine/issues.</a></p>
+
+<p>Discussions/Forums can be found here: <a href="https://groups.google.com/forum/#!forum/razorengine.">https://groups.google.com/forum/#!forum/razorengine.</a></p>
 
 <h3><a name="Versioning" class="anchor" href="#Versioning">Versioning:</a></h3>
 
-<p>Not clear.</p>
+<p><a href="http://semver.org/">http://semver.org/</a></p>
 
 <h3><a name="High-level-documentation-ordered-by-project" class="anchor" href="#High-level-documentation-ordered-by-project">High level documentation ordered by project.</a></h3>
 
 <ul>
-<li><p>RazorEngine.Core</p>
-<p>The Core of the RazorEngine framework, basically all you need to get started.</p></li>
-<li><p>RazorEngine.Mvc</p>
-<p>A template base-class implementation which uses MVC classes to get the @Html and @Url features.</p></li>
-<li><p>RazorEngine.Hosts.Console</p>
-<p>A simple console application showing the beauty of RazorEngine.</p></li>
+<li><p><code>RazorEngine.Core</code>: The Core of the RazorEngine framework, basically all you need to get started.</p></li>
+<li><p><code>RazorEngine.Core.Roslyn</code>: Support for Roslyn.</p></li>
+<li><p><code>RazorEngine.Mvc</code>: A template base-class implementation which uses MVC classes to get the @Html and @Url features.</p></li>
+<li><p><code>RazorEngine.Hosts.Console</code>: A simple console application showing the beauty of RazorEngine.</p></li>
 </ul>
 
 <h3><a name="The-Project-structure" class="anchor" href="#The-Project-structure">The Project structure:</a></h3>
@@ -125,10 +129,117 @@ Only some internal dependencies and packages not in nuget. The git repository sh
 <p>Nuget packages required by the build process.</p></li>
 </ul>
 
-<p>Each project should have has a corresponding project with the name "Test.<span class="math">\({ProjectName}" in the test folder.
-This test project provides unit tests for the project "\)</span>{ProjectName}". 
-Often unit tests are written agains interfaces and used by multiple implementations of the interface.
-Sometimes these unit tests can be used even by custom code (inheriting from the corresponding test-class and overriding an Create* method).</p>
+<p>Each project should have has a corresponding project with the name <code>Test.${ProjectName}</code> in the test folder.
+This test project provides unit tests for the project <code>${ProjectName}</code>.</p>
+
+<h2><a name="Advanced-Building" class="anchor" href="#Advanced-Building">Advanced Building</a></h2>
+
+<p>The build is done in different steps and you can execute the build until a given step or a single step:</p>
+
+<p>First <code>build.sh</code> and <code>build.cmd</code> restore build dependencies and <code>nuget.exe</code>, then build.fsx is invoked:</p>
+
+<ul>
+<li><code>Clean</code>: cleans the directories (previous builds)</li>
+<li><code>RestorePackages</code>: restores nuget packages</li>
+<li><code>SetVersions_Razor4</code>: set 4.0.0</li>
+<li><code>BuildApp_Razor4</code>: build with razor4 (net45)</li>
+<li><code>BuildTest_Razor4</code>: build the tests with razor4 (net45)</li>
+<li><code>Test_Razor4</code>: run the tests with razor4 (net45)</li>
+<li><code>SetVersions</code>: set 3.5.0</li>
+<li><code>BuildApp_40</code>: build with razor2 (net40)</li>
+<li><code>BuildTest_40</code>: build the tests with razor2 (net40)</li>
+<li><code>Test_40</code>: run the tests with razor2 (net40)</li>
+<li><code>BuildApp_45</code>: build with razor3 (net45)</li>
+<li><code>BuildTest_45</code>: build the tests with razor3 (net45)</li>
+<li><code>Test_45</code>: run the tests with razor3 (net45)</li>
+<li><code>CopyToRelease</code>: copy the generated .dlls to release/lib</li>
+<li><code>LocalDoc</code>: create the local documentation you can view that locally</li>
+<li><code>All</code>: this does nothing itself but is used as a marker (executed by default when no parameter is given to ./build)</li>
+<li><code>VersionBump</code>: commits all current changes (when you change the version before you start the build you will have some files changed)</li>
+<li><code>NuGet</code>: generates the nuget packages</li>
+<li><code>GithubDoc</code>: generates the documentation for github</li>
+<li><code>ReleaseGithubDoc</code>: pushes the documentation to github</li>
+<li><code>Release</code>: a marker like "All"</li>
+</ul>
+
+<p>You can execute all steps until a given point with <code>./build #Step#</code> (replace #Step# with <code>Test_Razor4</code> to execute <code>Clean</code>, <code>RestorePackages</code>, <code>SetVersions_Razor4</code>, ..., <code>Test_Razor4</code>)</p>
+
+<p>You can execute a single step with <code>build #Step#_single</code>: For example to build the nuget packages you can just invoke <code>./build NuGet_single</code></p>
+
+<blockquote>
+  <p>Of course you need to have the appropriate dlls in place (otherwise the Nuget package creation will fail); ie have build RazorEngine before.</p>
+</blockquote>
+
+<p>There is another (hidden) step <code>CleanAll</code> which will clean everything up (even build dependencies and the downloaded Nuget.exe), 
+this step is only needed when build dependencies change. <code>git clean -d -x -f</code> is also a good way to do that</p>
+
+<h2><a name="Visual-Studio-Monodevelop" class="anchor" href="#Visual-Studio-Monodevelop">Visual Studio / Monodevelop</a></h2>
+
+<p>As mentioned above you need to <code>build</code> at least once before you can open the 
+solution file (<code>src/RazorEngine.sln</code>) with Visual Studio / Monodevelop.</p>
+
+<p>The default is that Visual Studio is configured for the latest build (<code>razor4</code>).
+If you want to build another target with Visual Studio / Monodevelop do the following:</p>
+
+<ul>
+<li>Close the solution</li>
+<li><p>Open <code>src/buildConfig.targets</code> and change the <code>CustomBuildName</code> entry (near the top) to <code>razor4</code>, <code>net45</code> or <code>net40</code>.
+The line should then look like this:</p>
+<pre class="line-numbers language-markup"><code class="language-markup">&lt;CustomBuildName Condition=&quot; &#39;$(CustomBuildName)&#39; == &#39;&#39; &quot;&gt;net45&lt;/CustomBuildName&gt; </code></pre></li>
+<li><p>Save the <code>src/buildConfig.targets</code> file and re-open the solution.</p></li>
+</ul>
+
+<h2><a name="Documentation-generation" class="anchor" href="#Documentation-generation">Documentation generation</a></h2>
+
+<p>For the docs we use a custom build of FSharp.Formatting (because of improved C# support and to make use of the latest RazorEngine features!)
+and FSharp.Compiler.Service (see lib/ folder).
+You normally do not need to build those yourself. For the sake of completness all steps are included here.</p>
+
+<blockquote>
+  <p>Note: The aim is to switch to the official versions once everything works with them 
+(pull requests are open... for example FSharp.Compiler.Service: #229, FSharp.Formatting: #208 and others)</p>
+</blockquote>
+
+<h3><a name="FSharp-Formatting" class="anchor" href="#FSharp-Formatting">FSharp.Formatting</a></h3>
+
+<p>So for generation of the docs we use ourself (because FSharp.Formatting uses RazorEngine) and in fact we use the latest build 
+(done immediatly before generating the docs) so this is a integration test as well!</p>
+
+<p>The custom build can be found on <a href="https://github.com/matthid/FSharp.Formatting/tree/razor_engine_bundled">https://github.com/matthid/FSharp.Formatting/tree/razor_engine_bundled</a> (the <code>razor_engine_bundled</code> branch).
+If you want to build that (because you make a breaking change, 
+please only make breaking changes when the change was never included in a release) you need to do the following:</p>
+
+<ul>
+<li>Clone RazorEngine (C:/Projects/RazorEngine)</li>
+<li>Clone the <code>razor_engine_bundled</code> branch of FSharp.Formatting (C:/Projects/FSharp.Formatting)</li>
+<li>Build RazorEngine (./build All, it doesn't matter if generating the documentation fails!)</li>
+<li>do <code>build NuGet_single</code> to generate the nuget packages</li>
+<li><p>Edit <code>C:/Projects/FSharp.Formatting/paket.lock</code> so that it loads the RazorEngine nuget package from disk:</p>
+<pre class="line-numbers language-markup"><code class="language-markup">NUGET
+  remote: http://nuget.org/api/v2
+  specs:
+    CommandLineParser (1.9.71)
+    FAKE (3.12.2)
+    FSharp.Compiler.Service (0.0.67)
+    Microsoft.AspNet.Razor (2.0.30506.0)
+    NuGet.CommandLine (2.8.3)
+    NUnit (2.6.4)
+    NUnit.Runners (2.6.4)
+  remote: C:\Projects\RazorEngine\release\nuget
+  specs:
+    RazorEngine (3.5.0-beta1)
+      Microsoft.AspNet.Razor (&gt;= 3.2.2.0) - net45
+      Microsoft.AspNet.Razor (2.0.30506.0) - net40</code></pre></li>
+<li>Delete <code>C:/Projects/FSharp.Formatting/packages/RazorEngine</code> if it exists.</li>
+<li>Build FSharp.Formatting.</li>
+<li>Your FSharp.Formatting build can be found in C:/Projects/FSharp.Formatting/bin</li>
+</ul>
+
+<h3><a name="FSharp-Compiler-Service" class="anchor" href="#FSharp-Compiler-Service">FSharp.Compiler.Service</a></h3>
+
+<p>FSharp.Compiler.Service doesn't depend on anything so building the custom version is just a matter of cloning and building: 
+<a href="https://github.com/matthid/FSharp.Compiler.Service">https://github.com/matthid/FSharp.Compiler.Service</a> (<code>master</code> branch).
+The changes are not breaking so using the official version will work as well, however the docs are incomplete in that case!</p>
 
 <div class="tip" id="fs1">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
 <div class="tip" id="fs2">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
@@ -144,7 +255,7 @@ Sometimes these unit tests can be used even by custom code (inheriting from the 
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -153,13 +264,16 @@ Sometimes these unit tests can be used even by custom code (inheriting from the 
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               

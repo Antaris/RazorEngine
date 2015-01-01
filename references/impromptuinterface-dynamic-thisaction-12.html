@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>TemplateServiceFactory - RazorEngine</title>
+    <title>ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12> - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,32 +38,85 @@
 
 
 
-<h1>TemplateServiceFactory </h1>
+<h1>ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12> </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-<p>Provides factory methods for creating  instances.</p>
-</div>
-  <h3>Static members</h3>
+
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></div>
+  <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Static member</td><td>Description</td></tr>
+      <tr><td>Constructor</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '346', 346)" onmouseover="showTip(event, '346', 346)">
-            CreateTemplateService(...)
+          <code onmouseout="hideTip(event, '215', 215)" onmouseover="showTip(event, '215', 215)">
+            new(object, method)
           </code>
-          <div class="tip" id="346">
-            <strong>Signature:</strong> (language:Language * encoding:Encoding) -&gt; ITemplateService<br />
+          <div class="tip" id="215">
+            <strong>Signature:</strong> (object:obj * method:nativeint) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Creates an instance of a template service.</p>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
 
+          <code onmouseout="hideTip(event, '216', 216)" onmouseover="showTip(event, '216', 216)">
+            BeginInvoke(...)
+          </code>
+          <div class="tip" id="216">
+            <strong>Signature:</strong> (this:obj * arg1:&#39;T1 * arg2:&#39;T2 * arg3:&#39;T3 * arg4:&#39;T4 * arg5:&#39;T5 * arg6:&#39;T6 * arg7:&#39;T7 * arg8:&#39;T8 * arg9:&#39;T9 * arg10:&#39;T10 * arg11:&#39;T11 * arg12:&#39;T12 * callback:AsyncCallback * object:obj) -&gt; IAsyncResult<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '217', 217)" onmouseover="showTip(event, '217', 217)">
+            EndInvoke(result)
+          </code>
+          <div class="tip" id="217">
+            <strong>Signature:</strong> result:IAsyncResult -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '218', 218)" onmouseover="showTip(event, '218', 218)">
+            Invoke(...)
+          </code>
+          <div class="tip" id="218">
+            <strong>Signature:</strong> (this:obj * arg1:&#39;T1 * arg2:&#39;T2 * arg3:&#39;T3 * arg4:&#39;T4 * arg5:&#39;T5 * arg6:&#39;T6 * arg7:&#39;T7 * arg8:&#39;T8 * arg9:&#39;T9 * arg10:&#39;T10 * arg11:&#39;T11 * arg12:&#39;T12) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
         </td>
       </tr>
     </tbody>
@@ -80,7 +133,7 @@
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -89,13 +142,16 @@
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               

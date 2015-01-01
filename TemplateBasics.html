@@ -40,109 +40,120 @@
 
 <h2><a name="Getting-Started" class="anchor" href="#Getting-Started">Getting Started</a></h2>
 
-<p>RazorEngine provides a base implementation of a template class, the <code>TemplateBase</code>, this is normally superseded by the model specific template class, the <code>TemplateBase&lt;T&gt;</code>. For most use cases, we're hoping this will be enough. To get started with template using RazorEngine, you can simply use the static <code>Razor</code> type:</p>
+<p>Please read the Quick intro first!</p>
+
+<p>RazorEngine provides a base implementation of a template class, the <code>TemplateBase</code>, this is normally superseded by the model specific template class, 
+the <code>TemplateBase&lt;T&gt;</code>. For most use cases, we're hoping this will be enough. 
+To get started with template using RazorEngine, you can simply use the static <code>Engine</code> type (the <code>Engine.Razor</code> instance):</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
-var model = new { Name = &quot;Matt&quot; };
+var model = new Person { Name = &quot;Matt&quot; };
 
-string result = Razor.Parse(template, model);</code></pre>
+string result = Engine.Razor.RunCompile(template, &quot;key&quot;, typeof(Person), model);</code></pre>
 
 <p>Which should result in:</p>
 
 <pre class="line-numbers language-markup"><code class="language-markup">&lt;div&gt;Hello Matt&lt;/div&gt;</code></pre>
 
+<p>The type always needs to be given explicitly, this way you can decide if you want to use a base class or <code>dynamic</code> (<code>null</code>)
+instead of <code>model.GetType()</code>.</p>
+
 <h2><a name="Using-Anonymous-Types" class="anchor" href="#Using-Anonymous-Types">Using Anonymous Types</a></h2>
 
-<p>RazorEngine supports anonymous types (those declared as <code>var</code> with no identifier, e.g. <code>var model = { Name = "Matt" };</code>. The set of statements to use an anonymous model, is exactly the same as a statically type model (as seen above):</p>
+<p>RazorEngine supports anonymous types (those declared as <code>var</code> with no identifier, e.g. <code>var model = { Name = "Matt" };</code>. 
+The set of statements to use an anonymous model, is exactly the same as a statically type model (as seen above):</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
 var model = new { Name = &quot;Matt&quot; };
 
-string result = Razor.Parse(template, model);</code></pre>
+string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, model);</code></pre>
 
-<p>Thanks to the C# compiler's (and Visual Studio's) type inference, it will determine the model type that is passed to the generic <code>Razor.Parse&lt;T&gt;(string, T)</code> method for you, keeping the code clean and concise.</p>
+<p>Because the generated anonymous type is internal so RazorEngine needs to use some tricks to make this work. 
+This is also the reason you can't use <code>model.GetType()</code> in this situation.
+RazorEngine will wrap your instance of the anonymous class in a wrapper. 
+This wrapper ensures that we can access everything, even across AppDomains (<code>IsolatedRazorEngineService</code>).</p>
 
 <blockquote>
-  <p>Note: Anonymous types are not supported when using the <code>IsolatedTemplateService</code></p>
+  <p>Note: You can use this wrapper class yourself with <code>var model = new RazorDynamicObject(myInternalModel)</code>.
+This wrapper will make sure everything works. You can even use this if you have a model that is NOT serializable which you want to use in
+an isolated sandbox. However this will slighly hit performance.</p>
 </blockquote>
 
 <h2><a name="Using-Dynamic-Types" class="anchor" href="#Using-Dynamic-Types">Using Dynamic Types</a></h2>
 
-<p>RazorEngine has support for dynamic types (those declared as <code>dynamic</code>). Again, the structure for using dynamic types is very similar:</p>
+<p>RazorEngine has support for dynamic types (those declared as <code>dynamic</code>). Again, the structure for using dynamic types is very similar.
+All you need to do is to use <code>null</code> for the <code>modelType</code> parameter (so the same template will be generated as for anonymous types).</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
 dynamic model = new ExpandoObject();
 model.Name = &quot;Matt&quot;;
 
-string result = Razor.Parse(template, model);</code></pre>
+string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, (object)model);</code></pre>
 
 <blockquote>
-  <p>Note: Dynamic types are not supported when using the <code>IsolatedTemplateService</code></p>
+  <p>Note: You can run into problems when not casting the model to object.</p>
 </blockquote>
 
-<h2><a name="Caching-Templates" class="anchor" href="#Caching-Templates">Caching Templates</a></h2>
+<h2><a name="Supported-synax" class="anchor" href="#Supported-synax">Supported synax.</a></h2>
 
-<p>When you provide a name argument to your call, RazorEngine will cache the compiled type so we can re-use the template type for subsequent executions:</p>
+<p>You can access several things when you use the default <code>TemplateBase&lt;&gt;</code> implementation:</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">string result = Razor.Parse(template, model, &quot;test&quot;);</code></pre>
+<ul>
+<li><code>@using Custom.Namespace</code>
+(see also the quick intro and assembly resolvers for custom references)</li>
+<li><code>@model ModelType</code></li>
+<li><code>@inherits HtmlSupportTemplateBase&lt;ModelType&gt;</code>
+(see below)</li>
+<li><p>Set a layout (and <code>@RenderBody()</code> within the layout template):</p>
+<pre class="line-numbers language-markup"><code class="language-markup">@{
+    Layout = &quot;layout.cshtml&quot;;
+}</code></pre></li>
+<li><p><code>@Include("templateName", model = null, modeType = null)</code> to include another template.</p></li>
+<li><p>Accessing the ViewBag:</p>
+<pre class="line-numbers language-markup"><code class="language-markup">&lt;h1&gt;@ViewBag.Title&lt;/h1&gt;</code></pre></li>
+<li><p>Sections (<code>@DefineSection</code>, <code>@RenderSection</code> and <code>@IsSectionDefined</code>)</p></li>
+</ul>
 
-<p>If you reuse the same template again, it will not have to parse and recompile the template, because we've already cached it.</p>
+<h2><a name="Extending-the-template-Syntax" class="anchor" href="#Extending-the-template-Syntax">Extending the template Syntax.</a></h2>
 
-<blockquote>
-  <p>Note: If you call to parse a template with a name for the cached version, but the template content has changed, RazorEngine will invalidate the cached version and replace with the update template. This allows templates to be cached, changed and re-cached over time.</p>
-</blockquote>
+<p>As explained in the "About Razor" section the template gets compiled into a method.
+This method is part of a class that implements <code>ITemplate</code>. 
+You are free to provide your own base-class implementations however we recommend to inherit from <code>TemplateBase&lt;T&gt;</code> if you need special syntax.</p>
 
-<h2><a name="Pre-compiling-and-Running-Templates" class="anchor" href="#Pre-compiling-and-Running-Templates">Pre-compiling and Running Templates</a></h2>
+<p>One common feature request is to provide the <code>@Html.Raw()</code> (or any other not-Razor specific) syntax, but it is very easy to run that on your own:</p>
 
-<p>On the back of the caching feature mentioned above, RazorEngine supports the ability to pre-compile your templates for later execution. Convenience methods called <code>Compile</code> and <code>Run</code> allow you to make an initial compile and cache of your template (<code>Compile</code>) and then execute it later (<code>Run</code>):</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">public class MyHtmlHelper
+{
+    public IEncodedString Raw(string rawString)
+    {
+        return new RawString(rawString);
+    }
+}
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">Razor.Compile(template, &quot;testTemplate&quot;);
+public abstract class HtmlSupportTemplateBase&lt;T&gt; : TemplateBase&lt;T&gt;
+{
+    public MyClassImplementingTemplateBase()
+    {
+        Html = new MyHtmlHelper();
+    }
 
-// And then...
-string result = Razor.Run(&quot;testTemplate&quot;);</code></pre>
+    public MyHtmlHelper Html { get; set; }
+}</code></pre>
 
-<h2><a name="Configuration" class="anchor" href="#Configuration">Configuration</a></h2>
-
-<p>By default RazorEngine is configured to encode using Html. This supports the majority of users but with some configuration changes you can also set it to encode using Raw format which is better suited for templates that generate things like javascript, php, C# and others.</p>
-
-<h3><a name="Old-school" class="anchor" href="#Old-school">Old school:</a></h3>
+<p>And then you can use it like:</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">var config = new TemplateServiceConfiguration();
-config.EncodedStringFactory = new RawStringFactory();
+// You can use the @inherits directive instead (this is the fallback if no @inherits is found).
+config.BaseTemplateType = typeof(HtmlSupportTemplateBase&lt;&gt;);
+using (var service = RazorEngineService.Create(config))
+{
+    string template = &quot;@Html.Raw(Model.Data)&quot;;
+    var model = new { Data = &quot;My raw double quotes appears here \&quot;hello!\&quot;&quot; };
 
-// create a new TemplateService and pass in the configuration to the constructor
-var myConfiguredTemplateService = new TemplateService(config);
-// set the template service to our configured one
-Razor.SetTemplateService(myConfiguredTemplateService);
-
-// start parsing templates
-string template = &quot;Hello \&quot;@(Model.Name)\&quot;&quot;;
-var model = new { Name = &quot;Matt&quot; };
-
-string result = Razor.Parse(template, model);</code></pre>
-
-<p>Which should result in:</p>
-
-<pre class="line-numbers language-markup"><code class="language-markup">Hello &quot;Matt&quot;</code></pre>
-
-<h3><a name="Using-the-fluent-API" class="anchor" href="#Using-the-fluent-API">Using the fluent API:</a></h3>
-
-<pre class="line-numbers language-csharp"><code class="language-csharp">var config = new FluentTemplateServiceConfiguration(c =&gt; c.WithEncoding(RazorEngine.Encoding.Raw));
-
-// create a new TemplateService and pass in the configuration to the constructor
-var myConfiguredTemplateService = new TemplateService(config);
-// set the template service to our configured one
-Razor.SetTemplateService(myConfiguredTemplateService);
-
-// start parsing templates
-string template = &quot;Hello \&quot;@(Model.Name)\&quot;&quot;;
-var model = new { Name = &quot;Matt&quot; };
-
-string result = Razor.Parse(template, model);</code></pre>
-
-<p>Which should result in:</p>
-
-<pre class="line-numbers language-markup"><code class="language-markup">Hello &quot;Matt&quot;</code></pre>
+    string result = service.RunCompile(template, &quot;htmlRawTemplate&quot;, null, model);
+    Console.WriteLine(&quot;Template: {0}&quot;, template);
+    Console.WriteLine(&quot;Result: {0}&quot;, result);
+}</code></pre>
 
 
         </div>
@@ -156,7 +167,7 @@ string result = Razor.Parse(template, model);</code></pre>
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -165,13 +176,16 @@ string result = Razor.Parse(template, model);</code></pre>
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               

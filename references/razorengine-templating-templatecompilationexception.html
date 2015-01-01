@@ -43,8 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-<p>Defines an exception that occurs during compilation of the template.</p>
-</div>
+
+            Defines an exception that occurs during compilation of the template.
+            </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -54,16 +55,31 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '315', 315)" onmouseover="showTip(event, '315', 315)">
+          <code onmouseout="hideTip(event, '822', 822)" onmouseover="showTip(event, '822', 822)">
+            new(errors, files, template)
+          </code>
+          <div class="tip" id="822">
+            <strong>Signature:</strong> (errors:IEnumerable&lt;RazorEngineCompilerError&gt; * files:CompilationData * template:ITemplateSource) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '823', 823)" onmouseover="showTip(event, '823', 823)">
             new(info, context)
           </code>
-          <div class="tip" id="315">
+          <div class="tip" id="823">
             <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Initialises a new instance of  from serialised data.</p>
-
+          
+            Initialises a new instance of <a href="razorengine-templating-templatecompilationexception.html">TemplateCompilationException</a> from serialised data.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -77,62 +93,98 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '316', 316)" onmouseover="showTip(event, '316', 316)">
-            Errors()
+          <code onmouseout="hideTip(event, '824', 824)" onmouseover="showTip(event, '824', 824)">
+            CompilationData()
           </code>
-          <div class="tip" id="316">
-            <strong>Signature:</strong> unit -&gt; ReadOnlyCollection&lt;CompilerError&gt;<br />
+          <div class="tip" id="824">
+            <strong>Signature:</strong> unit -&gt; CompilationData<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the set of compiler errors.</p>
-
+          
+            Gets some copilation specific (temporary) data.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '317', 317)" onmouseover="showTip(event, '317', 317)">
+          <code onmouseout="hideTip(event, '825', 825)" onmouseover="showTip(event, '825', 825)">
+            CompilerErrors()
+          </code>
+          <div class="tip" id="825">
+            <strong>Signature:</strong> unit -&gt; ReadOnlyCollection&lt;RazorEngineCompilerError&gt;<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the set of compiler errors.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '826', 826)" onmouseover="showTip(event, '826', 826)">
+            Errors()
+          </code>
+          <div class="tip" id="826">
+            <strong>Signature:</strong> unit -&gt; ReadOnlyCollection&lt;CompilerError&gt;<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the set of compiler errors.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '827', 827)" onmouseover="showTip(event, '827', 827)">
             GetObjectData(info, context)
           </code>
-          <div class="tip" id="317">
+          <div class="tip" id="827">
             <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the object data for serialisation.</p>
-
+          
+            Gets the object data for serialisation.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '318', 318)" onmouseover="showTip(event, '318', 318)">
+          <code onmouseout="hideTip(event, '828', 828)" onmouseover="showTip(event, '828', 828)">
             SourceCode()
           </code>
-          <div class="tip" id="318">
+          <div class="tip" id="828">
             <strong>Signature:</strong> unit -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the source code that wasn't compiled.</p>
-
+          
+            Gets the generated source code.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '319', 319)" onmouseover="showTip(event, '319', 319)">
+          <code onmouseout="hideTip(event, '829', 829)" onmouseover="showTip(event, '829', 829)">
             Template()
           </code>
-          <div class="tip" id="319">
+          <div class="tip" id="829">
             <strong>Signature:</strong> unit -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the source template that wasn't compiled.</p>
-
+          
+            Gets the source template that wasn't compiled.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -149,7 +201,7 @@
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -158,13 +210,16 @@
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Roslyn compiler support
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple templating using Razor syntax.">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/style.css" />
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/prism.css" />
+    <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/tips.js"></script>
+	<script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/prism.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://Antaris.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="Roslyn-compiler-support" class="anchor" href="#Roslyn-compiler-support">Roslyn compiler support</a></h1>
+
+<p>Starting with 3.5.0 RazorEngine supports the Roslyn compilers (via the Microsoft.CodeAnalysis nuget package).
+The first thing you want to do is install the additional package:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">Install</span><span class="o">-</span><span class="i">Package</span> <span class="i">RazorEngine</span><span class="o">.</span><span class="i">Roslyn</span></pre>
+</td>
+</tr>
+</table>
+
+<blockquote>
+  <p>If you use the 4.x series (RazorEngine) you need the 4.x series of RazorEngine.Roslyn.</p>
+</blockquote>
+
+<p>To activate roslyn all you need to do is set the <code>CompilerServiceFactory</code> property in the configuration:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">config.CompilerServiceFactory = new RazorEngine.Roslyn.RoslynCompilerServiceFactory();</code></pre>
+
+<h2><a name="Known-Limitation-Bugs" class="anchor" href="#Known-Limitation-Bugs">Known Limitation/Bugs</a></h2>
+
+<ul>
+<li>Debugging symbols do not work currently (If you know how Roslyn works please send a pull request!).</li>
+<li><p>Debug symbols cannot be created on mono/unix:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">error</span><span class="o">:</span> (<span class="n">0</span>, <span class="n">0</span>) <span class="i">Unexpected</span> <span class="i">error</span> <span class="i">writing</span> <span class="i">debug</span> <span class="i">information</span> <span class="o">--</span> <span class="o">&#39;</span><span class="i">The</span> <span class="i">requested</span> <span class="i">feature</span> <span class="i">is</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">not</span> <span class="i">implemented</span><span class="o">.</span><span class="o">&#39;</span></pre>
+</td>
+</tr>
+</table></li>
+<li>No support for the net40 build as the roslyn nuget package doesn't support net40!</li>
+<li>Only C# support (VB.net support is kind of gone as Razor4 doesn't support VB.net).</li>
+<li>If you find more please open a issue!</li>
+<li>Running Roslyn on mono could lead to sigsegv crashes (mono bug): <a href="https://travis-ci.org/Antaris/RazorEngine/builds/45375847!">https://travis-ci.org/Antaris/RazorEngine/builds/45375847!</a></li>
+</ul>
+
+<div class="tip" id="fs1">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
+
+        </div>
+        <div class="span3">
+          <a href="https://Antaris.github.io/RazorEngine/index.html">
+            <img src="https://Antaris.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/blob/master/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/Antaris/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

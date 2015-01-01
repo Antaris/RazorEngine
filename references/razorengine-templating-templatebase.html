@@ -43,8 +43,12 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-<p>Provides a base implementation of a template.</p>
-</div>
+
+            Provides a base implementation of a template.
+            NOTE: This class is not serializable to prevent subtle errors 
+            in user IActivator implementations which would break the sandbox.
+            (because executed in the wrong <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>)
+            </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -54,16 +58,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '290', 290)" onmouseover="showTip(event, '290', 290)">
+          <code onmouseout="hideTip(event, '793', 793)" onmouseover="showTip(event, '793', 793)">
             new()
           </code>
-          <div class="tip" id="290">
+          <div class="tip" id="793">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Initialises a new instance of .</p>
-
+          
+            Initialises a new instance of <a href="razorengine-templating-templatebase.html">TemplateBase</a>.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -77,228 +82,291 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '291', 291)" onmouseover="showTip(event, '291', 291)">
+          <code onmouseout="hideTip(event, '794', 794)" onmouseover="showTip(event, '794', 794)">
             CurrentWriter()
           </code>
-          <div class="tip" id="291">
+          <div class="tip" id="794">
             <strong>Signature:</strong> unit -&gt; TextWriter<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the current writer.</p>
-
+          
+            Gets the current writer.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '292', 292)" onmouseover="showTip(event, '292', 292)">
+          <code onmouseout="hideTip(event, '795', 795)" onmouseover="showTip(event, '795', 795)">
             DefineSection(name, action)
           </code>
-          <div class="tip" id="292">
+          <div class="tip" id="795">
             <strong>Signature:</strong> (name:string * action:Action) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Defines a section that can written out to a layout.</p>
-
+          
+            Defines a section that can written out to a layout.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '293', 293)" onmouseover="showTip(event, '293', 293)">
+          <code onmouseout="hideTip(event, '796', 796)" onmouseover="showTip(event, '796', 796)">
             Execute()
           </code>
-          <div class="tip" id="293">
+          <div class="tip" id="796">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Executes the compiled template.</p>
-
+          
+            Executes the compiled template.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '294', 294)" onmouseover="showTip(event, '294', 294)">
-            Include(cacheName, model)
+          <code onmouseout="hideTip(event, '797', 797)" onmouseover="showTip(event, '797', 797)">
+            Include(name, model, modelType)
           </code>
-          <div class="tip" id="294">
-            <strong>Signature:</strong> (cacheName:string * model:obj) -&gt; TemplateWriter<br />
+          <div class="tip" id="797">
+            <strong>Signature:</strong> (name:string * model:obj * modelType:Type) -&gt; TemplateWriter<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Includes the template with the specified name.</p>
-
+          
+            Includes the template with the specified name.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '295', 295)" onmouseover="showTip(event, '295', 295)">
+          <code onmouseout="hideTip(event, '798', 798)" onmouseover="showTip(event, '798', 798)">
             IsSectionDefined(name)
           </code>
-          <div class="tip" id="295">
+          <div class="tip" id="798">
             <strong>Signature:</strong> name:string -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Determines if the section with the specified name has been defined.</p>
-
+          
+            Determines if the section with the specified name has been defined.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '296', 296)" onmouseover="showTip(event, '296', 296)">
+          <code onmouseout="hideTip(event, '799', 799)" onmouseover="showTip(event, '799', 799)">
             Layout()
           </code>
-          <div class="tip" id="296">
+          <div class="tip" id="799">
             <strong>Signature:</strong> unit -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets or sets the layout template name.</p>
-
+          
+            Gets or sets the layout template name.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '297', 297)" onmouseover="showTip(event, '297', 297)">
+          <code onmouseout="hideTip(event, '800', 800)" onmouseover="showTip(event, '800', 800)">
             Raw(rawString)
           </code>
-          <div class="tip" id="297">
+          <div class="tip" id="800">
             <strong>Signature:</strong> rawString:string -&gt; IEncodedString<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Returns the specified string as a raw string. This will ensure it is not encoded.</p>
-
+          
+            Returns the specified string as a raw string. This will ensure it is not encoded.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '298', 298)" onmouseover="showTip(event, '298', 298)">
+          <code onmouseout="hideTip(event, '801', 801)" onmouseover="showTip(event, '801', 801)">
+            RazorEngine()
+          </code>
+          <div class="tip" id="801">
+            <strong>Signature:</strong> unit -&gt; IRazorEngineService<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets or sets the current <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '802', 802)" onmouseover="showTip(event, '802', 802)">
             RenderBody()
           </code>
-          <div class="tip" id="298">
+          <div class="tip" id="802">
             <strong>Signature:</strong> unit -&gt; TemplateWriter<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Renders the body of the template.</p>
-
+          
+            Renders the body of the template.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '299', 299)" onmouseover="showTip(event, '299', 299)">
+          <code onmouseout="hideTip(event, '803', 803)" onmouseover="showTip(event, '803', 803)">
             RenderSection(name, isRequired)
           </code>
-          <div class="tip" id="299">
+          <div class="tip" id="803">
             <strong>Signature:</strong> (name:string * isRequired:bool) -&gt; TemplateWriter<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Renders the section with the specified name.</p>
-
+          
+            Renders the section with the specified name.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '300', 300)" onmouseover="showTip(event, '300', 300)">
+          <code onmouseout="hideTip(event, '804', 804)" onmouseover="showTip(event, '804', 804)">
             ResolveUrl(path)
           </code>
-          <div class="tip" id="300">
+          <div class="tip" id="804">
             <strong>Signature:</strong> path:string -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Resolves the specified path</p>
-
+          
+            Resolves the specified path
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '301', 301)" onmouseover="showTip(event, '301', 301)">
+          <code onmouseout="hideTip(event, '805', 805)" onmouseover="showTip(event, '805', 805)">
+            set_InternalTemplateService(value)
+          </code>
+          <div class="tip" id="805">
+            <strong>Signature:</strong> value:IInternalTemplateService -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '806', 806)" onmouseover="showTip(event, '806', 806)">
+            SetModel(model)
+          </code>
+          <div class="tip" id="806">
+            <strong>Signature:</strong> model:obj -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Set the current model.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '807', 807)" onmouseover="showTip(event, '807', 807)">
             TemplateService()
           </code>
-          <div class="tip" id="301">
+          <div class="tip" id="807">
             <strong>Signature:</strong> unit -&gt; ITemplateService<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets or sets the template service.</p>
-
+          
+            Gets or sets the template service.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '302', 302)" onmouseover="showTip(event, '302', 302)">
+          <code onmouseout="hideTip(event, '808', 808)" onmouseover="showTip(event, '808', 808)">
             ViewBag()
           </code>
-          <div class="tip" id="302">
+          <div class="tip" id="808">
             <strong>Signature:</strong> unit -&gt; obj<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets the viewbag that allows sharing state between layout and child templates.</p>
-
+          
+            Gets the viewbag that allows sharing state between layout and child templates.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '303', 303)" onmouseover="showTip(event, '303', 303)">
+          <code onmouseout="hideTip(event, '809', 809)" onmouseover="showTip(event, '809', 809)">
             Write(value)
           </code>
-          <div class="tip" id="303">
+          <div class="tip" id="809">
             <strong>Signature:</strong> value:obj -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Writes the specified object to the result.</p>
-
+          
+            Writes the specified object to the result.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '304', 304)" onmouseover="showTip(event, '304', 304)">
+          <code onmouseout="hideTip(event, '810', 810)" onmouseover="showTip(event, '810', 810)">
             Write(helper)
           </code>
-          <div class="tip" id="304">
+          <div class="tip" id="810">
             <strong>Signature:</strong> helper:TemplateWriter -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Writes the specified template helper result.</p>
-
+          
+            Writes the specified template helper result.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '305', 305)" onmouseover="showTip(event, '305', 305)">
+          <code onmouseout="hideTip(event, '811', 811)" onmouseover="showTip(event, '811', 811)">
             WriteAttribute(...)
           </code>
-          <div class="tip" id="305">
+          <div class="tip" id="811">
             <strong>Signature:</strong> (name:string * prefix:PositionTagged&lt;string&gt; * suffix:PositionTagged&lt;string&gt; * values:AttributeValue []) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -310,10 +378,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '306', 306)" onmouseover="showTip(event, '306', 306)">
+          <code onmouseout="hideTip(event, '812', 812)" onmouseover="showTip(event, '812', 812)">
             WriteAttributeTo(...)
           </code>
-          <div class="tip" id="306">
+          <div class="tip" id="812">
             <strong>Signature:</strong> (writer:TextWriter * name:string * prefix:PositionTagged&lt;string&gt; * suffix:PositionTagged&lt;string&gt; * values:AttributeValue []) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -325,65 +393,69 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '307', 307)" onmouseover="showTip(event, '307', 307)">
+          <code onmouseout="hideTip(event, '813', 813)" onmouseover="showTip(event, '813', 813)">
             WriteLiteral(literal)
           </code>
-          <div class="tip" id="307">
+          <div class="tip" id="813">
             <strong>Signature:</strong> literal:string -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Writes the specified string to the result.</p>
-
+          
+            Writes the specified string to the result.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '308', 308)" onmouseover="showTip(event, '308', 308)">
+          <code onmouseout="hideTip(event, '814', 814)" onmouseover="showTip(event, '814', 814)">
             WriteLiteralTo(writer, literal)
           </code>
-          <div class="tip" id="308">
+          <div class="tip" id="814">
             <strong>Signature:</strong> (writer:TextWriter * literal:string) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Writes a string literal to the specified .</p>
-
+          
+            Writes a string literal to the specified <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a>.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '309', 309)" onmouseover="showTip(event, '309', 309)">
+          <code onmouseout="hideTip(event, '815', 815)" onmouseover="showTip(event, '815', 815)">
             WriteTo(writer, value)
           </code>
-          <div class="tip" id="309">
+          <div class="tip" id="815">
             <strong>Signature:</strong> (writer:TextWriter * value:obj) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Writes the specified object to the specified .</p>
-
+          
+            Writes the specified object to the specified <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a>.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '310', 310)" onmouseover="showTip(event, '310', 310)">
+          <code onmouseout="hideTip(event, '816', 816)" onmouseover="showTip(event, '816', 816)">
             WriteTo(writer, helper)
           </code>
-          <div class="tip" id="310">
+          <div class="tip" id="816">
             <strong>Signature:</strong> (writer:TextWriter * helper:TemplateWriter) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Writes the specfied template helper result to the specified writer.</p>
-
+          
+            Writes the specfied template helper result to the specified writer.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -400,7 +472,7 @@
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -409,13 +481,16 @@
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               

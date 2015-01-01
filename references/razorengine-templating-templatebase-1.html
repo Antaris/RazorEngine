@@ -43,8 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-<p>Provides a base implementation of a template with a model.</p>
-</div>
+
+            Provides a base implementation of a template with a model.
+            </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -54,16 +55,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '311', 311)" onmouseover="showTip(event, '311', 311)">
+          <code onmouseout="hideTip(event, '817', 817)" onmouseover="showTip(event, '817', 817)">
             new()
           </code>
-          <div class="tip" id="311">
+          <div class="tip" id="817">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Initialises a new instance of .</p>
-
+          
+            Initialises a new instance of <a href="razorengine-templating-templatebase-1.html">TemplateBase`1</a>.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -77,48 +79,68 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '312', 312)" onmouseover="showTip(event, '312', 312)">
+          <code onmouseout="hideTip(event, '818', 818)" onmouseover="showTip(event, '818', 818)">
             HasDynamicModel()
           </code>
-          <div class="tip" id="312">
+          <div class="tip" id="818">
             <strong>Signature:</strong> unit -&gt; bool<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Determines whether this template has a dynamic model.</p>
-
+          
+            Determines whether this template has a dynamic model.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '313', 313)" onmouseover="showTip(event, '313', 313)">
-            Include(cacheName, model)
+          <code onmouseout="hideTip(event, '819', 819)" onmouseover="showTip(event, '819', 819)">
+            Include(cacheName, model, modelType)
           </code>
-          <div class="tip" id="313">
-            <strong>Signature:</strong> (cacheName:string * model:obj) -&gt; TemplateWriter<br />
+          <div class="tip" id="819">
+            <strong>Signature:</strong> (cacheName:string * model:obj * modelType:Type) -&gt; TemplateWriter<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Includes the template with the specified name.</p>
-
+          
+            Includes the template with the specified name.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '314', 314)" onmouseover="showTip(event, '314', 314)">
+          <code onmouseout="hideTip(event, '820', 820)" onmouseover="showTip(event, '820', 820)">
             Model()
           </code>
-          <div class="tip" id="314">
+          <div class="tip" id="820">
             <strong>Signature:</strong> unit -&gt; &#39;T<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          <p>Gets or sets the model.</p>
+          
+            Gets or sets the model.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
 
+          <code onmouseout="hideTip(event, '821', 821)" onmouseover="showTip(event, '821', 821)">
+            SetModel(model)
+          </code>
+          <div class="tip" id="821">
+            <strong>Signature:</strong> model:obj -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Set the model.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -135,7 +157,7 @@
             <li class="nav-header">RazorEngine</li>
 
             <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/RazorEngine.N/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
@@ -144,13 +166,16 @@
             
             <li class="nav-header">Documentation</li>
               
-            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Introduction</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
 
             <li class="nav-header">Reference</li>
               
