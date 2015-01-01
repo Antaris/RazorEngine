@@ -174,7 +174,7 @@ MyTarget "NuGet" (fun _ ->
                 [ { FrameworkVersion = "net40"; 
                     Dependencies = [ "Microsoft.AspNet.Razor", "2.0.30506.0" |> RequireExactly ] }
                   { FrameworkVersion = "net45"; 
-                    Dependencies = [ "Microsoft.AspNet.Razor", "3.2.2.0" ] }  ] })
+                    Dependencies = [ "Microsoft.AspNet.Razor", "3.0.0" ] }  ] })
         "nuget/RazorEngine.nuspec"
     NuGet (fun p -> 
         { p with   
@@ -206,7 +206,7 @@ MyTarget "NuGet" (fun _ ->
             Publish = hasBuildParam "nugetkey"
             Dependencies =
               [ projectName, version_nuget
-                "Microsoft.AspNet.Razor", "3.2.2.0"
+                "Microsoft.AspNet.Razor", "3.0.0"
                 "Microsoft.CodeAnalysis", "1.0.0-beta1-20141031-01" ] })
         "nuget/RazorEngine.Roslyn.nuspec"
     NuGet (fun p -> 
