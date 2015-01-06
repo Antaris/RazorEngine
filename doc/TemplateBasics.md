@@ -122,3 +122,15 @@ And then you can use it like:
         Console.WriteLine("Template: {0}", template);
         Console.WriteLine("Result: {0}", result);
     }
+
+## Resolving and Caching Templates
+
+The process of getting the source code of a template from a name (or `ITemplateKey` rather) is called _resolving_ a template.
+This is delegated to the `ITemplateManager` implementation.
+
+A `ITemplateKey` uniquely describes a template, however multiple `ITemplateKey` instances can point to the same template.
+> For example if a `ITemplateManager` implementation doesn't make a difference between the given `ResolveType`.
+
+To prevent multiple compilations for such templates the `ITemplateKey` interface has the `GetUniqueKeyString` method which returns a unique string 
+to be used by the caching layer for caching. 
+Keep this in mind when implementing the `ITemplateManager` interface and therefore creating `ITemplateKey` instances.

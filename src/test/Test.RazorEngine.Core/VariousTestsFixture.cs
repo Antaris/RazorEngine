@@ -8,9 +8,16 @@ using NUnit.Framework;
 
 namespace Test.RazorEngine
 {
+    /// <summary>
+    /// Various general tests.
+    /// </summary>
     [TestFixture]
-    public class AssemblyReflectionFixture
+    public class VariousTestsFixture
     {
+        /// <summary>
+        /// Test if we can call GetTypes on the RazorEngine assembly.
+        /// This will make sure all SecurityCritical attributes are valid.
+        /// </summary>
         [Test]
         public void AssemblyIsScannable()
         {

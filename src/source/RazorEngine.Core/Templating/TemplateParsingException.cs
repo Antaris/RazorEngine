@@ -1,10 +1,9 @@
-﻿using System.Security;
-
-namespace RazorEngine.Templating
+﻿namespace RazorEngine.Templating
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
+    using System.Security;
 #if RAZOR4
     using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 #else
