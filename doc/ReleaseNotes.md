@@ -1,4 +1,7 @@
-﻿### 3.5.0-beta2
+﻿### 3.5.0-beta3 / 4.0.0-beta2
+* Fix a missing [SecurityCritical] attribute on TemplateParsingException.GetObjectData
+
+### 3.5.0-beta2
 * Relax nuget Razor dependency
 
 ### New in 3.5.0-beta1 / 4.0.0-beta1 (To be released) 

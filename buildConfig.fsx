@@ -36,9 +36,11 @@ let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
 let page_author = "Matthias Dittrich"
 let mail = "matthew.abbott@outlook.com"
 let version = "3.5.0.0"
-let version_nuget = "3.5.0-beta2"
+let version_nuget = "3.5.0-beta3"
 let version_razor4 = "4.0.0.0"
-let version_razor4_nuget = "4.0.0-beta1"
+let version_razor4_nuget = "4.0.0-beta2"
+let version_roslyn_nuget = "3.5.0-beta2"
+let version_roslyn_razor4_nuget = "4.0.0-beta1"
 let commitHash = Information.getCurrentSHA1(".")
 
 //let buildTargets = environVarOrDefault "BUILDTARGETS" ""

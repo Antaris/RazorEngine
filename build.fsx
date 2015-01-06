@@ -198,7 +198,7 @@ MyTarget "NuGet" (fun _ ->
             Project = projectName_roslyn
             Summary = projectSummary_roslyn
             Description = projectDescription_roslyn
-            Version = version_nuget
+            Version = version_roslyn_nuget
             ReleaseNotes = toLines release.Notes
             Tags = tags
             OutputPath = outDir
@@ -215,7 +215,7 @@ MyTarget "NuGet" (fun _ ->
             Project = projectName_roslyn
             Summary = projectSummary_roslyn
             Description = projectDescription_roslyn
-            Version = version_razor4_nuget
+            Version = version_roslyn_razor4_nuget
             ReleaseNotes = toLines release.Notes
             Tags = tags
             OutputPath = outDir

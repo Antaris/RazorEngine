@@ -88,6 +88,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ActivatorTestFixture.cs" />
+    <Compile Include="VariousTestsFixture.cs" />
     <Compile Include="CodeInspectorTestFixture.cs" />
     <Compile Include="ConfigurationTestFixture.cs" />
     <Compile Include="IsolatedRazorEngineServiceTestFixture.cs" />
