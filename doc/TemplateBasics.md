@@ -65,17 +65,17 @@ You can access several things when you use the default `TemplateBase<>` implemen
   (see below)
 - Set a layout (and `@RenderBody()` within the layout template):
 
-        [lang=markup]
-        @{
-        	Layout = "layout.cshtml";
-        }
+      [lang=markup]
+      @{
+          Layout = "layout.cshtml";
+      }
 	
 - `@Include("templateName", model = null, modeType = null)` to include another template.
 
 - Accessing the ViewBag:
 	
-        [lang=markup]
-        <h1>@ViewBag.Title</h1>
+      [lang=markup]
+      <h1>@ViewBag.Title</h1>
 
 - Sections (`@DefineSection`, `@RenderSection` and `@IsSectionDefined`)
 
