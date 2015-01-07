@@ -5,29 +5,29 @@ It is often convenient to have your razor templates as file resources in your pr
 Here is an example template file where `MyCustomizedTemplate<T>` derives from RazorEngine's `TemplateBase<T>`:
 
 ```markup
-    @using MyProject.Templates
-    @using MyProject.Templates.Models
-    @inherits MyCustomizedTemplate<InvoiceModel>
-    <h1>Your Invoice @Model.InvoiceNumber</h1>
-    <p>The great stuff you bought was:</p>
-    <ul>
-        @foreach(var line in Model.InvoiceLines)
-        {
-            <li>@line.Code - @line.Description for @line.Price</li>
-        }
-    </ul>
-    <h3>Thanks for shopping at BuyMore</h3>
+@using MyProject.Templates
+@using MyProject.Templates.Models
+@inherits MyCustomizedTemplate<InvoiceModel>
+<h1>Your Invoice @Model.InvoiceNumber</h1>
+<p>The great stuff you bought was:</p>
+<ul>
+    @foreach(var line in Model.InvoiceLines)
+    {
+        <li>@line.Code - @line.Description for @line.Price</li>
+    }
+</ul>
+<h3>Thanks for shopping at BuyMore</h3>
 ```
 
 The custom class would look something like this:
 
 ```csharp
-	public class MyCustomizedTemplate<T> : TemplateBase<T>
-	{
-		public T Model { get; set; }
+public class MyCustomizedTemplate<T> : TemplateBase<T>
+{
+	public T Model { get; set; }
 
-		public MyCustomizedTemplate()
-		{
-		}
+	public MyCustomizedTemplate()
+	{
 	}
+}
 ```

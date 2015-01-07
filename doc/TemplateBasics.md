@@ -9,16 +9,16 @@ the `TemplateBase<T>`. For most use cases, we're hoping this will be enough.
 To get started with template using RazorEngine, you can simply use the static `Engine` type (the `Engine.Razor` instance):
 
 ```csharp
-    string template = "<div>Hello @Model.Name</div>";
-    var model = new Person { Name = "Matt" };
+string template = "<div>Hello @Model.Name</div>";
+var model = new Person { Name = "Matt" };
 
-    string result = Engine.Razor.RunCompile(template, "key", typeof(Person), model);
+string result = Engine.Razor.RunCompile(template, "key", typeof(Person), model);
 ```
 
 Which should result in:
 
 ```markup
-	<div>Hello Matt</div>
+<div>Hello Matt</div>
 ```
 
 The type always needs to be given explicitly, this way you can decide if you want to use a base class or `dynamic` (`null`)
@@ -29,10 +29,10 @@ RazorEngine supports anonymous types (those declared as `var` with no identifier
 The set of statements to use an anonymous model, is exactly the same as a statically type model (as seen above):
 
 ```csharp
-    string template = "<div>Hello @Model.Name</div>";
-    var model = new { Name = "Matt" };
+string template = "<div>Hello @Model.Name</div>";
+var model = new { Name = "Matt" };
 
-    string result = Engine.Razor.RunCompile(template, "key", null, model);
+string result = Engine.Razor.RunCompile(template, "key", null, model);
 ```
 
 Because the generated anonymous type is internal so RazorEngine needs to use some tricks to make this work. 
@@ -95,40 +95,40 @@ You are free to provide your own base-class implementations however we recommend
 One common feature request is to provide the `@Html.Raw()` (or any other not-Razor specific) syntax, but it is very easy to run that on your own:
 
 ```csharp
-    public class MyHtmlHelper
+public class MyHtmlHelper
+{
+    public IEncodedString Raw(string rawString)
     {
-        public IEncodedString Raw(string rawString)
-        {
-            return new RawString(rawString);
-        }
+        return new RawString(rawString);
+    }
+}
+
+public abstract class HtmlSupportTemplateBase<T> : TemplateBase<T>
+{
+    public MyClassImplementingTemplateBase()
+    {
+        Html = new MyHtmlHelper();
     }
 
-    public abstract class HtmlSupportTemplateBase<T> : TemplateBase<T>
-    {
-        public MyClassImplementingTemplateBase()
-        {
-            Html = new MyHtmlHelper();
-        }
-
-        public MyHtmlHelper Html { get; set; }
-    }
+    public MyHtmlHelper Html { get; set; }
+}
 ```
 
 And then you can use it like:
 
 ```csharp
-	var config = new TemplateServiceConfiguration();
-	// You can use the @inherits directive instead (this is the fallback if no @inherits is found).
-    config.BaseTemplateType = typeof(HtmlSupportTemplateBase<>);
-    using (var service = RazorEngineService.Create(config))
-    {
-        string template = "@Html.Raw(Model.Data)";
-        var model = new { Data = "My raw double quotes appears here \"hello!\"" };
+var config = new TemplateServiceConfiguration();
+// You can use the @inherits directive instead (this is the fallback if no @inherits is found).
+config.BaseTemplateType = typeof(HtmlSupportTemplateBase<>);
+using (var service = RazorEngineService.Create(config))
+{
+    string template = "@Html.Raw(Model.Data)";
+    var model = new { Data = "My raw double quotes appears here \"hello!\"" };
 
-        string result = service.RunCompile(template, "htmlRawTemplate", null, model);
-        Console.WriteLine("Template: {0}", template);
-        Console.WriteLine("Result: {0}", result);
-    }
+    string result = service.RunCompile(template, "htmlRawTemplate", null, model);
+    Console.WriteLine("Template: {0}", template);
+    Console.WriteLine("Result: {0}", result);
+}
 ```
 
 ## Resolving and Caching Templates
