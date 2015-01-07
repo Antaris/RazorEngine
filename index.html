@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: c2d5fd190552e6a2a101c4fba05eb980288a4a21 -->
+<!-- GENERATED FROM COMMIT: 2b91fa84550e6befceabb7e024fa0bea440e951a -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
 
 <p>Documentation also available on <a href="http://antaris.github.io/RazorEngine/.">http://antaris.github.io/RazorEngine/.</a></p>
@@ -59,10 +59,12 @@
 
 <table class="pre"><tr><td class="lines"><pre class="fssnip">
 <span class="l">1: </span>
+<span class="l">2: </span>
 </pre>
 </td>
 <td class="snippet"><pre class="fssnip">
-<span class="i">Install</span><span class="o">-</span><span class="i">Package</span> <span class="i">RazorEngine</span></pre>
+<span class="i">Install</span><span class="o">-</span><span class="i">Package</span> <span class="i">RazorEngine</span>
+</pre>
 </td>
 </tr>
 </table>
@@ -72,18 +74,21 @@ All you need to do is use the static <code>Engine</code> class (the <code>Engine
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
 var result =
-    Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });</code></pre>
+    Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
+</code></pre>
 
 <p>The <code>"templateKey"</code> must be unique and after running the above example you can re-run the cached template with this key.</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">var result =
-    Engine.Razor.Run(&quot;templateKey&quot;, null, new { Name = &quot;Max&quot; });</code></pre>
+    Engine.Razor.Run(&quot;templateKey&quot;, null, new { Name = &quot;Max&quot; });
+</code></pre>
 
 <p>The null parameter is the <code>modelType</code> and <code>null</code> in this case means we use <code>dynamic</code> as the type of the model.
 You can use a static model as well by providing a type object.</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">var result =
-    Engine.Razor.RunCompile(&quot;templateKey&quot;, typeof(Person), new Person { Name = &quot;Max&quot; });</code></pre>
+    Engine.Razor.RunCompile(&quot;templateKey&quot;, typeof(Person), new Person { Name = &quot;Max&quot; });
+</code></pre>
 
 <p>Note that we now re-compile the model with a different type. 
 When you do not run the same template a lot of times (like several 1000 times), compiling uses the most time.
@@ -100,11 +105,13 @@ on every call to prevent unnecessary re-compilations because of type mismatches 
 <pre class="line-numbers language-csharp"><code class="language-csharp">var config = new TemplateServiceConfiguration();
 // .. configure your instance
 
-var service = RazorEngineService.Create(config);</code></pre>
+var service = RazorEngineService.Create(config);
+</code></pre>
 
 <p>If you want to use the static <code>Engine</code> class with this new configuration:</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">Engine.Razor = service;</code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Engine.Razor = service;
+</code></pre>
 
 <h3><a name="General-Configuration" class="anchor" href="#General-Configuration">General Configuration</a></h3>
 
@@ -114,13 +121,15 @@ which is better suited for templates that generate things like javascript, php, 
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">config.Language = Language.VisualBasic; // VB.NET as template language.
 config.EncodedStringFactory = new RawStringFactory(); // Raw string encoding.
-config.EncodedStringFactory = new HtmlEncodedStringFactory(); // Html encoding.</code></pre>
+config.EncodedStringFactory = new HtmlEncodedStringFactory(); // Html encoding.
+</code></pre>
 
 <h3><a name="Debugging" class="anchor" href="#Debugging">Debugging</a></h3>
 
 <p>One thing you might want to enable is the debugging feature:</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">config.Debug = true;</code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp">config.Debug = true;
+</code></pre>
 
 <p>When <code>Debug</code> is true you can straight up debug into the generated code. 
 RazorEngine also supports debugging directly into the template files (normally <code>.cshtml</code> files).
@@ -130,7 +139,8 @@ To provide RazorEngine with the necessary information you need to tell where the
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
 string templateFile = &quot;C:/mytemplate.cshtml&quot;
 var result =
-    Engine.Razor.RunCompile(new LoadedTemplateSource(template, templateFile), &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });</code></pre>
+    Engine.Razor.RunCompile(new LoadedTemplateSource(template, templateFile), &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
+</code></pre>
 
 <p>This time when debugging the template you will jump right into the template file.</p>
 
@@ -167,7 +177,8 @@ public class MyTemplateManager : ITemplateManager
         // a TemplateSource will no longer work (they are not really needed anyway).
         throw new NotImplementedException(&quot;dynamic templates are not supported!&quot;);
     }
-}</code></pre>
+}
+</code></pre>
 
 <h3><a name="Set-a-reference-resolver" class="anchor" href="#Set-a-reference-resolver">Set a reference resolver</a></h3>
 
@@ -192,13 +203,15 @@ class MyIReferenceResolver : IReferenceResolver {
             CompilerReference.From(File.OpenRead(assembly)), // stream (roslyn only)
         };
     }
-}</code></pre>
+}
+</code></pre>
 
 <p>It could be usefull to get running on mono to just manually return all the assemblies you need.
 The default is to use the <code>UseCurrentAssembliesReferenceResolver</code> class, which always returns all currently loaded assemblies.
 You can get and modify this list (and return it in your own implementation if you wish):</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">var loadedList = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null)</code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp">var loadedList = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null)
+</code></pre>
 
 <h2><a name="More" class="anchor" href="#More">More</a></h2>
 

@@ -49,11 +49,13 @@ To get started with template using RazorEngine, you can simply use the static <c
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
 var model = new Person { Name = &quot;Matt&quot; };
 
-string result = Engine.Razor.RunCompile(template, &quot;key&quot;, typeof(Person), model);</code></pre>
+string result = Engine.Razor.RunCompile(template, &quot;key&quot;, typeof(Person), model);
+</code></pre>
 
 <p>Which should result in:</p>
 
-<pre class="line-numbers language-markup"><code class="language-markup">&lt;div&gt;Hello Matt&lt;/div&gt;</code></pre>
+<pre class="line-numbers language-markup"><code class="language-markup">&lt;div&gt;Hello Matt&lt;/div&gt;
+</code></pre>
 
 <p>The type always needs to be given explicitly, this way you can decide if you want to use a base class or <code>dynamic</code> (<code>null</code>)
 instead of <code>model.GetType()</code>.</p>
@@ -66,7 +68,8 @@ The set of statements to use an anonymous model, is exactly the same as a static
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;&lt;div&gt;Hello @Model.Name&lt;/div&gt;&quot;;
 var model = new { Name = &quot;Matt&quot; };
 
-string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, model);</code></pre>
+string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, model);
+</code></pre>
 
 <p>Because the generated anonymous type is internal so RazorEngine needs to use some tricks to make this work. 
 This is also the reason you can't use <code>model.GetType()</code> in this situation.
@@ -88,7 +91,8 @@ All you need to do is to use <code>null</code> for the <code>modelType</code> pa
 dynamic model = new ExpandoObject();
 model.Name = &quot;Matt&quot;;
 
-string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, (object)model);</code></pre>
+string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, (object)model);
+</code></pre>
 
 <blockquote>
   <p>Note: You can run into problems when not casting the model to object.</p>
@@ -111,7 +115,7 @@ string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, (object
 <li><p><code>@Include("templateName", model = null, modeType = null)</code> to include another template.</p></li>
 <li><p>Accessing the ViewBag:</p>
 <pre class="line-numbers language-markup"><code class="language-markup">&lt;h1&gt;@ViewBag.Title&lt;/h1&gt;</code></pre></li>
-<li><p>Sections (<code>@DefineSection</code>, <code>@RenderSection</code> and <code>@IsSectionDefined</code>)</p></li>
+<li>Sections (<code>@DefineSection</code>, <code>@RenderSection</code> and <code>@IsSectionDefined</code>)</li>
 </ul>
 
 <h2><a name="Extending-the-template-Syntax" class="anchor" href="#Extending-the-template-Syntax">Extending the template Syntax.</a></h2>
@@ -138,7 +142,8 @@ public abstract class HtmlSupportTemplateBase&lt;T&gt; : TemplateBase&lt;T&gt;
     }
 
     public MyHtmlHelper Html { get; set; }
-}</code></pre>
+}
+</code></pre>
 
 <p>And then you can use it like:</p>
 
@@ -153,7 +158,8 @@ using (var service = RazorEngineService.Create(config))
     string result = service.RunCompile(template, &quot;htmlRawTemplate&quot;, null, model);
     Console.WriteLine(&quot;Template: {0}&quot;, template);
     Console.WriteLine(&quot;Result: {0}&quot;, result);
-}</code></pre>
+}
+</code></pre>
 
 <h2><a name="Resolving-and-Caching-Templates" class="anchor" href="#Resolving-and-Caching-Templates">Resolving and Caching Templates</a></h2>
 

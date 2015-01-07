@@ -43,10 +43,12 @@ The first thing you want to do is install the additional package:</p>
 
 <table class="pre"><tr><td class="lines"><pre class="fssnip">
 <span class="l">1: </span>
+<span class="l">2: </span>
 </pre>
 </td>
 <td class="snippet"><pre class="fssnip">
-<span class="i">Install</span><span class="o">-</span><span class="i">Package</span> <span class="i">RazorEngine</span><span class="o">.</span><span class="i">Roslyn</span></pre>
+<span class="i">Install</span><span class="o">-</span><span class="i">Package</span> <span class="i">RazorEngine</span><span class="o">.</span><span class="i">Roslyn</span>
+</pre>
 </td>
 </tr>
 </table>
@@ -57,7 +59,8 @@ The first thing you want to do is install the additional package:</p>
 
 <p>To activate roslyn all you need to do is set the <code>CompilerServiceFactory</code> property in the configuration:</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">config.CompilerServiceFactory = new RazorEngine.Roslyn.RoslynCompilerServiceFactory();</code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp">config.CompilerServiceFactory = new RazorEngine.Roslyn.RoslynCompilerServiceFactory();
+</code></pre>
 
 <h2><a name="Known-Limitation-Bugs" class="anchor" href="#Known-Limitation-Bugs">Known Limitation/Bugs</a></h2>
 

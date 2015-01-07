@@ -101,15 +101,19 @@ For example to precompile a layout you would use the <code>IRazorEngineService.G
 <code>ITemplateKey</code> instance and then use this instance to call the <code>Compile</code> method.</p>
 </blockquote></li>
 </ul></li>
+</ul>
+
+<ul>
 <li><p>There are more extension methods  (for <code>Compile</code> and <code>RunCompile</code>) which take an additional <code>ITemplateSource</code> parameter. 
 Those methods just call <code>IRazorEngineService.AddTemplate</code> beforehand.</p>
 <ul>
-<li><p>for every (extension) method taking a <code>ITemplateSource</code> parameter there is another extension method which takes a simple <code>string</code>
-(the source code of the template). Those will simply call the <code>ITemplateSource</code> overload with <code>new LoadedTemplateSource(templateSource)</code>.</p>
-<blockquote>
-  <p>To improve debugging you should use <code>new LoadedTemplateSource(templateSource, templateFile)</code> instead (see the debugging section in the Quickstart tutorial).</p>
-</blockquote></li>
+<li>for every (extension) method taking a <code>ITemplateSource</code> parameter there is another extension method which takes a simple <code>string</code>
+(the source code of the template). Those will simply call the <code>ITemplateSource</code> overload with <code>new LoadedTemplateSource(templateSource)</code>.
+> To improve debugging you should use <code>new LoadedTemplateSource(templateSource, templateFile)</code> instead (see the debugging section in the Quickstart tutorial).</li>
 </ul></li>
+</ul>
+
+<ul>
 <li><p><code>AddTemplate</code> also has the above extension methods (to specify <code>ITemplateKey</code> or <code>ITemplateSource</code> via <code>string</code>).</p></li>
 <li><p><code>modelType</code> now has to be specified explicitly on all methods. <code>null</code> means we compile the model with <code>dynamic</code> if applicable.</p>
 <blockquote>
@@ -144,7 +148,8 @@ But they could block you in the long run when you want a <code>ITemplateManager<
 
 <p>For example</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">var result = Razor.Parse(razorTemplate, model, cache_name)</code></pre>
+<pre class="line-numbers language-csharp"><code class="language-csharp">var result = Razor.Parse(razorTemplate, model, cache_name)
+</code></pre>
 
 <p>is now either (when the modeltype is known or you want to precompile on startup)</p>
 
@@ -154,7 +159,8 @@ Engine.Razor.AddTemplate(cache_name, razorTemplate)
 Engine.Razor.Compile(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/)
 
 // instead of the Razor.Parse call
-var result = Engine.Razor.Run(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/, model)</code></pre>
+var result = Engine.Razor.Run(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/, model)
+</code></pre>
 
 <p>or (when you want lazy compilation, like <code>Parse</code>)</p>
 
@@ -162,14 +168,16 @@ var result = Engine.Razor.Run(cache_name, typeof(MyModel) /* or model.GetType() 
 Engine.Razor.AddTemplate(cache_name, razorTemplate)
 
 // instead of the Razor.Parse call
-var result = Engine.Razor.RunCompile(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/, model)</code></pre>
+var result = Engine.Razor.RunCompile(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/, model)
+</code></pre>
 
 <p>The semantic equivalent one-liner would be (only to be used to get started with <code>RazorEngine</code> quickly):</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">// This will just call AddTemplate for you (every time), note that the ITemplateManager has to support AddTemplate
 // and it has to handle multiple calls to AddTemplate gracefully to make this work.
 // The default implementation will throw an exception when you use the same cache_name for different templates.
-var result = Engine.Razor.RunCompile(razorTemplate, cache_name, model.GetType() /* typeof(MyModel) or or null for &#39;dynamic&#39;*/, model)</code></pre>
+var result = Engine.Razor.RunCompile(razorTemplate, cache_name, model.GetType() /* typeof(MyModel) or or null for &#39;dynamic&#39;*/, model)
+</code></pre>
 
 <h3><a name="Mono-support" class="anchor" href="#Mono-support">Mono support</a></h3>
 

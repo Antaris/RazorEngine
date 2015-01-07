@@ -65,7 +65,8 @@ or use the Func<AppDomain> overloads of <code>IsolatedRazorEngineService.Create<
     adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
     AppDomain newDomain = AppDomain.CreateDomain(&quot;Sandbox&quot;, null, adSetup, permSet, razorEngineAssembly, razorAssembly);
     return newDomain;
-}</code></pre>
+}
+</code></pre>
 
 <p>You can use the above method like this to create an AppDomain with partial trust (internet security zone):</p>
 
@@ -87,7 +88,8 @@ File.WriteAllText(&quot;&quot;$file$&quot;&quot;, &quot;&quot;BAD DATA&quot;&quo
 
         Assert.IsFalse(File.Exists(file));
     }
-}</code></pre>
+}
+</code></pre>
 
 <p>As you can see this template will throw a <code>SecurityException</code> as there is no way for it
 to write into a file of the local harddrive.</p>
@@ -170,6 +172,7 @@ You can even call methods with serializable parameters (return type must not be 
 <span class="l">46: </span>
 <span class="l">47: </span>
 <span class="l">48: </span>
+<span class="l">49: </span>
 </pre>
 </td>
 <td class="snippet"><pre class="fssnip">
@@ -220,7 +223,8 @@ You can even call methods with serializable parameters (return type must not be 
             <span class="i">EncodedStringFactory</span> <span class="o">=</span> <span class="i">RazorEngineService</span><span class="o">.</span><span class="i">GetEncodedStringFactory</span>(<span class="i">encoding</span>)
         };
     }
-}</pre>
+}
+</pre>
 </td>
 </tr>
 </table>

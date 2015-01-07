@@ -45,7 +45,8 @@
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;@Raw(Model.Data)&quot;;
 var model = new { Data = &quot;My raw double quotes appears here \&quot;hello!\&quot;&quot; };
 
-string result = Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, model);</code></pre>
+string result = Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, model);
+</code></pre>
 
 <p>Which should result in:</p>
 
