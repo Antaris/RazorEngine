@@ -7,7 +7,7 @@ This will immediately switch the compilation and execution to another AppDomain.
 However this new AppDomain still has no permission restrictions so what you want to do is provide either your own IAppDomainFactory 
 or use the Func<AppDomain> overloads of `IsolatedRazorEngineService.Create`:
 
-    [lang=csharp]
+```csharp
     public static AppDomain SandboxCreator()
     {
         Evidence ev = new Evidence();
@@ -30,10 +30,11 @@ or use the Func<AppDomain> overloads of `IsolatedRazorEngineService.Create`:
         AppDomain newDomain = AppDomain.CreateDomain("Sandbox", null, adSetup, permSet, razorEngineAssembly, razorAssembly);
         return newDomain;
     }
+```
 
 You can use the above method like this to create an AppDomain with partial trust (internet security zone):
 
-    [lang=csharp]
+```csharp
     public void IsolatedRazorEngineService_BadTemplate_InSandbox()
     {
         using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
@@ -53,6 +54,7 @@ You can use the above method like this to create an AppDomain with partial trust
             Assert.IsFalse(File.Exists(file));
         }
     }
+```
 
 As you can see this template will throw a `SecurityException` as there is no way for it
 to write into a file of the local harddrive.
@@ -85,53 +87,55 @@ You can even call methods with serializable parameters (return type must not be 
 
 RazorEngine provides an `IConfigCreator` interface to configure an `IsolatedRazorEngineService`.
 
+```csharp
+/// <summary>
+/// A helper interface to get a custom configuration into a new AppDomain.
+/// Classes inheriting this interface should be Serializable 
+/// (and not inherit from MarshalByRefObject).
+/// </summary>
+public interface IConfigCreator
+{
     /// <summary>
-    /// A helper interface to get a custom configuration into a new AppDomain.
-    /// Classes inheriting this interface should be Serializable 
-    /// (and not inherit from MarshalByRefObject).
+    /// Create a new configuration instance.
+    /// This method should be executed in the new AppDomain.
     /// </summary>
-    public interface IConfigCreator
+    /// <returns></returns>
+    ITemplateServiceConfiguration CreateConfiguration();
+}
+
+/// <summary>
+/// A simple <see cref="IConfigCreator"/> implementation to configure the <see cref="Language"/> and the <see cref="Encoding"/>.
+/// </summary>
+[Serializable]
+public class LanguageEncodingConfigCreator : IConfigCreator
+{
+    private Language language;
+    private Encoding encoding;
+
+    /// <summary>
+    /// Initializes a new <see cref="LanguageEncodingConfigCreator"/> instance
+    /// </summary>
+    /// <param name="language"></param>
+    /// <param name="encoding"></param>
+    public LanguageEncodingConfigCreator(Language language = Language.CSharp, Encoding encoding = Encoding.Html)
     {
-        /// <summary>
-        /// Create a new configuration instance.
-        /// This method should be executed in the new AppDomain.
-        /// </summary>
-        /// <returns></returns>
-        ITemplateServiceConfiguration CreateConfiguration();
+        this.language = language;
+        this.encoding = encoding;
     }
 
     /// <summary>
-    /// A simple <see cref="IConfigCreator"/> implementation to configure the <see cref="Language"/> and the <see cref="Encoding"/>.
+    /// Create the configuration.
     /// </summary>
-    [Serializable]
-    public class LanguageEncodingConfigCreator : IConfigCreator
+    /// <returns></returns>
+    public ITemplateServiceConfiguration CreateConfiguration()
     {
-        private Language language;
-        private Encoding encoding;
-
-        /// <summary>
-        /// Initializes a new <see cref="LanguageEncodingConfigCreator"/> instance
-        /// </summary>
-        /// <param name="language"></param>
-        /// <param name="encoding"></param>
-        public LanguageEncodingConfigCreator(Language language = Language.CSharp, Encoding encoding = Encoding.Html)
+        return new TemplateServiceConfiguration()
         {
-            this.language = language;
-            this.encoding = encoding;
-        }
-
-        /// <summary>
-        /// Create the configuration.
-        /// </summary>
-        /// <returns></returns>
-        public ITemplateServiceConfiguration CreateConfiguration()
-        {
-            return new TemplateServiceConfiguration()
-            {
-                Language = language,
-                EncodedStringFactory = RazorEngineService.GetEncodedStringFactory(encoding)
-            };
-        }
+            Language = language,
+            EncodedStringFactory = RazorEngineService.GetEncodedStringFactory(encoding)
+        };
     }
+}
+```
 
 The only thing to mention here is that the implementation must me serializable but not inherit from `MarshalByRefObject`.

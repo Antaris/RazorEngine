@@ -4,7 +4,7 @@ It is often convenient to have your razor templates as file resources in your pr
 
 Here is an example template file where `MyCustomizedTemplate<T>` derives from RazorEngine's `TemplateBase<T>`:
 
-    [lang=markup]
+```markup
     @using MyProject.Templates
     @using MyProject.Templates.Models
     @inherits MyCustomizedTemplate<InvoiceModel>
@@ -17,11 +17,11 @@ Here is an example template file where `MyCustomizedTemplate<T>` derives from Ra
         }
     </ul>
     <h3>Thanks for shopping at BuyMore</h3>
-
+```
 
 The custom class would look something like this:
 
-    [lang=csharp]
+```csharp
 	public class MyCustomizedTemplate<T> : TemplateBase<T>
 	{
 		public T Model { get; set; }
@@ -30,3 +30,4 @@ The custom class would look something like this:
 		{
 		}
 	}
+```
