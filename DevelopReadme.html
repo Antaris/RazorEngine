@@ -161,17 +161,8 @@ If you want to build another target with Visual Studio / Monodevelop do the foll
 <li>Close the solution</li>
 <li><p>Open <code>src/buildConfig.targets</code> and change the <code>CustomBuildName</code> entry (near the top) to <code>razor4</code>, <code>net45</code> or <code>net40</code>.
 The line should then look like this:</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l">1: </span>
-<span class="l">2: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-[<span class="i">lang</span><span class="o">=</span><span class="i">markup</span>]
-<span class="o">&lt;</span><span class="i">CustomBuildName</span> <span class="i">Condition</span><span class="o">=</span><span class="s">&quot;</span><span class="s"> </span><span class="s">&#39;</span><span class="s">$</span><span class="s">(</span><span class="s">CustomBuildName</span><span class="s">)</span><span class="s">&#39;</span><span class="s"> </span><span class="s">=</span><span class="s">=</span><span class="s"> </span><span class="s">&#39;</span><span class="s">&#39;</span><span class="s"> </span><span class="s">&quot;</span><span class="o">&gt;</span><span class="i">net45</span><span class="o">&lt;/</span><span class="i">CustomBuildName</span><span class="o">&gt;</span> </pre>
-</td>
-</tr>
-</table></li>
+<pre class="line-numbers language-markup"><code class="language-markup">&lt;CustomBuildName Condition=&quot; &#39;$(CustomBuildName)&#39; == &#39;&#39; &quot;&gt;net45&lt;/CustomBuildName&gt; 
+</code></pre></li>
 <li><p>Save the <code>src/buildConfig.targets</code> file and re-open the solution.</p></li>
 </ul>
 
@@ -201,45 +192,22 @@ please only make breaking changes when the change was never included in a releas
 <li>Build RazorEngine (./build All, it doesn't matter if generating the documentation fails!)</li>
 <li>do <code>build NuGet_single</code> to generate the nuget packages</li>
 <li><p>Edit <code>C:/Projects/FSharp.Formatting/paket.lock</code> so that it loads the RazorEngine nuget package from disk:</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-[<span class="i">lang</span><span class="o">=</span><span class="i">markup</span>]
-<span class="i">NUGET</span>
-  <span class="i">remote</span><span class="o">:</span> <span class="i">http</span><span class="o">:</span><span class="c">//nuget.org/api/v2</span>
-  <span class="i">specs</span><span class="o">:</span>
-    <span class="i">CommandLineParser</span> (<span class="n">1.9</span><span class="o">.</span><span class="n">71</span>)
-    <span class="i">FAKE</span> (<span class="n">3.12</span><span class="o">.</span><span class="n">2</span>)
-    <span class="i">FSharp</span><span class="o">.</span><span class="i">Compiler</span><span class="o">.</span><span class="i">Service</span> (<span class="n">0.0</span><span class="o">.</span><span class="n">67</span>)
-    <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">Microsoft</span><span class="o">.</span><span class="i">AspNet</span><span class="o">.</span><span class="i">Razor</span> (<span class="n">2.0</span><span class="o">.</span><span class="n">30506.0</span>)
-    <span class="i">NuGet</span><span class="o">.</span><span class="i">CommandLine</span> (<span class="n">2.8</span><span class="o">.</span><span class="n">3</span>)
-    <span class="i">NUnit</span> (<span class="n">2.6</span><span class="o">.</span><span class="n">4</span>)
-    <span class="i">NUnit</span><span class="o">.</span><span class="i">Runners</span> (<span class="n">2.6</span><span class="o">.</span><span class="n">4</span>)
-  <span class="i">remote</span><span class="o">:</span> <span class="i">C</span><span class="o">:</span>
-  <span class="i">specs</span><span class="o">:</span>
-    <span class="i">RazorEngine</span> (<span class="n">3.5</span><span class="o">.</span><span class="n">0</span><span class="o">-</span><span class="i">beta1</span>)
-      <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="i">Microsoft</span><span class="o">.</span><span class="i">AspNet</span><span class="o">.</span><span class="i">Razor</span> (<span class="o">&gt;</span><span class="o">=</span> <span class="n">3.2</span><span class="o">.</span><span class="n">2.0</span>) <span class="o">-</span> <span class="i">net45</span>
-      <span onmouseout="hideTip(event, 'fs1', 3)" onmouseover="showTip(event, 'fs1', 3)" class="i">Microsoft</span><span class="o">.</span><span class="i">AspNet</span><span class="o">.</span><span class="i">Razor</span> (<span class="n">2.0</span><span class="o">.</span><span class="n">30506.0</span>) <span class="o">-</span> <span class="i">net40</span></pre>
-</td>
-</tr>
-</table></li>
+<pre class="line-numbers language-markup"><code class="language-markup">NUGET
+  remote: http://nuget.org/api/v2
+  specs:
+    CommandLineParser (1.9.71)
+    FAKE (3.12.2)
+    FSharp.Compiler.Service (0.0.67)
+    Microsoft.AspNet.Razor (2.0.30506.0)
+    NuGet.CommandLine (2.8.3)
+    NUnit (2.6.4)
+    NUnit.Runners (2.6.4)
+  remote: C:\Projects\RazorEngine\release\nuget
+  specs:
+    RazorEngine (3.5.0-beta1)
+      Microsoft.AspNet.Razor (&gt;= 3.2.2.0) - net45
+      Microsoft.AspNet.Razor (2.0.30506.0) - net40
+</code></pre></li>
 <li>Delete <code>C:/Projects/FSharp.Formatting/packages/RazorEngine</code> if it exists.</li>
 <li>Build FSharp.Formatting.</li>
 <li>Your FSharp.Formatting build can be found in C:/Projects/FSharp.Formatting/bin</li>
@@ -251,7 +219,6 @@ please only make breaking changes when the change was never included in a releas
 <a href="https://github.com/matthid/FSharp.Compiler.Service">https://github.com/matthid/FSharp.Compiler.Service</a> (<code>master</code> branch).
 The changes are not breaking so using the official version will work as well, however the docs are incomplete in that case!</p>
 
-<div class="tip" id="fs1">namespace Microsoft</div>
 
         </div>
         <div class="span3">

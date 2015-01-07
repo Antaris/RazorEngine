@@ -166,7 +166,7 @@ var result = Engine.Razor.Run(cache_name, typeof(MyModel) /* or model.GetType() 
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">// Once at startup (not required when using an ITemplateManager which knows how to resolve cache_name)
 Engine.Razor.AddTemplate(cache_name, razorTemplate)
-
+    
 // instead of the Razor.Parse call
 var result = Engine.Razor.RunCompile(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/, model)
 </code></pre>

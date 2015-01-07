@@ -109,12 +109,14 @@ string result = Engine.Razor.RunCompile(template, &quot;key&quot;, null, (object
 <li><code>@inherits HtmlSupportTemplateBase&lt;ModelType&gt;</code>
 (see below)</li>
 <li><p>Set a layout (and <code>@RenderBody()</code> within the layout template):</p>
-<pre class="line-numbers language-markup"><code class="language-markup">@{
+<pre class="line-numbers language-csharp"><code class="language-csharp">@{
     Layout = &quot;layout.cshtml&quot;;
-}</code></pre></li>
+}
+</code></pre></li>
 <li><p><code>@Include("templateName", model = null, modeType = null)</code> to include another template.</p></li>
 <li><p>Accessing the ViewBag:</p>
-<pre class="line-numbers language-markup"><code class="language-markup">&lt;h1&gt;@ViewBag.Title&lt;/h1&gt;</code></pre></li>
+<pre class="line-numbers language-markup"><code class="language-markup">&lt;h1&gt;@ViewBag.Title&lt;/h1&gt;
+</code></pre></li>
 <li>Sections (<code>@DefineSection</code>, <code>@RenderSection</code> and <code>@IsSectionDefined</code>)</li>
 </ul>
 
