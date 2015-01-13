@@ -66,7 +66,9 @@ The new `IRazorEngineService` interface, which replaces the old `ITemplateServic
   Those methods just call `IRazorEngineService.AddTemplate` beforehand.
 
   - for every (extension) method taking a `ITemplateSource` parameter there is another extension method which takes a simple `string`
-    (the source code of the template). Those will simply call the `ITemplateSource` overload with `new LoadedTemplateSource(templateSource)`.
+    (the source code of the template). 
+	Those will simply call the `ITemplateSource` overload with `new LoadedTemplateSource(templateSource)`.
+
 	> To improve debugging you should use `new LoadedTemplateSource(templateSource, templateFile)` instead (see the debugging section in the Quickstart tutorial).
 
 
