@@ -270,18 +270,50 @@ MyTarget "VersionBump" (fun _ ->
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
             printfn "File %s changed (%A)" file status
+
         printf "version bump commit? (y,n): "
         let line = System.Console.ReadLine()
         if line = "y" then
             StageAll ""
             Commit "" (sprintf "Bump version to %s" release.NugetVersion)
         
-            printf "create tag? (y,n): "
+            printf "create tags? (y,n): "
             let line = System.Console.ReadLine()
             if line = "y" then
-                Branches.tag "" release.NugetVersion
-                Branches.pushTag "" "origin" release.NugetVersion
-            
+                let roslyn_tag = (sprintf "roslyn-%s" version_roslyn_nuget)
+                let roslyn_razor4_tag = (sprintf "roslyn-%s" version_roslyn_razor4_nuget)
+                let doSafe msg f =
+                    try
+                        f()
+                    with exn -> 
+                        trace (sprintf "Error (%s): %A" msg exn)
+
+                doSafe "delete_tag version_nuget" 
+                    (fun () -> Branches.deleteTag "" version_nuget)
+                doSafe "delete_tag version_razor4_nuget" 
+                    (fun () -> Branches.deleteTag "" version_razor4_nuget)
+                doSafe "delete_tag roslyn_tag" 
+                    (fun () -> Branches.deleteTag "" roslyn_tag)
+                doSafe "delete_tag roslyn_razor4_tag" 
+                    (fun () -> Branches.deleteTag "" roslyn_razor4_tag)
+                
+                doSafe "create_tag version_nuget" 
+                    (fun () -> Branches.tag "" version_nuget)
+                doSafe "create_tag version_razor4_nuget" 
+                    (fun () -> Branches.tag "" version_razor4_nuget)
+                doSafe "create_tag roslyn_tag" 
+                    (fun () -> Branches.tag "" roslyn_tag)
+                doSafe "create_tag roslyn_razor4_tag" 
+                    (fun () -> Branches.tag "" roslyn_razor4_tag)
+
+                printf "push tags? (y,n): "
+                let line = System.Console.ReadLine()
+                if line = "y" then
+                    Branches.pushTag "" "origin" version_nuget
+                    Branches.pushTag "" "origin" version_razor4_nuget
+                    Branches.pushTag "" "origin" roslyn_tag
+                    Branches.pushTag "" "origin" roslyn_razor4_tag
+
             printf "push branch? (y,n): "
             let line = System.Console.ReadLine()
             if line = "y" then
