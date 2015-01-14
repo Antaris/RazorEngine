@@ -40,6 +40,8 @@ Here are the biggest changes:
 
 The new `IRazorEngineService` interface, which replaces the old `ITemplateService` interface has a lot of extension methods which can be summarized:
 
+> You need to open the `RazorEngine.Templating` namespace to be able to use the extension methods.
+
 * `Parse` is now called `RunCompile`
 
 * The default methods (`Run`, `Compile` and `RunCompile`) have `ITemplateKey` and `TextWriter` parameters.
@@ -47,6 +49,7 @@ The new `IRazorEngineService` interface, which replaces the old `ITemplateServic
   - `TextWriter` parameters allow to stream the output into a `TextWriter`. 
     If you just want the output as `string` there is an extension method without the `TextWriter` parameter and a
 	`string` return type.
+
   - `ITemplateKey` specifies the key of the template. 
     The meaning of `ITemplateKey` depends on the concrete `ITemplateManager` implementation (see below).
 	The default implementation only uses the name (a simple `string`) of the template for resolving.
@@ -61,10 +64,11 @@ The new `IRazorEngineService` interface, which replaces the old `ITemplateServic
 	> For example to precompile a layout you would use the `IRazorEngineService.GetKey` method with a parameter of `ResolveType.Layout` to get the 
 	> `ITemplateKey` instance and then use this instance to call the `Compile` method.
 
-
-* There are more extension methods  (for `Compile` and `RunCompile`) which take an additional `ITemplateSource` parameter. 
+* There are more extension methods (for `Compile` and `RunCompile`) which take an additional `ITemplateSource` parameter. 
   Those methods just call `IRazorEngineService.AddTemplate` beforehand.
-
+  
+  > You need to open the `RazorEngine.Templating` namespace to be able to use the extension methods.
+  
   - for every (extension) method taking a `ITemplateSource` parameter there is another extension method which takes a simple `string`
     (the source code of the template). 
 	Those will simply call the `ITemplateSource` overload with `new LoadedTemplateSource(templateSource)`.
@@ -75,12 +79,14 @@ The new `IRazorEngineService` interface, which replaces the old `ITemplateServic
 * `AddTemplate` also has the above extension methods (to specify `ITemplateKey` or `ITemplateSource` via `string`).
 
 * `modelType` now has to be specified explicitly on all methods. `null` means we compile the model with `dynamic` if applicable.
+  
   > In previous releases we tried to figure out the modelType from the given model. 
   > However sometimes you want to use a static instance but compile the template with dynamic (to prevent multiple compilations for example).
   > You can now do that by specifing `null`.
   > Another thing you can do now is specify a base type instead of the given instance type and then use the compiled template for multiple sub-type instances.
   
   The parameter will be ignored for compilation when the template has a `@Inherits` or a `@model` directive. 
+  
   > The parameter could be used by the caching layer, so make sure you use the same type instance every time to prevent re-compilations.
   > Caching is another reason why this parameter now always has to be specified.
 
