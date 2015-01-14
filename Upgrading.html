@@ -79,13 +79,17 @@ You can <em>kind of</em> revert to the old behavior by providing an <code>ICachi
 
 <p>The new <code>IRazorEngineService</code> interface, which replaces the old <code>ITemplateService</code> interface has a lot of extension methods which can be summarized:</p>
 
+<blockquote>
+  <p>You need to open the <code>RazorEngine.Templating</code> namespace to be able to use the extension methods.</p>
+</blockquote>
+
 <ul>
 <li><p><code>Parse</code> is now called <code>RunCompile</code></p></li>
 <li><p>The default methods (<code>Run</code>, <code>Compile</code> and <code>RunCompile</code>) have <code>ITemplateKey</code> and <code>TextWriter</code> parameters.</p>
 <ul>
-<li><code>TextWriter</code> parameters allow to stream the output into a <code>TextWriter</code>. 
+<li><p><code>TextWriter</code> parameters allow to stream the output into a <code>TextWriter</code>. 
 If you just want the output as <code>string</code> there is an extension method without the <code>TextWriter</code> parameter and a
-<code>string</code> return type.</li>
+<code>string</code> return type.</p></li>
 <li><p><code>ITemplateKey</code> specifies the key of the template. 
 The meaning of <code>ITemplateKey</code> depends on the concrete <code>ITemplateManager</code> implementation (see below).
 The default implementation only uses the name (a simple <code>string</code>) of the template for resolving.</p>
@@ -101,11 +105,11 @@ For example to precompile a layout you would use the <code>IRazorEngineService.G
 <code>ITemplateKey</code> instance and then use this instance to call the <code>Compile</code> method.</p>
 </blockquote></li>
 </ul></li>
-</ul>
-
-<ul>
-<li><p>There are more extension methods  (for <code>Compile</code> and <code>RunCompile</code>) which take an additional <code>ITemplateSource</code> parameter. 
+<li><p>There are more extension methods (for <code>Compile</code> and <code>RunCompile</code>) which take an additional <code>ITemplateSource</code> parameter. 
 Those methods just call <code>IRazorEngineService.AddTemplate</code> beforehand.</p>
+<blockquote>
+  <p>You need to open the <code>RazorEngine.Templating</code> namespace to be able to use the extension methods.</p>
+</blockquote>
 <ul>
 <li><p>for every (extension) method taking a <code>ITemplateSource</code> parameter there is another extension method which takes a simple <code>string</code>
 (the source code of the template).
@@ -120,7 +124,7 @@ Those will simply call the <code>ITemplateSource</code> overload with <code>new 
 <li><p><code>AddTemplate</code> also has the above extension methods (to specify <code>ITemplateKey</code> or <code>ITemplateSource</code> via <code>string</code>).</p></li>
 <li><p><code>modelType</code> now has to be specified explicitly on all methods. <code>null</code> means we compile the model with <code>dynamic</code> if applicable.</p>
 <blockquote>
-  <p>In previous releases we tried to figure out the modelType from the given model.
+  <p>In previous releases we tried to figure out the modelType from the given model. 
 However sometimes you want to use a static instance but compile the template with dynamic (to prevent multiple compilations for example).
 You can now do that by specifing <code>null</code>.
 Another thing you can do now is specify a base type instead of the given instance type and then use the compiled template for multiple sub-type instances.</p>
