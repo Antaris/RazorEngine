@@ -107,9 +107,12 @@ For example to precompile a layout you would use the <code>IRazorEngineService.G
 <li><p>There are more extension methods  (for <code>Compile</code> and <code>RunCompile</code>) which take an additional <code>ITemplateSource</code> parameter. 
 Those methods just call <code>IRazorEngineService.AddTemplate</code> beforehand.</p>
 <ul>
-<li>for every (extension) method taking a <code>ITemplateSource</code> parameter there is another extension method which takes a simple <code>string</code>
-(the source code of the template). Those will simply call the <code>ITemplateSource</code> overload with <code>new LoadedTemplateSource(templateSource)</code>.
-> To improve debugging you should use <code>new LoadedTemplateSource(templateSource, templateFile)</code> instead (see the debugging section in the Quickstart tutorial).</li>
+<li><p>for every (extension) method taking a <code>ITemplateSource</code> parameter there is another extension method which takes a simple <code>string</code>
+(the source code of the template).
+Those will simply call the <code>ITemplateSource</code> overload with <code>new LoadedTemplateSource(templateSource)</code>.</p>
+<blockquote>
+  <p>To improve debugging you should use <code>new LoadedTemplateSource(templateSource, templateFile)</code> instead (see the debugging section in the Quickstart tutorial).</p>
+</blockquote></li>
 </ul></li>
 </ul>
 
