@@ -66,7 +66,9 @@ The new `IRazorEngineService` interface, which replaces the old `ITemplateServic
   Those methods just call `IRazorEngineService.AddTemplate` beforehand.
 
   - for every (extension) method taking a `ITemplateSource` parameter there is another extension method which takes a simple `string`
-    (the source code of the template). Those will simply call the `ITemplateSource` overload with `new LoadedTemplateSource(templateSource)`.
+    (the source code of the template). 
+	Those will simply call the `ITemplateSource` overload with `new LoadedTemplateSource(templateSource)`.
+
 	> To improve debugging you should use `new LoadedTemplateSource(templateSource, templateFile)` instead (see the debugging section in the Quickstart tutorial).
 
 
@@ -102,36 +104,40 @@ But they could block you in the long run when you want a `ITemplateManager` impl
 
 For example
 
-    [lang=csharp]
-    var result = Razor.Parse(razorTemplate, model, cache_name)
+```csharp
+var result = Razor.Parse(razorTemplate, model, cache_name)
+```
 
 is now either (when the modeltype is known or you want to precompile on startup)
 
-    [lang=csharp]
-	// Once at startup (not required when using an ITemplateManager which knows how to resolve cache_name)
-	Engine.Razor.AddTemplate(cache_name, razorTemplate)
-	// On startup
-	Engine.Razor.Compile(cache_name, typeof(MyModel) /* or model.GetType() or null for 'dynamic'*/)
+```csharp
+// Once at startup (not required when using an ITemplateManager which knows how to resolve cache_name)
+Engine.Razor.AddTemplate(cache_name, razorTemplate)
+// On startup
+Engine.Razor.Compile(cache_name, typeof(MyModel) /* or model.GetType() or null for 'dynamic'*/)
 
-	// instead of the Razor.Parse call
-	var result = Engine.Razor.Run(cache_name, typeof(MyModel) /* or model.GetType() or null for 'dynamic'*/, model)
+// instead of the Razor.Parse call
+var result = Engine.Razor.Run(cache_name, typeof(MyModel) /* or model.GetType() or null for 'dynamic'*/, model)
+```
 
 or (when you want lazy compilation, like `Parse`)
 
-    [lang=csharp]
-	// Once at startup (not required when using an ITemplateManager which knows how to resolve cache_name)
-	Engine.Razor.AddTemplate(cache_name, razorTemplate)
+```csharp
+// Once at startup (not required when using an ITemplateManager which knows how to resolve cache_name)
+Engine.Razor.AddTemplate(cache_name, razorTemplate)
 	
-	// instead of the Razor.Parse call
-	var result = Engine.Razor.RunCompile(cache_name, typeof(MyModel) /* or model.GetType() or null for 'dynamic'*/, model)
+// instead of the Razor.Parse call
+var result = Engine.Razor.RunCompile(cache_name, typeof(MyModel) /* or model.GetType() or null for 'dynamic'*/, model)
+```
 
 The semantic equivalent one-liner would be (only to be used to get started with `RazorEngine` quickly):
 
-    [lang=csharp]
-	// This will just call AddTemplate for you (every time), note that the ITemplateManager has to support AddTemplate
-	// and it has to handle multiple calls to AddTemplate gracefully to make this work.
-	// The default implementation will throw an exception when you use the same cache_name for different templates.
-	var result = Engine.Razor.RunCompile(razorTemplate, cache_name, model.GetType() /* typeof(MyModel) or or null for 'dynamic'*/, model)
+```csharp
+// This will just call AddTemplate for you (every time), note that the ITemplateManager has to support AddTemplate
+// and it has to handle multiple calls to AddTemplate gracefully to make this work.
+// The default implementation will throw an exception when you use the same cache_name for different templates.
+var result = Engine.Razor.RunCompile(razorTemplate, cache_name, model.GetType() /* typeof(MyModel) or or null for 'dynamic'*/, model)
+```
 
 
 ### Mono support

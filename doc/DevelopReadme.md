@@ -139,9 +139,10 @@ If you want to build another target with Visual Studio / Monodevelop do the foll
  - Close the solution
  - Open `src/buildConfig.targets` and change the `CustomBuildName` entry (near the top) to `razor4`, `net45` or `net40`.
    The line should then look like this:
-
-        [lang=markup]
-        <CustomBuildName Condition=" '$(CustomBuildName)' == '' ">net45</CustomBuildName> 
+   
+   ```markup
+   <CustomBuildName Condition=" '$(CustomBuildName)' == '' ">net45</CustomBuildName> 
+   ```
 
  - Save the `src/buildConfig.targets` file and re-open the solution.
 
@@ -167,23 +168,24 @@ please only make breaking changes when the change was never included in a releas
  - Build RazorEngine (./build All, it doesn't matter if generating the documentation fails!)
  - do `build NuGet_single` to generate the nuget packages
  - Edit `C:/Projects/FSharp.Formatting/paket.lock` so that it loads the RazorEngine nuget package from disk:
-
-        [lang=markup]
-        NUGET
-          remote: http://nuget.org/api/v2
-          specs:
-            CommandLineParser (1.9.71)
-            FAKE (3.12.2)
-            FSharp.Compiler.Service (0.0.67)
-            Microsoft.AspNet.Razor (2.0.30506.0)
-            NuGet.CommandLine (2.8.3)
-            NUnit (2.6.4)
-            NUnit.Runners (2.6.4)
-          remote: C:\Projects\RazorEngine\release\nuget
-          specs:
-            RazorEngine (3.5.0-beta1)
-              Microsoft.AspNet.Razor (>= 3.2.2.0) - net45
-              Microsoft.AspNet.Razor (2.0.30506.0) - net40
+ 
+   ```markup
+   NUGET
+     remote: http://nuget.org/api/v2
+     specs:
+       CommandLineParser (1.9.71)
+       FAKE (3.12.2)
+       FSharp.Compiler.Service (0.0.67)
+       Microsoft.AspNet.Razor (2.0.30506.0)
+       NuGet.CommandLine (2.8.3)
+       NUnit (2.6.4)
+       NUnit.Runners (2.6.4)
+     remote: C:\Projects\RazorEngine\release\nuget
+     specs:
+       RazorEngine (3.5.0-beta1)
+         Microsoft.AspNet.Razor (>= 3.2.2.0) - net45
+         Microsoft.AspNet.Razor (2.0.30506.0) - net40
+   ```
 
  - Delete `C:/Projects/FSharp.Formatting/packages/RazorEngine` if it exists.
  - Build FSharp.Formatting.

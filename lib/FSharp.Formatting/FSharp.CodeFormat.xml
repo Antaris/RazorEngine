@@ -246,31 +246,31 @@
 <member name="">
 
 </member>
-<member name="M:FSharp.CodeFormat.CommentFilter.shrinkOmittedParts(Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}}}})">
+<member name="M:FSharp.CodeFormat.CommentFilter.shrinkOmittedParts(Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}}}})">
 <summary>
  Process the whole source file and shrink all blocks marked using
  special &apos;omit&apos; meta-comments (see the two functions above)
 </summary>
 </member>
-<member name="M:FSharp.CodeFormat.CommentFilter.shrinkLine(System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}}}})">
+<member name="M:FSharp.CodeFormat.CommentFilter.shrinkLine(System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}}}})">
 <summary>
  Find all code marked using the (*[omit:&lt;...&gt;]*) tags and replace it with 
  a special token (named &quot;OMIT....&quot; where &quot;....&quot; is a replacement string)
 </summary>
 </member>
-<member name="M:FSharp.CodeFormat.CommentFilter.shrinkOmittedCode(System.Text.StringBuilder,System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}}}})">
+<member name="M:FSharp.CodeFormat.CommentFilter.shrinkOmittedCode(System.Text.StringBuilder,System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}}}})">
 <summary>
  Continue reading shrinked code until we reach the end (*[/omit]*) tag
  (see the function below for more information and beginning of shrinking)
 </summary>
 </member>
-<member name="M:FSharp.CodeFormat.CommentFilter.mergeComments(Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}},Microsoft.FSharp.Core.FSharpOption{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}})">
+<member name="M:FSharp.CodeFormat.CommentFilter.mergeComments(Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}},Microsoft.FSharp.Core.FSharpOption{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}})">
 <summary>
  Preprocesses a line and merges all subsequent comments on a line 
  into a single long comment (so that we can parse it as snippet command)
 </summary>
 </member>
-<member name="M:FSharp.CodeFormat.CommentFilter.getSnippets(Microsoft.FSharp.Core.FSharpOption{System.Tuple{System.String,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}}}}}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}}}}}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.TokenInformation}}}},System.String[])">
+<member name="M:FSharp.CodeFormat.CommentFilter.getSnippets(Microsoft.FSharp.Core.FSharpOption{System.Tuple{System.String,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}}}}}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}}}}}},Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenInfo}}}},System.String[])">
 <summary>
  Finds special commands (comments) in the source code. If there are commands, then
  we only generate HTML for parts of source (snippets). This function returns a list
@@ -295,7 +295,7 @@
 <member name="">
 
 </member>
-<member name="M:FSharp.CodeFormat.Helpers.getTokenKind(Microsoft.FSharp.Compiler.SourceCodeServices.TokenColorKind)">
+<member name="M:FSharp.CodeFormat.Helpers.getTokenKind(Microsoft.FSharp.Compiler.SourceCodeServices.FSharpTokenColorKind)">
 <summary>
  Return the TokenKind corresponding to the specified F# compiler token
 </summary>
@@ -430,23 +430,23 @@
 <member name="T:FSharp.CodeFormat.Latex">
 
 </member>
-<member name="M:FSharp.CodeFormat.ToolTipReader.tryFormatTip(Microsoft.FSharp.Compiler.SourceCodeServices.ToolTipText)">
+<member name="M:FSharp.CodeFormat.ToolTipReader.tryFormatTip(Microsoft.FSharp.Compiler.SourceCodeServices.FSharpToolTipText)">
 <summary>
  Format a tool tip, but first make sure that there is actually 
  some text in the tip. Returns None if no information is available
 </summary>
 </member>
-<member name="M:FSharp.CodeFormat.ToolTipReader.formatTip(Microsoft.FSharp.Compiler.SourceCodeServices.ToolTipText)">
+<member name="M:FSharp.CodeFormat.ToolTipReader.formatTip(Microsoft.FSharp.Compiler.SourceCodeServices.FSharpToolTipText)">
 <summary>
  Format entire tool tip as a value of type ToolTipSpans      
 </summary>
 </member>
-<member name="M:FSharp.CodeFormat.ToolTipReader.formatElement(Microsoft.FSharp.Compiler.SourceCodeServices.ToolTipElement)">
+<member name="M:FSharp.CodeFormat.ToolTipReader.formatElement(Microsoft.FSharp.Compiler.SourceCodeServices.FSharpToolTipElement)">
 <summary>
  Format the element of a tool tip (comment, overloads, etc.)
 </summary>
 </member>
-<member name="M:FSharp.CodeFormat.ToolTipReader.formatComment(Microsoft.FSharp.Compiler.SourceCodeServices.XmlComment)">
+<member name="M:FSharp.CodeFormat.ToolTipReader.formatComment(Microsoft.FSharp.Compiler.SourceCodeServices.FSharpXmlDoc)">
 <summary>
  Format comment in the tool tip
 </summary>
@@ -509,6 +509,12 @@
 <summary>
  Iterates over the elements of the list and calls the first function for 
  every element. Between each two elements, the second function is called.
+</summary>
+</member>
+<member name="M:FSharp.Collections.List.partitionUntilLookahead``1(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Collections.FSharpList{``0},System.Boolean},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Partitions list into an initial sequence (while the 
+ specified predicate returns &apos;false&apos;) and a rest of the list.
 </summary>
 </member>
 <member name="M:FSharp.Collections.List.partitionUntil``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},Microsoft.FSharp.Collections.FSharpList{``0})">

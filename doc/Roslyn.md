@@ -10,8 +10,9 @@ The first thing you want to do is install the additional package:
 
 To activate roslyn all you need to do is set the `CompilerServiceFactory` property in the configuration:
 
-	[lang=csharp]
-    config.CompilerServiceFactory = new RazorEngine.Roslyn.RoslynCompilerServiceFactory();
+```csharp
+config.CompilerServiceFactory = new RazorEngine.Roslyn.RoslynCompilerServiceFactory();
+```
 
 ## Known Limitation/Bugs
 

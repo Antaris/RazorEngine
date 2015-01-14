@@ -8,29 +8,32 @@ For an overview of how the Razor parser works under the hood, please visit [Andr
 ## Razor Syntax
 The Razor syntax is designed to be a clean but robust syntax for merging both code and markup into a single language. Primarily Razor was designed for Html-like languages, but future editions may take advantage of the existing `MarkupParser` abstraction to deliver alternative markup languages (possibly BBCode, Latex, Markdown, etc.). An example Razor template could look like:
 
-    [lang=markup]
-    <div>Hello @Model.Name, you are @Model.GetAge() years old.</div>
+```markup
+<div>Hello @Model.Name, you are @Model.GetAge() years old.</div>
+```
 
 This template is transformed into the body of a method, the `Execute` method, which could look something like this:
 
-    [lang=csharp]
-    public void Execute()
-    {
-        WriteLiteral("<div>Hello ");
-        Write(Model.Name);
-        WriteLiteral(", you are ");
-        Write(Model.GetAge());
-        WriteLiteral(" years old.</div>");
-    }
+```csharp
+public void Execute()
+{
+    WriteLiteral("<div>Hello ");
+    Write(Model.Name);
+    WriteLiteral(", you are ");
+    Write(Model.GetAge());
+    WriteLiteral(" years old.</div>");
+}
+```
 
 This mixture of code and markup allows for quite a declarative syntax where markup becomes a first-class feature alongside the code.  Here is slightly more complex template:
 
-    [lang=markup]
-    <ul>
-        @foreach (Person p in Model.Persons) {
-            <li>@p.name</li>
-        }
-    </ul>
+```markup
+<ul>
+    @foreach (Person p in Model.Persons) {
+        <li>@p.name</li>
+    }
+</ul>
+```
 
 Razor understands the code language (in this case, C#) because it operates dual parsers (a code parser and a markup parser). Much like the markup parser is geared up to understand Html, the code parser (in this example), is designed to understand C#.
 
