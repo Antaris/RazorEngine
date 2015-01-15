@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Intellisence and ReSharper
+    <title>Intellisense and ReSharper
 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Simple templating using Razor syntax.">
@@ -36,9 +36,49 @@
       <div class="row">
         <div class="span9" id="main">
           
-<h1><a name="Intellisence-and-ReSharper" class="anchor" href="#Intellisence-and-ReSharper">Intellisence and ReSharper</a></h1>
+<h1><a name="Intellisense-and-ReSharper" class="anchor" href="#Intellisense-and-ReSharper">Intellisense and ReSharper</a></h1>
 
-<p>It is often convenient to have your razor templates as file resources in your project and edit them like you would a normal ASP.NET MVC view as *.cshtml files and provide them to RazorEngine as a string.  It is also nice when IntelliSense will give you a helping hand, but ReSharper won't help you unless it can understand that the <code>Model</code> property exists on the <code>TemplateBase&lt;T&gt;</code> and what type the <code>Model</code> property is.</p>
+<p>It is often convenient to have your razor templates as file resources in your project and edit them 
+like you would a normal ASP.NET MVC view as <code>*.cshtml</code> files and provide them to RazorEngine as a string. 
+It is also nice when IntelliSense will give you a helping hand, 
+but ReSharper/Visual Studio won't help you unless it can understand that the <code>Model</code> property exists on the <code>TemplateBase&lt;T&gt;</code> 
+and what type the <code>Model</code> property is.</p>
+
+<h2><a name="Make-known-to-Visual-Studio" class="anchor" href="#Make-known-to-Visual-Studio">Make <code>RazorEngine</code> known to Visual Studio</a></h2>
+
+<p>To get full intellisense you should use the <code>@inherits</code> directive like this:</p>
+
+<pre class="line-numbers language-markup"><code class="language-markup">@using RazorEngine
+@using MyProject.Models
+@inherits TemplateBase&lt;MyModel&gt;
+&lt;h1&gt;Your Invoice @Model.InvoiceNumber&lt;/h1&gt;
+&lt;p&gt;The great stuff you bought was:&lt;/p&gt;
+&lt;ul&gt;
+    @foreach(var line in Model.InvoiceLines)
+    {
+        &lt;li&gt;@line.Code - @line.Description for @line.Price&lt;/li&gt;
+    }
+&lt;/ul&gt;
+&lt;h3&gt;Thanks for shopping at BuyMore&lt;/h3&gt;
+</code></pre>
+
+<p>Please make sure the following is true:</p>
+
+<ul>
+<li><p>The project references <code>RazorEngine</code>.</p></li>
+<li><p>Your project output path is set to <code>bin\</code> instead of <code>bin\Debug\</code> and <code>bin\Release\</code>.</p>
+<blockquote>
+  <p>another possible solution is to copy <code>RazorEngine.dll</code> and <code>System.Web.Razor.dll</code> to <code>bin\</code>.</p>
+</blockquote></li>
+</ul>
+
+<p>After this everything should work in the Visual Studio designer and you should have full intellisense for 
+RazorEngine and your model-type.</p>
+
+<h2><a name="Custom-base-template-class" class="anchor" href="#Custom-base-template-class">Custom base template class</a></h2>
+
+<p>If you cannot use the above solution you can get minimal intellisense by 
+providing your own base class and using it with the <code>@inherits</code> directive.</p>
 
 <p>Here is an example template file where <code>MyCustomizedTemplate&lt;T&gt;</code> derives from RazorEngine's <code>TemplateBase&lt;T&gt;</code>:</p>
 
@@ -60,13 +100,29 @@
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">public class MyCustomizedTemplate&lt;T&gt; : TemplateBase&lt;T&gt;
 {
-    public T Model { get; set; }
+    public new T Model 
+    {
+        get { return base.Model; }
+        set { base.Model = value; }
+    }
 
     public MyCustomizedTemplate()
     {
     }
 }
 </code></pre>
+
+<p>The problem with this approach is that you only get intellisense for the <code>Model</code> property and not for other 
+methods <code>TemplateBase&lt;&gt;</code> is providing for you (like <code>Include</code>).
+You need to add all methods to your custom base class to get intellisense for them.</p>
+
+<h2><a name="References" class="anchor" href="#References">References:</a></h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/4953330/razor-based-view-doesnt-see-referenced-assemblies">http://stackoverflow.com/questions/4953330/razor-based-view-doesnt-see-referenced-assemblies</a></li>
+<li><a href="https://github.com/Antaris/RazorEngine/issues/213">https://github.com/Antaris/RazorEngine/issues/213</a></li>
+<li><a href="http://stackoverflow.com/questions/26862336/how-to-make-intellisense-works-with-razorengine">http://stackoverflow.com/questions/26862336/how-to-make-intellisense-works-with-razorengine</a></li>
+</ul>
 
 
         </div>
