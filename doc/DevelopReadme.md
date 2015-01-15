@@ -148,8 +148,7 @@ If you want to build another target with Visual Studio / Monodevelop do the foll
 
 ## Documentation generation
 
-For the docs we use a custom build of FSharp.Formatting (because of improved C# support and to make use of the latest RazorEngine features!)
-and FSharp.Compiler.Service (see lib/ folder).
+For the docs we use a custom build of FSharp.Formatting (to make use of the latest RazorEngine features and to support prismjs!).
 You normally do not need to build those yourself. For the sake of completness all steps are included here.
 > Note: The aim is to switch to the official versions once everything works with them 
 > (pull requests are open... for example FSharp.Compiler.Service: #229, FSharp.Formatting: #208 and others)
@@ -157,7 +156,7 @@ You normally do not need to build those yourself. For the sake of completness al
 ### FSharp.Formatting
 
 So for generation of the docs we use ourself (because FSharp.Formatting uses RazorEngine) and in fact we use the latest build 
-(done immediatly before generating the docs) so this is a integration test as well!
+(done immediately before generating the docs) so this is a integration test as well!
 
 The custom build can be found on https://github.com/matthid/FSharp.Formatting/tree/razor_engine_bundled (the `razor_engine_bundled` branch).
 If you want to build that (because you make a breaking change, 
@@ -182,7 +181,7 @@ please only make breaking changes when the change was never included in a releas
        NUnit.Runners (2.6.4)
      remote: C:\Projects\RazorEngine\release\nuget
      specs:
-       RazorEngine (3.5.0-beta1)
+       RazorEngine (3.5.0)
          Microsoft.AspNet.Razor (>= 3.2.2.0) - net45
          Microsoft.AspNet.Razor (2.0.30506.0) - net40
    ```
@@ -190,9 +189,5 @@ please only make breaking changes when the change was never included in a releas
  - Delete `C:/Projects/FSharp.Formatting/packages/RazorEngine` if it exists.
  - Build FSharp.Formatting.
  - Your FSharp.Formatting build can be found in C:/Projects/FSharp.Formatting/bin
-
-### FSharp.Compiler.Service
-
-FSharp.Compiler.Service doesn't depend on anything so building the custom version is just a matter of cloning and building: 
-https://github.com/matthid/FSharp.Compiler.Service (`master` branch).
-The changes are not breaking so using the official version will work as well, however the docs are incomplete in that case!
+ - Please send your changes back to FSharp.Formatting after we released the RazorEngine changes in a nuget package.
+ 

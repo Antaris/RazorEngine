@@ -8,9 +8,9 @@
 *)
 
 #I @".nuget/Build/FAKE/tools/" // FAKE
-#I @"lib/FSharp.Formatting" // Custom build with the FSharp.Compiler.Service from below
+#I @".nuget/Build/FSharp.Compiler.Service/lib/net40/"
+#I @"lib/FSharp.Formatting" // Custom build (prismjs)
 #I @"build/net40" // dependency
-#I @"lib/FSharp.Compiler.Service" // because we want C# support, nuget version doesnt have it (https://github.com/matthid/FSharp.Compiler.Service/commit/c5dfd4dd488f6dcd1024b0ed2b564ce9d2d414fa?diff=unified)
 #r @"FakeLib.dll"  //FAKE
 
 #load @"buildConfig.fsx"
