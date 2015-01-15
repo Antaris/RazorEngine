@@ -1,6 +1,6 @@
 # RazorEngine
 
-Documentation also available on http://antaris.github.io/RazorEngine/.
+*latest* documentation available on http://antaris.github.io/RazorEngine/.
 
 ## Build status
 
