@@ -7,24 +7,9 @@
     This file handles the generation of the docs (it is called by the build automatically). 
 *)
 
-#I @".nuget/Build/FAKE/tools/" // FAKE
-#I @".nuget/Build/FSharp.Compiler.Service/lib/net40/"
-#I @"lib/FSharp.Formatting" // Custom build (prismjs)
-#I @"build/net40" // dependency
-#r @"FakeLib.dll"  //FAKE
-
-#load @"buildConfig.fsx"
-open BuildConfig
-
-// Documentation
+#I @".nuget/Build/FAKE/tools"
+#r @"FakeLib.dll"
 #r "System.Web.dll"
-#r "FSharp.Compiler.Service.dll"
-#r "System.Web.Razor.dll"
-#r "RazorEngine.dll"
-#r "FSharp.Markdown.dll"
-#r "FSharp.Literate.dll"
-#r "FSharp.CodeFormat.dll"
-#r "FSharp.MetadataFormat.dll"
 
 open System.Collections.Generic
 open System.IO
@@ -34,6 +19,27 @@ open Fake
 open Fake.Git
 open Fake.FSharpFormatting
 open AssemblyInfoFile
+
+// Force to load our last build
+DeleteFile ".nuget/Build/FSharp.Formatting/lib/net40/RazorEngine.dll"
+DeleteFile ".nuget/Build/FSharp.Formatting/lib/net40/System.Web.Razor.dll"
+
+#I @"build/net40"
+#I @".nuget/Build/FSharp.Compiler.Service/lib/net40"
+#I @".nuget/Build/FSharp.Formatting/lib/net40"
+
+#load @"buildConfig.fsx"
+open BuildConfig
+
+// Documentation
+#r "FSharp.Compiler.Service.dll"
+#r "System.Web.Razor.dll"
+#r "RazorEngine.dll"
+
+#r "FSharp.Markdown.dll"
+#r "FSharp.Literate.dll"
+#r "FSharp.CodeFormat.dll"
+#r "FSharp.MetadataFormat.dll"
 
 open FSharp.Markdown
 open FSharp.Literate
@@ -76,7 +82,7 @@ let rec replaceCodeBlocks ctx = function
         let nested = List.map (List.choose (replaceCodeBlocks ctx)) nested
         Some(Matching.ParagraphNested(pn, nested))
     | par -> Some par
-    
+
 let buildAllDocumentation outDocDir website_root =
     let references =
         if isMono then
@@ -90,12 +96,12 @@ let buildAllDocumentation outDocDir website_root =
               Path.GetFullPath "./.nuget/Build/FSharp.Compiler.Service/lib/net40/FSharp.Compiler.Service.dll"
               Path.GetFullPath "./build/net40/System.Web.Razor.dll"
               Path.GetFullPath "./build/net40/RazorEngine.dll"
-              Path.GetFullPath "./lib/FSharp.Formatting/FSharp.Literate.dll"
-              Path.GetFullPath "./lib/FSharp.Formatting/FSharp.CodeFormat.dll"
-              Path.GetFullPath "./lib/FSharp.Formatting/FSharp.MetadataFormat.dll" ] 
+              Path.GetFullPath "./.nuget/Build/FSharp.Formatting/lib/net40/FSharp.Literate.dll"
+              Path.GetFullPath "./.nuget/Build/FSharp.Formatting/lib/net40/FSharp.CodeFormat.dll"
+              Path.GetFullPath "./.nuget/Build/FSharp.Formatting/lib/net40/FSharp.MetadataFormat.dll" ]
             |> Some
         else None
-    
+
     let projInfo =
         [ "root", website_root
           "page-description", projectDescription
@@ -110,15 +116,11 @@ let buildAllDocumentation outDocDir website_root =
           "project-new-issue", sprintf "%s/issues/new" github_url
           "project-nuget", nuget_url]
 
-      
     // Copy static files and CSS + JS from F# Formatting
     let copyDocContentFiles () =
+      ensureDirectory (outDocDir @@ "html" @@ "content")
       CopyRecursive "./doc/content" (outDocDir @@ "html" @@ "content") true |> Log "Copying file: "
-      //ensureDirectory (outDocDir @@ "html" @@ "content")
-      //CopyRecursive (formatting @@ "styles") (output @@ "content") true 
-      //  |> Log "Copying styles and scripts: "
 
-      
     let processDocumentationFiles(outputKind) =
       let indexTemplate, template, outDirName, indexName = 
         match outputKind with
@@ -129,15 +131,15 @@ let buildAllDocumentation outDocDir website_root =
         // prismjs support
         let ctx = formattingContext (Some template) (Some outputKind) (Some true) (Some projInfo) (Some layoutRoots)
         let newParagraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs
-        Templating.processFile references (doc.With(paragraphs = newParagraphs)) outfile ctx 
-        
+        Templating.processFile references (doc.With(paragraphs = newParagraphs)) outfile ctx
+
       let processMarkdown template infile outfile =
         let doc = Literate.ParseMarkdownFile( infile )
         handleDoc template doc outfile
       let processScriptFile template infile outfile =
         let doc = Literate.ParseScriptFile( infile )
         handleDoc template doc outfile
-        
+
       let rec processDirectory template indir outdir = 
         // Create output directory if it does not exist
         if Directory.Exists(outdir) |> not then
@@ -165,7 +167,6 @@ let buildAllDocumentation outDocDir website_root =
           
       processDirectory template "./doc" outDir
       processMarkdown indexTemplate "./readme.md" (outDir @@ indexName)
-  
 
     // Build API reference from XML comments
     let referenceBinaries =

@@ -39,11 +39,11 @@ http://semver.org/
 - /.nuget/
 
 	Nuget dependencies will be downloaded into this folder. 
-	This folder can safly be deleted without affecting the build.
+	This folder can safely be deleted without affecting the build.
 
 - /build/
 
-	The project assemblies will be build into this folder. This folder can safly be deleted without affecting the build.
+	The project assemblies will be build into this folder. This folder can safely be deleted without affecting the build.
 
 - /lib/
 
@@ -72,7 +72,7 @@ http://semver.org/
 		
 - /test/
 
-	The unit test assemblies will be build into this folder. This folder can safly be deleted without affecting the build.
+	The unit test assemblies will be build into this folder. This folder can safely be deleted without affecting the build.
 
 - /tmp/
 
@@ -146,24 +146,17 @@ If you want to build another target with Visual Studio / Monodevelop do the foll
 
  - Save the `src/buildConfig.targets` file and re-open the solution.
 
-## Documentation generation
+## Bootstrapping FSharp.Formatting (normally not required)
 
-For the docs we use a custom build of FSharp.Formatting (to make use of the latest RazorEngine features and to support prismjs!).
-You normally do not need to build those yourself. For the sake of completness all steps are included here.
-> Note: The aim is to switch to the official versions once everything works with them 
-> (pull requests are open... for example FSharp.Compiler.Service: #229, FSharp.Formatting: #208 and others)
+For generation of the documentation website we use ourself (because FSharp.Formatting uses RazorEngine) 
+and in fact we use the latest build (done immediately before generating the docs) so this is a integration test as well!
+We normally use the official build (nuget package) of FSharp.Formatting, but if we introduce breaking changes
+we need to update FSharp.Formatting to make the documentation generation work again.
 
-### FSharp.Formatting
-
-So for generation of the docs we use ourself (because FSharp.Formatting uses RazorEngine) and in fact we use the latest build 
-(done immediately before generating the docs) so this is a integration test as well!
-
-The custom build can be found on https://github.com/matthid/FSharp.Formatting/tree/razor_engine_bundled (the `razor_engine_bundled` branch).
-If you want to build that (because you make a breaking change, 
-please only make breaking changes when the change was never included in a release) you need to do the following:
+This is the reason why we have a bootstrap documentation for FSharp.Formatting:
 
  - Clone RazorEngine (C:/Projects/RazorEngine)
- - Clone the `razor_engine_bundled` branch of FSharp.Formatting (C:/Projects/FSharp.Formatting)
+ - Clone FSharp.Formatting (C:/Projects/FSharp.Formatting)
  - Build RazorEngine (./build All, it doesn't matter if generating the documentation fails!)
  - do `build NuGet_single` to generate the nuget packages
  - Edit `C:/Projects/FSharp.Formatting/paket.lock` so that it loads the RazorEngine nuget package from disk:
@@ -187,7 +180,8 @@ please only make breaking changes when the change was never included in a releas
    ```
 
  - Delete `C:/Projects/FSharp.Formatting/packages/RazorEngine` if it exists.
- - Build FSharp.Formatting.
+ - Fix all compile errors (-> adapt FSharp.Formatting to our latest build) and build FSharp.Formatting.
  - Your FSharp.Formatting build can be found in C:/Projects/FSharp.Formatting/bin
- - Please send your changes back to FSharp.Formatting after we released the RazorEngine changes in a nuget package.
- 
+ - Please send your changes back to FSharp.Formatting.
+ - You can now bundle this build with RazorEngine (link the pull request to FSharp.Formatting in your pull request).
+
