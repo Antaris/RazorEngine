@@ -17,21 +17,25 @@
 open BuildConfig
 
 // Documentation
+#r "System.Web.dll"
 #r "FSharp.Compiler.Service.dll"
 #r "System.Web.Razor.dll"
 #r "RazorEngine.dll"
+#r "FSharp.Markdown.dll"
 #r "FSharp.Literate.dll"
 #r "FSharp.CodeFormat.dll"
 #r "FSharp.MetadataFormat.dll"
 
 open System.Collections.Generic
 open System.IO
+open System.Web
 
 open Fake
 open Fake.Git
 open Fake.FSharpFormatting
 open AssemblyInfoFile
 
+open FSharp.Markdown
 open FSharp.Literate
 open FSharp.MetadataFormat
 
@@ -44,6 +48,35 @@ open RazorEngine.Compilation
 /// replacements for the template file
 
 //let website_root = "file://" + Path.GetFullPath (outDocDir @@ "html")
+let formattingContext templateFile format generateAnchors replacements layoutRoots =
+    { TemplateFile = templateFile 
+      Replacements = defaultArg replacements []
+      GenerateLineNumbers = true
+      IncludeSource = false
+      Prefix = "fs"
+      OutputKind = defaultArg format OutputKind.Html
+      GenerateHeaderAnchors = defaultArg generateAnchors false
+      LayoutRoots = defaultArg layoutRoots [] }
+
+let rec replaceCodeBlocks ctx = function
+    | Matching.LiterateParagraph(special) -> 
+        match special with
+        | LanguageTaggedCode(lang, code) -> 
+            let inlined = 
+              match ctx.OutputKind with
+              | OutputKind.Html ->
+                  let code = HttpUtility.HtmlEncode code
+                  let codeHtmlKey = sprintf "language-%s" lang
+                  sprintf "<pre class=\"line-numbers %s\"><code class=\"%s\">%s</code></pre>" codeHtmlKey codeHtmlKey code
+              | OutputKind.Latex ->
+                  sprintf "\\begin{lstlisting}\n%s\n\\end{lstlisting}" code
+            Some(InlineBlock(inlined))
+        | _ -> Some (EmbedParagraphs special)
+    | Matching.ParagraphNested(pn, nested) ->
+        let nested = List.map (List.choose (replaceCodeBlocks ctx)) nested
+        Some(Matching.ParagraphNested(pn, nested))
+    | par -> Some par
+    
 let buildAllDocumentation outDocDir website_root =
     let references =
         if isMono then
@@ -85,17 +118,53 @@ let buildAllDocumentation outDocDir website_root =
       //CopyRecursive (formatting @@ "styles") (output @@ "content") true 
       //  |> Log "Copying styles and scripts: "
 
-    let processDirectory(outputKind) =
+      
+    let processDocumentationFiles(outputKind) =
       let indexTemplate, template, outDirName, indexName = 
         match outputKind with
         | OutputKind.Html -> docTemplatesDir @@ "docpage-index.cshtml", docTemplatesDir @@ "docpage.cshtml", "html", "index.html"
         | OutputKind.Latex -> docTemplatesDir @@ "template-color.tex", docTemplatesDir @@ "template-color.tex", "latex", "Readme.tex"
       let outDir = outDocDir @@ outDirName
-      Literate.ProcessDirectory
-        ( "./doc", template, outDir, 
-          outputKind, replacements = projInfo, layoutRoots = layoutRoots, generateAnchors = true, ?assemblyReferences = references)
+      let handleDoc template (doc:LiterateDocument) outfile =
+        // prismjs support
+        let ctx = formattingContext (Some template) (Some outputKind) (Some true) (Some projInfo) (Some layoutRoots)
+        let newParagraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs
+        Templating.processFile references (doc.With(paragraphs = newParagraphs)) outfile ctx 
+        
+      let processMarkdown template infile outfile =
+        let doc = Literate.ParseMarkdownFile( infile )
+        handleDoc template doc outfile
+      let processScriptFile template infile outfile =
+        let doc = Literate.ParseScriptFile( infile )
+        handleDoc template doc outfile
+        
+      let rec processDirectory template indir outdir = 
+        // Create output directory if it does not exist
+        if Directory.Exists(outdir) |> not then
+          try Directory.CreateDirectory(outdir) |> ignore 
+          with _ -> failwithf "Cannot create directory '%s'" outdir
 
-      Literate.ProcessMarkdown("./readme.md", indexTemplate, outDir @@ indexName, outputKind, replacements = projInfo, layoutRoots = layoutRoots, generateAnchors = true, ?assemblyReferences = references)
+        let fsx = [ for f in Directory.GetFiles(indir, "*.fsx") -> processScriptFile template, f ]
+        let mds = [ for f in Directory.GetFiles(indir, "*.md") -> processMarkdown template, f ]
+        for func, file in fsx @ mds do
+          let dir = Path.GetDirectoryName(file)
+          let name = Path.GetFileNameWithoutExtension(file)
+          let ext = (match outputKind with OutputKind.Latex -> "tex" | _ -> "html")
+          let output = Path.Combine(outdir, sprintf "%s.%s" name ext)
+
+          // Update only when needed
+          let changeTime = File.GetLastWriteTime(file)
+          let generateTime = File.GetLastWriteTime(output)
+          if changeTime > generateTime then
+            printfn "Generating '%s/%s.%s'" dir name ext
+            func file output
+      
+        for d in Directory.EnumerateDirectories(indir) do
+          let name = Path.GetFileName(d)
+          processDirectory template (Path.Combine(indir, name)) (Path.Combine(outdir, name))
+          
+      processDirectory template "./doc" outDir
+      processMarkdown indexTemplate "./readme.md" (outDir @@ indexName)
   
 
     // Build API reference from XML comments
@@ -126,8 +195,8 @@ let buildAllDocumentation outDocDir website_root =
 
     CleanDirs [ outDocDir ]
     copyDocContentFiles()
-    processDirectory OutputKind.Html
-    processDirectory OutputKind.Latex
+    processDocumentationFiles OutputKind.Html
+    processDocumentationFiles OutputKind.Latex
     buildReference()
     
 MyTarget "GithubDoc" (fun _ -> buildAllDocumentation (outDocDir @@ sprintf "%s.github.io" github_user) (sprintf "https://%s.github.io/%s" github_user github_project))
