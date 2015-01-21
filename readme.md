@@ -25,6 +25,9 @@ A templating engine built on Microsoft's Razor parsing engine, RazorEngine allow
 All you need to do is use the static `Engine` class (the `Engine.Razor` instance):
 
 ```csharp
+using RazorEngine;
+using RazorEngine.Templating; // IMPORTANT: The RunCompile method used below is an extension method of this namespace.
+
 string template = "Hello @Model.Name, welcome to RazorEngine!";
 var result =
 	Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
