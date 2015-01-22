@@ -20,6 +20,7 @@
     using System.Web.Razor.Parser;
 #endif
     using Templating;
+    using System.Security.Principal;
 
     /// <summary>
     /// Provides a base implementation of a direct compiler service.
@@ -217,19 +218,10 @@
                 codeType.Members.Add(ctor);
             }
         }
-
-        /// <summary>
-        /// Compiles the type defined in the specified type context.
-        /// </summary>
-        /// <param name="context">The type context which defines the type to compile.</param>
-        /// <returns>The compiled type.</returns>
+        
         [Pure, SecurityCritical]
-        public override Tuple<Type, CompilationData> CompileType(TypeContext context)
+        private Tuple<Type, CompilationData> CompileTypeImpl(TypeContext context)
         {
-            if (context == null)
-                throw new ArgumentNullException("context");
-
-            (new PermissionSet(PermissionState.Unrestricted)).Assert();
             var result = Compile(context);
             var compileResult = result.Item1;
 
@@ -248,14 +240,14 @@
                 throw new TemplateCompilationException(
                     compileResult.Errors
                     .Cast<CompilerError>()
-                    .Select(error => 
+                    .Select(error =>
                         new RazorEngineCompilerError(
                             error.ErrorText,
                             error.FileName,
                             error.Line,
                             error.Column,
                             error.ErrorNumber,
-                            error.IsWarning)), 
+                            error.IsWarning)),
                     tmpDir, context.TemplateContent);
             }
             // Make sure we load the assembly from a file and not with
@@ -264,6 +256,30 @@
             compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
             var type = compileResult.CompiledAssembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
             return Tuple.Create(type, tmpDir);
+        }
+
+        /// <summary>
+        /// Compiles the type defined in the specified type context.
+        /// </summary>
+        /// <param name="context">The type context which defines the type to compile.</param>
+        /// <returns>The compiled type.</returns>
+        [Pure, SecurityCritical]
+        public override Tuple<Type, CompilationData> CompileType(TypeContext context)
+        {
+            if (context == null)
+                throw new ArgumentNullException("context");
+
+            (new PermissionSet(PermissionState.Unrestricted)).Assert();
+
+            WindowsImpersonationContext wic = WindowsIdentity.Impersonate(IntPtr.Zero);
+            try
+            {
+                return CompileTypeImpl(context);
+            }
+            finally
+            {
+                wic.Undo();
+            }
         }
 
         /// <summary>
