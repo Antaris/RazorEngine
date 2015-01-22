@@ -296,7 +296,7 @@
 
             (new PermissionSet(PermissionState.Unrestricted)).Assert();
             var isMono = Type.GetType("Mono.Runtime") != null;
-            if (isMono)
+            if (!isMono)
             {
                 return CompileType_Windows(context);
             }
