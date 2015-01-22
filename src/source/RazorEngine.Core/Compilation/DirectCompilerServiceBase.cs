@@ -270,15 +270,22 @@
                 throw new ArgumentNullException("context");
 
             (new PermissionSet(PermissionState.Unrestricted)).Assert();
-
-            WindowsImpersonationContext wic = WindowsIdentity.Impersonate(IntPtr.Zero);
-            try
+            var isMono = Type.GetType("Mono.Runtime") != null;
+            if (isMono)
+            {
+                WindowsImpersonationContext wic = WindowsIdentity.Impersonate(IntPtr.Zero);
+                try
+                {
+                    return CompileTypeImpl(context);
+                }
+                finally
+                {
+                    wic.Undo();
+                }
+            }
+            else
             {
                 return CompileTypeImpl(context);
-            }
-            finally
-            {
-                wic.Undo();
             }
         }
 
