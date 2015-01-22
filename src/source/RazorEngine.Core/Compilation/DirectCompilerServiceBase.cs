@@ -258,6 +258,31 @@
             return Tuple.Create(type, tmpDir);
         }
 
+        
+        [Pure, SecurityCritical]
+        private Tuple<Type, CompilationData> CompileType_Windows(TypeContext context)
+        {
+            // NOTE: The static constructor of WindowsImpersonationContext can fail, 
+            // that's why we need to do that in a seperate method
+            // -> Static constructor will not run
+
+            /* Exception details: (2015-01-23: https://travis-ci.org/Antaris/RazorEngine/builds/47985319)
+              System.Security.SecurityException : Couldn't impersonate token.
+              at System.Security.Principal.WindowsImpersonationContext..ctor (IntPtr token) [0x00000] in <filename unknown>:0
+              at System.Security.Principal.WindowsIdentity.Impersonate (IntPtr userToken) [0x00000] in <filename unknown>:0
+              at RazorEngine.Compilation.DirectCompilerServiceBase.CompileType (RazorEngine.Compilation.TypeContext context) [0x00033] in /home/travis/build/Antaris/RazorEngine/src/source/RazorEngine.Core/Compilation/DirectCompilerServiceBase.cs:276 
+             */ 
+            WindowsImpersonationContext wic = WindowsIdentity.Impersonate(IntPtr.Zero);
+            try
+            {
+                return CompileTypeImpl(context);
+            }
+            finally
+            {
+                wic.Undo();
+            }
+        }
+
         /// <summary>
         /// Compiles the type defined in the specified type context.
         /// </summary>
@@ -273,15 +298,7 @@
             var isMono = Type.GetType("Mono.Runtime") != null;
             if (isMono)
             {
-                WindowsImpersonationContext wic = WindowsIdentity.Impersonate(IntPtr.Zero);
-                try
-                {
-                    return CompileTypeImpl(context);
-                }
-                finally
-                {
-                    wic.Undo();
-                }
+                return CompileType_Windows(context);
             }
             else
             {
