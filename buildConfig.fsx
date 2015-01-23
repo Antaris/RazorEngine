@@ -35,8 +35,15 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
 let page_author = "Matthias Dittrich"
 let mail = "matthew.abbott@outlook.com"
-let version = "3.5.2.0"
-let version_nuget = "3.5.2"
+
+// Read release notes document
+let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
+let version = release.AssemblyVersion
+let version_nuget = release.NugetVersion
+printfn "BUILDING VERSION: %s" version_nuget
+// !!!!!!!!!!!!!!!!!!!
+// UPDATE RELEASE NOTES AS WELL!
+// !!!!!!!!!!!!!!!!!!!
 let version_razor4 = "4.0.2.0"
 let version_razor4_nuget = "4.0.2-beta1"
 let version_roslyn_nuget = "3.5.1-beta1"
@@ -77,8 +84,6 @@ let github_url = sprintf "https://github.com/%s/%s" github_user github_project
 let nuget = findToolInSubPath "NuGet.exe" "./.nuget/Build/NuGet.CommandLine/tools/NuGet.exe"
 System.IO.File.Copy(nuget, "./src/.nuget/NuGet.exe", true)
 
-// Read release notes document
-let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
 
 let MyTarget name body =
     Target name body
