@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 467c102c8d850e63ec22c3ea2bacb57bfda668f3 -->
+<!-- GENERATED FROM COMMIT: ad3e0cddbe9e00509a505b834970045ed94815a0 -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
 
 <p><em>latest</em> documentation available on <a href="http://antaris.github.io/RazorEngine/.">http://antaris.github.io/RazorEngine/.</a></p>
@@ -198,29 +198,35 @@ To be able to resolve such issues you can control this behaviour and set your ow
 
 class MyIReferenceResolver : IReferenceResolver {
     public IEnumerable&lt;CompilerReference&gt; GetReferences(TypeContext context, IEnumerable&lt;CompilerReference&gt; includeAssemblies) {
+        // You must make sure to include all libraries that are required, even standard libraries!
+        var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(context, includeAssemblies);
+        // This already includes all loaded assemblies
+        // and &quot;includeAssemblies&quot;, those are requested by the Compiler (Microsoft.CSharp for example).
+        foreach (var reference in loadedAssemblies)
+            yield return reference;
+        
         // TypeContext gives you some context for the compilation (which templates, which namespaces and types)
-        // My templates need some special reference to compile.
-        return new [] { 
-            CompilerReference.From(&quot;Path-to-my-custom-assembly&quot;), // file path (string)
-            CompilerReference.From(typeof(MyType).Assembly), // Assembly
-            CompilerReference.From(assemblyInByteArray), // byte array (roslyn only)
-            CompilerReference.From(File.OpenRead(assembly)), // stream (roslyn only)
-        };
+        yield return CompilerReference.From(&quot;Path-to-my-custom-assembly&quot;); // file path (string)
+        yield return CompilerReference.From(typeof(MyType).Assembly); // Assembly
+        yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)
+        yield return CompilerReference.From(File.OpenRead(assembly)); // stream (roslyn only)
     }
 }
 </code></pre>
 
-<p>It could be usefull to get running on mono to just manually return all the assemblies you need.
-The default is to use the <code>UseCurrentAssembliesReferenceResolver</code> class, which always returns all currently loaded assemblies.
-You can get and modify this list (and return it in your own implementation if you wish):</p>
+<p>By default the <code>UseCurrentAssembliesReferenceResolver</code> class is used, which will always returns all currently loaded assemblies.</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">var loadedList = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null)
-</code></pre>
+<blockquote>
+  <p>It is useful to just manually return all the assemblies you need to get running on mono.
+That means just use the default resolution when running on Windows and your implementation on mono.
+If you manage to find a working cross-platform implementation, please open a pull request / issue!</p>
+</blockquote>
 
 <h2><a name="More" class="anchor" href="#More">More</a></h2>
 
-<p>On the right side you can find links to advanced topics and additional documentation.
-You should definitely read "About Razor" and "Template basics".</p>
+<p>On the right side you can find links to advanced topics and additional documentation (<a href="http://antaris.github.io/RazorEngine/).
+You">http://antaris.github.io/RazorEngine/).
+You</a> should definitely read "About Razor" and "Template basics".</p>
 
 
         </div>
