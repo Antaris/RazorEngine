@@ -1,6 +1,7 @@
 ﻿using ImpromptuInterface;
 using NUnit.Framework;
 using RazorEngine.Compilation;
+using RazorEngine.Compilation.ReferenceResolver;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using RazorEngine.Tests.TestTypes;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -228,6 +230,71 @@ namespace Test.RazorEngine
                 {
                     File.Delete(file);
                 }
+            });
+        }
+
+
+        class TestHelperReferenceResolver : IReferenceResolver
+        {
+            public IEnumerable<CompilerReference> GetReferences
+            (
+                TypeContext context,
+                IEnumerable<CompilerReference> includeAssemblies = null
+            )
+            {
+                // We need to return this standard set or even simple views blow up on
+                // a missing reference to System.Linq.
+                var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null);
+                foreach (var reference in loadedAssemblies)
+                    yield return reference;
+                yield return CompilerReference.From("test/TestHelper.dll");
+            }
+        }
+
+        /// <summary>
+        /// Tests that we can use types from other assemblies in templates.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CheckThatWeCanUseUnknownTypes()
+        {
+            RunTestHelper(service =>
+            {
+                var assembly = Assembly.LoadFrom("test/TestHelper.dll");
+                Type modelType = assembly.GetType("TestHelper.TestClass", true);
+                var model = Activator.CreateInstance(modelType);
+                var template = @"
+@{
+    var t = new TestHelper.TestClass();
+}
+@t.TestProperty";
+                string compiled = service.RunCompile(template, Guid.NewGuid().ToString(), modelType, model);
+                
+            }, config =>
+            {
+                config.ReferenceResolver = new TestHelperReferenceResolver();
+            });
+        }
+
+
+        /// <summary>
+        /// Tests that we can use types from other assemblies in templates.
+        /// Even when the type can be loaded.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CheckThatWeCanUseUnknownTypesAtExecuteTime()
+        {
+            RunTestHelper(service =>
+            {
+                var template = @"
+@{
+    var t = new TestHelper.TestClass();
+}
+@t.TestProperty";
+                string compiled = service.RunCompile(template, Guid.NewGuid().ToString());
+
+            }, config =>
+            {
+                config.ReferenceResolver = new TestHelperReferenceResolver();
             });
         }
     }

@@ -1,4 +1,9 @@
-﻿### 3.5.1 / 4.0.1-beta1
+﻿### 3.5.2 / 4.0.2-beta1
+* If you use assemblies in your template which are not referenced in your hosting code 
+  RazorEngine will load them for you automatically if they are required.
+  See https://github.com/Antaris/RazorEngine/issues/218 for details.
+
+### 3.5.1 / 4.0.1-beta1
 * Fixed https://github.com/Antaris/RazorEngine/issues/217
 
 ### 3.5.0 / 4.0.0-beta2

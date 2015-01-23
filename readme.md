@@ -159,28 +159,31 @@ config.ReferenceResolver = new MyIReferenceResolver();
 
 class MyIReferenceResolver : IReferenceResolver {
     public IEnumerable<CompilerReference> GetReferences(TypeContext context, IEnumerable<CompilerReference> includeAssemblies) {
+		// You must make sure to include all libraries that are required, even standard libraries!
+		var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(context, includeAssemblies);
+		// This already includes all loaded assemblies
+		// and "includeAssemblies", those are requested by the Compiler (Microsoft.CSharp for example).
+		foreach (var reference in loadedAssemblies)
+			yield return reference;
+		
 		// TypeContext gives you some context for the compilation (which templates, which namespaces and types)
-		// My templates need some special reference to compile.
-		return new [] { 
-			CompilerReference.From("Path-to-my-custom-assembly"), // file path (string)
-			CompilerReference.From(typeof(MyType).Assembly), // Assembly
-			CompilerReference.From(assemblyInByteArray), // byte array (roslyn only)
-			CompilerReference.From(File.OpenRead(assembly)), // stream (roslyn only)
-		};
+		yield return CompilerReference.From("Path-to-my-custom-assembly"); // file path (string)
+		yield return CompilerReference.From(typeof(MyType).Assembly); // Assembly
+		yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)
+		yield return CompilerReference.From(File.OpenRead(assembly)); // stream (roslyn only)
 	}
 }
 ```
 
-It could be usefull to get running on mono to just manually return all the assemblies you need.
-The default is to use the `UseCurrentAssembliesReferenceResolver` class, which always returns all currently loaded assemblies.
-You can get and modify this list (and return it in your own implementation if you wish):
+By default the `UseCurrentAssembliesReferenceResolver` class is used, which will always returns all currently loaded assemblies.
 
-```csharp
-var loadedList = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null)
-```
+> It is useful to just manually return all the assemblies you need to get running on mono.
+> That means just use the default resolution when running on Windows and your implementation on mono.
+
+> If you manage to find a working cross-platform implementation, please open a pull request / issue!
 
 ## More
 
-On the right side you can find links to advanced topics and additional documentation.
+On the right side you can find links to advanced topics and additional documentation (http://antaris.github.io/RazorEngine/).
 You should definitely read "About Razor" and "Template basics".
 
