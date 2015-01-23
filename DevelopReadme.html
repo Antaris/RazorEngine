@@ -77,9 +77,9 @@ Everybody familiar with Razor can start building templates very quickly.</p>
 <ul>
 <li><p>/.nuget/</p>
 <p>Nuget dependencies will be downloaded into this folder. 
-  This folder can safly be deleted without affecting the build.</p></li>
+  This folder can safely be deleted without affecting the build.</p></li>
 <li><p>/build/</p>
-<p>The project assemblies will be build into this folder. This folder can safly be deleted without affecting the build.</p></li>
+<p>The project assemblies will be build into this folder. This folder can safely be deleted without affecting the build.</p></li>
 <li><p>/lib/</p>
 <p>library dependencies. Most dependencies are automatically managed by nuget and not in this folder. 
   Only some internal dependencies and packages not in nuget. The git repository should always be "complete".</p></li>
@@ -96,7 +96,7 @@ Everybody familiar with Razor can start building templates very quickly.</p>
 <p>A bit of a hack to get the dependencies of the .net40 profile downloaded properly.</p></li>
 </ul></li>
 <li><p>/test/</p>
-<p>The unit test assemblies will be build into this folder. This folder can safly be deleted without affecting the build.</p></li>
+<p>The unit test assemblies will be build into this folder. This folder can safely be deleted without affecting the build.</p></li>
 <li><p>/tmp/</p>
 <p>This folder is ignored by git.</p></li>
 <li><p>/build.cmd, /build.sh, /build.fsx</p>
@@ -166,29 +166,18 @@ The line should then look like this:</p>
 <li><p>Save the <code>src/buildConfig.targets</code> file and re-open the solution.</p></li>
 </ul>
 
-<h2><a name="Documentation-generation" class="anchor" href="#Documentation-generation">Documentation generation</a></h2>
+<h2><a name="Bootstrapping-FSharp-Formatting-normally-not-required" class="anchor" href="#Bootstrapping-FSharp-Formatting-normally-not-required">Bootstrapping FSharp.Formatting (normally not required)</a></h2>
 
-<p>For the docs we use a custom build of FSharp.Formatting (because of improved C# support and to make use of the latest RazorEngine features!)
-and FSharp.Compiler.Service (see lib/ folder).
-You normally do not need to build those yourself. For the sake of completness all steps are included here.</p>
+<p>For generation of the documentation website we use ourself (because FSharp.Formatting uses RazorEngine) 
+and in fact we use the latest build (done immediately before generating the docs) so this is a integration test as well!
+We normally use the official build (nuget package) of FSharp.Formatting, but if we introduce breaking changes
+we need to update FSharp.Formatting to make the documentation generation work again.</p>
 
-<blockquote>
-  <p>Note: The aim is to switch to the official versions once everything works with them 
-(pull requests are open... for example FSharp.Compiler.Service: #229, FSharp.Formatting: #208 and others)</p>
-</blockquote>
-
-<h3><a name="FSharp-Formatting" class="anchor" href="#FSharp-Formatting">FSharp.Formatting</a></h3>
-
-<p>So for generation of the docs we use ourself (because FSharp.Formatting uses RazorEngine) and in fact we use the latest build 
-(done immediatly before generating the docs) so this is a integration test as well!</p>
-
-<p>The custom build can be found on <a href="https://github.com/matthid/FSharp.Formatting/tree/razor_engine_bundled">https://github.com/matthid/FSharp.Formatting/tree/razor_engine_bundled</a> (the <code>razor_engine_bundled</code> branch).
-If you want to build that (because you make a breaking change, 
-please only make breaking changes when the change was never included in a release) you need to do the following:</p>
+<p>This is the reason why we have a bootstrap documentation for FSharp.Formatting:</p>
 
 <ul>
 <li>Clone RazorEngine (C:/Projects/RazorEngine)</li>
-<li>Clone the <code>razor_engine_bundled</code> branch of FSharp.Formatting (C:/Projects/FSharp.Formatting)</li>
+<li>Clone FSharp.Formatting (C:/Projects/FSharp.Formatting)</li>
 <li>Build RazorEngine (./build All, it doesn't matter if generating the documentation fails!)</li>
 <li>do <code>build NuGet_single</code> to generate the nuget packages</li>
 <li><p>Edit <code>C:/Projects/FSharp.Formatting/paket.lock</code> so that it loads the RazorEngine nuget package from disk:</p>
@@ -204,20 +193,16 @@ please only make breaking changes when the change was never included in a releas
     NUnit.Runners (2.6.4)
   remote: C:\Projects\RazorEngine\release\nuget
   specs:
-    RazorEngine (3.5.0-beta1)
+    RazorEngine (3.5.0)
       Microsoft.AspNet.Razor (&gt;= 3.2.2.0) - net45
       Microsoft.AspNet.Razor (2.0.30506.0) - net40
 </code></pre></li>
 <li>Delete <code>C:/Projects/FSharp.Formatting/packages/RazorEngine</code> if it exists.</li>
-<li>Build FSharp.Formatting.</li>
+<li>Fix all compile errors (-> adapt FSharp.Formatting to our latest build) and build FSharp.Formatting.</li>
 <li>Your FSharp.Formatting build can be found in C:/Projects/FSharp.Formatting/bin</li>
+<li>Please send your changes back to FSharp.Formatting.</li>
+<li>You can now bundle this build with RazorEngine (link the pull request to FSharp.Formatting in your pull request).</li>
 </ul>
-
-<h3><a name="FSharp-Compiler-Service" class="anchor" href="#FSharp-Compiler-Service">FSharp.Compiler.Service</a></h3>
-
-<p>FSharp.Compiler.Service doesn't depend on anything so building the custom version is just a matter of cloning and building: 
-<a href="https://github.com/matthid/FSharp.Compiler.Service">https://github.com/matthid/FSharp.Compiler.Service</a> (<code>master</code> branch).
-The changes are not breaking so using the official version will work as well, however the docs are incomplete in that case!</p>
 
 
         </div>

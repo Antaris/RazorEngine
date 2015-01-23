@@ -47,46 +47,6 @@
             Dynamic Object that knows about the Impromtu Interface return types;
             Override Typical Dynamic Object methods, and use TypeForName to get the return type of an interface member.
             </br></div>
-  <h3>Constructors</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Constructor</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '148', 148)" onmouseover="showTip(event, '148', 148)">
-            new()
-          </code>
-          <div class="tip" id="148">
-            <strong>Signature:</strong> unit -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Initializes a new instance of the <a href="impromptuinterface-dynamic-impromptuobject.html">ImpromptuObject</a> class.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '149', 149)" onmouseover="showTip(event, '149', 149)">
-            new(info, context)
-          </code>
-          <div class="tip" id="149">
-            <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Initializes a new instance of the <a href="impromptuinterface-dynamic-impromptuobject.html">ImpromptuObject</a> class. when deserializing
-            </br>
-        </td>
-      </tr>
-    </tbody>
-  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -96,59 +56,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '150', 150)" onmouseover="showTip(event, '150', 150)">
-            ActLike(otherInterfaces)
-          </code>
-          <div class="tip" id="150">
-            <strong>Signature:</strong> (otherInterfaces:Type []) -&gt; &#39;TInterface<br />
-              <strong>Modifiers:</strong> abstract<br />
-                          <strong>Type parameters:</strong> 'TInterface          </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '151', 151)" onmouseover="showTip(event, '151', 151)">
-            GetDynamicMemberNames()
-          </code>
-          <div class="tip" id="151">
-            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;string&gt;<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Returns the enumeration of all dynamic member names.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '152', 152)" onmouseover="showTip(event, '152', 152)">
-            GetObjectData(info, context)
-          </code>
-          <div class="tip" id="152">
-            <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Populates a <a href="http://msdn.microsoft.com/en-us/library/System.Runtime.Serialization.SerializationInfo">SerializationInfo</a> with the data needed to serialize the target object.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '153', 153)" onmouseover="showTip(event, '153', 153)">
+          <code onmouseout="hideTip(event, '21', 21)" onmouseover="showTip(event, '21', 21)">
             KnownInterfaces()
           </code>
-          <div class="tip" id="153">
+          <div class="tip" id="21">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -163,10 +74,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '154', 154)" onmouseover="showTip(event, '154', 154)">
+          <code onmouseout="hideTip(event, '22', 22)" onmouseover="showTip(event, '22', 22)">
             KnownPropertySpec()
           </code>
-          <div class="tip" id="154">
+          <div class="tip" id="22">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -175,21 +86,6 @@
           
             Gets or sets the known fake interface (string method name to return type mapping).
             </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '155', 155)" onmouseover="showTip(event, '155', 155)">
-            TryTypeForName(name, returnType)
-          </code>
-          <div class="tip" id="155">
-            <strong>Signature:</strong> (name:string * returnType:byref&lt;Type&gt;) -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
         </td>
       </tr>
     </tbody>

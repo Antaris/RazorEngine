@@ -46,46 +46,6 @@
 
             Proxies Calls allows subclasser to override do extra actions before or after base invocation
             </br></div>
-  <h3>Constructors</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Constructor</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '127', 127)" onmouseover="showTip(event, '127', 127)">
-            new(target)
-          </code>
-          <div class="tip" id="127">
-            <strong>Signature:</strong> target:obj -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Initializes a new instance of the <a href="impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a> class.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '128', 128)" onmouseover="showTip(event, '128', 128)">
-            new(info, context)
-          </code>
-          <div class="tip" id="128">
-            <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Initializes a new instance of the <a href="impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a> class.
-            </br>
-        </td>
-      </tr>
-    </tbody>
-  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -95,10 +55,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '129', 129)" onmouseover="showTip(event, '129', 129)">
+          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
             CallTarget
           </code>
-          <div class="tip" id="129">
+          <div class="tip" id="16">
             <strong>Signature:</strong> obj<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -112,192 +72,16 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '130', 130)" onmouseover="showTip(event, '130', 130)">
-            Equals(other)
-          </code>
-          <div class="tip" id="130">
-            <strong>Signature:</strong> other:ImpromptuForwarder -&gt; bool<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Equals the specified other.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '131', 131)" onmouseover="showTip(event, '131', 131)">
-            Equals(obj)
-          </code>
-          <div class="tip" id="131">
-            <strong>Signature:</strong> obj:obj -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Checks if the objects are equal.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '132', 132)" onmouseover="showTip(event, '132', 132)">
-            GetDynamicMemberNames()
-          </code>
-          <div class="tip" id="132">
-            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;string&gt;<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Returns the enumeration of all dynamic member names.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '133', 133)" onmouseover="showTip(event, '133', 133)">
-            GetHashCode()
-          </code>
-          <div class="tip" id="133">
-            <strong>Signature:</strong> unit -&gt; int<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Gets the hashcode of the current instance.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '134', 134)" onmouseover="showTip(event, '134', 134)">
-            GetObjectData(info, context)
-          </code>
-          <div class="tip" id="134">
-            <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Populates a <a href="http://msdn.microsoft.com/en-us/library/System.Runtime.Serialization.SerializationInfo">SerializationInfo</a> with the data needed to serialize the target object.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '135', 135)" onmouseover="showTip(event, '135', 135)">
+          <code onmouseout="hideTip(event, '17', 17)" onmouseover="showTip(event, '17', 17)">
             Target()
           </code>
-          <div class="tip" id="135">
+          <div class="tip" id="17">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
             Gets or sets the target.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '136', 136)" onmouseover="showTip(event, '136', 136)">
-            TryGetIndex(binder, indexes, result)
-          </code>
-          <div class="tip" id="136">
-            <strong>Signature:</strong> (binder:GetIndexBinder * indexes:obj [] * result:byref&lt;obj&gt;) -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '137', 137)" onmouseover="showTip(event, '137', 137)">
-            TryGetMember(binder, result)
-          </code>
-          <div class="tip" id="137">
-            <strong>Signature:</strong> (binder:GetMemberBinder * result:byref&lt;obj&gt;) -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '138', 138)" onmouseover="showTip(event, '138', 138)">
-            TryInvoke(binder, args, result)
-          </code>
-          <div class="tip" id="138">
-            <strong>Signature:</strong> (binder:InvokeBinder * args:obj [] * result:byref&lt;obj&gt;) -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '139', 139)" onmouseover="showTip(event, '139', 139)">
-            TryInvokeMember(binder, args, result)
-          </code>
-          <div class="tip" id="139">
-            <strong>Signature:</strong> (binder:InvokeMemberBinder * args:obj [] * result:byref&lt;obj&gt;) -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '140', 140)" onmouseover="showTip(event, '140', 140)">
-            TrySetIndex(binder, indexes, value)
-          </code>
-          <div class="tip" id="140">
-            <strong>Signature:</strong> (binder:SetIndexBinder * indexes:obj [] * value:obj) -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '141', 141)" onmouseover="showTip(event, '141', 141)">
-            TrySetMember(binder, value)
-          </code>
-          <div class="tip" id="141">
-            <strong>Signature:</strong> (binder:SetMemberBinder * value:obj) -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Forwards the invoke operation.
             </br>
         </td>
       </tr>

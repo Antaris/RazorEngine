@@ -49,30 +49,6 @@
             in user IActivator implementations which would break the sandbox.
             (because executed in the wrong <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>)
             </br></div>
-  <h3>Constructors</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Constructor</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '793', 793)" onmouseover="showTip(event, '793', 793)">
-            new()
-          </code>
-          <div class="tip" id="793">
-            <strong>Signature:</strong> unit -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Initialises a new instance of <a href="razorengine-templating-templatebase.html">TemplateBase</a>.
-            </br>
-        </td>
-      </tr>
-    </tbody>
-  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -82,10 +58,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '794', 794)" onmouseover="showTip(event, '794', 794)">
+          <code onmouseout="hideTip(event, '163', 163)" onmouseover="showTip(event, '163', 163)">
             CurrentWriter
           </code>
-          <div class="tip" id="794">
+          <div class="tip" id="163">
             <strong>Signature:</strong> TextWriter<br />
                       </div>
         </td>
@@ -98,77 +74,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '795', 795)" onmouseover="showTip(event, '795', 795)">
-            DefineSection(name, action)
-          </code>
-          <div class="tip" id="795">
-            <strong>Signature:</strong> (name:string * action:Action) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Defines a section that can written out to a layout.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '796', 796)" onmouseover="showTip(event, '796', 796)">
-            Execute()
-          </code>
-          <div class="tip" id="796">
-            <strong>Signature:</strong> unit -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Executes the compiled template.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '797', 797)" onmouseover="showTip(event, '797', 797)">
-            Include(name, model, modelType)
-          </code>
-          <div class="tip" id="797">
-            <strong>Signature:</strong> (name:string * model:obj * modelType:Type) -&gt; TemplateWriter<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Includes the template with the specified name.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '798', 798)" onmouseover="showTip(event, '798', 798)">
-            IsSectionDefined(name)
-          </code>
-          <div class="tip" id="798">
-            <strong>Signature:</strong> name:string -&gt; bool<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Determines if the section with the specified name has been defined.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '799', 799)" onmouseover="showTip(event, '799', 799)">
+          <code onmouseout="hideTip(event, '164', 164)" onmouseover="showTip(event, '164', 164)">
             Layout()
           </code>
-          <div class="tip" id="799">
+          <div class="tip" id="164">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -181,26 +90,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '800', 800)" onmouseover="showTip(event, '800', 800)">
-            Raw(rawString)
-          </code>
-          <div class="tip" id="800">
-            <strong>Signature:</strong> rawString:string -&gt; IEncodedString<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Returns the specified string as a raw string. This will ensure it is not encoded.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '801', 801)" onmouseover="showTip(event, '801', 801)">
+          <code onmouseout="hideTip(event, '165', 165)" onmouseover="showTip(event, '165', 165)">
             RazorEngine()
           </code>
-          <div class="tip" id="801">
+          <div class="tip" id="165">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -214,92 +107,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '802', 802)" onmouseover="showTip(event, '802', 802)">
-            RenderBody()
-          </code>
-          <div class="tip" id="802">
-            <strong>Signature:</strong> unit -&gt; TemplateWriter<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Renders the body of the template.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '803', 803)" onmouseover="showTip(event, '803', 803)">
-            RenderSection(name, isRequired)
-          </code>
-          <div class="tip" id="803">
-            <strong>Signature:</strong> (name:string * isRequired:bool) -&gt; TemplateWriter<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Renders the section with the specified name.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '804', 804)" onmouseover="showTip(event, '804', 804)">
-            ResolveUrl(path)
-          </code>
-          <div class="tip" id="804">
-            <strong>Signature:</strong> path:string -&gt; string<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Resolves the specified path
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '805', 805)" onmouseover="showTip(event, '805', 805)">
-            set_InternalTemplateService(value)
-          </code>
-          <div class="tip" id="805">
-            <strong>Signature:</strong> value:IInternalTemplateService -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '806', 806)" onmouseover="showTip(event, '806', 806)">
-            SetModel(model)
-          </code>
-          <div class="tip" id="806">
-            <strong>Signature:</strong> model:obj -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Set the current model.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '807', 807)" onmouseover="showTip(event, '807', 807)">
+          <code onmouseout="hideTip(event, '166', 166)" onmouseover="showTip(event, '166', 166)">
             TemplateService()
           </code>
-          <div class="tip" id="807">
+          <div class="tip" id="166">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -313,148 +124,16 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '808', 808)" onmouseover="showTip(event, '808', 808)">
+          <code onmouseout="hideTip(event, '167', 167)" onmouseover="showTip(event, '167', 167)">
             ViewBag
           </code>
-          <div class="tip" id="808">
+          <div class="tip" id="167">
             <strong>Signature:</strong> obj<br />
                       </div>
         </td>
         <td class="xmldoc">
           
             Gets the viewbag that allows sharing state between layout and child templates.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '809', 809)" onmouseover="showTip(event, '809', 809)">
-            Write(value)
-          </code>
-          <div class="tip" id="809">
-            <strong>Signature:</strong> value:obj -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Writes the specified object to the result.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '810', 810)" onmouseover="showTip(event, '810', 810)">
-            Write(helper)
-          </code>
-          <div class="tip" id="810">
-            <strong>Signature:</strong> helper:TemplateWriter -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Writes the specified template helper result.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '811', 811)" onmouseover="showTip(event, '811', 811)">
-            WriteAttribute(...)
-          </code>
-          <div class="tip" id="811">
-            <strong>Signature:</strong> (name:string * prefix:PositionTagged&lt;string&gt; * suffix:PositionTagged&lt;string&gt; * values:AttributeValue []) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '812', 812)" onmouseover="showTip(event, '812', 812)">
-            WriteAttributeTo(...)
-          </code>
-          <div class="tip" id="812">
-            <strong>Signature:</strong> (writer:TextWriter * name:string * prefix:PositionTagged&lt;string&gt; * suffix:PositionTagged&lt;string&gt; * values:AttributeValue []) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '813', 813)" onmouseover="showTip(event, '813', 813)">
-            WriteLiteral(literal)
-          </code>
-          <div class="tip" id="813">
-            <strong>Signature:</strong> literal:string -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Writes the specified string to the result.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '814', 814)" onmouseover="showTip(event, '814', 814)">
-            WriteLiteralTo(writer, literal)
-          </code>
-          <div class="tip" id="814">
-            <strong>Signature:</strong> (writer:TextWriter * literal:string) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Writes a string literal to the specified <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a>.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '815', 815)" onmouseover="showTip(event, '815', 815)">
-            WriteTo(writer, value)
-          </code>
-          <div class="tip" id="815">
-            <strong>Signature:</strong> (writer:TextWriter * value:obj) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Writes the specified object to the specified <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a>.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '816', 816)" onmouseover="showTip(event, '816', 816)">
-            WriteTo(writer, helper)
-          </code>
-          <div class="tip" id="816">
-            <strong>Signature:</strong> (writer:TextWriter * helper:TemplateWriter) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Writes the specfied template helper result to the specified writer.
             </br>
         </td>
       </tr>
