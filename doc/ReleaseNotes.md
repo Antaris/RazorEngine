@@ -1,4 +1,6 @@
-﻿
+﻿### 3.5.1 / 4.0.1-beta1
+* Fixed https://github.com/Antaris/RazorEngine/issues/217
+
 ### 3.5.0 / 4.0.0-beta2
 * documentation website based on FSharp.Formatting (https://Antaris.github.io/RazorEngine), can be build locally
 * travis and appveyor build systems to automatically build on mono and windows.
