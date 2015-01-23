@@ -255,6 +255,19 @@
             var assemblyPath = compileResult.PathToAssembly;
             compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
             var type = compileResult.CompiledAssembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
+            if (type == null)
+            {
+                try
+                {
+                    compileResult.CompiledAssembly.GetTypes();
+                }
+                catch (Exception e)
+                {
+                    throw new TemplateLoadingException("Unable to load types of the laded assembly", e);
+                }
+                // if we are here we just throw
+                throw new TemplateLoadingException("We could not find the type in the compiled assembly!");
+            }
             return Tuple.Create(type, tmpDir);
         }
 
