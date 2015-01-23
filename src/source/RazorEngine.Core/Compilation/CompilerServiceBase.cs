@@ -81,6 +81,8 @@
             CodeLanguage = codeLanguage;
             MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
         #endregion
 
@@ -116,10 +118,39 @@
         /// Extension of a source file without dot ("cs" for C# files or "vb" for VB.NET files).
         /// </summary>
         public abstract string SourceFileExtension { get; }
+
+        /// <summary>
+        /// All references we used until now.
+        /// </summary>
+        private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
         
         #endregion
 
         #region Methods
+
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var assemblyName = args.Name;
+            // First try the loaded ones
+            foreach (var reference in references)
+            {
+                var assemblyReference = reference as RazorEngine.Compilation.ReferenceResolver.CompilerReference.DirectAssemblyReference;
+                if (assemblyReference != null && assemblyReference.Assembly.GetName().FullName == assemblyName)
+                {
+                    return assemblyReference.Assembly;
+                }
+            }
+            // Then try the files
+            foreach (var reference in references)
+            {
+                var fileReference = reference as RazorEngine.Compilation.ReferenceResolver.CompilerReference.FileReference;
+                if (fileReference != null && AssemblyName.GetAssemblyName(fileReference.File).FullName == assemblyName)
+                {
+                    return Assembly.LoadFrom(fileReference.File);
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Tries to create and return a unique temporary directory.
@@ -347,11 +378,17 @@
         /// <param name="context"></param>
         /// <returns></returns>
         protected IEnumerable<CompilerReference> GetAllReferences(TypeContext context) { 
-            return ReferenceResolver.GetReferences(
-                context,
-                IncludeAssemblies()
-                    .Select(RazorEngine.Compilation.ReferenceResolver.CompilerReference.From)
-                    .Concat(IncludeReferences()));
+            var references =
+                ReferenceResolver.GetReferences(
+                    context,
+                    IncludeAssemblies()
+                        .Select(RazorEngine.Compilation.ReferenceResolver.CompilerReference.From)
+                        .Concat(IncludeReferences()));
+            foreach (var reference in references)
+            {
+                this.references.Add(reference);
+                yield return reference;
+            }
         }
 
 #if !RAZOR4

@@ -152,6 +152,7 @@
     <Compile Include="Engine.cs" />
     <Compile Include="Templating\DynamicWrapperService.cs" />
     <Compile Include="Templating\IsolatedRazorEngineService.cs" />
+    <Compile Include="Templating\TemplateLoadingException.cs" />
     <Compile Include="Templating\WrapperTemplateManager.cs" />
     <Compile Include="Configuration\Xml\XmlTemplateServiceConfiguration.cs" />
     <Compile Include="Encoding.cs" />

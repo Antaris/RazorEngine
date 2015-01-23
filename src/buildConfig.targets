@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <CustomBuildName Condition=" '$(CustomBuildName)' == '' ">razor4</CustomBuildName>
+    <CustomBuildName Condition=" '$(CustomBuildName)' == '' ">net45</CustomBuildName>
     <CustomBuildNameStart>$(CustomBuildName)</CustomBuildNameStart>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
