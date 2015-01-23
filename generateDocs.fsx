@@ -166,7 +166,8 @@ let buildAllDocumentation outDocDir website_root =
           processDirectory template (Path.Combine(indir, name)) (Path.Combine(outdir, name))
           
       processDirectory template "./doc" outDir
-      processMarkdown indexTemplate "./readme.md" (outDir @@ indexName)
+      processMarkdown indexTemplate "./README.md" (outDir @@ indexName)
+      processMarkdown template "./CONTRIBUTING.md" (outDir @@ "Contributing" + (if outDirName = "html" then ".html" else ".tex"))
 
     // Build API reference from XML comments
     let referenceBinaries =
