@@ -139,6 +139,116 @@ namespace RazorEngine.Compilation.ReferenceResolver
             return this.Visit(new SelectFileVisitor(exceptionCreator));
         }
 
+        private static bool ByteArrayCompare(byte[] a1, byte[] a2)
+        {
+            if (a1 == a2)
+            {
+                return true;
+            }
+            if ((a1 != null) && (a2 != null))
+            {
+                if (a1.Length != a2.Length)
+                {
+                    return false;
+                }
+                for (int i = 0; i < a1.Length; i++)
+                {
+                    if (a1[i] != a2[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as CompilerReference;
+            if (other == null) return false;
+
+            var thisAssembly = this as DirectAssemblyReference;
+            if (thisAssembly != null)
+            {
+                var assembly = thisAssembly.Assembly;
+                var assemblyRef = other as DirectAssemblyReference;
+                if (assemblyRef != null)
+                {
+                    return assembly == assemblyRef.Assembly;
+                }
+                var fileRef = other as FileReference;
+                if (fileRef != null)
+                {
+                    return fileRef.File == assembly.Location;
+                }
+
+                return false;
+            }
+
+            var thisFile = this as FileReference;
+            if (thisFile != null)
+            {
+                var file = thisFile.File;
+                var fileRef = other as FileReference;
+                if (fileRef != null)
+                {
+                    return fileRef.File == file;
+                }
+
+                var assemblyRef = other as DirectAssemblyReference;
+                if (assemblyRef != null)
+                {
+                    return file == assemblyRef.Assembly.Location;
+                }
+            }
+            var thisByte = this as ByteArrayReference;
+            if (thisByte != null)
+            {
+                var byteRef = other as ByteArrayReference;
+                if (byteRef != null)
+                {
+                    return ByteArrayCompare(thisByte.ByteArray, byteRef.ByteArray);
+                }
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            var thisAssembly = this as DirectAssemblyReference;
+            if (thisAssembly != null)
+            {
+                if (thisAssembly.Assembly.Location != null)
+                {
+                    return thisAssembly.Assembly.Location.GetHashCode();
+                }
+                else
+                {
+                    thisAssembly.Assembly.GetHashCode();
+                }
+            }
+            var thisFile = this as FileReference;
+            if (thisFile != null)
+            {
+                return thisFile.File.GetHashCode();
+            }
+
+            var thisBytes = this as ByteArrayReference;
+            if (thisBytes != null)
+            {
+                return thisBytes.ByteArray.GetHashCode();
+            }
+
+            var thisStream = this as StreamReference;
+            if (thisStream != null)
+            {
+                return thisStream.Stream.GetHashCode();
+            }
+
+            throw new InvalidOperationException("Unknown CompilerReference!");
+        }
+
         /// <summary>
         /// A visitor for the GetFile function.
         /// </summary>
@@ -188,7 +298,7 @@ namespace RazorEngine.Compilation.ReferenceResolver
             internal FileReference(string file)
                 : base(CompilerReferenceType.FileReference)
             {
-                File = file;
+                File = new System.Uri(Path.GetFullPath(file)).LocalPath;
             }
 
             /// <summary>

@@ -274,5 +274,28 @@ namespace Test.RazorEngine
                 config.ReferenceResolver = new TestHelperReferenceResolver();
             });
         }
+
+
+        /// <summary>
+        /// Tests that we can use types from other assemblies in templates.
+        /// Even when the type can be loaded.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CheckThatWeCanUseUnknownTypesAtExecuteTime()
+        {
+            RunTestHelper(service =>
+            {
+                var template = @"
+@{
+    var t = new TestHelper.TestClass();
+}
+@t.TestProperty";
+                string compiled = service.RunCompile(template, Guid.NewGuid().ToString());
+
+            }, config =>
+            {
+                config.ReferenceResolver = new TestHelperReferenceResolver();
+            });
+        }
     }
 }
