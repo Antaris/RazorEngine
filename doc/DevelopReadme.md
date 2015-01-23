@@ -13,11 +13,11 @@ Everybody familiar with Razor can start building templates very quickly.
 
 ### Issues / Features / TODOs
 
-New features are accepted via github pull requests (so just fork away right now!): https://github.com/Anatris/RazorEngine.
+New features are accepted via github pull requests (so just fork away right now!): https://github.com/Anatris/RazorEngine
 
-Issues and TODOs are tracked on github, see: https://github.com/Anatris/RazorEngine/issues.
+Issues and TODOs are tracked on github, see: https://github.com/Anatris/RazorEngine/issues
 
-Discussions/Forums can be found here: https://groups.google.com/forum/#!forum/razorengine. 
+Discussions/Forums can be found here: https://groups.google.com/forum/#!forum/razorengine
 
 ### Versioning: 
 
