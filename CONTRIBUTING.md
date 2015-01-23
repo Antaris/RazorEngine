@@ -1,10 +1,12 @@
-﻿# RazorEngine
+﻿Thanks that you want to help! Please read the sections below.
 
-## Contributing
+## Contributing (General)
 
 Just fork the project an send a pull request to discuss and merge the changes.
 Please send the pull request against the `develop` branch as the `master` branch is used for merging releases.
 See http://nvie.com/posts/a-successful-git-branching-model/ for details.
+
+## Contributing Documentation
 
 As the documentation is generated from the repository you can help improving the documentation by editing the files in the `/doc` folder.
 You can even edit a page directly on github by clicking the edit button ([for example this page](https://github.com/Antaris/RazorEngine/blob/develop/CONTRIBUTING.md)).
