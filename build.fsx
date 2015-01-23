@@ -166,6 +166,7 @@ MyTarget "NuGet" (fun _ ->
             Description = projectDescription
             Version = version_nuget
             ReleaseNotes = toLines release.Notes
+            WorkingDir = "."
             Tags = tags
             OutputPath = outDir
             AccessKey = getBuildParamOrDefault "nugetkey" ""
@@ -184,6 +185,7 @@ MyTarget "NuGet" (fun _ ->
             Description = projectDescription
             Version = version_razor4_nuget
             ReleaseNotes = toLines release.Notes
+            WorkingDir = "."
             Tags = tags
             OutputPath = outDir
             AccessKey = getBuildParamOrDefault "nugetkey" ""
@@ -200,6 +202,7 @@ MyTarget "NuGet" (fun _ ->
             Description = projectDescription_roslyn
             Version = version_roslyn_nuget
             ReleaseNotes = toLines release.Notes
+            WorkingDir = "."
             Tags = tags
             OutputPath = outDir
             AccessKey = getBuildParamOrDefault "nugetkey" ""
@@ -217,6 +220,7 @@ MyTarget "NuGet" (fun _ ->
             Description = projectDescription_roslyn
             Version = version_roslyn_razor4_nuget
             ReleaseNotes = toLines release.Notes
+            WorkingDir = "."
             Tags = tags
             OutputPath = outDir
             AccessKey = getBuildParamOrDefault "nugetkey" ""

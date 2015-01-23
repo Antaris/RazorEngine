@@ -1,6 +1,6 @@
 # RazorEngine
 
-Documentation also available on http://antaris.github.io/RazorEngine/.
+*latest* documentation available on http://antaris.github.io/RazorEngine/.
 
 ## Build status
 
@@ -29,6 +29,8 @@ string template = "Hello @Model.Name, welcome to RazorEngine!";
 var result =
 	Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
 ```
+
+> The `RunCompile` method used here is an extension method and you need to open the `RazorEngine.Templating` namespace.
 
 The `"templateKey"` must be unique and after running the above example you can re-run the cached template with this key.
 
