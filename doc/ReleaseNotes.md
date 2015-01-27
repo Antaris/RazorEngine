@@ -1,5 +1,6 @@
 ﻿### 3.5.3 / 4.0.2-beta1
 * Fixed a SecurityException when the template is broken.
+* RazorEngine is now compatible with ImpromptuInterface (thanks kipwilliams).
 
 ### 3.5.2 / 4.0.2-beta1
 * If you use assemblies in your template which are not referenced in your hosting code 
