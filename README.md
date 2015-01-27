@@ -9,10 +9,10 @@ Develop Branch (`master`)
 [![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=master)](https://travis-ci.org/Antaris/RazorEngine)
 [![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/master?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine/branch/master)
 
-Release Branch (`release`)
+Release Branch (`releases`)
 
-[![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=release)](https://travis-ci.org/Antaris/RazorEngine)
-[![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/release?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine/branch/release)
+[![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=releases)](https://travis-ci.org/Antaris/RazorEngine)
+[![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/releases?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine/branch/releases)
 
 
 ## Quickstart

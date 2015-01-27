@@ -5,7 +5,7 @@
 Just fork the project an send a pull request to discuss and merge the changes.
 Please send the pull request against the `master` branch.
 The branching model in http://nvie.com/posts/a-successful-git-branching-model/ is used.
-However the naming differs: `develop`is called `master` and `master` is called `release` in RazorEngine.
+However the naming differs: `develop`is called `master` and `master` is called `releases` in RazorEngine.
 
 ## Contributing Documentation
 
