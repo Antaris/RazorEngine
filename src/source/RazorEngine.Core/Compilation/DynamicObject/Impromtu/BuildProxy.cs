@@ -16,11 +16,11 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
-using ImpromptuInterface.Dynamic;
-//using ImpromptuInterface.Internal.Support;
-using ImpromptuInterface.Optimization;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
+//using RazorEngine.Compilation.ImpromptuInterface.Internal.Support;
+using RazorEngine.Compilation.ImpromptuInterface.Optimization;
 
-namespace ImpromptuInterface.Build
+namespace RazorEngine.Compilation.ImpromptuInterface.Build
 {
     using System;
     using System.Collections.Generic;
@@ -1665,7 +1665,7 @@ namespace ImpromptuInterface.Build
                 {
 
                     var access = AssemblyBuilderAccess.Run;
-                    var tPlainName = "ImpromptuInterfaceDynamicAssembly";
+                    var tPlainName = "RazorEngine.Compilation.ImpromptuInterfaceDynamicAssembly";
 
 
                     GenerateAssembly(tPlainName, access, ref _ab, ref _builder);

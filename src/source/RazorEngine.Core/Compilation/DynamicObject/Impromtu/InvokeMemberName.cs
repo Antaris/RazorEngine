@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
 
 
@@ -14,7 +14,7 @@ namespace ImpromptuInterface
     public abstract class String_OR_InvokeMemberName
     {
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="ImpromptuInterface.String_OR_InvokeMemberName"/>.
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="RazorEngine.Compilation.ImpromptuInterface.String_OR_InvokeMemberName"/>.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>The result of the conversion.</returns>
@@ -63,7 +63,7 @@ namespace ImpromptuInterface
           new Func<string, InvokeMemberName>(n => new InvokeMemberName(n, true));
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="ImpromptuInterface.InvokeMemberName"/>.
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="RazorEngine.Compilation.ImpromptuInterface.InvokeMemberName"/>.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>The result of the conversion.</returns>

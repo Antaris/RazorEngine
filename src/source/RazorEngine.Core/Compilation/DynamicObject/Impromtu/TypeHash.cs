@@ -19,7 +19,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ImpromptuInterface.Build
+namespace RazorEngine.Compilation.ImpromptuInterface.Build
 {
     /// <summary>
     /// Type that Encompasses Hashing a group of Types in various ways

@@ -1,8 +1,8 @@
 ﻿namespace RazorEngine.Compilation
 {
-    using ImpromptuInterface;
-    using ImpromptuInterface.Dynamic;
-    using ImpromptuInterface.Optimization;
+    using RazorEngine.Compilation.ImpromptuInterface;
+    using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
+    using RazorEngine.Compilation.ImpromptuInterface.Optimization;
     using Microsoft.CSharp.RuntimeBinder;
     using System;
     using System.Collections;
@@ -248,7 +248,7 @@
                 }
                 else
                 {
-                    var newType = ImpromptuInterface.Build.BuildProxy.BuildType(
+                    var newType = RazorEngine.Compilation.ImpromptuInterface.Build.BuildProxy.BuildType(
                         typeof(RazorDynamicObject), ints.First(), ints.Skip(1).ToArray());
                     return newType;
                 }

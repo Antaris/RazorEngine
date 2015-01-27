@@ -4,13 +4,13 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using ImpromptuInterface.Build;
-using ImpromptuInterface.Dynamic;
-using ImpromptuInterface.Internal;
+using RazorEngine.Compilation.ImpromptuInterface.Build;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
+using RazorEngine.Compilation.ImpromptuInterface.Internal;
 using Microsoft.CSharp.RuntimeBinder;
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
-namespace ImpromptuInterface.Optimization
+namespace RazorEngine.Compilation.ImpromptuInterface.Optimization
 {
 
     internal class DummmyNull

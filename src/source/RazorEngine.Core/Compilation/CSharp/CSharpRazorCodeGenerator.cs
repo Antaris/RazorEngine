@@ -59,7 +59,7 @@ namespace RazorEngine.Compilation.CSharp
         public override void VisitError(RazorError err)
         {
             if (StrictMode)
-                throw new TemplateParsingException(err);
+                throw new TemplateParsingException(err.Message, err.Location.CharacterIndex, err.Location.LineIndex);
         }
         #endregion
     }

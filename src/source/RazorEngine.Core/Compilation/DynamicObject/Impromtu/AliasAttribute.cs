@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
     /// <summary>
     /// Alias to swap method/property/event call name invoked on original

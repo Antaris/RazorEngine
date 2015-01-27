@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ImpromptuInterface.Dynamic
+namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
 {
     /// <summary>
     /// This interface can be used on your custom dynamic objects if you want to know the interface you are impromptu-ly implementing.

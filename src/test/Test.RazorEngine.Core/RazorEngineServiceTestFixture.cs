@@ -1,4 +1,4 @@
-﻿using ImpromptuInterface;
+﻿using RazorEngine.Compilation.ImpromptuInterface;
 using NUnit.Framework;
 using RazorEngine.Compilation;
 using RazorEngine.Compilation.ReferenceResolver;
@@ -295,6 +295,27 @@ namespace Test.RazorEngine
             }, config =>
             {
                 config.ReferenceResolver = new TestHelperReferenceResolver();
+            });
+        }
+
+        /// <summary>
+        /// Tests that we fail with the right exception
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CheckParsingFails()
+        {
+            RunTestHelper(service =>
+            {
+                // Tag must be closed!
+                var template = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+@if (true)
+{
+    <Compile>
+}";
+                Assert.Throws<TemplateParsingException>(() =>
+                {
+                    string compiled = service.RunCompile(template, Guid.NewGuid().ToString());
+                });
             });
         }
     }

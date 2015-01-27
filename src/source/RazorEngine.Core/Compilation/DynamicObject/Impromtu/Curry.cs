@@ -18,11 +18,11 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
-using ImpromptuInterface.Dynamic;
-using ImpromptuInterface.Optimization;
-//using ImpromptuInterface.Internal.Support;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
+using RazorEngine.Compilation.ImpromptuInterface.Optimization;
+//using RazorEngine.Compilation.ImpromptuInterface.Internal.Support;
 using System.Reflection;
-namespace ImpromptuInterface.Internal
+namespace RazorEngine.Compilation.ImpromptuInterface.Internal
 {
 #if DISABLED
     /// <summary>

@@ -4,15 +4,15 @@
 
 ## Build status
 
-Develop Branch
-
-[![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=develop)](https://travis-ci.org/Antaris/RazorEngine)
-[![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine)
-
-Master Branch
+Develop Branch (`master`)
 
 [![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=master)](https://travis-ci.org/Antaris/RazorEngine)
 [![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/master?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine/branch/master)
+
+Release Branch (`releases`)
+
+[![Build Status](https://travis-ci.org/Antaris/RazorEngine.svg?branch=releases)](https://travis-ci.org/Antaris/RazorEngine)
+[![Build status](https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/releases?svg=true)](https://ci.appveyor.com/project/Antaris/razorengine/branch/releases)
 
 
 ## Quickstart
@@ -167,6 +167,8 @@ class MyIReferenceResolver : IReferenceResolver {
 			yield return reference;
 		
 		// TypeContext gives you some context for the compilation (which templates, which namespaces and types)
+		// WARNING: If these types are also required for execution they will eventually be loaded by RazorEngine
+		// And therefore added to the above list
 		yield return CompilerReference.From("Path-to-my-custom-assembly"); // file path (string)
 		yield return CompilerReference.From(typeof(MyType).Assembly); // Assembly
 		yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)

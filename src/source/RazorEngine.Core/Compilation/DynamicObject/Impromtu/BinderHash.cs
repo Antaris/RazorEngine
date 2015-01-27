@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ImpromptuInterface.Optimization
+namespace RazorEngine.Compilation.ImpromptuInterface.Optimization
 {
     internal class BinderHash
     {
