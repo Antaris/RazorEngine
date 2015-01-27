@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ImpromptuInterface.InvokeExt
+namespace RazorEngine.Compilation.ImpromptuInterface.InvokeExt
 {
     /// <summary>
     /// Various extension methods for add

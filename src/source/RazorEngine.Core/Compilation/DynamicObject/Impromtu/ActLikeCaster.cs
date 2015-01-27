@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using ImpromptuInterface.Dynamic;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
     /// <summary>
     /// Extends the <see cref="ImpromptuForwarder"/> class to allow implicit

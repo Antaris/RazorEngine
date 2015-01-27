@@ -17,7 +17,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ImpromptuInterface.Optimization
+namespace RazorEngine.Compilation.ImpromptuInterface.Optimization
 {
     internal class BareBonesList<T> : ICollection<T>
     {

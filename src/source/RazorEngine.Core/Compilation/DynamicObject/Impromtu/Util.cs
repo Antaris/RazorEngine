@@ -23,12 +23,12 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Threading;
-using ImpromptuInterface.Dynamic;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
 using Microsoft.CSharp.RuntimeBinder;
 
 
 
-namespace ImpromptuInterface.Optimization
+namespace RazorEngine.Compilation.ImpromptuInterface.Optimization
 {
     /// <summary>
     /// Utility Class

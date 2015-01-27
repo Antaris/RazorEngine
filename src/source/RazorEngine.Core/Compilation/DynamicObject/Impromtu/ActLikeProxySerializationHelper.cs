@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Security;
 using System.Text;
 
-namespace ImpromptuInterface.Build
+namespace RazorEngine.Compilation.ImpromptuInterface.Build
 {
 #if !SILVERLIGHT
 

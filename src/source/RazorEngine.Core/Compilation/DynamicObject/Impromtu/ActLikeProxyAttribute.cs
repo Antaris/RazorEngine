@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using ImpromptuInterface.Internal.Support;
+//using RazorEngine.Compilation.ImpromptuInterface.Internal.Support;
 
-namespace ImpromptuInterface.Build
+namespace RazorEngine.Compilation.ImpromptuInterface.Build
 {
     /// <summary>
     /// Meta info describing proxy usage. Can be used to preload proxy.

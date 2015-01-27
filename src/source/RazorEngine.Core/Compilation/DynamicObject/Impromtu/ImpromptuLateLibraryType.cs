@@ -5,10 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-//using ImpromptuInterface.Internal.Support;
-using ImpromptuInterface.Optimization;
+//using RazorEngine.Compilation.ImpromptuInterface.Internal.Support;
+using RazorEngine.Compilation.ImpromptuInterface.Optimization;
 
-namespace ImpromptuInterface.Dynamic
+namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
 {
     /// <summary>
     /// Late bind types from libraries not not at compile type

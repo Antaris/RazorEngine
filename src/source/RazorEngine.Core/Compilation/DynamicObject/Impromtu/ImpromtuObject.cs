@@ -18,11 +18,11 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Runtime.Serialization;
-using ImpromptuInterface.Build;
-//using ImpromptuInterface.Internal.Support;
+using RazorEngine.Compilation.ImpromptuInterface.Build;
+//using RazorEngine.Compilation.ImpromptuInterface.Internal.Support;
 using System.Reflection;
 using System.Security;
-namespace ImpromptuInterface.Dynamic
+namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
 {
     interface ICustomTypeProvider { }
 

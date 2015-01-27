@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ImpromptuInterface.Dynamic;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
 
 
@@ -31,7 +31,7 @@ namespace ImpromptuInterface
     public class StaticContext : InvokeContext
     {
         /// <summary>
-        /// Performs an explicit conversion from <see cref="System.Type"/> to <see cref="ImpromptuInterface.StaticContext"/>.
+        /// Performs an explicit conversion from <see cref="System.Type"/> to <see cref="RazorEngine.Compilation.ImpromptuInterface.StaticContext"/>.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The result of the conversion.</returns>

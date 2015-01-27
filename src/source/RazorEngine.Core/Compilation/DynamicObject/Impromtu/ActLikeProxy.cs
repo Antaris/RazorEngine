@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
-using ImpromptuInterface;
-using ImpromptuInterface.Dynamic;
-//using ImpromptuInterface.Internal.Support;
-using ImpromptuInterface.Optimization;
+using RazorEngine.Compilation.ImpromptuInterface;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
+//using RazorEngine.Compilation.ImpromptuInterface.Internal.Support;
+using RazorEngine.Compilation.ImpromptuInterface.Optimization;
 using System.Security;
 
-namespace ImpromptuInterface.Build
+namespace RazorEngine.Compilation.ImpromptuInterface.Build
 {
     /// <summary>
     /// This interface can be used to define your own custom proxy if you preload it.
@@ -45,7 +45,7 @@ namespace ImpromptuInterface.Build
 
 
     /// <summary>
-    /// Base class of Emited ProxiesC:\Documents and Settings\jayt\My Documents\Visual Studio 2010\Projects\impromptuinterface\ImpromptuInterface\Optimization\
+    /// Base class of Emited ProxiesC:\Documents and Settings\jayt\My Documents\Visual Studio 2010\Projects\RazorEngine.Compilation.ImpromptuInterface\RazorEngine.Compilation.ImpromptuInterface\Optimization\
     /// </summary>
     [Serializable]
     public abstract class ActLikeProxy : ImpromptuForwarder, IActLikeProxyInitialize, ISerializable

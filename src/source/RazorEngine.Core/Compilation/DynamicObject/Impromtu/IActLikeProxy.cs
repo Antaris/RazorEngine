@@ -13,7 +13,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
     /// <summary>
     /// This interface can be used to access the original content of your emitted type;

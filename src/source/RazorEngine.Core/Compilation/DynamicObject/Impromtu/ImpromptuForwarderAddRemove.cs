@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ImpromptuInterface.Dynamic
+namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
 {
     class ImpromptuForwarderAddRemove
     {

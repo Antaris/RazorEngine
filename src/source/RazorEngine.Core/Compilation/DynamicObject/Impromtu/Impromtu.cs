@@ -20,14 +20,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using ImpromptuInterface.Build;
-using ImpromptuInterface.Dynamic;
-using ImpromptuInterface.Internal;
-using ImpromptuInterface.InvokeExt;
-using ImpromptuInterface.Optimization;
+using RazorEngine.Compilation.ImpromptuInterface.Build;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
+using RazorEngine.Compilation.ImpromptuInterface.Internal;
+using RazorEngine.Compilation.ImpromptuInterface.InvokeExt;
+using RazorEngine.Compilation.ImpromptuInterface.Optimization;
 using Microsoft.CSharp.RuntimeBinder;
 using System.Text.RegularExpressions;
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
     using System;
 

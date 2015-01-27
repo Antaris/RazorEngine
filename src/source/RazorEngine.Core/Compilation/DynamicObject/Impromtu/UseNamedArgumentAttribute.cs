@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
     /// <summary>
     /// Attribute for Methods and Parameters on Custom Interfaces designed to be used with a dynamic implementation
