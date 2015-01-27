@@ -18,10 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using ImpromptuInterface.Build;
+using RazorEngine.Compilation.ImpromptuInterface.Build;
 using System.Reflection;
 
-namespace ImpromptuInterface.Optimization
+namespace RazorEngine.Compilation.ImpromptuInterface.Optimization
 {
 
 

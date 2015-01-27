@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
     /// <summary>
     /// Attribute on Inteface to stop proxy from recursively

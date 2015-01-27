@@ -17,9 +17,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ImpromptuInterface.Dynamic;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
 
-namespace ImpromptuInterface
+namespace RazorEngine.Compilation.ImpromptuInterface
 {
     /// <summary>
     /// Use for Named arguments passed to InvokeMethods
@@ -28,7 +28,7 @@ namespace ImpromptuInterface
     public class InvokeArg
     {
         /// <summary>
-        /// Performs an explicit conversion from <see cref="KeyValuePair{String,Object}"/> to <see cref="ImpromptuInterface.InvokeArg"/>.
+        /// Performs an explicit conversion from <see cref="KeyValuePair{String,Object}"/> to <see cref="RazorEngine.Compilation.ImpromptuInterface.InvokeArg"/>.
         /// </summary>
         /// <param name="pair">The pair.</param>
         /// <returns>The result of the conversion.</returns>

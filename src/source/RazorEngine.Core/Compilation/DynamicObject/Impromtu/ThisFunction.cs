@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ImpromptuInterface.Dynamic
+namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
 {
     /// <summary>
     /// Special Delegate used to make impromptu object methods first parameter is this.

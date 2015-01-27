@@ -18,7 +18,7 @@ using System;
 using System.Linq;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace ImpromptuInterface.Dynamic
+namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
 {
     /// <summary>
     /// Type of Invocation
