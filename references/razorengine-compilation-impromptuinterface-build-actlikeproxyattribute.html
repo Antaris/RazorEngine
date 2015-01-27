@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>ImpromptuForwarder - RazorEngine</title>
+    <title>ActLikeProxyAttribute - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,13 @@
 
 
 
-<h1>ImpromptuForwarder </h1>
+<h1>ActLikeProxyAttribute </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Proxies Calls allows subclasser to override do extra actions before or after base invocation
+            Meta info describing proxy usage. Can be used to preload proxy.
             </br></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
@@ -55,33 +55,32 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
-            CallTarget
+          <code onmouseout="hideTip(event, '39', 39)" onmouseover="showTip(event, '39', 39)">
+            Context()
           </code>
-          <div class="tip" id="16">
-            <strong>Signature:</strong> obj<br />
-              <strong>Modifiers:</strong> abstract<br />
+          <div class="tip" id="39">
+            <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Gets the call target.
+            Gets or sets the context.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '17', 17)" onmouseover="showTip(event, '17', 17)">
-            Target()
+          <code onmouseout="hideTip(event, '40', 40)" onmouseover="showTip(event, '40', 40)">
+            Interfaces()
           </code>
-          <div class="tip" id="17">
+          <div class="tip" id="40">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Gets or sets the target.
+            Gets or sets the interfaces.
             </br>
         </td>
       </tr>

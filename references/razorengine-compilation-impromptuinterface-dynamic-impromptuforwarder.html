@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>InvokeArg - RazorEngine</title>
+    <title>ImpromptuForwarder - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,13 @@
 
 
 
-<h1>InvokeArg </h1>
+<h1>ImpromptuForwarder </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Use for Named arguments passed to InvokeMethods
+            Proxies Calls allows subclasser to override do extra actions before or after base invocation
             </br></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
@@ -55,32 +55,33 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '3', 3)" onmouseover="showTip(event, '3', 3)">
-            Name()
+          <code onmouseout="hideTip(event, '44', 44)" onmouseover="showTip(event, '44', 44)">
+            CallTarget
           </code>
-          <div class="tip" id="3">
-            <strong>Signature:</strong> unit -&gt; unit<br />
+          <div class="tip" id="44">
+            <strong>Signature:</strong> obj<br />
+              <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Gets or sets the argument name.
+            Gets the call target.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '4', 4)" onmouseover="showTip(event, '4', 4)">
-            Value()
+          <code onmouseout="hideTip(event, '45', 45)" onmouseover="showTip(event, '45', 45)">
+            Target()
           </code>
-          <div class="tip" id="4">
+          <div class="tip" id="45">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Gets or sets the argument value.
+            Gets or sets the target.
             </br>
         </td>
       </tr>

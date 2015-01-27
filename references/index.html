@@ -39,14 +39,14 @@
 <h1>RazorEngine</h1>
 
 <h2><a name="Overview" class="anchor" href="#Overview">Overview</a></h2>
-    <a href="#ImpromptuInterface">ImpromptuInterface</a><br />
-    <a href="#ImpromptuInterface.Build">ImpromptuInterface.Build</a><br />
-    <a href="#ImpromptuInterface.Dynamic">ImpromptuInterface.Dynamic</a><br />
-    <a href="#ImpromptuInterface.InvokeExt">ImpromptuInterface.InvokeExt</a><br />
-    <a href="#ImpromptuInterface.Optimization">ImpromptuInterface.Optimization</a><br />
     <a href="#RazorEngine">RazorEngine</a><br />
     <a href="#RazorEngine.Compilation">RazorEngine.Compilation</a><br />
     <a href="#RazorEngine.Compilation.CSharp">RazorEngine.Compilation.CSharp</a><br />
+    <a href="#RazorEngine.Compilation.ImpromptuInterface">RazorEngine.Compilation.ImpromptuInterface</a><br />
+    <a href="#RazorEngine.Compilation.ImpromptuInterface.Build">RazorEngine.Compilation.ImpromptuInterface.Build</a><br />
+    <a href="#RazorEngine.Compilation.ImpromptuInterface.Dynamic">RazorEngine.Compilation.ImpromptuInterface.Dynamic</a><br />
+    <a href="#RazorEngine.Compilation.ImpromptuInterface.InvokeExt">RazorEngine.Compilation.ImpromptuInterface.InvokeExt</a><br />
+    <a href="#RazorEngine.Compilation.ImpromptuInterface.Optimization">RazorEngine.Compilation.ImpromptuInterface.Optimization</a><br />
     <a href="#RazorEngine.Compilation.Inspectors">RazorEngine.Compilation.Inspectors</a><br />
     <a href="#RazorEngine.Compilation.ReferenceResolver">RazorEngine.Compilation.ReferenceResolver</a><br />
     <a href="#RazorEngine.Compilation.VisualBasic">RazorEngine.Compilation.VisualBasic</a><br />
@@ -58,577 +58,6 @@
     <a href="#RazorEngine.Templating.Parallel">RazorEngine.Templating.Parallel</a><br />
     <a href="#RazorEngine.Text">RazorEngine.Text</a><br />
 
-    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface" class="anchor" href="#ImpromptuInterface">ImpromptuInterface Namespace</a></h2>
-    <div>
-        <table class="table table-bordered type-list">
-    <thead>
-      <tr><td>Type</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-actlikecaster.html">ActLikeCaster</a>
-          </td>
-          <td class="xmldoc">
-            Extends the <a href="impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a> class to allow implicit
-            and explicit conversions to any interface type.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-aliasattribute.html">AliasAttribute</a>
-          </td>
-          <td class="xmldoc">
-            Alias to swap method/property/event call name invoked on original
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-iactlikeproxy.html">IActLikeProxy</a>
-          </td>
-          <td class="xmldoc">
-            This interface can be used to access the original content of your emitted type;
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-impromptu.html">Impromptu</a>
-          </td>
-          <td class="xmldoc">
-            Main API
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-invokearg-1.html">InvokeArg<'T></a>
-          </td>
-          <td class="xmldoc">
-            InvokeArg that makes it easier to Cast from any IDictionaryValue
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-invokearg.html">InvokeArg</a>
-          </td>
-          <td class="xmldoc">
-            Use for Named arguments passed to InvokeMethods
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-invokecontext.html">InvokeContext</a>
-          </td>
-          <td class="xmldoc">
-            Object that stores a context with a target for dynamic invocation
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-invokemembername.html">InvokeMemberName</a>
-          </td>
-          <td class="xmldoc">
-            Name of Member with associated Generic parameterss
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-nonrecursiveinterfaceattribute.html">NonRecursiveInterfaceAttribute</a>
-          </td>
-          <td class="xmldoc">
-            Attribute on Inteface to stop proxy from recursively
-            proxying other interfaces
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-staticcontext.html">StaticContext</a>
-          </td>
-          <td class="xmldoc">
-            Specific version of InvokeContext which declares a type to be used to invoke static methods.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-string_or_invokemembername.html">String_OR_InvokeMemberName</a>
-          </td>
-          <td class="xmldoc">
-            String or InvokeMemberName
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-usenamedargumentattribute.html">UseNamedArgumentAttribute</a>
-          </td>
-          <td class="xmldoc">
-            Attribute for Methods and Parameters on Custom Interfaces designed to be used with a dynamic implementation
-            </br></td>
-        </tr>
-    </tbody>
-  </table>
-
-    </div>
-    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.Build" class="anchor" href="#ImpromptuInterface.Build">ImpromptuInterface.Build Namespace</a></h2>
-    <div>
-        <table class="table table-bordered type-list">
-    <thead>
-      <tr><td>Type</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-build-actlikeproxy.html">ActLikeProxy</a>
-          </td>
-          <td class="xmldoc">
-            Base class of Emited ProxiesC:\Documents and Settings\jayt\My Documents\Visual Studio 2010\Projects\impromptuinterface\ImpromptuInterface\Optimization\
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-build-actlikeproxyattribute.html">ActLikeProxyAttribute</a>
-          </td>
-          <td class="xmldoc">
-            Meta info describing proxy usage. Can be used to preload proxy.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-build-actlikeproxyserializationhelper.html">ActLikeProxySerializationHelper</a>
-          </td>
-          <td class="xmldoc">
-            Support Deserializing the proxy since on separate runs of an executable
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-build-buildproxy.html">BuildProxy</a>
-          </td>
-          <td class="xmldoc">
-             Does most of the work buiding and caching proxies
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-build-emitextensions.html">EmitExtensions</a>
-          </td>
-          <td class="xmldoc">
-             Extension Methods that make emiting code easier and easier to read
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-build-iactlikeproxyinitialize.html">IActLikeProxyInitialize</a>
-          </td>
-          <td class="xmldoc">
-            This interface can be used to define your own custom proxy if you preload it.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-build-typehash.html">TypeHash</a>
-          </td>
-          <td class="xmldoc">
-            Type that Encompasses Hashing a group of Types in various ways
-            </br></td>
-        </tr>
-    </tbody>
-  </table>
-
-    </div>
-    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.Dynamic" class="anchor" href="#ImpromptuInterface.Dynamic">ImpromptuInterface.Dynamic Namespace</a></h2>
-    <div>
-        <table class="table table-bordered type-list">
-    <thead>
-      <tr><td>Type</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-iactlike.html">IActLike</a>
-          </td>
-          <td class="xmldoc">
-            This interface can be used on your custom dynamic objects if you want impromptu interfaces without casting to object or using the static method syntax of ActLike.
-            Also if you want to change the behavior for slightly for specific types as this will take precident when using the dynamic keyword or your specific type is known staticly.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-idynamicknowlike.html">IDynamicKnowLike</a>
-          </td>
-          <td class="xmldoc">
-            This interface can be used on your custom dynamic objects if you want to know the interface you are impromptu-ly implementing.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-iforwarder.html">IForwarder</a>
-          </td>
-          <td class="xmldoc">
-            Get access to target of original proxy
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a>
-          </td>
-          <td class="xmldoc">
-            Proxies Calls allows subclasser to override do extra actions before or after base invocation
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-impromptulatelibrarytype.html">ImpromptuLateLibraryType</a>
-          </td>
-          <td class="xmldoc">
-            Late bind types from libraries not not at compile type
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-impromptuobject.html">ImpromptuObject</a>
-          </td>
-          <td class="xmldoc">
-            Dynamic Object that knows about the Impromtu Interface return types;
-            Override Typical Dynamic Object methods, and use TypeForName to get the return type of an interface member.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-invocation.html">Invocation</a>
-          </td>
-          <td class="xmldoc">
-            Storable representation of an invocation without the target
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-invocationkind.html">InvocationKind</a>
-          </td>
-          <td class="xmldoc">
-            Type of Invocation
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction.html">ThisAction</a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-1.html">ThisAction<'T1></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-2.html">ThisAction<'T1, 'T2></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-3.html">ThisAction<'T1, 'T2, 'T3></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-4.html">ThisAction<'T1, 'T2, 'T3, 'T4></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-5.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-6.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-7.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-8.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-9.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-10.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-11.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-12.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-13.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-14.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-15.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisaction-16.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'T16></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisdelegate.html">ThisDelegate</a>
-          </td>
-          <td class="xmldoc">
-            Extension method for Dealing with Special Delegate Type
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-1.html">ThisFunc<'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-2.html">ThisFunc<'T1, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-3.html">ThisFunc<'T1, 'T2, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-4.html">ThisFunc<'T1, 'T2, 'T3, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-5.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-6.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-7.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-8.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-9.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-10.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-11.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-12.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-13.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-14.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-15.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-16.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-dynamic-thisfunc-17.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'T16, 'TResult></a>
-          </td>
-          <td class="xmldoc">
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></td>
-        </tr>
-    </tbody>
-  </table>
-
-    </div>
-    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.InvokeExt" class="anchor" href="#ImpromptuInterface.InvokeExt">ImpromptuInterface.InvokeExt Namespace</a></h2>
-    <div>
-        <table class="table table-bordered type-list">
-    <thead>
-      <tr><td>Type</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-invokeext-invokeext.html">InvokeExt</a>
-          </td>
-          <td class="xmldoc">
-            Various extension methods for add
-            </br></td>
-        </tr>
-    </tbody>
-  </table>
-
-    </div>
-    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="ImpromptuInterface.Optimization" class="anchor" href="#ImpromptuInterface.Optimization">ImpromptuInterface.Optimization Namespace</a></h2>
-    <div>
-        <table class="table table-bordered type-list">
-    <thead>
-      <tr><td>Type</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td class="type-name">
-            <a href="impromptuinterface-optimization-util.html">Util</a>
-          </td>
-          <td class="xmldoc">
-            Utility Class
-            </br></td>
-        </tr>
-    </tbody>
-  </table>
-
-    </div>
     <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine Namespace</a></h2>
     <div>
         <table class="table table-bordered type-list">
@@ -839,6 +268,577 @@
           </td>
           <td class="xmldoc">
             Provides a razor code language that supports the C# language.
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Compilation.ImpromptuInterface" class="anchor" href="#RazorEngine.Compilation.ImpromptuInterface">RazorEngine.Compilation.ImpromptuInterface Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-actlikecaster.html">ActLikeCaster</a>
+          </td>
+          <td class="xmldoc">
+            Extends the <a href="razorengine-compilation-impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a> class to allow implicit
+            and explicit conversions to any interface type.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-aliasattribute.html">AliasAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Alias to swap method/property/event call name invoked on original
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-iactlikeproxy.html">IActLikeProxy</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used to access the original content of your emitted type;
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-impromptu.html">Impromptu</a>
+          </td>
+          <td class="xmldoc">
+            Main API
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-invokearg-1.html">InvokeArg<'T></a>
+          </td>
+          <td class="xmldoc">
+            InvokeArg that makes it easier to Cast from any IDictionaryValue
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-invokearg.html">InvokeArg</a>
+          </td>
+          <td class="xmldoc">
+            Use for Named arguments passed to InvokeMethods
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-invokecontext.html">InvokeContext</a>
+          </td>
+          <td class="xmldoc">
+            Object that stores a context with a target for dynamic invocation
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-invokemembername.html">InvokeMemberName</a>
+          </td>
+          <td class="xmldoc">
+            Name of Member with associated Generic parameterss
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-nonrecursiveinterfaceattribute.html">NonRecursiveInterfaceAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Attribute on Inteface to stop proxy from recursively
+            proxying other interfaces
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-staticcontext.html">StaticContext</a>
+          </td>
+          <td class="xmldoc">
+            Specific version of InvokeContext which declares a type to be used to invoke static methods.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-string_or_invokemembername.html">String_OR_InvokeMemberName</a>
+          </td>
+          <td class="xmldoc">
+            String or InvokeMemberName
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-usenamedargumentattribute.html">UseNamedArgumentAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Attribute for Methods and Parameters on Custom Interfaces designed to be used with a dynamic implementation
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Compilation.ImpromptuInterface.Build" class="anchor" href="#RazorEngine.Compilation.ImpromptuInterface.Build">RazorEngine.Compilation.ImpromptuInterface.Build Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-build-actlikeproxy.html">ActLikeProxy</a>
+          </td>
+          <td class="xmldoc">
+            Base class of Emited ProxiesC:\Documents and Settings\jayt\My Documents\Visual Studio 2010\Projects\RazorEngine.Compilation.ImpromptuInterface\RazorEngine.Compilation.ImpromptuInterface\Optimization\
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-build-actlikeproxyattribute.html">ActLikeProxyAttribute</a>
+          </td>
+          <td class="xmldoc">
+            Meta info describing proxy usage. Can be used to preload proxy.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-build-actlikeproxyserializationhelper.html">ActLikeProxySerializationHelper</a>
+          </td>
+          <td class="xmldoc">
+            Support Deserializing the proxy since on separate runs of an executable
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-build-buildproxy.html">BuildProxy</a>
+          </td>
+          <td class="xmldoc">
+             Does most of the work buiding and caching proxies
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-build-emitextensions.html">EmitExtensions</a>
+          </td>
+          <td class="xmldoc">
+             Extension Methods that make emiting code easier and easier to read
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-build-iactlikeproxyinitialize.html">IActLikeProxyInitialize</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used to define your own custom proxy if you preload it.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-build-typehash.html">TypeHash</a>
+          </td>
+          <td class="xmldoc">
+            Type that Encompasses Hashing a group of Types in various ways
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Compilation.ImpromptuInterface.Dynamic" class="anchor" href="#RazorEngine.Compilation.ImpromptuInterface.Dynamic">RazorEngine.Compilation.ImpromptuInterface.Dynamic Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-iactlike.html">IActLike</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used on your custom dynamic objects if you want impromptu interfaces without casting to object or using the static method syntax of ActLike.
+            Also if you want to change the behavior for slightly for specific types as this will take precident when using the dynamic keyword or your specific type is known staticly.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-idynamicknowlike.html">IDynamicKnowLike</a>
+          </td>
+          <td class="xmldoc">
+            This interface can be used on your custom dynamic objects if you want to know the interface you are impromptu-ly implementing.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-iforwarder.html">IForwarder</a>
+          </td>
+          <td class="xmldoc">
+            Get access to target of original proxy
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a>
+          </td>
+          <td class="xmldoc">
+            Proxies Calls allows subclasser to override do extra actions before or after base invocation
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-impromptulatelibrarytype.html">ImpromptuLateLibraryType</a>
+          </td>
+          <td class="xmldoc">
+            Late bind types from libraries not not at compile type
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-impromptuobject.html">ImpromptuObject</a>
+          </td>
+          <td class="xmldoc">
+            Dynamic Object that knows about the Impromtu Interface return types;
+            Override Typical Dynamic Object methods, and use TypeForName to get the return type of an interface member.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-invocation.html">Invocation</a>
+          </td>
+          <td class="xmldoc">
+            Storable representation of an invocation without the target
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-invocationkind.html">InvocationKind</a>
+          </td>
+          <td class="xmldoc">
+            Type of Invocation
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction.html">ThisAction</a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-1.html">ThisAction<'T1></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-2.html">ThisAction<'T1, 'T2></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-3.html">ThisAction<'T1, 'T2, 'T3></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-4.html">ThisAction<'T1, 'T2, 'T3, 'T4></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-5.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-6.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-7.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-8.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-9.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-10.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-11.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-12.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-13.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-14.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-15.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisaction-16.html">ThisAction<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'T16></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisdelegate.html">ThisDelegate</a>
+          </td>
+          <td class="xmldoc">
+            Extension method for Dealing with Special Delegate Type
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-1.html">ThisFunc<'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-2.html">ThisFunc<'T1, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-3.html">ThisFunc<'T1, 'T2, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-4.html">ThisFunc<'T1, 'T2, 'T3, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-5.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-6.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-7.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-8.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-9.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-10.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-11.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-12.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-13.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-14.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-15.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-16.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-dynamic-thisfunc-17.html">ThisFunc<'T1, 'T2, 'T3, 'T4, 'T5, 'T6, 'T7, 'T8, 'T9, 'T10, 'T11, 'T12, 'T13, 'T14, 'T15, 'T16, 'TResult></a>
+          </td>
+          <td class="xmldoc">
+            Special Delegate used to make impromptu object methods first parameter is this.
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Compilation.ImpromptuInterface.InvokeExt" class="anchor" href="#RazorEngine.Compilation.ImpromptuInterface.InvokeExt">RazorEngine.Compilation.ImpromptuInterface.InvokeExt Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-invokeext-invokeext.html">InvokeExt</a>
+          </td>
+          <td class="xmldoc">
+            Various extension methods for add
+            </br></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+    <h2><a href="#Overview"><img src="https://Antaris.github.io/RazorEngine/content/img/back_to_top.png" alt="Back to top" /></a> <a name="RazorEngine.Compilation.ImpromptuInterface.Optimization" class="anchor" href="#RazorEngine.Compilation.ImpromptuInterface.Optimization">RazorEngine.Compilation.ImpromptuInterface.Optimization Namespace</a></h2>
+    <div>
+        <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-compilation-impromptuinterface-optimization-util.html">Util</a>
+          </td>
+          <td class="xmldoc">
+            Utility Class
             </br></td>
         </tr>
     </tbody>

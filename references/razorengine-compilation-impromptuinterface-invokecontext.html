@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>IDynamicKnowLike - RazorEngine</title>
+    <title>InvokeContext - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,13 @@
 
 
 
-<h1>IDynamicKnowLike </h1>
+<h1>InvokeContext </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            This interface can be used on your custom dynamic objects if you want to know the interface you are impromptu-ly implementing.
+            Object that stores a context with a target for dynamic invocation
             </br></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
@@ -55,34 +55,48 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
-            KnownInterfaces()
+          <code onmouseout="hideTip(event, '33', 33)" onmouseover="showTip(event, '33', 33)">
+            Context()
           </code>
-          <div class="tip" id="13">
+          <div class="tip" id="33">
             <strong>Signature:</strong> unit -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-             Property used to pass interface information to proxied object
+            Gets or sets the context.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '14', 14)" onmouseover="showTip(event, '14', 14)">
-            KnownPropertySpec()
+          <code onmouseout="hideTip(event, '34', 34)" onmouseover="showTip(event, '34', 34)">
+            StaticContext()
           </code>
-          <div class="tip" id="14">
+          <div class="tip" id="34">
             <strong>Signature:</strong> unit -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Sets the known property spec.
+            Gets or sets a value indicating whether [static context].
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '35', 35)" onmouseover="showTip(event, '35', 35)">
+            Target()
+          </code>
+          <div class="tip" id="35">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets or sets the target.
             </br>
         </td>
       </tr>

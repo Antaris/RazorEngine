@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>IActLikeProxy - RazorEngine</title>
+    <title>ImpromptuLateLibraryType - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,13 @@
 
 
 
-<h1>IActLikeProxy </h1>
+<h1>ImpromptuLateLibraryType </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            This interface can be used to access the original content of your emitted type;
+            Late bind types from libraries not not at compile type
             </br></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
@@ -55,17 +55,49 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '2', 2)" onmouseover="showTip(event, '2', 2)">
-            Original
+          <code onmouseout="hideTip(event, '46', 46)" onmouseover="showTip(event, '46', 46)">
+            CallTarget
           </code>
-          <div class="tip" id="2">
+          <div class="tip" id="46">
             <strong>Signature:</strong> obj<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-             Returns the proxied object
+            The call target.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '47', 47)" onmouseover="showTip(event, '47', 47)">
+            IsAvailable
+          </code>
+          <div class="tip" id="47">
+            <strong>Signature:</strong> bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets a value indicating whether this Type is available at runtime.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '48', 48)" onmouseover="showTip(event, '48', 48)">
+            new
+          </code>
+          <div class="tip" id="48">
+            <strong>Signature:</strong> obj<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns a late bound constructor
             </br>
         </td>
       </tr>

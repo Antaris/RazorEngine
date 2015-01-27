@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>ImpromptuLateLibraryType - RazorEngine</title>
+    <title>IDynamicKnowLike - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,13 @@
 
 
 
-<h1>ImpromptuLateLibraryType </h1>
+<h1>IDynamicKnowLike </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Late bind types from libraries not not at compile type
+            This interface can be used on your custom dynamic objects if you want to know the interface you are impromptu-ly implementing.
             </br></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
@@ -55,49 +55,34 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '18', 18)" onmouseover="showTip(event, '18', 18)">
-            CallTarget
+          <code onmouseout="hideTip(event, '41', 41)" onmouseover="showTip(event, '41', 41)">
+            KnownInterfaces()
           </code>
-          <div class="tip" id="18">
-            <strong>Signature:</strong> obj<br />
+          <div class="tip" id="41">
+            <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            The call target.
+             Property used to pass interface information to proxied object
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '19', 19)" onmouseover="showTip(event, '19', 19)">
-            IsAvailable
+          <code onmouseout="hideTip(event, '42', 42)" onmouseover="showTip(event, '42', 42)">
+            KnownPropertySpec()
           </code>
-          <div class="tip" id="19">
-            <strong>Signature:</strong> bool<br />
+          <div class="tip" id="42">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Gets a value indicating whether this Type is available at runtime.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '20', 20)" onmouseover="showTip(event, '20', 20)">
-            new
-          </code>
-          <div class="tip" id="20">
-            <strong>Signature:</strong> obj<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Returns a late bound constructor
+            Sets the known property spec.
             </br>
         </td>
       </tr>
