@@ -1,4 +1,7 @@
-﻿### 3.5.2 / 4.0.2-beta1
+﻿### 3.5.3 / 4.0.2-beta1
+* Fixed a SecurityException when the template is broken.
+
+### 3.5.2 / 4.0.2-beta1
 * If you use assemblies in your template which are not referenced in your hosting code 
   RazorEngine will load them for you automatically if they are required.
   See https://github.com/Antaris/RazorEngine/issues/218 for details.
