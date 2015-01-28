@@ -138,4 +138,4 @@ public class LanguageEncodingConfigCreator : IConfigCreator
 }
 ```
 
-The only thing to mention here is that the implementation must me serializable but not inherit from `MarshalByRefObject`.
+The only thing to mention here is that the implementation must be serializable but not inherit from `MarshalByRefObject`.
