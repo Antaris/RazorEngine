@@ -97,9 +97,8 @@ to write into a file of the local harddrive.</p>
 <h2><a name="SecurityException-and-MethodAccessException" class="anchor" href="#SecurityException-and-MethodAccessException">SecurityException and MethodAccessException.</a></h2>
 
 <p>One important thing to understand is how .NET handles partial trust scenarios.
-You should definitely read <a href="http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional.
-However">http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional.
-However</a> to give some RazorEngine specific hints/additions:</p>
+You should definitely read <a href="http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional">http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional</a> .
+However to give some RazorEngine specific hints/additions:</p>
 
 <p>If your assembly is running with full trust all your code (types/members) will be SecurityCritical!
 If you add your own assembly to the list of full trust assemblies the template is not able to use types within that assembly as model.
