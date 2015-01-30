@@ -2,10 +2,12 @@
 
 ## Contributing (General)
 
-Just fork the project an send a pull request to discuss and merge the changes.
-Please send the pull request against the `master` branch.
-The branching model in http://nvie.com/posts/a-successful-git-branching-model/ is used.
-However the naming differs: `develop`is called `master` and `master` is called `releases` in RazorEngine.
+If you want to send a bug report just open a new issue!
+
+Otherwise just fork the project an send a pull request to discuss and merge the changes.
+If you want to discuss the changes beforehand you can open a new issue.
+Even better when there is already an open issue marked as [up-for-grabs](https://github.com/Antaris/RazorEngine/labels/up-for-grabs).
+Please send the pull request against the `master` branch and mention an already existing issue (if present).
 
 ## Contributing Documentation
 
@@ -13,6 +15,11 @@ As the documentation is generated from the repository you can help improving the
 You can even edit a page directly on github by clicking the edit button ([for example this page](https://github.com/Antaris/RazorEngine/blob/master/CONTRIBUTING.md)).
 See also https://help.github.com/articles/editing-files-in-your-repository/ 
 (don't forget to send a pull request back after forking and changing something).
+
+## Branching model
+
+The branching model in http://nvie.com/posts/a-successful-git-branching-model/ is used (which you do not need to read to send a pull request).
+However the naming differs: `develop`is called `master` and `master` is called `releases` in RazorEngine.
 
 ## Licensing
 
