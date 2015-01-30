@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Test.RazorEngine.TestTypes.BaseTypes;
 
 namespace Test.RazorEngine
 {
@@ -316,6 +317,113 @@ namespace Test.RazorEngine
                 {
                     string compiled = service.RunCompile(template, Guid.NewGuid().ToString());
                 });
+            });
+        }
+
+        /// <summary>
+        /// Tests that we fail with the right exception
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CustomLocalizerHelper_OverrideModelType()
+        {
+            RunTestHelper(service =>
+            {
+                // Tag must be closed!
+                var model = new TemplateViewData() { Language = "lang", Model = new Person() { Forename = "forname", Surname = "surname" } };
+                var template = @"@Model.Forename @Include(""test"") @Localizer.Language";
+
+                service.Compile("@Model.Surname", "test", typeof(Person));
+                string result = service.RunCompile(template, Guid.NewGuid().ToString(), typeof(Person), model);
+                Assert.AreEqual("forname surname lang", result);
+            }, config =>
+            {
+                config.BaseTemplateType = typeof(AddLanguageInfo_OverrideModelType<>);
+            });
+        }
+
+
+        /// <summary>
+        /// Tests that overriding Include and ResolveLayout can be used to hook custom data into a custom base class.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CustomLocalizerHelper_OverrideInclude()
+        {
+            RunTestHelper(service =>
+            {
+                // Tag must be closed!
+                var model = new TemplateViewData() { Language = "lang", Model = new Person() { Forename = "forname", Surname = "surname" } };
+                var template = @"@Model.Forename @Include(""test"") @Localizer.Language";
+
+                service.Compile("@Model.Surname", "test", typeof(Person));
+                string result = service.RunCompile(template, Guid.NewGuid().ToString(), typeof(Person), model);
+                Assert.AreEqual("forname surname lang", result);
+            }, config =>
+            {
+                config.BaseTemplateType = typeof(AddLanguageInfo_OverrideInclude<>);
+            });
+        }
+
+
+        /// <summary>
+        /// Tests that we can use ViewBag to hook new data into a custom TemplateBase class.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CustomLocalizerHelper_ViewBag()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new Person() { Forename = "forname", Surname = "surname" };
+                var template = @"@Model.Forename @Include(""test"") @Localizer.Language";
+
+                service.Compile("@Model.Surname", "test", typeof(Person));
+                dynamic viewbag = new DynamicViewBag();
+                viewbag.Language = "lang";
+                string result = service.RunCompile(template, Guid.NewGuid().ToString(), typeof(Person), model, (DynamicViewBag) viewbag);
+                Assert.AreEqual("forname surname lang", result);
+            }, config =>
+            {
+                config.BaseTemplateType = typeof(AddLanguageInfo_Viewbag<>);
+            });
+        }
+
+        /// <summary>
+        /// Tests that we can access the Viewbag from within the SetModel method.
+        /// </summary>
+        [Test, Ignore]
+        public void RazorEngineService_CheckViewbagAccessFromSetModel()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new Person() { Forename = "forname", Surname = "surname" };
+                var template = @"@Model.Forename @Include(""test"") @Localizer.Language";
+
+                service.Compile("@Model.Surname", "test", typeof(Person));
+                dynamic viewbag = new DynamicViewBag();
+                viewbag.Language = "lang";
+                string result = service.RunCompile(template, Guid.NewGuid().ToString(), typeof(Person), model, (DynamicViewBag)viewbag);
+                Assert.AreEqual("forname surname lang", result);
+            }, config =>
+            {
+                config.BaseTemplateType = typeof(AddLanguageInfo_Viewbag_SetModel<>);
+            });
+        }
+
+        /// <summary>
+        /// Tests that nested base classes work.
+        /// </summary>
+        [Test, Ignore]
+        public void RazorEngineService_TestNestedBaseClass()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new Person() { Forename = "forname", Surname = "surname" };
+                var template = @"@TestProperty";
+
+                string result = service.RunCompile(template, Guid.NewGuid().ToString(), typeof(Person), model);
+                Assert.AreEqual("mytest", result);
+            }, config =>
+            {
+                config.BaseTemplateType = typeof(HostingClass.NestedBaseClass<>);
             });
         }
     }
