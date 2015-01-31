@@ -17,28 +17,19 @@
     public class ExecuteContext
     {
         #region Constructors
-
-        /// <summary>
-        /// Creates a new instance of ExecuteContext with an empty ViewBag.
-        /// </summary>
-        public ExecuteContext()
-            : this(null)
-        {
-        }
-
         /// <summary>
         /// Creates a new instance of DynamicViewBag, setting initial values in the ViewBag.
         /// </summary>
         /// <param name="viewBag">The initial view bag data or NULL for an empty ViewBag.</param>
-        public ExecuteContext(DynamicViewBag viewBag)
+        public ExecuteContext()
         {
-            if (viewBag == null)
-                _viewBag = new DynamicViewBag();
-            else
-                _viewBag = viewBag;
             _currentSectionStack.Push(new HashSet<string>());
         }
-
+        [Obsolete("RUNTIME FAILURE: This kind of usage is no longer supported.")]
+        public ExecuteContext(DynamicViewBag viewbag)
+        {
+            throw new NotSupportedException("This kind of usage is no longer supported!");
+        }
         #endregion
 
         #region Fields
@@ -46,7 +37,6 @@
         private ISet<string> _currentSections = new HashSet<string>();
         private readonly IDictionary<string, Stack<SectionAction>> _definedSections = new Dictionary<string, Stack<SectionAction>>();
         private readonly Stack<TemplateWriter> _bodyWriters = new Stack<TemplateWriter>();
-        private readonly dynamic _viewBag; 
         #endregion
 
         #region Properties
@@ -56,10 +46,6 @@
         //internal TextWriter CurrentWriter { get { return _writers.Peek(); } }
         internal TextWriter CurrentWriter { get; set; }
 
-        /// <summary>
-        /// Gets the viewbag that allows sharing state.
-        /// </summary>
-        public dynamic ViewBag { get { return _viewBag; } }
         #endregion
 
         #region Methods

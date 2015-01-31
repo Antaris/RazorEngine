@@ -46,14 +46,11 @@ namespace RazorEngine.Templating
         /// <param name="modelType"></param>
         /// <param name="resolveType"></param>
         /// <returns>The resolved template.</returns>
-        public ITemplate Resolve(string name, object model, Type modelType, ResolveType resolveType)
+        public ITemplate Resolve(string name, object model, Type modelType, DynamicViewBag viewbag, ResolveType resolveType)
         {
             DynamicWrapperService.CheckModelType(modelType);
-            return _service.ResolveInternal(
-                name, 
-                DynamicWrapperService.GetDynamicModel(
-                    modelType, model, _service.Configuration.AllowMissingPropertiesOnDynamic),
-                modelType, resolveType, _template);
+            return _service.ResolveInternal(name, DynamicWrapperService.GetDynamicModel(
+                    modelType, model, _service.Configuration.AllowMissingPropertiesOnDynamic), modelType, viewbag, resolveType, _template);
         }
 
         /// <summary>
@@ -70,9 +67,9 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="viewBag">The dynamic view bag.</param>
         /// <returns>The execute context.</returns>
-        public ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null)
+        public ExecuteContext CreateExecuteContext()
         {
-            return _service.CreateExecuteContext(viewBag);
+            return _service.CreateExecuteContext();
         }
     }
 

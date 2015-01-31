@@ -31,7 +31,7 @@ namespace RazorEngine.Templating
         /// <param name="modelType"></param>
         /// <param name="resolveType"></param>
         /// <returns></returns>
-        ITemplate Resolve(string name, object model, Type modelType, ResolveType resolveType);
+        ITemplate Resolve(string name, object model, Type modelType, DynamicViewBag viewbag, ResolveType resolveType);
 
         /// <summary>
         /// Adds a namespace that will be imported into the template.
@@ -44,6 +44,6 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="viewBag">The view bag.</param>
         /// <returns>The instance of <see cref="ExecuteContext"/></returns>
-        ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null);
+        ExecuteContext CreateExecuteContext();
     }
 }

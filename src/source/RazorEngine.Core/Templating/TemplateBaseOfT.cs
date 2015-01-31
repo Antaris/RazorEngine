@@ -94,7 +94,7 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected override ITemplate ResolveLayout(string name)
         {
-            return InternalTemplateService.Resolve(name, (T)currentModel, ModeType, ResolveType.Layout);
+            return InternalTemplateService.Resolve(name, (T)currentModel, ModeType, (DynamicViewBag)ViewBag, ResolveType.Layout);
         }
         #endregion
     }
