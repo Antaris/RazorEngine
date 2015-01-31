@@ -88,6 +88,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ActivatorTestFixture.cs" />
+    <Compile Include="CompilerServicesUtilityTestFixture.cs" />
     <Compile Include="TestTypes\BaseTypes\AddLanguageInfo.cs" />
     <Compile Include="TestTypes\BaseTypes\NestedBaseClass.cs" />
     <Compile Include="VariousTestsFixture.cs" />

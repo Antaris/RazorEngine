@@ -411,7 +411,7 @@ namespace Test.RazorEngine
         /// <summary>
         /// Tests that nested base classes work.
         /// </summary>
-        [Test, Ignore]
+        [Test]
         public void RazorEngineService_TestNestedBaseClass()
         {
             RunTestHelper(service =>
