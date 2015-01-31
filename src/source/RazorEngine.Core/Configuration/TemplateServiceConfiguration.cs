@@ -79,11 +79,13 @@ namespace RazorEngine.Configuration
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
+        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
         IEnumerable<ICodeInspector> ITemplateServiceConfiguration.CodeInspectors { get { return CodeInspectors; } }
         
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
+        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
         public IList<ICodeInspector> CodeInspectors { get; private set; }
 #endif
         

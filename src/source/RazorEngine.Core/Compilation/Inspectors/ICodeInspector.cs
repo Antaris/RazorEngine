@@ -1,10 +1,12 @@
 ﻿namespace RazorEngine.Compilation.Inspectors
 {
+    using System;
     using System.CodeDom;
 #if !RAZOR4
     /// <summary>
     /// Defines the required contract for implementing a code inspector.
     /// </summary>
+    [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
     public interface ICodeInspector
     {
         #region Methods

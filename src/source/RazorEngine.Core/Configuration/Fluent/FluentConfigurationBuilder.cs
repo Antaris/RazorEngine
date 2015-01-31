@@ -75,6 +75,7 @@
         /// </summary>
         /// <typeparam name="TInspector">The code inspector type.</typeparam>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
         public IConfigurationBuilder AddInspector<TInspector>() where TInspector : ICodeInspector, new()
         {
             return AddInspector(new TInspector());
@@ -85,6 +86,7 @@
         /// </summary>
         /// <param name="inspector">The code inspector.</param>
         /// <returns>The current configuration builder.</returns>
+        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
         public IConfigurationBuilder AddInspector(ICodeInspector inspector)
         {
             if (inspector == null)

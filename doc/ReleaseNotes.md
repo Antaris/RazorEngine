@@ -1,4 +1,7 @@
-﻿### 3.5.3 / 4.0.2-beta1
+﻿### 3.5.4 / 4.0.4-beta1
+* ICodeInspector API is obsolete.
+
+### 3.5.3 / 4.0.3-beta1
 * Fixed a SecurityException when the template is broken.
 * RazorEngine is now compatible with ImpromptuInterface (thanks kipwilliams).
 
