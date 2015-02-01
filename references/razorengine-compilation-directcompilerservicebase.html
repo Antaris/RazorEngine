@@ -46,6 +46,28 @@
 
             Provides a base implementation of a direct compiler service.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '104', 104)" onmouseover="showTip(event, '104', 104)">
+            new(...)
+          </code>
+          <div class="tip" id="104">
+            <strong>Signature:</strong> (codeLanguage:RazorCodeLanguage * codeDomProvider:CodeDomProvider * markupParserFactory:Func&lt;ParserBase&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +77,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '15', 15)" onmouseover="showTip(event, '15', 15)">
+          <code onmouseout="hideTip(event, '105', 105)" onmouseover="showTip(event, '105', 105)">
             CodeDomProvider
           </code>
-          <div class="tip" id="15">
+          <div class="tip" id="105">
             <strong>Signature:</strong> CodeDomProvider<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -66,6 +88,57 @@
         <td class="xmldoc">
           
             The underlaying CodeDomProvider instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '106', 106)" onmouseover="showTip(event, '106', 106)">
+            CompileType(context)
+          </code>
+          <div class="tip" id="106">
+            <strong>Signature:</strong> context:TypeContext -&gt; Type * CompilationData<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Compiles the type defined in the specified type context.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '107', 107)" onmouseover="showTip(event, '107', 107)">
+            Dispose()
+          </code>
+          <div class="tip" id="107">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Releases managed resourced used by this instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '108', 108)" onmouseover="showTip(event, '108', 108)">
+            InspectSource(results, context)
+          </code>
+          <div class="tip" id="108">
+            <strong>Signature:</strong> (results:GeneratorResults * context:TypeContext) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Inspects the GeneratorResults and returns the source code.
             </br>
         </td>
       </tr>

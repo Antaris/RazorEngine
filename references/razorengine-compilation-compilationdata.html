@@ -46,6 +46,30 @@
 
             Provides (temporary) data about an compilation process.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '66', 66)" onmouseover="showTip(event, '66', 66)">
+            new(sourceCode, tmpFolder)
+          </code>
+          <div class="tip" id="66">
+            <strong>Signature:</strong> (sourceCode:string * tmpFolder:string) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new CompilationData instance.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +79,58 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '8', 8)" onmouseover="showTip(event, '8', 8)">
+          <code onmouseout="hideTip(event, '67', 67)" onmouseover="showTip(event, '67', 67)">
+            DeleteAll()
+          </code>
+          <div class="tip" id="67">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Deletes all remaining files
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '68', 68)" onmouseover="showTip(event, '68', 68)">
+            Dispose()
+          </code>
+          <div class="tip" id="68">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Clean up the compilation (ie delete temporary files).
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '69', 69)" onmouseover="showTip(event, '69', 69)">
+            Dispose(disposing)
+          </code>
+          <div class="tip" id="69">
+            <strong>Signature:</strong> disposing:bool -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '70', 70)" onmouseover="showTip(event, '70', 70)">
             SourceCode
           </code>
-          <div class="tip" id="8">
+          <div class="tip" id="70">
             <strong>Signature:</strong> string<br />
                       </div>
         </td>

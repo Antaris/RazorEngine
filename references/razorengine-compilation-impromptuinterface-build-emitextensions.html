@@ -46,6 +46,345 @@
 
              Extension Methods that make emiting code easier and easier to read
             </br></div>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '239', 239)" onmouseover="showTip(event, '239', 239)">
+            EmitArray(...)
+          </code>
+          <div class="tip" id="239">
+            <strong>Signature:</strong> (generator:ILGenerator * arrayType:Type * emitElements:IList&lt;Action&lt;ILGenerator&gt;&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '240', 240)" onmouseover="showTip(event, '240', 240)">
+            EmitBranchFalse(generator, condition)
+          </code>
+          <div class="tip" id="240">
+            <strong>Signature:</strong> (generator:ILGenerator * condition:Action&lt;ILGenerator&gt;) -&gt; BranchFalseOverBlock<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '241', 241)" onmouseover="showTip(event, '241', 241)">
+            EmitBranchTrue(generator, condition)
+          </code>
+          <div class="tip" id="241">
+            <strong>Signature:</strong> (generator:ILGenerator * condition:Action&lt;ILGenerator&gt;) -&gt; BranchTrueOverBlock<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '242', 242)" onmouseover="showTip(event, '242', 242)">
+            EmitCallInvokeFunc(generator, funcType)
+          </code>
+          <div class="tip" id="242">
+            <strong>Signature:</strong> (generator:ILGenerator * funcType:Type) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the call invoke delegate.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '243', 243)" onmouseover="showTip(event, '243', 243)">
+            EmitCallsiteCreate(generator, funcType)
+          </code>
+          <div class="tip" id="243">
+            <strong>Signature:</strong> (generator:ILGenerator * funcType:Type) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits creating the callsite.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '244', 244)" onmouseover="showTip(event, '244', 244)">
+            EmitCreateCSharpArgumentInfo(...)
+          </code>
+          <div class="tip" id="244">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpArgumentInfoFlags * name:string) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits creating the <a href="http://msdn.microsoft.com/en-us/library/Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo">CSharpArgumentInfo</a></br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '245', 245)" onmouseover="showTip(event, '245', 245)">
+            EmitDynamicBinaryOpBinder(...)
+          </code>
+          <div class="tip" id="245">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpBinderFlags * exprType:ExpressionType * context:Type * argTypes:Type []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '246', 246)" onmouseover="showTip(event, '246', 246)">
+            EmitDynamicConvertBinder(...)
+          </code>
+          <div class="tip" id="246">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpBinderFlags * returnType:Type * context:Type) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the dynamic convert binder.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '247', 247)" onmouseover="showTip(event, '247', 247)">
+            EmitDynamicGetBinder(...)
+          </code>
+          <div class="tip" id="247">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpBinderFlags * name:string * context:Type * argTypes:Type []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '248', 248)" onmouseover="showTip(event, '248', 248)">
+            EmitDynamicIsEventBinder(...)
+          </code>
+          <div class="tip" id="248">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpBinderFlags * name:string * context:Type) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the dynamic event binder.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '249', 249)" onmouseover="showTip(event, '249', 249)">
+            EmitDynamicMethodInvokeBinder(...)
+          </code>
+          <div class="tip" id="249">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpBinderFlags * name:string * genericParms:IEnumerable&lt;Type&gt; * context:Type * argInfo:ParameterInfo [] * argNames:IEnumerable&lt;string&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '250', 250)" onmouseover="showTip(event, '250', 250)">
+            EmitDynamicSetBinder(...)
+          </code>
+          <div class="tip" id="250">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpBinderFlags * name:string * context:Type * argTypes:Type []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '251', 251)" onmouseover="showTip(event, '251', 251)">
+            EmitDynamicSetBinderDynamicParams(...)
+          </code>
+          <div class="tip" id="251">
+            <strong>Signature:</strong> (generator:ILGenerator * flag:CSharpBinderFlags * name:string * context:Type * argTypes:Type []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '252', 252)" onmouseover="showTip(event, '252', 252)">
+            EmitInvocation(...)
+          </code>
+          <div class="tip" id="252">
+            <strong>Signature:</strong> (generator:ILGenerator * target:Action&lt;ILGenerator&gt; * call:Action&lt;ILGenerator&gt; * parameters:Action&lt;ILGenerator&gt; []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '253', 253)" onmouseover="showTip(event, '253', 253)">
+            EmitLoadArgument(generator, location)
+          </code>
+          <div class="tip" id="253">
+            <strong>Signature:</strong> (generator:ILGenerator * location:int) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the load argument.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '254', 254)" onmouseover="showTip(event, '254', 254)">
+            EmitLoadLocation(generator, location)
+          </code>
+          <div class="tip" id="254">
+            <strong>Signature:</strong> (generator:ILGenerator * location:int) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the load location.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '255', 255)" onmouseover="showTip(event, '255', 255)">
+            EmitStoreLocation(generator, location)
+          </code>
+          <div class="tip" id="255">
+            <strong>Signature:</strong> (generator:ILGenerator * location:int) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the store location.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '256', 256)" onmouseover="showTip(event, '256', 256)">
+            EmitTypeOf(generator, type)
+          </code>
+          <div class="tip" id="256">
+            <strong>Signature:</strong> (generator:ILGenerator * type:Type) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the typeof(Type)
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '257', 257)" onmouseover="showTip(event, '257', 257)">
+            EmitTypeOf(generator, type)
+          </code>
+          <div class="tip" id="257">
+            <strong>Signature:</strong> (generator:ILGenerator * type:TypeToken) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Emits the typeof(Type)
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '258', 258)" onmouseover="showTip(event, '258', 258)">
+            GetFieldEvenIfGeneric(type, fieldName)
+          </code>
+          <div class="tip" id="258">
+            <strong>Signature:</strong> (type:Type * fieldName:string) -&gt; FieldInfo<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the field info even if generic type parameter.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '259', 259)" onmouseover="showTip(event, '259', 259)">
+            GetMethodEvenIfGeneric(...)
+          </code>
+          <div class="tip" id="259">
+            <strong>Signature:</strong> (type:Type * methodName:string * argTypes:Type []) -&gt; MethodInfo<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '260', 260)" onmouseover="showTip(event, '260', 260)">
+            GetMethodEvenIfGeneric(type, methodName)
+          </code>
+          <div class="tip" id="260">
+            <strong>Signature:</strong> (type:Type * methodName:string) -&gt; MethodInfo<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the method info even if generic type parameter.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

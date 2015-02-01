@@ -46,6 +46,67 @@
 
             Defines the required contract for implementing a template-manager.
             </br></div>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '679', 679)" onmouseover="showTip(event, '679', 679)">
+            AddDynamic(key, source)
+          </code>
+          <div class="tip" id="679">
+            <strong>Signature:</strong> (key:ITemplateKey * source:ITemplateSource) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Adds a template dynamically to the current manager.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '680', 680)" onmouseover="showTip(event, '680', 680)">
+            GetKey(name, resolveType, context)
+          </code>
+          <div class="tip" id="680">
+            <strong>Signature:</strong> (name:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Get the key of a template.
+            This method has to be implemented so that the manager can control the <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a> implementation.
+            This way the cache api can rely on the unique string given by <a href="razorengine-templating-itemplatekey.html">ITemplateKey.GetUniqueKeyString</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '681', 681)" onmouseover="showTip(event, '681', 681)">
+            Resolve(key)
+          </code>
+          <div class="tip" id="681">
+            <strong>Signature:</strong> key:ITemplateKey -&gt; ITemplateSource<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Resolves the template with the specified key.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

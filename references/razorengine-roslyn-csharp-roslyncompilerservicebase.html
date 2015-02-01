@@ -46,6 +46,104 @@
 
             Base compiler service class for roslyn compilers
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '603', 603)" onmouseover="showTip(event, '603', 603)">
+            new(codeLanguage, markupParserFactory)
+          </code>
+          <div class="tip" id="603">
+            <strong>Signature:</strong> (codeLanguage:RazorCodeLanguage * markupParserFactory:Func&lt;ParserBase&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '604', 604)" onmouseover="showTip(event, '604', 604)">
+            CompileType(context)
+          </code>
+          <div class="tip" id="604">
+            <strong>Signature:</strong> context:TypeContext -&gt; Type * CompilationData<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Configures and runs the compiler.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '605', 605)" onmouseover="showTip(event, '605', 605)">
+            CreateOptions(context)
+          </code>
+          <div class="tip" id="605">
+            <strong>Signature:</strong> context:TypeContext -&gt; CompilationOptions<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Create a empty CompilationOptions with the given namespace usings.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '606', 606)" onmouseover="showTip(event, '606', 606)">
+            GetEmptyCompilation(assemblyName)
+          </code>
+          <div class="tip" id="606">
+            <strong>Signature:</strong> assemblyName:string -&gt; Compilation<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Get a new empty compilation instance from the concrete implementation.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '607', 607)" onmouseover="showTip(event, '607', 607)">
+            GetSyntaxTree(...)
+          </code>
+          <div class="tip" id="607">
+            <strong>Signature:</strong> (sourceCode:string * sourceCodeFile:string) -&gt; SyntaxTree<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets a SyntaxTree from the given source code.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

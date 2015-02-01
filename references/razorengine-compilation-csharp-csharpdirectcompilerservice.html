@@ -46,6 +46,28 @@
 
             Defines a direct compiler service for the C# syntax.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '143', 143)" onmouseover="showTip(event, '143', 143)">
+            new(strictMode, markupParserFactory)
+          </code>
+          <div class="tip" id="143">
+            <strong>Signature:</strong> (strictMode:bool * markupParserFactory:Func&lt;ParserBase&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +77,44 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '26', 26)" onmouseover="showTip(event, '26', 26)">
+          <code onmouseout="hideTip(event, '144', 144)" onmouseover="showTip(event, '144', 144)">
+            BuildTypeName(templateType, modelType)
+          </code>
+          <div class="tip" id="144">
+            <strong>Signature:</strong> (templateType:Type * modelType:Type) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Builds a type name for the specified template type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '145', 145)" onmouseover="showTip(event, '145', 145)">
+            IncludeReferences()
+          </code>
+          <div class="tip" id="145">
+            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;CompilerReference&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns a set of assemblies that must be referenced by the compiled template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '146', 146)" onmouseover="showTip(event, '146', 146)">
             SourceFileExtension
           </code>
-          <div class="tip" id="26">
+          <div class="tip" id="146">
             <strong>Signature:</strong> string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>

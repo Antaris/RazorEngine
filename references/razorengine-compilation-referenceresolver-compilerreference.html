@@ -55,10 +55,54 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '54', 54)" onmouseover="showTip(event, '54', 54)">
+          <code onmouseout="hideTip(event, '468', 468)" onmouseover="showTip(event, '468', 468)">
+            Equals(obj)
+          </code>
+          <div class="tip" id="468">
+            <strong>Signature:</strong> obj:obj -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '469', 469)" onmouseover="showTip(event, '469', 469)">
+            GetFile(exceptionCreator)
+          </code>
+          <div class="tip" id="469">
+            <strong>Signature:</strong> exceptionCreator:Func&lt;string,exn&gt; -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '470', 470)" onmouseover="showTip(event, '470', 470)">
+            GetHashCode()
+          </code>
+          <div class="tip" id="470">
+            <strong>Signature:</strong> unit -&gt; int<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '471', 471)" onmouseover="showTip(event, '471', 471)">
             ReferenceType()
           </code>
-          <div class="tip" id="54">
+          <div class="tip" id="471">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -66,6 +110,93 @@
           
             The type of the current reference.
             </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '472', 472)" onmouseover="showTip(event, '472', 472)">
+            Visit(visitor)
+          </code>
+          <div class="tip" id="472">
+            <strong>Signature:</strong> visitor:ICompilerReferenceVisitor&lt;&#39;T&gt; -&gt; &#39;T<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'T          </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '473', 473)" onmouseover="showTip(event, '473', 473)">
+            From(file)
+          </code>
+          <div class="tip" id="473">
+            <strong>Signature:</strong> file:string -&gt; CompilerReference<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Create a compiler reference from the given file.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '474', 474)" onmouseover="showTip(event, '474', 474)">
+            From(assembly)
+          </code>
+          <div class="tip" id="474">
+            <strong>Signature:</strong> assembly:Assembly -&gt; CompilerReference<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Create a compiler reference from the given assembly.
+            NOTE: The CodeDom compiler doesn't support assembly references where assembly.Location is null (roslyn only)!
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '475', 475)" onmouseover="showTip(event, '475', 475)">
+            From(stream)
+          </code>
+          <div class="tip" id="475">
+            <strong>Signature:</strong> stream:Stream -&gt; CompilerReference<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Create a compiler reference from the given stream.
+            NOTE: The CodeDom compiler doesn't support stream references (roslyn only)!
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '476', 476)" onmouseover="showTip(event, '476', 476)">
+            From(byteArray)
+          </code>
+          <div class="tip" id="476">
+            <strong>Signature:</strong> (byteArray:byte []) -&gt; CompilerReference<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
         </td>
       </tr>
     </tbody>

@@ -48,6 +48,30 @@
             This implementation does a very simple in-memory caching.
             It can handle when the same template is used with multiple model-types.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '615', 615)" onmouseover="showTip(event, '615', 615)">
+            new()
+          </code>
+          <div class="tip" id="615">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initializes a new instance of the <a href="razorengine-templating-defaultcachingprovider.html">DefaultCachingProvider</a> class.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -57,10 +81,59 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '130', 130)" onmouseover="showTip(event, '130', 130)">
+          <code onmouseout="hideTip(event, '616', 616)" onmouseover="showTip(event, '616', 616)">
+            CacheTemplate(template, templateKey)
+          </code>
+          <div class="tip" id="616">
+            <strong>Signature:</strong> (template:ICompiledTemplate * templateKey:ITemplateKey) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Caches a template. See <a href="razorengine-templating-icachingprovider.html">ICachingProvider.CacheTemplate</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '617', 617)" onmouseover="showTip(event, '617', 617)">
+            Dispose()
+          </code>
+          <div class="tip" id="617">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Dispose the instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '618', 618)" onmouseover="showTip(event, '618', 618)">
+            TryRetrieveTemplate(...)
+          </code>
+          <div class="tip" id="618">
+            <strong>Signature:</strong> (templateKey:ITemplateKey * modelType:Type * compiledTemplate:byref&lt;ICompiledTemplate&gt;) -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '619', 619)" onmouseover="showTip(event, '619', 619)">
             TypeLoader
           </code>
-          <div class="tip" id="130">
+          <div class="tip" id="619">
             <strong>Signature:</strong> TypeLoader<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -68,6 +141,30 @@
         <td class="xmldoc">
           
             The manages <a href="razorengine-templating-defaultcachingprovider.html">DefaultCachingProvider.TypeLoader</a>. See <a href="razorengine-templating-icachingprovider.html">ICachingProvider.TypeLoader</a></br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '620', 620)" onmouseover="showTip(event, '620', 620)">
+            GetModelTypeKey(modelType)
+          </code>
+          <div class="tip" id="620">
+            <strong>Signature:</strong> modelType:Type -&gt; Type<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Get the key used within a dictionary for a modelType.
+            </br>
         </td>
       </tr>
     </tbody>

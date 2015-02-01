@@ -46,6 +46,435 @@
 
             Provides template parsing and compilation in an isolated application domain.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '720', 720)" onmouseover="showTip(event, '720', 720)">
+            new()
+          </code>
+          <div class="tip" id="720">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-templating-isolatedtemplateservice.html">IsolatedTemplateService</a></br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '721', 721)" onmouseover="showTip(event, '721', 721)">
+            new(language)
+          </code>
+          <div class="tip" id="721">
+            <strong>Signature:</strong> language:Language -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-templating-isolatedtemplateservice.html">IsolatedTemplateService</a></br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '722', 722)" onmouseover="showTip(event, '722', 722)">
+            new(encoding)
+          </code>
+          <div class="tip" id="722">
+            <strong>Signature:</strong> encoding:Encoding -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-templating-isolatedtemplateservice.html">IsolatedTemplateService</a></br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '723', 723)" onmouseover="showTip(event, '723', 723)">
+            new(appDomainFactory)
+          </code>
+          <div class="tip" id="723">
+            <strong>Signature:</strong> appDomainFactory:IAppDomainFactory -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-templating-isolatedtemplateservice.html">IsolatedTemplateService</a></br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '724', 724)" onmouseover="showTip(event, '724', 724)">
+            new(appDomainFactory)
+          </code>
+          <div class="tip" id="724">
+            <strong>Signature:</strong> appDomainFactory:Func&lt;AppDomain&gt; -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '725', 725)" onmouseover="showTip(event, '725', 725)">
+            new(...)
+          </code>
+          <div class="tip" id="725">
+            <strong>Signature:</strong> (language:Language * encoding:Encoding * appDomainFactory:IAppDomainFactory) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-templating-isolatedtemplateservice.html">IsolatedTemplateService</a></br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '726', 726)" onmouseover="showTip(event, '726', 726)">
+            new(language, appDomainFactory)
+          </code>
+          <div class="tip" id="726">
+            <strong>Signature:</strong> (language:Language * appDomainFactory:Func&lt;AppDomain&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '727', 727)" onmouseover="showTip(event, '727', 727)">
+            new(...)
+          </code>
+          <div class="tip" id="727">
+            <strong>Signature:</strong> (language:Language * encoding:Encoding * appDomainFactory:Func&lt;AppDomain&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '728', 728)" onmouseover="showTip(event, '728', 728)">
+            new(encoding, appDomainFactory)
+          </code>
+          <div class="tip" id="728">
+            <strong>Signature:</strong> (encoding:Encoding * appDomainFactory:Func&lt;AppDomain&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '729', 729)" onmouseover="showTip(event, '729', 729)">
+            AddNamespace(ns)
+          </code>
+          <div class="tip" id="729">
+            <strong>Signature:</strong> ns:string -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Adds a namespace that will be imported into the template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '730', 730)" onmouseover="showTip(event, '730', 730)">
+            Compile(...)
+          </code>
+          <div class="tip" id="730">
+            <strong>Signature:</strong> (razorTemplate:string * modelType:Type * cacheName:string) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Compiles the specified template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '731', 731)" onmouseover="showTip(event, '731', 731)">
+            CreateTemplate(...)
+          </code>
+          <div class="tip" id="731">
+            <strong>Signature:</strong> (razorTemplate:string * templateType:Type * model:obj) -&gt; ITemplate<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates an instance of <a href="razorengine-templating-itemplate-1.html">ITemplate`1</a> from the specified string template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '732', 732)" onmouseover="showTip(event, '732', 732)">
+            CreateTemplates(...)
+          </code>
+          <div class="tip" id="732">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * templateTypes:IEnumerable&lt;Type&gt; * models:IEnumerable&lt;obj&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '733', 733)" onmouseover="showTip(event, '733', 733)">
+            CreateTemplateType(...)
+          </code>
+          <div class="tip" id="733">
+            <strong>Signature:</strong> (razorTemplate:string * modelType:Type) -&gt; Type<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a <a href="http://msdn.microsoft.com/en-us/library/System.Type">Type</a> that can be used to instantiate an instance of a template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '734', 734)" onmouseover="showTip(event, '734', 734)">
+            CreateTemplateTypes(...)
+          </code>
+          <div class="tip" id="734">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * modelTypes:IEnumerable&lt;Type&gt; * parallel:bool) -&gt; IEnumerable&lt;Type&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '735', 735)" onmouseover="showTip(event, '735', 735)">
+            Dispose()
+          </code>
+          <div class="tip" id="735">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Releases resources used by this instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '736', 736)" onmouseover="showTip(event, '736', 736)">
+            GetTemplate(...)
+          </code>
+          <div class="tip" id="736">
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * cacheName:string) -&gt; ITemplate<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets an instance of the template using the cached compiled type, or compiles the template type
+            if it does not exist in the cache.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '737', 737)" onmouseover="showTip(event, '737', 737)">
+            GetTemplates(...)
+          </code>
+          <div class="tip" id="737">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * cacheNames:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '738', 738)" onmouseover="showTip(event, '738', 738)">
+            HasTemplate(cacheName)
+          </code>
+          <div class="tip" id="738">
+            <strong>Signature:</strong> cacheName:string -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns whether or not a template by the specified name has been created already.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '739', 739)" onmouseover="showTip(event, '739', 739)">
+            Parse(...)
+          </code>
+          <div class="tip" id="739">
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Parses and returns the result of the specified string template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '740', 740)" onmouseover="showTip(event, '740', 740)">
+            Parse(...)
+          </code>
+          <div class="tip" id="740">
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'T          </div>
+        </td>
+        <td class="xmldoc">
+          
+            Parses and returns the result of the specified string template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '741', 741)" onmouseover="showTip(event, '741', 741)">
+            ParseMany(...)
+          </code>
+          <div class="tip" id="741">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * viewBags:IEnumerable&lt;DynamicViewBag&gt; * cacheNames:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;string&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '742', 742)" onmouseover="showTip(event, '742', 742)">
+            RemoveTemplate(cacheName)
+          </code>
+          <div class="tip" id="742">
+            <strong>Signature:</strong> cacheName:string -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Remove a template by the specified name from the cache.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '743', 743)" onmouseover="showTip(event, '743', 743)">
+            Resolve(cacheName, model)
+          </code>
+          <div class="tip" id="743">
+            <strong>Signature:</strong> (cacheName:string * model:obj) -&gt; ITemplate<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Resolves the template with the specified name.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '744', 744)" onmouseover="showTip(event, '744', 744)">
+            Run(cacheName, model, viewBag)
+          </code>
+          <div class="tip" id="744">
+            <strong>Signature:</strong> (cacheName:string * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Runs the template with the specified cacheName.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '745', 745)" onmouseover="showTip(event, '745', 745)">
+            Run(template, viewBag)
+          </code>
+          <div class="tip" id="745">
+            <strong>Signature:</strong> (template:ITemplate * viewBag:DynamicViewBag) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Runs the template with the specified name.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

@@ -46,6 +46,29 @@
 
             Provides a base implementation of a compiler service.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '71', 71)" onmouseover="showTip(event, '71', 71)">
+            new(codeLanguage, markupParserFactory)
+          </code>
+          <div class="tip" id="71">
+            <strong>Signature:</strong> (codeLanguage:RazorCodeLanguage * markupParserFactory:ParserBaseCreator) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-compilation-compilerservicebase.html">CompilerServiceBase</a></br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +78,27 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '9', 9)" onmouseover="showTip(event, '9', 9)">
+          <code onmouseout="hideTip(event, '72', 72)" onmouseover="showTip(event, '72', 72)">
+            BuildTypeName(templateType, modelType)
+          </code>
+          <div class="tip" id="72">
+            <strong>Signature:</strong> (templateType:Type * modelType:Type) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Builds a type name for the specified template type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '73', 73)" onmouseover="showTip(event, '73', 73)">
             CodeInspectors()
           </code>
-          <div class="tip" id="9">
+          <div class="tip" id="73">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -72,10 +112,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
+          <code onmouseout="hideTip(event, '74', 74)" onmouseover="showTip(event, '74', 74)">
             CodeLanguage()
           </code>
-          <div class="tip" id="10">
+          <div class="tip" id="74">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -88,10 +128,27 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
+          <code onmouseout="hideTip(event, '75', 75)" onmouseover="showTip(event, '75', 75)">
+            CompileType(context)
+          </code>
+          <div class="tip" id="75">
+            <strong>Signature:</strong> context:TypeContext -&gt; Type * CompilationData<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Compiles the type defined in the specified type context.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '76', 76)" onmouseover="showTip(event, '76', 76)">
             Debug()
           </code>
-          <div class="tip" id="11">
+          <div class="tip" id="76">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -105,10 +162,91 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
+          <code onmouseout="hideTip(event, '77', 77)" onmouseover="showTip(event, '77', 77)">
+            GetCodeCompileUnit(...)
+          </code>
+          <div class="tip" id="77">
+            <strong>Signature:</strong> (className:string * template:ITemplateSource * namespaceImports:ISet&lt;string&gt; * templateType:Type * modelType:Type) -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '78', 78)" onmouseover="showTip(event, '78', 78)">
+            GetCodeCompileUnit(context)
+          </code>
+          <div class="tip" id="78">
+            <strong>Signature:</strong> context:TypeContext -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the code compile unit used to compile a type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '79', 79)" onmouseover="showTip(event, '79', 79)">
+            IncludeAssemblies()
+          </code>
+          <div class="tip" id="79">
+            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;string&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns a set of assemblies that must be referenced by the compiled template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '80', 80)" onmouseover="showTip(event, '80', 80)">
+            IncludeReferences()
+          </code>
+          <div class="tip" id="80">
+            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;CompilerReference&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns a set of references that must be referenced by the compiled template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '81', 81)" onmouseover="showTip(event, '81', 81)">
+            InspectSource(results, context)
+          </code>
+          <div class="tip" id="81">
+            <strong>Signature:</strong> (results:GeneratorResults * context:TypeContext) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Inspects the source and returns the source code.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '82', 82)" onmouseover="showTip(event, '82', 82)">
             MarkupParserFactory()
           </code>
-          <div class="tip" id="12">
+          <div class="tip" id="82">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -121,10 +259,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
+          <code onmouseout="hideTip(event, '83', 83)" onmouseover="showTip(event, '83', 83)">
             ReferenceResolver()
           </code>
-          <div class="tip" id="13">
+          <div class="tip" id="83">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -138,10 +276,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '14', 14)" onmouseover="showTip(event, '14', 14)">
+          <code onmouseout="hideTip(event, '84', 84)" onmouseover="showTip(event, '84', 84)">
             SourceFileExtension
           </code>
-          <div class="tip" id="14">
+          <div class="tip" id="84">
             <strong>Signature:</strong> string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>

@@ -46,6 +46,28 @@
 
             A concrete <a href="razorengine-compilation-icompilerservice.html">ICompilerService</a> implementation for C# by using the Roslyn compiler.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '595', 595)" onmouseover="showTip(event, '595', 595)">
+            new(strictMode, markupParserFactory)
+          </code>
+          <div class="tip" id="595">
+            <strong>Signature:</strong> (strictMode:bool * markupParserFactory:Func&lt;ParserBase&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +77,112 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '126', 126)" onmouseover="showTip(event, '126', 126)">
+          <code onmouseout="hideTip(event, '596', 596)" onmouseover="showTip(event, '596', 596)">
+            BuildTypeName(templateType, modelType)
+          </code>
+          <div class="tip" id="596">
+            <strong>Signature:</strong> (templateType:Type * modelType:Type) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Build a C# typename.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '597', 597)" onmouseover="showTip(event, '597', 597)">
+            CreateOptions(context)
+          </code>
+          <div class="tip" id="597">
+            <strong>Signature:</strong> context:TypeContext -&gt; CompilationOptions<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a CSharpCompilationOptions instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '598', 598)" onmouseover="showTip(event, '598', 598)">
+            GetEmptyCompilation(assemblyName)
+          </code>
+          <div class="tip" id="598">
+            <strong>Signature:</strong> assemblyName:string -&gt; Compilation<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a CSharpCompilation instance
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '599', 599)" onmouseover="showTip(event, '599', 599)">
+            GetSyntaxTree(...)
+          </code>
+          <div class="tip" id="599">
+            <strong>Signature:</strong> (sourceCode:string * sourceCodePath:string) -&gt; SyntaxTree<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a CSharpSyntaxTree instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '600', 600)" onmouseover="showTip(event, '600', 600)">
+            IncludeReferences()
+          </code>
+          <div class="tip" id="600">
+            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;CompilerReference&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns a set of assemblies that must be referenced by the compiled template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '601', 601)" onmouseover="showTip(event, '601', 601)">
+            InspectSource(results, context)
+          </code>
+          <div class="tip" id="601">
+            <strong>Signature:</strong> (results:GeneratorResults * context:TypeContext) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Inspects the GeneratorResults and returns the source code.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '602', 602)" onmouseover="showTip(event, '602', 602)">
             SourceFileExtension
           </code>
-          <div class="tip" id="126">
+          <div class="tip" id="602">
             <strong>Signature:</strong> string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>

@@ -46,6 +46,30 @@
 
             A simple <a href="razorengine-templating-itemplatesource.html">ITemplateSource</a> implementation which represents an in-memory string.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '746', 746)" onmouseover="showTip(event, '746', 746)">
+            new(template, templateFile)
+          </code>
+          <div class="tip" id="746">
+            <strong>Signature:</strong> (template:string * templateFile:string) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initializes a new <a href="razorengine-templating-loadedtemplatesource.html">LoadedTemplateSource</a> instance.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +79,27 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '154', 154)" onmouseover="showTip(event, '154', 154)">
+          <code onmouseout="hideTip(event, '747', 747)" onmouseover="showTip(event, '747', 747)">
+            GetTemplateReader()
+          </code>
+          <div class="tip" id="747">
+            <strong>Signature:</strong> unit -&gt; TextReader<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new <a href="http://msdn.microsoft.com/en-us/library/System.IO.StringReader">StringReader</a> to read the in-memory stream.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '748', 748)" onmouseover="showTip(event, '748', 748)">
             Template
           </code>
-          <div class="tip" id="154">
+          <div class="tip" id="748">
             <strong>Signature:</strong> string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -72,10 +113,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '155', 155)" onmouseover="showTip(event, '155', 155)">
+          <code onmouseout="hideTip(event, '749', 749)" onmouseover="showTip(event, '749', 749)">
             TemplateFile
           </code>
-          <div class="tip" id="155">
+          <div class="tip" id="749">
             <strong>Signature:</strong> string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>

@@ -47,6 +47,90 @@
             This is a simple wrapper around an <a href="razorengine-templating-itemplateresolver.html">ITemplateResolver</a> to provide
             an <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> service.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '574', 574)" onmouseover="showTip(event, '574', 574)">
+            new(resolver)
+          </code>
+          <div class="tip" id="574">
+            <strong>Signature:</strong> resolver:ITemplateResolver -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-templating-delegatetemplateresolver.html">DelegateTemplateResolver</a>.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '575', 575)" onmouseover="showTip(event, '575', 575)">
+            AddDynamic(key, source)
+          </code>
+          <div class="tip" id="575">
+            <strong>Signature:</strong> (key:ITemplateKey * source:ITemplateSource) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Adds a template dynamically.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '576', 576)" onmouseover="showTip(event, '576', 576)">
+            GetKey(name, templateType, context)
+          </code>
+          <div class="tip" id="576">
+            <strong>Signature:</strong> (name:string * templateType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the key for a template.
+            See <a href="razorengine-templating-itemplatemanager.html">ITemplateManager.GetKey</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '577', 577)" onmouseover="showTip(event, '577', 577)">
+            Resolve(key)
+          </code>
+          <div class="tip" id="577">
+            <strong>Signature:</strong> key:ITemplateKey -&gt; ITemplateSource<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Resolves the template content with the specified key.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

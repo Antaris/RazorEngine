@@ -46,6 +46,120 @@
 
              Does most of the work buiding and caching proxies
             </br></div>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '232', 232)" onmouseover="showTip(event, '232', 232)">
+            BuildType(...)
+          </code>
+          <div class="tip" id="232">
+            <strong>Signature:</strong> (contextType:Type * mainInterface:Type * otherInterfaces:Type []) -&gt; Type<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '233', 233)" onmouseover="showTip(event, '233', 233)">
+            BuildType(...)
+          </code>
+          <div class="tip" id="233">
+            <strong>Signature:</strong> (contextType:Type * informalInterface:IDictionary&lt;string,Type&gt;) -&gt; Type<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '234', 234)" onmouseover="showTip(event, '234', 234)">
+            EmitCallSiteFuncType(...)
+          </code>
+          <div class="tip" id="234">
+            <strong>Signature:</strong> (argTypes:IEnumerable&lt;Type&gt; * returnType:Type) -&gt; Type<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '235', 235)" onmouseover="showTip(event, '235', 235)">
+            PreLoadProxiesFromAssembly(assembly)
+          </code>
+          <div class="tip" id="235">
+            <strong>Signature:</strong> assembly:Assembly -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Preloads proxies that ActLike uses from assembly.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '236', 236)" onmouseover="showTip(event, '236', 236)">
+            PreLoadProxy(proxyType, attribute)
+          </code>
+          <div class="tip" id="236">
+            <strong>Signature:</strong> (proxyType:Type * attribute:ActLikeProxyAttribute) -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Preloads a proxy for ActLike to use.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '237', 237)" onmouseover="showTip(event, '237', 237)">
+            RecursiveActLike(target)
+          </code>
+          <div class="tip" id="237">
+            <strong>Signature:</strong> target:obj -&gt; &#39;TInterface<br />
+                          <strong>Type parameters:</strong> 'TInterface          </div>
+        </td>
+        <td class="xmldoc">
+          
+            Calls ActLike on the given object.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '238', 238)" onmouseover="showTip(event, '238', 238)">
+            WriteOutDll(name)
+          </code>
+          <div class="tip" id="238">
+            <strong>Signature:</strong> name:string -&gt; IDisposable<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Writes the out DLL of types created between this call and being closed used for debugging of emitted IL code
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

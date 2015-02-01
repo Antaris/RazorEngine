@@ -46,6 +46,30 @@
 
             Provides a base implementation of a template with a model.
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '819', 819)" onmouseover="showTip(event, '819', 819)">
+            new()
+          </code>
+          <div class="tip" id="819">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initialises a new instance of <a href="razorengine-templating-templatebase-1.html">TemplateBase`1</a>.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +79,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '168', 168)" onmouseover="showTip(event, '168', 168)">
+          <code onmouseout="hideTip(event, '820', 820)" onmouseover="showTip(event, '820', 820)">
             HasDynamicModel()
           </code>
-          <div class="tip" id="168">
+          <div class="tip" id="820">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -71,10 +95,27 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '169', 169)" onmouseover="showTip(event, '169', 169)">
+          <code onmouseout="hideTip(event, '821', 821)" onmouseover="showTip(event, '821', 821)">
+            Include(cacheName, model, modelType)
+          </code>
+          <div class="tip" id="821">
+            <strong>Signature:</strong> (cacheName:string * model:obj * modelType:Type) -&gt; TemplateWriter<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Includes the template with the specified name.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '822', 822)" onmouseover="showTip(event, '822', 822)">
             Model()
           </code>
-          <div class="tip" id="169">
+          <div class="tip" id="822">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -82,6 +123,23 @@
         <td class="xmldoc">
           
             Gets or sets the model.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '823', 823)" onmouseover="showTip(event, '823', 823)">
+            SetModel(model)
+          </code>
+          <div class="tip" id="823">
+            <strong>Signature:</strong> model:obj -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Set the model.
             </br>
         </td>
       </tr>

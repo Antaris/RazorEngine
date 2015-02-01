@@ -46,6 +46,243 @@
 
             Provides service methods for compilation.
             </br></div>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '88', 88)" onmouseover="showTip(event, '88', 88)">
+            CSharpCreateGenericType(...)
+          </code>
+          <div class="tip" id="88">
+            <strong>Signature:</strong> (templateType:Type * modelTypeName:string * throwWhenNotGeneric:bool) -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Return the raw type name (including namespace) with the given modelTypeName as generic argument (if applicable).
+            Returns the typename in a way it can be used in C# code.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '89', 89)" onmouseover="showTip(event, '89', 89)">
+            CSharpGetRawTypeName(type)
+          </code>
+          <div class="tip" id="89">
+            <strong>Signature:</strong> type:Type -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Return the raw type name (including namespace) without any generic arguments.
+            Returns the typename in a way it can be used in C# code.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '90', 90)" onmouseover="showTip(event, '90', 90)">
+            GenerateClassName()
+          </code>
+          <div class="tip" id="90">
+            <strong>Signature:</strong> unit -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Generates a random class name.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '91', 91)" onmouseover="showTip(event, '91', 91)">
+            GetConstructors(type)
+          </code>
+          <div class="tip" id="91">
+            <strong>Signature:</strong> type:Type -&gt; IEnumerable&lt;ConstructorInfo&gt;<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the public or protected constructors of the specified type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '92', 92)" onmouseover="showTip(event, '92', 92)">
+            GetIteratorInterface(type)
+          </code>
+          <div class="tip" id="92">
+            <strong>Signature:</strong> type:Type -&gt; Type<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets the Iterator type for the given compiler generated iterator.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '93', 93)" onmouseover="showTip(event, '93', 93)">
+            GetLoadedAssemblies()
+          </code>
+          <div class="tip" id="93">
+            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;Assembly&gt;<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets an enumerable of all assemblies loaded in the current domain.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '94', 94)" onmouseover="showTip(event, '94', 94)">
+            IsAnonymousType(type)
+          </code>
+          <div class="tip" id="94">
+            <strong>Signature:</strong> type:Type -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Determines if the specified type is an anonymous type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '95', 95)" onmouseover="showTip(event, '95', 95)">
+            IsAnonymousTypeRecursive(t)
+          </code>
+          <div class="tip" id="95">
+            <strong>Signature:</strong> t:Type -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Checks if the given type is a anonymous type or a generic type containing a 
+            reference type as generic type argument
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '96', 96)" onmouseover="showTip(event, '96', 96)">
+            IsDynamicType(type)
+          </code>
+          <div class="tip" id="96">
+            <strong>Signature:</strong> type:Type -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Determines if the specified type is a dynamic type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '97', 97)" onmouseover="showTip(event, '97', 97)">
+            IsIteratorType(type)
+          </code>
+          <div class="tip" id="97">
+            <strong>Signature:</strong> type:Type -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Determines if the specified type is a compiler generated iterator type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '98', 98)" onmouseover="showTip(event, '98', 98)">
+            ResolveCSharpTypeName(type)
+          </code>
+          <div class="tip" id="98">
+            <strong>Signature:</strong> type:Type -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Resolves the C# name of the given type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '99', 99)" onmouseover="showTip(event, '99', 99)">
+            ResolveVBTypeName(type)
+          </code>
+          <div class="tip" id="99">
+            <strong>Signature:</strong> type:Type -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Resolves the VB.net name of the given type.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '100', 100)" onmouseover="showTip(event, '100', 100)">
+            VBCreateGenericType(...)
+          </code>
+          <div class="tip" id="100">
+            <strong>Signature:</strong> (templateType:Type * modelTypeName:string * throwWhenNotGeneric:bool) -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Return the raw type name (including namespace) with the given modelTypeName as generic argument (if applicable).
+            Returns the typename in a way it can be used in VB.net code.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '101', 101)" onmouseover="showTip(event, '101', 101)">
+            VBGetRawTypeName(type)
+          </code>
+          <div class="tip" id="101">
+            <strong>Signature:</strong> type:Type -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Return the raw type name (including namespace) without any generic arguments.
+            Returns the typename in a way it can be used in VB.net code.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

@@ -47,6 +47,176 @@
             Defines a template service and the main API for running templates.
             Implements the <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> interface.
             </br></div>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '761', 761)" onmouseover="showTip(event, '761', 761)">
+            AddTemplate(key, templateSource)
+          </code>
+          <div class="tip" id="761">
+            <strong>Signature:</strong> (key:ITemplateKey * templateSource:ITemplateSource) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Adds a given template to the <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> as dynamic template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '762', 762)" onmouseover="showTip(event, '762', 762)">
+            Compile(key, modelType)
+          </code>
+          <div class="tip" id="762">
+            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Compiles the specified template and caches it.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '763', 763)" onmouseover="showTip(event, '763', 763)">
+            Dispose()
+          </code>
+          <div class="tip" id="763">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Releases managed resources used by this instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '764', 764)" onmouseover="showTip(event, '764', 764)">
+            GetKey(cacheName, resolveType, context)
+          </code>
+          <div class="tip" id="764">
+            <strong>Signature:</strong> (cacheName:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets a given key from the <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> implementation.
+            See <a href="razorengine-templating-itemplatemanager.html">ITemplateManager.GetKey</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '765', 765)" onmouseover="showTip(event, '765', 765)">
+            IsTemplateCached(key, modelType)
+          </code>
+          <div class="tip" id="765">
+            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Checks if a given template is already cached in the <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '766', 766)" onmouseover="showTip(event, '766', 766)">
+            Run(...)
+          </code>
+          <div class="tip" id="766">
+            <strong>Signature:</strong> (key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Runs the given cached template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '767', 767)" onmouseover="showTip(event, '767', 767)">
+            RunCompile(...)
+          </code>
+          <div class="tip" id="767">
+            <strong>Signature:</strong> (key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Runs the given cached template.
+            When the cache does not contain the template 
+            it will be compiled and cached beforehand.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '768', 768)" onmouseover="showTip(event, '768', 768)">
+            Create()
+          </code>
+          <div class="tip" id="768">
+            <strong>Signature:</strong> unit -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '769', 769)" onmouseover="showTip(event, '769', 769)">
+            Create(config)
+          </code>
+          <div class="tip" id="769">
+            <strong>Signature:</strong> config:ITemplateServiceConfiguration -&gt; IRazorEngineService<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance with the given configuration.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

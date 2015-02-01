@@ -46,6 +46,224 @@
 
             Type that Encompasses Hashing a group of Types in various ways
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '262', 262)" onmouseover="showTip(event, '262', 262)">
+            new(moreTypes)
+          </code>
+          <div class="tip" id="262">
+            <strong>Signature:</strong> moreTypes:IEnumerable&lt;Type&gt; -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '263', 263)" onmouseover="showTip(event, '263', 263)">
+            new(type1, moreTypes)
+          </code>
+          <div class="tip" id="263">
+            <strong>Signature:</strong> (type1:Type * moreTypes:Type []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '264', 264)" onmouseover="showTip(event, '264', 264)">
+            new(type1, informalInterface)
+          </code>
+          <div class="tip" id="264">
+            <strong>Signature:</strong> (type1:Type * informalInterface:IDictionary&lt;string,Type&gt;) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '265', 265)" onmouseover="showTip(event, '265', 265)">
+            new(strictOrder, moreTypes)
+          </code>
+          <div class="tip" id="265">
+            <strong>Signature:</strong> (strictOrder:bool * moreTypes:MemberInfo []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '266', 266)" onmouseover="showTip(event, '266', 266)">
+            Equals(other)
+          </code>
+          <div class="tip" id="266">
+            <strong>Signature:</strong> other:TypeHash -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Equalses the specified other.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '267', 267)" onmouseover="showTip(event, '267', 267)">
+            Equals(obj)
+          </code>
+          <div class="tip" id="267">
+            <strong>Signature:</strong> obj:obj -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Determines whether the specified <a href="http://msdn.microsoft.com/en-us/library/System.Object">Object</a> is equal to this instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '268', 268)" onmouseover="showTip(event, '268', 268)">
+            GetHashCode()
+          </code>
+          <div class="tip" id="268">
+            <strong>Signature:</strong> unit -&gt; int<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns a hash code for this instance.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '269', 269)" onmouseover="showTip(event, '269', 269)">
+            Create(moreTypes)
+          </code>
+          <div class="tip" id="269">
+            <strong>Signature:</strong> moreTypes:IEnumerable&lt;Type&gt; -&gt; TypeHash<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '270', 270)" onmouseover="showTip(event, '270', 270)">
+            Create(type1, moreTypes)
+          </code>
+          <div class="tip" id="270">
+            <strong>Signature:</strong> (type1:Type * moreTypes:Type []) -&gt; TypeHash<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '271', 271)" onmouseover="showTip(event, '271', 271)">
+            Create(type1, informalInterface)
+          </code>
+          <div class="tip" id="271">
+            <strong>Signature:</strong> (type1:Type * informalInterface:IDictionary&lt;string,Type&gt;) -&gt; TypeHash<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '272', 272)" onmouseover="showTip(event, '272', 272)">
+            Create(strictOrder, moreTypes)
+          </code>
+          <div class="tip" id="272">
+            <strong>Signature:</strong> (strictOrder:bool * moreTypes:MemberInfo []) -&gt; TypeHash<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '273', 273)" onmouseover="showTip(event, '273', 273)">
+            op_Equality(left, right)
+          </code>
+          <div class="tip" id="273">
+            <strong>Signature:</strong> (left:TypeHash * right:TypeHash) -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Implements the operator ==.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '274', 274)" onmouseover="showTip(event, '274', 274)">
+            op_Inequality(left, right)
+          </code>
+          <div class="tip" id="274">
+            <strong>Signature:</strong> (left:TypeHash * right:TypeHash) -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Implements the operator !=.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">

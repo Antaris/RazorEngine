@@ -46,6 +46,28 @@
 
             Storable representation of an invocation without the target
             </br></div>
+  <h3>Constructors</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Constructor</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '308', 308)" onmouseover="showTip(event, '308', 308)">
+            new(kind, name, storedArgs)
+          </code>
+          <div class="tip" id="308">
+            <strong>Signature:</strong> (kind:InvocationKind * name:String_OR_InvokeMemberName * storedArgs:obj []) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,10 +77,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '51', 51)" onmouseover="showTip(event, '51', 51)">
+          <code onmouseout="hideTip(event, '309', 309)" onmouseover="showTip(event, '309', 309)">
             Args()
           </code>
-          <div class="tip" id="51">
+          <div class="tip" id="309">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -71,10 +93,106 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '52', 52)" onmouseover="showTip(event, '52', 52)">
+          <code onmouseout="hideTip(event, '310', 310)" onmouseover="showTip(event, '310', 310)">
+            Equals(other)
+          </code>
+          <div class="tip" id="310">
+            <strong>Signature:</strong> other:Invocation -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Equalses the specified other.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '311', 311)" onmouseover="showTip(event, '311', 311)">
+            Equals(obj)
+          </code>
+          <div class="tip" id="311">
+            <strong>Signature:</strong> obj:obj -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Equalses the specified other.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '312', 312)" onmouseover="showTip(event, '312', 312)">
+            GetHashCode()
+          </code>
+          <div class="tip" id="312">
+            <strong>Signature:</strong> unit -&gt; int<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Get the hash code.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '313', 313)" onmouseover="showTip(event, '313', 313)">
+            Invoke(target, args)
+          </code>
+          <div class="tip" id="313">
+            <strong>Signature:</strong> (target:obj * args:obj []) -&gt; obj<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '314', 314)" onmouseover="showTip(event, '314', 314)">
+            InvokeWithArgs(target, args)
+          </code>
+          <div class="tip" id="314">
+            <strong>Signature:</strong> (target:obj * args:obj []) -&gt; obj<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '315', 315)" onmouseover="showTip(event, '315', 315)">
+            InvokeWithStoredArgs(target)
+          </code>
+          <div class="tip" id="315">
+            <strong>Signature:</strong> target:obj -&gt; obj<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Invokes the invocation on specified target.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '316', 316)" onmouseover="showTip(event, '316', 316)">
             Kind()
           </code>
-          <div class="tip" id="52">
+          <div class="tip" id="316">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -87,10 +205,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '53', 53)" onmouseover="showTip(event, '53', 53)">
+          <code onmouseout="hideTip(event, '317', 317)" onmouseover="showTip(event, '317', 317)">
             Name()
           </code>
-          <div class="tip" id="53">
+          <div class="tip" id="317">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -98,6 +216,28 @@
           
             Gets or sets the name.
             </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '318', 318)" onmouseover="showTip(event, '318', 318)">
+            Create(kind, name, storedArgs)
+          </code>
+          <div class="tip" id="318">
+            <strong>Signature:</strong> (kind:InvocationKind * name:String_OR_InvokeMemberName * storedArgs:obj []) -&gt; Invocation<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
         </td>
       </tr>
     </tbody>
