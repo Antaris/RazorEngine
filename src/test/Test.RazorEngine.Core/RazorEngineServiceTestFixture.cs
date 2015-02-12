@@ -389,7 +389,7 @@ namespace Test.RazorEngine
         /// <summary>
         /// Tests that we can access the Viewbag from within the SetModel method.
         /// </summary>
-        [Test, Ignore]
+        [Test]
         public void RazorEngineService_CheckViewbagAccessFromSetModel()
         {
             RunTestHelper(service =>

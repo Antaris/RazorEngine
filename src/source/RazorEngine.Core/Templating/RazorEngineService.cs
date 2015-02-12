@@ -260,10 +260,10 @@ namespace RazorEngine.Templating
         /// <param name="modelType"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        internal ITemplate GetTemplate(ITemplateKey key, Type modelType, object model)
+        internal ITemplate GetTemplate(ITemplateKey key, Type modelType, object model, DynamicViewBag viewbag)
         {
             var template = GetCompiledTemplate(key, modelType, true);
-            return _core_with_cache.CreateTemplate(template, model);
+            return _core_with_cache.CreateTemplate(template, model, viewbag);
         }
 
         /// <summary>

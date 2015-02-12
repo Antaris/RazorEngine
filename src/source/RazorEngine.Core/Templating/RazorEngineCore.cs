@@ -40,9 +40,9 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="viewBag">The dynamic view bag.</param>
         /// <returns>The execute context.</returns>
-        public virtual ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null)
+        public virtual ExecuteContext CreateExecuteContext()
         {
-            var context = new ExecuteContext(new DynamicViewBag(viewBag));
+            var context = new ExecuteContext();
             return context;
         }
 
@@ -72,17 +72,14 @@ namespace RazorEngine.Templating
         /// <param name="model">The model instance or NULL if no model exists.</param>
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         [Pure]
-        internal virtual ITemplate CreateTemplate(ICompiledTemplate template, object model)
+        internal virtual ITemplate CreateTemplate(ICompiledTemplate template, object model, DynamicViewBag viewbag)
         {
             var context = CreateInstanceContext(template.TemplateType);
             ITemplate instance = _config.Activator.CreateInstance(context);
             instance.InternalTemplateService = new InternalTemplateService(this, template.Key);
             instance.TemplateService = new TemplateService(_cached);
             instance.RazorEngine = _cached;
-            if (model != null)
-            {
-                instance.SetModel(model);
-            }
+            instance.SetData(model, viewbag);
             return instance;
         }
 
@@ -138,11 +135,11 @@ namespace RazorEngine.Templating
             if (template == null)
                 throw new ArgumentNullException("template");
 
-            var instance = CreateTemplate(template, model);
+            var instance = CreateTemplate(template, model, viewBag);
 #if RAZOR4
-            await instance.Run(CreateExecuteContext(viewBag), writer);
+            await instance.Run(CreateExecuteContext(), writer);
 #else
-            instance.Run(CreateExecuteContext(viewBag), writer);
+            instance.Run(CreateExecuteContext(), writer);
 #endif
         }
 
@@ -162,11 +159,11 @@ namespace RazorEngine.Templating
             return _config.TemplateManager.GetKey(cacheName, resolveType, context);
         }
 
-        internal virtual ITemplate ResolveInternal(string cacheName, object model, Type modelType, ResolveType resolveType, ITemplateKey context)
+        internal virtual ITemplate ResolveInternal(string cacheName, object model, Type modelType, DynamicViewBag viewBag, ResolveType resolveType, ITemplateKey context)
         {
             var templateKey = GetKey(cacheName, resolveType, context);
             var compiledTemplate = Compile(templateKey, modelType);
-            return CreateTemplate(compiledTemplate, model);
+            return CreateTemplate(compiledTemplate, model, viewBag);
         }
 
         internal ITemplateSource Resolve(ITemplateKey key)

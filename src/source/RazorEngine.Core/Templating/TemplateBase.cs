@@ -23,6 +23,15 @@ namespace RazorEngine.Templating
     public abstract class TemplateBase : ITemplate
     {
         #region Fields
+        /// <summary>
+        /// Because the old API (TemplateService) is designed in a way to make it impossible to init
+        /// the model and the Viewbag at the same time (and because of backwards compatibility),
+        /// we need to call the SetData method twice (only from within TemplateService so we can remove this bool once that has been removed).
+        /// 
+        /// But the secound call we only need to set the Viewbag, therefore we save the state in this bool.
+        /// </summary>
+        private bool modelInit = false;
+        private dynamic viewBag = null;
         protected ExecuteContext _context;
         #endregion
 
@@ -66,7 +75,7 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Gets the viewbag that allows sharing state between layout and child templates.
         /// </summary>
-        public dynamic ViewBag { get { return _context.ViewBag; } }
+        public dynamic ViewBag { get { return viewBag; } }
 
         /// <summary>
         /// Gets the current writer.
@@ -75,6 +84,21 @@ namespace RazorEngine.Templating
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Set the data for this template.
+        /// </summary>
+        /// <param name="model">the model object for the current run.</param>
+        /// <param name="viewbag">the viewbag for the current run.</param>
+        public virtual void SetData(object model, DynamicViewBag viewbag)
+        {
+            this.viewBag = viewbag ?? ViewBag ?? new DynamicViewBag();
+            if (!modelInit)
+            {
+                SetModel(model);
+                modelInit = true;
+            }
+        }
+
         /// <summary>
         /// Set the current model.
         /// </summary>
@@ -103,14 +127,14 @@ namespace RazorEngine.Templating
         /// <returns>The template writer helper.</returns>
         public virtual TemplateWriter Include(string name, object model = null, Type modelType = null)
         {
-            var instance = InternalTemplateService.Resolve(name, model, modelType, ResolveType.Include);
+            var instance = InternalTemplateService.Resolve(name, model, modelType, (DynamicViewBag)ViewBag, ResolveType.Include);
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + name + "'");
 
             // TODO: make TemplateWriter async?
             return new TemplateWriter(tw =>
                 instance.Run(
-                    InternalTemplateService.CreateExecuteContext((DynamicViewBag)ViewBag), tw)
+                    InternalTemplateService.CreateExecuteContext(), tw)
 #if RAZOR4
                     .Wait()
 #endif
@@ -156,7 +180,7 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected virtual ITemplate ResolveLayout(string name)
         {
-            return InternalTemplateService.Resolve(name, null, null, ResolveType.Layout);
+            return InternalTemplateService.Resolve(name, null, null, (DynamicViewBag)ViewBag, ResolveType.Layout);
         }
 
         private static void StreamToTextWriter(MemoryStream memory, TextWriter writer)

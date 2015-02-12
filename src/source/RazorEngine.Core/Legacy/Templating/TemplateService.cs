@@ -111,11 +111,12 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Creates a new <see cref="ExecuteContext"/> for tracking templates.
         /// </summary>
-        /// <param name="viewBag">The dynamic view bag.</param>
+        /// <param name="viewBag">This parameter is ignored, set the Viewbag with template.SetData(null, viewBag)</param>
         /// <returns>The execute context.</returns>
         public virtual ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null)
         {
-            return _service.Core.CreateExecuteContext(viewBag);
+            if (viewBag != null) throw new NotSupportedException("This kind of usage is no longer supported, please switch to the non-obsolete API.");
+            return _service.Core.CreateExecuteContext();
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace RazorEngine.Templating
                 var source = _service.Core.Resolve(key);
                 compiledTemplate = new CompiledTemplate(new CompilationData(null, null), key, source, templateType, modelType);
 	        }
-            return _service.Core.CreateTemplate(compiledTemplate, model);
+            return _service.Core.CreateTemplate(compiledTemplate, model, null);
         }
 
         /// <summary>
@@ -404,7 +405,7 @@ namespace RazorEngine.Templating
             Type modelType = check.Item2;
             model = check.Item1;
 
-            return _service.GetTemplate(key, modelType, model);
+            return _service.GetTemplate(key, modelType, model, null);
             // return this.GetTemplate<object>(razorTemplate, model, cacheName);
         }
 
@@ -424,7 +425,7 @@ namespace RazorEngine.Templating
             var key = GetKeyAndAdd(razorTemplate, cacheName);
             var check = CheckModel(model);
             model = check.Item1;
-            return _service.GetTemplate(key, typeof(T), model);
+            return _service.GetTemplate(key, typeof(T), model, null);
         }
 
         /// <summary>
@@ -611,7 +612,7 @@ namespace RazorEngine.Templating
             var modelType = check.Item2;
             model = check.Item1;
             return _service.GetTemplate(
-                _service.GetKey(cacheName), modelType, model);
+                _service.GetKey(cacheName), modelType, model, null);
         }
 
         /// <summary>
@@ -635,7 +636,6 @@ namespace RazorEngine.Templating
 	        }
         }
 
-        
         /// <summary>
         /// Runs the specified template and returns the result.
         /// </summary>
@@ -649,17 +649,18 @@ namespace RazorEngine.Templating
 
             using (var writer = new System.IO.StringWriter())
             {
+                template.SetData(null, viewBag);
 #if RAZOR4
                 try
                 {
-                    template.Run(CreateExecuteContext(viewBag), writer).Wait();
+                    template.Run(CreateExecuteContext(), writer).Wait();
                 }
                 catch (AggregateException ex)
                 {
                     ExceptionDispatchInfo.Capture(ex.Flatten().InnerExceptions.First()).Throw();
                 }
 #else
-                template.Run(CreateExecuteContext(viewBag), writer);
+                template.Run(CreateExecuteContext(), writer);
 #endif
                 return writer.ToString();
             }

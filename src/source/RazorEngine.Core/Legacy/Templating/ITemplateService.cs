@@ -34,7 +34,7 @@
         /// <summary>
         /// Creates a new <see cref="ExecuteContext"/> used to tracking templates.
         /// </summary>
-        /// <param name="viewBag">The view bag.</param>
+        /// <param name="viewBag">This parameter is ignored, set the Viewbag with template.SetData(null, viewBag)</param>
         /// <returns>The instance of <see cref="ExecuteContext"/></returns>
         ExecuteContext CreateExecuteContext(DynamicViewBag viewBag = null);
 

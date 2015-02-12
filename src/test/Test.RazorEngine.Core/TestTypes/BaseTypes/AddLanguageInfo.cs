@@ -95,7 +95,7 @@ namespace Test.RazorEngine.TestTypes.BaseTypes
         protected override ITemplate ResolveLayout(string name)
         {
             // We need to resolve the ITemplate with the TemplateViewData instead of the model, otherwise, the SetModel on the Layout will fail
-            return InternalTemplateService.Resolve(name, _templateViewData, typeof(T), ResolveType.Layout);
+            return InternalTemplateService.Resolve(name, _templateViewData, typeof(T), (DynamicViewBag)ViewBag, ResolveType.Layout);
         }
     }
 
