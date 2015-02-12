@@ -61,7 +61,27 @@ Everybody familiar with Razor can start building templates very quickly.</p>
 
 <h3><a name="Versioning" class="anchor" href="#Versioning">Versioning:</a></h3>
 
-<p><a href="http://semver.org/">http://semver.org/</a></p>
+<p><a href="http://semver.org/">http://semver.org/</a> like versioning.</p>
+
+<h4><a name="X-Y-Z-Major" class="anchor" href="#X-Y-Z-Major">X.Y.Z (Major)</a></h4>
+
+<p>X is the major Razor-Parser version that is used. Different X numbers are not guaranteed to be runtime-compatible.</p>
+
+<p>Y is the minor version. Y version changes add features and fix bugs but "should" be backwards compatible.
+Breaks can happen if you use the API in an unexpected way.</p>
+
+<p>Z version changes are bug-fixes and are highly backwards compatible.</p>
+
+<h4><a name="General-considerations" class="anchor" href="#General-considerations">General considerations.</a></h4>
+
+<ul>
+<li>The 4.x build is compatible with Razor4 while the 3.x build is compatible with Razor3 (OR Razor2 for the .net40 build).</li>
+<li>3.y.z should be compile compatible with 4.(y-5).z (has the same API/feature but uses another version of the Razor parser)</li>
+<li>3.y.z (net40, net45) and 4.(y-5).z (net45) are generally build from the same source code state.</li>
+<li>Incrementing the X version should be compile-compatible if you do not use any obsoleted APIs and use the corresponding Y version.</li>
+<li>Incrementing the Y version should be backwards compatible, if you do not use the API in unexpected ways.</li>
+<li>Incrementing the Z version is fully backwards compatible.</li>
+</ul>
 
 <h3><a name="High-level-documentation-ordered-by-project" class="anchor" href="#High-level-documentation-ordered-by-project">High level documentation ordered by project.</a></h3>
 

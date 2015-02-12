@@ -55,11 +55,27 @@
       <tr>
         <td class="member-name">
 
+          <code onmouseout="hideTip(event, '769', 769)" onmouseover="showTip(event, '769', 769)">
+            AddTemplate(...)
+          </code>
+          <div class="tip" id="769">
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * templateSource:ITemplateSource) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Adds a given template to the template manager as dynamic template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
           <code onmouseout="hideTip(event, '770', 770)" onmouseover="showTip(event, '770', 770)">
             AddTemplate(...)
           </code>
           <div class="tip" id="770">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * templateSource:ITemplateSource) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * templateSource:string) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -75,22 +91,6 @@
             AddTemplate(...)
           </code>
           <div class="tip" id="771">
-            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * templateSource:string) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Adds a given template to the template manager as dynamic template.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '772', 772)" onmouseover="showTip(event, '772', 772)">
-            AddTemplate(...)
-          </code>
-          <div class="tip" id="772">
             <strong>Signature:</strong> (service:IRazorEngineService * name:string * templateSource:string) -&gt; unit<br />
                       </div>
         </td>
@@ -103,10 +103,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '773', 773)" onmouseover="showTip(event, '773', 773)">
+          <code onmouseout="hideTip(event, '772', 772)" onmouseover="showTip(event, '772', 772)">
             Compile(service, name, modelType)
           </code>
-          <div class="tip" id="773">
+          <div class="tip" id="772">
             <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
@@ -119,11 +119,28 @@
       <tr>
         <td class="member-name">
 
+          <code onmouseout="hideTip(event, '773', 773)" onmouseover="showTip(event, '773', 773)">
+            Compile(...)
+          </code>
+          <div class="tip" id="773">
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
           <code onmouseout="hideTip(event, '774', 774)" onmouseover="showTip(event, '774', 774)">
             Compile(...)
           </code>
           <div class="tip" id="774">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -140,7 +157,7 @@
             Compile(...)
           </code>
           <div class="tip" id="775">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -157,23 +174,6 @@
             Compile(...)
           </code>
           <div class="tip" id="776">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '777', 777)" onmouseover="showTip(event, '777', 777)">
-            Compile(...)
-          </code>
-          <div class="tip" id="777">
             <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
@@ -187,10 +187,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '778', 778)" onmouseover="showTip(event, '778', 778)">
+          <code onmouseout="hideTip(event, '777', 777)" onmouseover="showTip(event, '777', 777)">
             IsTemplateCached(...)
           </code>
-          <div class="tip" id="778">
+          <div class="tip" id="777">
             <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type) -&gt; bool<br />
                       </div>
         </td>
@@ -203,10 +203,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '779', 779)" onmouseover="showTip(event, '779', 779)">
+          <code onmouseout="hideTip(event, '778', 778)" onmouseover="showTip(event, '778', 778)">
             Run(...)
           </code>
-          <div class="tip" id="779">
+          <div class="tip" id="778">
             <strong>Signature:</strong> (service:IRazorEngineService * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
@@ -219,10 +219,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '780', 780)" onmouseover="showTip(event, '780', 780)">
+          <code onmouseout="hideTip(event, '779', 779)" onmouseover="showTip(event, '779', 779)">
             Run(...)
           </code>
-          <div class="tip" id="780">
+          <div class="tip" id="779">
             <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
@@ -236,10 +236,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '781', 781)" onmouseover="showTip(event, '781', 781)">
+          <code onmouseout="hideTip(event, '780', 780)" onmouseover="showTip(event, '780', 780)">
             Run(...)
           </code>
-          <div class="tip" id="781">
+          <div class="tip" id="780">
             <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
@@ -253,10 +253,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '782', 782)" onmouseover="showTip(event, '782', 782)">
+          <code onmouseout="hideTip(event, '781', 781)" onmouseover="showTip(event, '781', 781)">
             RunCompile(...)
           </code>
-          <div class="tip" id="782">
+          <div class="tip" id="781">
             <strong>Signature:</strong> (service:IRazorEngineService * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
@@ -269,11 +269,28 @@
       <tr>
         <td class="member-name">
 
+          <code onmouseout="hideTip(event, '782', 782)" onmouseover="showTip(event, '782', 782)">
+            RunCompile(...)
+          </code>
+          <div class="tip" id="782">
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
           <code onmouseout="hideTip(event, '783', 783)" onmouseover="showTip(event, '783', 783)">
             RunCompile(...)
           </code>
           <div class="tip" id="783">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -290,7 +307,7 @@
             RunCompile(...)
           </code>
           <div class="tip" id="784">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -307,7 +324,7 @@
             RunCompile(...)
           </code>
           <div class="tip" id="785">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -324,13 +341,13 @@
             RunCompile(...)
           </code>
           <div class="tip" id="786">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
           
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
             </br>
         </td>
       </tr>
@@ -341,7 +358,7 @@
             RunCompile(...)
           </code>
           <div class="tip" id="787">
-            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -358,12 +375,13 @@
             RunCompile(...)
           </code>
           <div class="tip" id="788">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
           
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
             Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
             </br>
         </td>
@@ -375,7 +393,7 @@
             RunCompile(...)
           </code>
           <div class="tip" id="789">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -393,7 +411,7 @@
             RunCompile(...)
           </code>
           <div class="tip" id="790">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -411,24 +429,6 @@
             RunCompile(...)
           </code>
           <div class="tip" id="791">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '792', 792)" onmouseover="showTip(event, '792', 792)">
-            RunCompile(...)
-          </code>
-          <div class="tip" id="792">
             <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
