@@ -21,7 +21,25 @@ Discussions/Forums can be found here: https://groups.google.com/forum/#!forum/ra
 
 ### Versioning: 
 
-http://semver.org/
+http://semver.org/ like versioning.
+
+#### X.Y.Z (Major)
+
+X is the major Razor-Parser version that is used. Different X numbers are not guaranteed to be runtime-compatible.
+
+Y is the minor version. Y version changes add features and fix bugs but "should" be backwards compatible.
+Breaks can happen if you use the API in an unexpected way.
+
+Z version changes are bug-fixes and are highly backwards compatible.
+
+#### General considerations.
+
+* The 4.x build is compatible with Razor4 while the 3.x build is compatible with Razor3 (OR Razor2 for the .net40 build).
+* 3.y.z should be compile compatible with 4.(y-5).z (has the same API/feature but uses another version of the Razor parser)
+* 3.y.z (net40, net45) and 4.(y-5).z (net45) are generally build from the same source code state.
+* Incrementing the X version should be compile-compatible if you do not use any obsoleted APIs and use the corresponding Y version.
+* Incrementing the Y version should be backwards compatible, if you do not use the API in unexpected ways.
+* Incrementing the Z version is fully backwards compatible.
 
 ### High level documentation ordered by project.
 
