@@ -200,7 +200,12 @@ namespace RazorEngine.Compilation
             return domain.GetAssemblies();
         }
 
-
+        /// <summary>
+        /// Return the raw type name (including namespace) without any generic arguments.
+        /// Returns the typename in a way it can be used in C# code.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static string CSharpGetRawTypeName(Type type)
         {
             if (type == null)
@@ -210,14 +215,27 @@ namespace RazorEngine.Compilation
                 return type.FullName;
 
             var templateTypeName =
-                type.Namespace
-                   + "."
-                   + type.Name.Substring(0, type.Name.IndexOf('`'));
+                type.FullName.Substring(0, type.FullName.IndexOf('`')).Replace("+", ".");
             return templateTypeName;
         }
 
+
+        /// <summary>
+        /// Return the raw type name (including namespace) without any generic arguments.
+        /// Returns the typename in a way it can be used in VB.net code.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static string VBGetRawTypeName(Type type) { return CSharpGetRawTypeName(type); }
 
+        /// <summary>
+        /// Return the raw type name (including namespace) with the given modelTypeName as generic argument (if applicable).
+        /// Returns the typename in a way it can be used in C# code.
+        /// </summary>
+        /// <param name="templateType"></param>
+        /// <param name="modelTypeName"></param>
+        /// <param name="throwWhenNotGeneric"></param>
+        /// <returns></returns>
         public static string CSharpCreateGenericType(Type templateType, string modelTypeName, bool throwWhenNotGeneric)
         {
 
@@ -234,7 +252,15 @@ namespace RazorEngine.Compilation
 
             return templateTypeName + "<" + modelTypeName + ">";
         }
-
+        
+        /// <summary>
+        /// Return the raw type name (including namespace) with the given modelTypeName as generic argument (if applicable).
+        /// Returns the typename in a way it can be used in VB.net code.
+        /// </summary>
+        /// <param name="templateType"></param>
+        /// <param name="modelTypeName"></param>
+        /// <param name="throwWhenNotGeneric"></param>
+        /// <returns></returns>
         public static string VBCreateGenericType(Type templateType, string modelTypeName, bool throwWhenNotGeneric)
         {
             var templateTypeName = VBGetRawTypeName(templateType);

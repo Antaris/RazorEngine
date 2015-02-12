@@ -32,7 +32,7 @@ namespace RazorEngine.Templating
         /// Set the model of the template (if applicable).
         /// </summary>
         /// <param name="model"></param>
-        void SetModel(object model);
+        void SetData(object model, DynamicViewBag viewbag);
 
         /// <summary>
         /// Executes the compiled template.

@@ -7,26 +7,29 @@
     This file handles the generation of the docs (it is called by the build automatically). 
 *)
 
+open System.IO
+// Force to load our build!
+try
+  File.Delete ".nuget/Build/FSharp.Formatting/lib/net40/RazorEngine.dll"
+with e -> printfn "Could not delete RazorEngine.dll: %s" e.Message
+try
+  File.Delete ".nuget/Build/FSharp.Formatting/lib/net40/System.Web.Razor.dll"
+with e -> printfn "Could not delete System.Web.Razor.dll: %s" e.Message
+
+#I @"build/net40"
+#I @".nuget/Build/FSharp.Compiler.Service/lib/net40"
+#I @".nuget/Build/FSharp.Formatting/lib/net40"
 #I @".nuget/Build/FAKE/tools"
 #r @"FakeLib.dll"
 #r "System.Web.dll"
 
 open System.Collections.Generic
-open System.IO
 open System.Web
 
 open Fake
 open Fake.Git
 open Fake.FSharpFormatting
 open AssemblyInfoFile
-
-// Force to load our last build
-DeleteFile ".nuget/Build/FSharp.Formatting/lib/net40/RazorEngine.dll"
-DeleteFile ".nuget/Build/FSharp.Formatting/lib/net40/System.Web.Razor.dll"
-
-#I @"build/net40"
-#I @".nuget/Build/FSharp.Compiler.Service/lib/net40"
-#I @".nuget/Build/FSharp.Formatting/lib/net40"
 
 #load @"buildConfig.fsx"
 open BuildConfig

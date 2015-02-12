@@ -14,7 +14,7 @@ namespace RazorEngine.Templating
         {
         }
 
-        internal override ITemplate ResolveInternal(string cacheName, object model, Type modelType, ResolveType resolveType, ITemplateKey context)
+        internal override ITemplate ResolveInternal(string cacheName, object model, Type modelType, DynamicViewBag viewbag, ResolveType resolveType, ITemplateKey context)
         {
             var templateKey = GetKey(cacheName, resolveType, context);
             ICompiledTemplate compiledTemplate;
@@ -23,7 +23,7 @@ namespace RazorEngine.Templating
                 compiledTemplate = Compile(templateKey, modelType);
                 Configuration.CachingProvider.CacheTemplate(compiledTemplate, templateKey);
             }
-            return CreateTemplate(compiledTemplate, model);
+            return CreateTemplate(compiledTemplate, model, viewbag);
         }
     }
 }

@@ -62,7 +62,7 @@ to write into a file of the local harddrive.
 ## SecurityException and MethodAccessException.
 
 One important thing to understand is how .NET handles partial trust scenarios.
-You should definitely read http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional.
+You should definitely read http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional .
 However to give some RazorEngine specific hints/additions:
 
 If your assembly is running with full trust all your code (types/members) will be SecurityCritical!
@@ -138,4 +138,4 @@ public class LanguageEncodingConfigCreator : IConfigCreator
 }
 ```
 
-The only thing to mention here is that the implementation must me serializable but not inherit from `MarshalByRefObject`.
+The only thing to mention here is that the implementation must be serializable but not inherit from `MarshalByRefObject`.

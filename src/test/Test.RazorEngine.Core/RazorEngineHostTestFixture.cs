@@ -44,26 +44,6 @@ namespace RazorEngine.Tests
             }
         }
 
-        [Test]
-        public void RazorEngineHost_SupportsModelSpan_WithBaseType_NotGeneric_UsingCSharpCodeParser()
-        {
-            // TODO: why should this test even work?
-            Assert.Ignore("Should this really work?");
-
-            var config = new TemplateServiceConfiguration();
-            config.BaseTemplateType = typeof(TemplateBase);
-            using (var service = new TemplateService(config))
-            {
-                const string template = "@model RazorEngine.Tests.TestTypes.Person\n@Model.Forename";
-                const string expected = "Matt";
-
-                var model = new Person {Forename = "Matt"};
-                string result = service.Parse(template, (object)model, null, null);
-
-                Assert.That(result == expected, "Result does not match expected: " + result);
-            }
-        }
-        
 #if !RAZOR4
         /// <summary>
         /// Tests that the <see cref="RazorEngineHost"/> supports the @ModelType directive.
@@ -81,27 +61,6 @@ namespace RazorEngine.Tests
                              {
                                  Language = Language.VisualBasic
                              };
-
-            using (var service = new TemplateService(config))
-            {
-                const string template = "@ModelType List(Of RazorEngine.Tests.TestTypes.Person)\n@Model.Count";
-                const string expected = "1";
-
-                var model = new List<Person> { new Person() { Forename = "Matt", Age = 27 } };
-                string result = service.Parse(template, (object)model, null, null);
-
-                Assert.That(result == expected, "Result does not match expected: " + result);
-            }
-        }
-
-        [Category("VBNET")]
-        [Test]
-        public void RazorEngineHost_SupportsModelSpan_WithBaseType_NotGeneric_UsingVBCodeParser()
-        {
-            Assert.Ignore("Should this really work?");
-            var config = new TemplateServiceConfiguration();
-            config.BaseTemplateType = typeof(TemplateBase);
-            config.Language = Language.VisualBasic;
 
             using (var service = new TemplateService(config))
             {
