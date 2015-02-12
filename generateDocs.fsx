@@ -16,8 +16,9 @@ try
   File.Delete ".nuget/Build/FSharp.Formatting/lib/net40/System.Web.Razor.dll"
 with e -> printfn "Could not delete System.Web.Razor.dll: %s" e.Message
 
-#I @"build/net40"
-#I @".nuget/Build/FSharp.Compiler.Service/lib/net40"
+#I @"build/net45"
+#I @".nuget/Build/FSharp.Compiler.Service/lib/net45"
+#I @".nuget/Build/FSharpVSPowerTools.Core/lib/net45"
 #I @".nuget/Build/FSharp.Formatting/lib/net40"
 #I @".nuget/Build/FAKE/tools"
 #r @"FakeLib.dll"
@@ -35,6 +36,7 @@ open AssemblyInfoFile
 open BuildConfig
 
 // Documentation
+#r "FSharpVSPowerTools.Core.dll"
 #r "FSharp.Compiler.Service.dll"
 #r "System.Web.Razor.dll"
 #r "RazorEngine.dll"
