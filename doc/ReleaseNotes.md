@@ -1,4 +1,4 @@
-﻿### 3.5.4 / 4.0.4-beta1
+﻿### 3.6.0 / 4.1.0-beta1
 * ICodeInspector API is now obsolete (it has been removed in 4.0.0).
 * Nested classes can now be used as template-base-class.
 * ViewBag data can now be used in overwritten SetModel calls
@@ -8,7 +8,8 @@
   - added a DynamicViewBag parameter to IInternalTemplateService.Resolve (you should not need to use that API)
   - ITemplate.SetModel has changed to ITemplate.SetData (you are not affected if you use TemplateBase or TemplateBase<T> as base class, which is recommended)
   
-While these changes are (strictly speaking) breaking they should hardly affect anyone, so this update will get only a minor version jump.
+These changes are strictly speaking breaking, but they shouldn't practically affect anyone.
+Watch out for new Obsolete warnings and fix them.
 
 ### 3.5.3 / 4.0.3-beta1
 * Fixed a SecurityException when the template is broken.
