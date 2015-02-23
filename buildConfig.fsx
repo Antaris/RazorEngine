@@ -44,8 +44,8 @@ printfn "BUILDING VERSION: %s" version_nuget
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.1.0.0"
-let version_razor4_nuget = "4.1.0-beta1"
+let version_razor4 = "4.1.1.0"
+let version_razor4_nuget = "4.1.1-beta1"
 let version_roslyn_nuget = "3.5.1-beta1"
 let version_roslyn_razor4_nuget = "4.0.1-beta1"
 let commitHash = Information.getCurrentSHA1(".")
