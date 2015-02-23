@@ -13,5 +13,20 @@ namespace Test.RazorEngine.TestTypes.BaseTypes
         {
             public string TestProperty { get { return "mytest"; } }
         }
+
+        public class NonGenericNestedBaseClass : TemplateBase
+        {
+            public string TestProperty { get { return "mytest"; } }
+        }
+
+        public class NestedClass
+        {
+            public string TestProperty { get; set; }
+        }
+
+        public class GenericNestedClass<T>
+        {
+            public T TestProperty { get; set; }
+        }
     }
 }

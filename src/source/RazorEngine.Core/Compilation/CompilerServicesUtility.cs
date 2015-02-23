@@ -127,12 +127,11 @@ namespace RazorEngine.Compilation
             if (IsDynamicType(type))
                 return "dynamic";
 
+            var rawFullName = CSharpGetRawTypeName(type);
             if (!type.IsGenericType)
-                return type.FullName;
+                return rawFullName;
 
-            return type.Namespace
-                  + "."
-                  + type.Name.Substring(0, type.Name.IndexOf('`'))
+            return rawFullName
                   + "<"
                   + string.Join(", ", type.GetGenericArguments().Select(ResolveCSharpTypeName))
                   + ">";
@@ -151,12 +150,11 @@ namespace RazorEngine.Compilation
             if (IsDynamicType(type))
                 return "Object";
 
+            var rawFullName = VBGetRawTypeName(type);
             if (!type.IsGenericType)
-                return type.FullName;
+                return rawFullName;
 
-            return type.Namespace
-                  + "."
-                  + type.Name.Substring(0, type.Name.IndexOf('`'))
+            return rawFullName
                   + "(Of"
                   + string.Join(", ", type.GetGenericArguments().Select(ResolveVBTypeName))
                   + ")";
@@ -211,12 +209,11 @@ namespace RazorEngine.Compilation
             if (type == null)
                 throw new ArgumentNullException("templateType");
 
-            if (!type.IsGenericTypeDefinition || !type.IsGenericType)
-                return type.FullName;
+            string fullName = type.FullName;
+            if (type.IsGenericTypeDefinition || type.IsGenericType)
+                fullName = type.FullName.Substring(0, type.FullName.IndexOf('`'));
 
-            var templateTypeName =
-                type.FullName.Substring(0, type.FullName.IndexOf('`')).Replace("+", ".");
-            return templateTypeName;
+            return fullName.Replace("+", ".");;
         }
 
 

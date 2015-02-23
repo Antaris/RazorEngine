@@ -1,4 +1,8 @@
-﻿### 3.6.0 / 4.1.0-beta1
+﻿### 3.6.1 / 4.1.1-beta1
+* Add support for nested model types as well
+* Fix a bug with non-generic nested template base classes.
+
+### 3.6.0 / 4.1.0-beta1
 * ICodeInspector API is now obsolete (it has been removed in 4.0.0).
 * Nested classes can now be used as template-base-class.
 * ViewBag data can now be used in overwritten SetModel calls

@@ -426,5 +426,36 @@ namespace Test.RazorEngine
                 config.BaseTemplateType = typeof(HostingClass.NestedBaseClass<>);
             });
         }
+
+        /// <summary>
+        /// Tests that nested base classes work.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestNestedModelClass()
+        {
+            RunTestHelper(service =>
+            {
+                var template = @"@Model.TestProperty";
+                string result = service.RunCompile(template, "key", typeof(HostingClass.NestedClass), 
+                    new HostingClass.NestedClass() { TestProperty = "test" });
+                Assert.AreEqual("test", result);
+            });
+        }
+
+        /// <summary>
+        /// Tests that nested base classes work.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestNestedGenericModelClass()
+        {
+            RunTestHelper(service =>
+            {
+                var template = @"@Model.TestProperty";
+                string result = service.RunCompile(template, "key", typeof(HostingClass.GenericNestedClass<string>),
+                    new HostingClass.GenericNestedClass<string>() { TestProperty = "test" });
+                Assert.AreEqual("test", result);
+            });
+        }
+
     }
 }
