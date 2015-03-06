@@ -1,5 +1,7 @@
 # RazorEngine
 
+[![Join the chat at https://gitter.im/Antaris/RazorEngine](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Antaris/RazorEngine?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 *latest* documentation available on http://antaris.github.io/RazorEngine/.
 
 ## Build status
