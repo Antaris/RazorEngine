@@ -456,6 +456,5 @@ namespace Test.RazorEngine
                 Assert.AreEqual("test", result);
             });
         }
-
     }
 }
