@@ -188,6 +188,6 @@ By default the `UseCurrentAssembliesReferenceResolver` class is used, which will
 
 ## More
 
-On the right side you can find links to advanced topics and additional documentation (http://antaris.github.io/RazorEngine/).
+On the right side you can find links to advanced topics and additional [documentation] (http://antaris.github.io/RazorEngine/).
 You should definitely read "About Razor" and "Template basics".
 
