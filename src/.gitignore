@@ -29,3 +29,5 @@ _ReSharper*/
 # Monodevelop
 test-results/
 *.userprefs
+
+/templates

@@ -4,19 +4,21 @@
 // ----------------------------------------------------------------------------
 
 (*
-    This file handles the complete build process of RazorEngine
+    This file handles the configuration of the Yaaf.AdvancedBuilding build script.
 
-    The first step is handled in build.sh and build.cmd by bootstrapping a NuGet.exe and 
-    executing NuGet to resolve all build dependencies (dependencies required for the build to work, for example FAKE)
+    The first step is handled in build.sh and build.cmd by restoring either paket dependencies or bootstrapping a NuGet.exe and 
+    executing NuGet to resolve all build dependencies (dependencies required for the build to work, for example FAKE).
 
-    The secound step is executing this file which resolves all dependencies, builds the solution and executes all unit tests
+    The secound step is executing build.fsx which loads this file (for configuration), builds the solution and executes all unit tests.
 *)
 
+#if FAKE
+#else
+// Support when file is opened in Visual Studio
+#load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"
+#endif
 
-// Supended until FAKE supports custom mono parameters
-#I @".nuget/Build/FAKE/tools/" // FAKE
-#r @"FakeLib.dll"  //FAKE
-
+open BuildConfigDef
 open System.Collections.Generic
 open System.IO
 
@@ -25,158 +27,149 @@ open Fake.Git
 open Fake.FSharpFormatting
 open AssemblyInfoFile
 
-// properties
-let projectName = "RazorEngine"
-let projectSummary = "Simple templating using Razor syntax."
-let projectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
+if isMono then
+    monoArguments <- "--runtime=v4.0 --debug"
+
 let projectName_roslyn = "RazorEngine.Roslyn"
 let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
 let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEngine."
-let authors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
-let page_author = "Matthias Dittrich"
-let mail = "matthew.abbott@outlook.com"
-
-// Read release notes document
-let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
-let version = release.AssemblyVersion
-let version_nuget = release.NugetVersion
-printfn "BUILDING VERSION: %s" version_nuget
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
 let version_razor4 = "4.1.1.0"
 let version_razor4_nuget = "4.1.1-beta1"
+let version_roslyn = "3.5.1"
 let version_roslyn_nuget = "3.5.1-beta1"
+let version_roslyn_razor4 = "4.0.1"
 let version_roslyn_razor4_nuget = "4.0.1-beta1"
-let commitHash = Information.getCurrentSHA1(".")
 
-//let buildTargets = environVarOrDefault "BUILDTARGETS" ""
-//let buildPlatform = environVarOrDefault "BUILDPLATFORM" "MONO"
-let buildDir = "./build/"
-let releaseDir = "./release/"
-let outLibDir = "./release/lib/"
-let outDocDir = "./release/documentation/"
-let docTemplatesDir = "./doc/templates/"
-let testDir  = "./test/"
-let nugetDir  = "./.nuget/"
-let packageDir  = "./.nuget/packages"
+// This is set to true when we want to update the roslyn packages via CI as well
+// (otherwise this value doesn't matter). You can always push manually!
+let roslyn_publish = System.Boolean.Parse (getBuildParamOrDefault "PUSH_ROSLYN" "false")
 
-let github_user = "Antaris"
-let github_project = "RazorEngine"
-let nuget_url = "https://www.nuget.org/packages/RazorEngine/"
+let unitTestFinder (testDir, (buildParams:BuildParams)) =
+    let items = !! (testDir + "/Test.*.dll")
+    (if not isMono then items else
+     items
+     -- (testDir + "/Test.*.Roslyn.dll"))
+    :> _ seq 
 
-let tags = "C# razor template engine programming"
+let buildConfig =
+ // Read release notes document
+ let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
+ { BuildConfiguration.Defaults with
+    ProjectName = "RazorEngine"
+    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2015"
+    ProjectSummary = "Simple templating using Razor syntax."
+    ProjectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
+    ProjectAuthors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
+    NugetTags =  "C# razor template engine programming"
+    PageAuthor = "Matthias Dittrich"
+    GithubUser = "Antaris"
+    Version = release.NugetVersion
+    NugetPackages =
+      [ "RazorEngine.nuspec", (fun config p ->
+          { p with
+              Version = config.Version
+              ReleaseNotes = toLines release.Notes
+              DependenciesByFramework =
+                [ { FrameworkVersion = "net40"; 
+                    Dependencies = [ "Microsoft.AspNet.Razor", "2.0.30506.0" |> RequireExactly ] }
+                  { FrameworkVersion = "net45"; 
+                    Dependencies = [ "Microsoft.AspNet.Razor", "3.0.0" ] } ] })
+        "RazorEngine-razor4.nuspec", (fun config p ->
+          { p with
+              Version = version_razor4_nuget
+              ReleaseNotes = toLines release.Notes
+              Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta1" ] })
+        "RazorEngine.Roslyn.nuspec", (fun config p ->
+          { p with
+              Project = projectName_roslyn
+              Summary = projectSummary_roslyn
+              Description = projectDescription_roslyn
+              Version = version_roslyn_nuget
+              Publish = roslyn_publish
+              ReleaseNotes = toLines release.Notes
+              Dependencies =
+                let exact =
+                  [ config.ProjectName, config.Version
+                    "Microsoft.AspNet.Razor", "3.0.0" ]
+                [ "Microsoft.CodeAnalysis" ]
+                |> List.map (fun name -> name, (GetPackageVersion "packages" name))
+                |> List.append exact })
+        "RazorEngine.Roslyn-razor4.nuspec", (fun config p ->
+          { p with
+              Project = projectName_roslyn
+              Summary = projectSummary_roslyn
+              Description = projectDescription_roslyn
+              Version = version_roslyn_razor4_nuget
+              ReleaseNotes = toLines release.Notes
+              Publish = roslyn_publish
+              Dependencies =
+                let exact =
+                  [ config.ProjectName, version_razor4_nuget
+                    "Microsoft.AspNet.Razor", "4.0.0-beta1" ]
+                [ "Microsoft.CodeAnalysis" ]
+                |> List.map (fun name -> name, (GetPackageVersion "packages" name))
+                |> List.append exact }) ]
+    UseNuget = true
+    GeneratedFileList =
+      [ "RazorEngine.dll"; "RazorEngine.xml"
+        "RazorEngine.Roslyn.dll"; "RazorEngine.Roslyn.xml" ]
+    SetAssemblyFileVersions = (fun config ->
+      let info =
+        [ Attribute.Company config.ProjectName
+          Attribute.Product config.ProjectName
+          Attribute.Copyright config.CopyrightNotice
+          Attribute.Version config.Version
+          Attribute.FileVersion config.Version
+          Attribute.InformationalVersion config.Version ]
+      CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
+      let info_razor4 =
+        [ Attribute.Company config.ProjectName
+          Attribute.Product config.ProjectName
+          Attribute.Copyright config.CopyrightNotice
+          Attribute.Version version_razor4
+          Attribute.FileVersion version_razor4
+          Attribute.InformationalVersion version_razor4_nuget ]
+      CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo-Razor4.cs" info_razor4
+      let info_roslyn =
+        [ Attribute.Company projectName_roslyn
+          Attribute.Product projectName_roslyn
+          Attribute.Copyright config.CopyrightNotice
+          Attribute.Version version_roslyn
+          Attribute.FileVersion version_roslyn
+          Attribute.InformationalVersion version_roslyn_nuget ]
+      CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn.cs" info_roslyn
+      let info_roslyn_razor4 =
+        [ Attribute.Company projectName_roslyn
+          Attribute.Product projectName_roslyn
+          Attribute.Copyright config.CopyrightNotice
+          Attribute.Version version_roslyn_razor4
+          Attribute.FileVersion version_roslyn_razor4
+          Attribute.InformationalVersion version_roslyn_razor4_nuget ]
+      CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn-Razor4.cs" info_roslyn_razor4
+     )
+    EnableProjectFileCreation = false
+    BuildTargets =
+     [ { BuildParams.WithSolution with
+          // The default build
+          PlatformName = "Net40"
+          SimpleBuildName = "net40"
+          FindUnitTestDlls = unitTestFinder }
+       { BuildParams.WithSolution with
+          // The default build
+          PlatformName = "Razor4"
+          SimpleBuildName = "razor4"
+          FindUnitTestDlls = unitTestFinder }
+       { BuildParams.WithSolution with
+          // The default build
+          PlatformName = "Net45"
+          SimpleBuildName = "net45"
+          FindUnitTestDlls = unitTestFinder } ]
+    SetupNUnit = (fun p ->
+      { p with
+          //NUnitParams.WorkingDir = working
+          ExcludeCategory = if isMono then "VBNET" else "" })
+  }
 
-let buildMode = "Release" // if isMono then "Release" else "Debug"
-
-// Where to look for *.cshtml templates (in this order)
-let layoutRoots =
-    [ docTemplatesDir; 
-      docTemplatesDir @@ "reference" ]
-
-if isMono then
-    monoArguments <- "--runtime=v4.0 --debug"
-    //monoArguments <- "--runtime=v4.0"
-
-let github_url = sprintf "https://github.com/%s/%s" github_user github_project
-    
-// Ensure the ./src/.nuget/NuGet.exe file exists (required by xbuild)
-let nuget = findToolInSubPath "NuGet.exe" "./.nuget/Build/NuGet.CommandLine/tools/NuGet.exe"
-System.IO.File.Copy(nuget, "./src/.nuget/NuGet.exe", true)
-
-
-let MyTarget name body =
-    Target name body
-    Target (sprintf "%s_single" name) body 
-
-
-type BuildParams =
-    {
-        CustomBuildName : string
-    }
-
-let buildApp (buildParams:BuildParams) =
-    let buildDir = buildDir @@ buildParams.CustomBuildName
-    CleanDirs [ buildDir ]
-    // build app
-    let files = !! "src/source/**/*.csproj"
-    let files =
-        (if buildParams.CustomBuildName = "net40" then
-            // dont build roslyn on net40
-            files 
-            -- "src/**/RazorEngine.Core.Roslyn.csproj"
-         else files)
-
-    (if isMono then
-      files
-      // Don't build the mvc project on mono
-      -- "src/**/RazorEngine.Mvc.csproj"
-     else files)
-        |> MSBuild buildDir "Build" 
-            [   "Configuration", buildMode
-                "CustomBuildName", buildParams.CustomBuildName ]
-        |> Log "AppBuild-Output: "
-
-let buildTests (buildParams:BuildParams) =
-    let testDir = testDir @@ buildParams.CustomBuildName
-    CleanDirs [ testDir ]
-    // build tests
-    let files = !! "src/test/**/Test.*.csproj"
-    let files =
-        (if buildParams.CustomBuildName = "net40" then
-            // dont build roslyn on net40
-            files 
-            -- "src/**/Test.RazorEngine.Core.Roslyn.csproj"
-         else files)
-
-    files
-        |> MSBuild testDir "Build" 
-            [   "Configuration", buildMode
-                "CustomBuildName", buildParams.CustomBuildName ]
-        |> Log "TestBuild-Output: "
-    
-let runTests  (buildParams:BuildParams) =
-    let testDir = testDir @@ buildParams.CustomBuildName
-    let logs = System.IO.Path.Combine(testDir, "logs")
-    System.IO.Directory.CreateDirectory(logs) |> ignore
-    let files = 
-        !! (testDir + "/Test.*.dll")
-        // not working currently
-        -- (testDir + "/Test.RazorEngine.FSharp.dll")
-    let files =
-        (if isMono then
-            // While everything seems to work roslyn will sigsegv mono: 
-            // https://travis-ci.org/Antaris/RazorEngine/builds/45375847
-            files 
-            -- (testDir + "/Test.*.Roslyn.dll")
-         else files)
-    files
-        |> NUnit (fun p ->
-            {p with
-                //NUnitParams.WorkingDir = working
-                ExcludeCategory = if isMono then "VBNET" else ""
-                ProcessModel = 
-                    // Because the default nunit-console.exe.config doesn't use .net 4...
-                    if isMono then NUnitProcessModel.SingleProcessModel else NUnitProcessModel.DefaultProcessModel
-                WorkingDir = testDir
-                StopOnError = true
-                TimeOut = System.TimeSpan.FromMinutes 30.0
-                Framework = "4.0"
-                DisableShadowCopy = true;
-                OutputFile = "logs/TestResults.xml" })
-
-    
-let net40Params = { CustomBuildName = "net40" }
-let net45Params = { CustomBuildName = "net45" }
-let razor4Params = { CustomBuildName = "razor4" }
-
-
-// Documentation 
-let buildDocumentationTarget target =
-    trace (sprintf "Building documentation (%s), this could take some time, please wait..." target)
-    let b, s = executeFSI "." "generateDocs.fsx" ["target", target]
-    for l in s do
-        (if l.IsError then traceError else trace) (sprintf "DOCS: %s" l.Message)
-    if not b then
-        failwith "documentation failed"
-    ()

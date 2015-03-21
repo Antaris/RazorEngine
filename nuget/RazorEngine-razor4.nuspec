@@ -17,8 +17,8 @@
     @dependencies@
   </metadata>
   <files>
-    <file src="release\lib\razor4\RazorEngine.dll" target="lib\net45\RazorEngine.dll" />
-    <file src="release\lib\razor4\RazorEngine.xml" target="lib\net45\RazorEngine.xml" />
-    <file src="doc\LICENSE.md" target="LICENSE.md" />
+    <file src="release/lib/razor4/RazorEngine.dll" target="lib/net45/RazorEngine.dll" />
+    <file src="release/lib/razor4/RazorEngine.xml" target="lib/net45/RazorEngine.xml" />
+    <file src="doc/LICENSE.md" target="LICENSE.md" />
   </files>
 </package>
