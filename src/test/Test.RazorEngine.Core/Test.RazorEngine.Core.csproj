@@ -156,9 +156,7 @@
     <Compile Include="TestTypes\Person.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="paket.references" />
     <None Include="RazorEngine.snk" />
   </ItemGroup>
   <ItemGroup>
