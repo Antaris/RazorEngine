@@ -21,7 +21,7 @@
         /// <param name="writer">The writer delegate used to write using the specified <see cref="TextWriter"/>.</param>
         public TemplateWriter(Action<TextWriter> writer)
         {
-            Contract.Requires(writer != null);
+            if (writer == null) throw new ArgumentNullException("writer");
 
             writerDelegate = writer;
         }
