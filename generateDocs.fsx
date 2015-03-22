@@ -16,10 +16,9 @@ open System.IO
 open Fake
 try
   RunTargetOrDefault "LocalDoc"
-with e ->
-  printfn "Exception in documentation generation. Loaded Assemblies:"
+finally
+  printfn "Documentation generation finished. Loaded Assemblies:"
   System.AppDomain.CurrentDomain.GetAssemblies()
   |> Seq.choose (fun a -> try Some (a.GetName().FullName, a.Location) with _ -> None)
   //|> Seq.filter (fun l -> l.Contains ("Razor"))
   |> Seq.iter (fun (n, l) -> printfn "\t- %s: %s" n l)
-  reraise()
