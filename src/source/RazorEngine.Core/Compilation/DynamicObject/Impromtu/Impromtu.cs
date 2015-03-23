@@ -280,8 +280,6 @@ namespace RazorEngine.Compilation.ImpromptuInterface
                 default:
                     throw new ArgumentException("Unsupported Operator", "op");
             }
-
-            return null;
         }
 
         /// <summary>

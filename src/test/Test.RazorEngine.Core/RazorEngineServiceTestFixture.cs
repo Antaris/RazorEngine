@@ -18,9 +18,17 @@ using Test.RazorEngine.TestTypes.BaseTypes;
 
 namespace Test.RazorEngine
 {
+    /// <summary>
+    /// Tests for the RazorEngineService API.
+    /// </summary>
     [TestFixture]
     public class RazorEngineServiceTestFixture
     {
+        /// <summary>
+        /// Helper API to run tests.
+        /// </summary>
+        /// <param name="test"></param>
+        /// <param name="withConfig"></param>
         public static void RunTestHelper(Action<IRazorEngineService> test, Action<TemplateServiceConfiguration> withConfig = null)
         {
             if (withConfig == null)
@@ -45,16 +53,31 @@ namespace Test.RazorEngine
             }
         }
 
+        /// <summary>
+        /// Test Class.
+        /// </summary>
         public interface IMyInterface
         {
+            /// <summary>
+            /// Test Class.
+            /// </summary>
             string Test();
         }
+        /// <summary>
+        /// Test Class.
+        /// </summary>
         public class MyClass : IMyInterface
         {
+            /// <summary>
+            /// Test Class.
+            /// </summary>
             public string Test()
             {
                 return "test";
             }
+            /// <summary>
+            /// Test Class.
+            /// </summary>
             public string More()
             {
                 return "more";

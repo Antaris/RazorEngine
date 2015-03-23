@@ -24,6 +24,9 @@
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Initializes the template.
+        /// </summary>
         public void InitHelpers()
         {
             var httpContext = new HttpContextWrapper(HttpContext.Current);

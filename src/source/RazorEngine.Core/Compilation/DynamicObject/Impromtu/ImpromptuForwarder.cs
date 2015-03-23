@@ -350,8 +350,7 @@ namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
         /// Forwards the convert operation.
         /// </summary>
         /// <param name="binder">the binder</param>
-        /// <param name="indexes">the indexes</param>
-        /// <param name="value">the value</param>
+        /// <param name="result">the result</param>
         /// <returns>true when successfull</returns>
         public override bool TryConvert(System.Dynamic.ConvertBinder binder, out object result)
         {

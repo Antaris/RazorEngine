@@ -32,6 +32,9 @@ namespace RazorEngine.Templating
         /// </summary>
         private bool modelInit = false;
         private dynamic viewBag = null;
+        /// <summary>
+        /// The current context, filled when we are currently writing a template instance.
+        /// </summary>
         protected ExecuteContext _context;
         #endregion
 
@@ -434,7 +437,7 @@ namespace RazorEngine.Templating
         }
 
         /// <summary>
-        /// Writes a <see cref="PositionTagged{}" /> literal to the result.
+        /// Writes a <see cref="PositionTagged{T}" /> literal to the result.
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="value">The literal to be written.</param>

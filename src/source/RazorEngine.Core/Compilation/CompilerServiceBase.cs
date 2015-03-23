@@ -193,6 +193,7 @@
         /// Builds a type name for the specified template type.
         /// </summary>
         /// <param name="templateType">The template type.</param>
+        /// <param name="modelType">The model type.</param>
         /// <returns>The string type name (including namespace).</returns>
         [Pure]
         public abstract string BuildTypeName(Type templateType, Type modelType);
@@ -378,13 +379,16 @@
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected IEnumerable<CompilerReference> GetAllReferences(TypeContext context) { 
+        protected IEnumerable<CompilerReference> GetAllReferences(TypeContext context)
+        {
+#pragma warning disable 0618 // Backwards Compat.
             var references =
                 ReferenceResolver.GetReferences(
                     context,
                     IncludeAssemblies()
                         .Select(RazorEngine.Compilation.ReferenceResolver.CompilerReference.From)
                         .Concat(IncludeReferences()));
+#pragma warning restore 0618 // Backwards Compat.
             foreach (var reference in references)
             {
                 this.references.Add(reference);
@@ -397,6 +401,7 @@
         /// Inspects the generated code compile unit.
         /// </summary>
         /// <param name="unit">The code compile unit.</param>
+        [Obsolete("Will be removed in 4.x")]
         protected virtual void Inspect(CodeCompileUnit unit)
         {
             Contract.Requires(unit != null);

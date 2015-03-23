@@ -8,7 +8,9 @@
     /// <summary>
     /// Defines a code inspector that will insert a throw statement into the generated code.
     /// </summary>
+#pragma warning disable 0618 // Fine because we still want to test if
     public class ThrowExceptionCodeInspector : ICodeInspector
+#pragma warning restore 0618
     {
         #region Methods
         /// <summary>

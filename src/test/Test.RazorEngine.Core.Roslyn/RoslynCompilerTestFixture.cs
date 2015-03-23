@@ -14,9 +14,17 @@ using System.Threading.Tasks;
 
 namespace Test.RazorEngine.Core.Roslyn
 {
+    /// <summary>
+    /// Some tests for the Roslyn Compiler backend.
+    /// </summary>
     [TestFixture]
     public class RoslynCompilerTestFixture
     {
+        /// <summary>
+        /// Helper to run tests.
+        /// </summary>
+        /// <param name="test"></param>
+        /// <param name="withConfig"></param>
         public static void RunTestHelper(Action<IRazorEngineService> test, Action<TemplateServiceConfiguration> withConfig = null)
         {
             var defaultConfig = new Action<TemplateServiceConfiguration>((config) => {

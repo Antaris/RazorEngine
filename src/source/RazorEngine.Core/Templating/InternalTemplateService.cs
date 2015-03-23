@@ -44,6 +44,7 @@ namespace RazorEngine.Templating
         /// <param name="name">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
         /// <param name="modelType"></param>
+        /// <param name="viewbag"></param>
         /// <param name="resolveType"></param>
         /// <returns>The resolved template.</returns>
         public ITemplate Resolve(string name, object model, Type modelType, DynamicViewBag viewbag, ResolveType resolveType)
@@ -65,7 +66,6 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Creates a new <see cref="ExecuteContext"/> for tracking templates.
         /// </summary>
-        /// <param name="viewBag">The dynamic view bag.</param>
         /// <returns>The execute context.</returns>
         public ExecuteContext CreateExecuteContext()
         {

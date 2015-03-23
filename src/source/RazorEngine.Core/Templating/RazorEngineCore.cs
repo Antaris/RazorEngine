@@ -38,7 +38,6 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Creates a new <see cref="ExecuteContext"/> for tracking templates.
         /// </summary>
-        /// <param name="viewBag">The dynamic view bag.</param>
         /// <returns>The execute context.</returns>
         public virtual ExecuteContext CreateExecuteContext()
         {
@@ -70,6 +69,7 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="template">The compiled template.</param>
         /// <param name="model">The model instance or NULL if no model exists.</param>
+        /// <param name="viewbag"></param>
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         [Pure]
         internal virtual ITemplate CreateTemplate(ICompiledTemplate template, object model, DynamicViewBag viewbag)
@@ -77,7 +77,9 @@ namespace RazorEngine.Templating
             var context = CreateInstanceContext(template.TemplateType);
             ITemplate instance = _config.Activator.CreateInstance(context);
             instance.InternalTemplateService = new InternalTemplateService(this, template.Key);
+#pragma warning disable 0618 // Backwards Compat.
             instance.TemplateService = new TemplateService(_cached);
+#pragma warning restore 0618 // Backwards Compat.
             instance.Razor = _cached;
             instance.SetData(model, viewbag);
             return instance;
@@ -107,7 +109,9 @@ namespace RazorEngine.Templating
                 .CreateCompilerService(_config.Language);
             service.Debug = _config.Debug;
 #if !RAZOR4
+#pragma warning disable 0618 // Backwards Compat.
             service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
+#pragma warning restore 0618 // Backwards Compat.
 #endif
             service.ReferenceResolver = _config.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
 

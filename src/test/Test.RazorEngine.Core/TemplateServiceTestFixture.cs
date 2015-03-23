@@ -19,8 +19,15 @@ namespace RazorEngine.Tests
     /// Defines a test fixture that provides tests for the <see cref="TemplateService"/> type.
     /// </summary>
     [TestFixture]
+    [Obsolete("Removed/Replaced when TemplateService is removed")]
     public class TemplateServiceTestFixture
     {
+        /// <summary>
+        /// Helper method for running unit tests with default or configured config.
+        /// Enables debugging and prints out the template source code when the test fails.
+        /// </summary>
+        /// <param name="test">the test case as delegate.</param>
+        /// <param name="withConfig">a function setting up the configuration.</param>
         public static void RunTestHelper(Action<TemplateService> test, Action<TemplateServiceConfiguration> withConfig = null)
         {
             if (withConfig == null)
@@ -31,7 +38,9 @@ namespace RazorEngine.Tests
             {
                 var config = new TemplateServiceConfiguration();
                 withConfig(config);
+#pragma warning disable 0618 // Fine because we still want to test if
                 using (var service = new TemplateService(config))
+#pragma warning restore 0618
                 {
                     test(service);
                 }
@@ -461,6 +470,9 @@ namespace RazorEngine.Tests
             }
         }
 
+        /// <summary>
+        /// Check that we can cast the template to its interface type 
+        /// </summary>
         [Test]
         public void TemplateService_CanParseSimpleTemplate_WithCorrectBaseTypeFromModel()
         {
@@ -475,6 +487,9 @@ namespace RazorEngine.Tests
             }
         }
 
+        /// <summary>
+        /// Check that we can cast the template to its class type
+        /// </summary>
         [Test]
         public void TemplateService_CanParseSimpleTemplate_WithNonGenericBaseType()
         {
@@ -489,6 +504,9 @@ namespace RazorEngine.Tests
             }
         }
 
+        /// <summary>
+        /// Test 
+        /// </summary>
         [Test]
         public void TemplateService_CanParseSimpleTemplate_UsingLinqExtensionMethodOnArrayTypeModel()
         {
@@ -505,6 +523,9 @@ namespace RazorEngine.Tests
             }
         }
 
+        /// <summary>
+        /// Test 
+        /// </summary>
         [Test]
         public void TemplateService_CanParseSimpleTemplate_UsingLinqExtensionMethodOnArrayTypeFromModel()
         {
