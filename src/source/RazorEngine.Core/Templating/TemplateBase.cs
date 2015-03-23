@@ -66,11 +66,18 @@ namespace RazorEngine.Templating
         /// </summary>
         [Obsolete("Only provided for backwards compatibility, use RazorEngine instead.")]
         public ITemplateService TemplateService { get; set; }
-
+#if RAZOR4
+#else
         /// <summary>
         /// Gets or sets the current <see cref="IRazorEngineService"/> instance.
         /// </summary>
-        public IRazorEngineService RazorEngine { get; set; }
+        [Obsolete("Use the Razor property instead, this is obsolete as it makes it difficult to use the RazorEngine namespace within templates.")]
+        public IRazorEngineService RazorEngine { get { return Razor; } set { Razor = value; } }
+#endif
+        /// <summary>
+        /// Gets or sets the current <see cref="IRazorEngineService"/> instance.
+        /// </summary>
+        public IRazorEngineService Razor { get; set; }
 
         /// <summary>
         /// Gets the viewbag that allows sharing state between layout and child templates.

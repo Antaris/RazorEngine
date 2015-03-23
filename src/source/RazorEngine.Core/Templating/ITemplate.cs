@@ -19,12 +19,18 @@ namespace RazorEngine.Templating
         /// </summary>
         [Obsolete("Only provided for backwards compatibility, use RazorEngine instead.")]
         ITemplateService TemplateService { set; }
-
+#if RAZOR4
+#else
         /// <summary>
         /// Sets the cached template service.
         /// </summary>
+        [Obsolete("Use the Razor property instead, this is obsolete as it makes it difficult to use the RazorEngine namespace within templates.")]
         IRazorEngineService RazorEngine { set; }
-
+#endif
+        /// <summary>
+        /// Sets the cached template service.
+        /// </summary>
+        IRazorEngineService Razor { set; }
         #endregion
 
         #region Methods

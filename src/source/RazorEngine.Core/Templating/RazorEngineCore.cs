@@ -78,7 +78,7 @@ namespace RazorEngine.Templating
             ITemplate instance = _config.Activator.CreateInstance(context);
             instance.InternalTemplateService = new InternalTemplateService(this, template.Key);
             instance.TemplateService = new TemplateService(_cached);
-            instance.RazorEngine = _cached;
+            instance.Razor = _cached;
             instance.SetData(model, viewbag);
             return instance;
         }

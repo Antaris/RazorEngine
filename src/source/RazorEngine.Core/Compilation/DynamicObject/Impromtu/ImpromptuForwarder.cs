@@ -346,6 +346,68 @@ namespace RazorEngine.Compilation.ImpromptuInterface.Dynamic
             }
         }
 
+        /// <summary>
+        /// Forwards the convert operation.
+        /// </summary>
+        /// <param name="binder">the binder</param>
+        /// <param name="indexes">the indexes</param>
+        /// <param name="value">the value</param>
+        /// <returns>true when successfull</returns>
+        public override bool TryConvert(System.Dynamic.ConvertBinder binder, out object result)
+        {
+            result = null;
+            try
+            {
+                result = Impromptu.InvokeConvert(CallTarget, binder.Type, binder.Explicit);
+                return true;
+            }
+            catch (RuntimeBinderException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Forwards the Binary operation
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="arg"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
+        {
+            result = null;
+            try
+            {
+                result = Impromptu.InvokeBinaryOperator(CallTarget, binder.Operation, arg);
+                return true;
+            }
+            catch (RuntimeBinderException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Forwards the unary operation.
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public override bool TryUnaryOperation(UnaryOperationBinder binder, out object result)
+        {
+            result = null;
+            try
+            {
+                result = Impromptu.InvokeUnaryOperator(binder.Operation, CallTarget);
+                return true;
+            }
+            catch (RuntimeBinderException)
+            {
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// Equals the specified other.
