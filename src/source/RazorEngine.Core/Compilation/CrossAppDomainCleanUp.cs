@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting;
 using System.Security;
 using System.Security.Permissions;
@@ -327,6 +328,19 @@ namespace RazorEngine.Compilation
         }*/
 
         /// <summary>
+        /// Get the StrongName of the given assembly.
+        /// </summary>
+        /// <param name="ass"></param>
+        /// <returns></returns>
+        public static StrongName FromAssembly(Assembly ass)
+        {
+            var name = ass.GetName();
+            byte[] pk = name.GetPublicKey();
+            var blob = new StrongNamePublicKeyBlob(pk);
+            return new StrongName(blob, name.Name, name.Version);
+        }
+
+        /// <summary>
         /// Create a new CrossAppDomainCleanUp object for the current AppDomain.
         /// </summary>
         /// <param name="toWatch">the appDomain to watch for unload.</param>
@@ -342,12 +356,12 @@ namespace RazorEngine.Compilation
 
             AppDomainSetup adSetup = new AppDomainSetup();
             adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-
-            StrongName razorEngineAssembly = typeof(RazorEngine.Templating.RazorEngineService).Assembly.Evidence.GetHostEvidence<StrongName>();
+            
+            StrongName razorEngineAssembly = FromAssembly(typeof(RazorEngine.Templating.RazorEngineService).Assembly);
 #if RAZOR4
-            StrongName razorAssembly = typeof(Microsoft.AspNet.Razor.RazorTemplateEngine).Assembly.Evidence.GetHostEvidence<StrongName>();
+            StrongName razorAssembly = FromAssembly(typeof(Microsoft.AspNet.Razor.RazorTemplateEngine).Assembly);
 #else
-            StrongName razorAssembly = typeof(System.Web.Razor.RazorTemplateEngine).Assembly.Evidence.GetHostEvidence<StrongName>();
+            StrongName razorAssembly = FromAssembly(typeof(System.Web.Razor.RazorTemplateEngine).Assembly);
 #endif
 
             _domain = AppDomain.CreateDomain(
