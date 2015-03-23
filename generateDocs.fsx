@@ -21,8 +21,7 @@ System.AppDomain.CurrentDomain.GetAssemblies()
 |> Seq.choose (fun a -> try Some (a.GetName().FullName, a.Location) with _ -> None)
 //|> Seq.filter (fun l -> l.Contains ("Razor"))
 |> Seq.iter (fun (n, l) -> printfn "\t- %s: %s" n l)
-try
-  RunTargetOrDefault "LocalDoc"
+try RunTargetOrDefault "LocalDoc"
 finally
   printfn "Documentation generation finished. Loaded Assemblies:"
   System.AppDomain.CurrentDomain.GetAssemblies()
