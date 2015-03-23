@@ -160,7 +160,7 @@
         /// Tries to create and return a unique temporary directory.
         /// </summary>
         /// <returns>the (already created) temporary directory</returns>
-        protected static string GetTemporaryDirectory()
+        protected static string GetDefaultTemporaryDirectory()
         {
             var created = false;
             var tried = 0;
@@ -190,6 +190,16 @@
                 throw new Exception("Could not create a temporary directory! Maybe all names are already used?");
             }
             return tempDirectory;
+        }
+
+        /// <summary>
+        /// Returns a new temporary directory ready to be used.
+        /// This can be overwritten in subclases to change the created directories.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual string GetTemporaryDirectory()
+        {
+            return GetDefaultTemporaryDirectory();
         }
 
         /// <summary>
