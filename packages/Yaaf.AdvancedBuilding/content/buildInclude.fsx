@@ -222,8 +222,10 @@ MyTarget "CopyToRelease" (fun _ ->
             config.GeneratedFileList
             |> Seq.filter (fun (file) -> File.Exists (source @@ file))
             |> Seq.iter (fun (file) ->
+                let sourceFile = source @@ file
                 let newfile = outDir @@ Path.GetFileName file
-                File.Copy(source @@ file, newfile))
+                trace (sprintf "Copying %s to %s" sourceFile newfile)
+                File.Copy(sourceFile, newfile))
         )
 )
 
