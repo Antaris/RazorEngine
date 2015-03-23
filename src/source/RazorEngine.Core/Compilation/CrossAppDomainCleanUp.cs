@@ -302,7 +302,7 @@ namespace RazorEngine.Compilation
 
         private readonly AppDomain _domain;
         private readonly CleanupHelper _helper;
-
+        /*
         [SecurityCritical]
         public static AppDomain GetDefaultAppDomain()
         {
@@ -311,20 +311,20 @@ namespace RazorEngine.Compilation
             {
                 return AppDomain.CurrentDomain;
             }
-            //var isMono = Type.GetType("Mono.Runtime") != null;
-            //if (isMono)
-            //{
-            //    var prop = typeof(System.AppDomain).GetProperty("DefaultDomain", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-            //    return (AppDomain)prop.GetMethod.Invoke(null, null);
-            //}
-            //else
-            //{
-            //    mscoree.ICorRuntimeHost host = new mscoree.CorRuntimeHostClass();
-
-            //}
-
-            return null;
-        }
+            var isMono = Type.GetType("Mono.Runtime") != null;
+            if (isMono)
+            {
+                var prop = typeof(System.AppDomain).GetProperty("DefaultDomain", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                return (AppDomain)prop.GetMethod.Invoke(null, null);
+            }
+            else
+            {
+                mscoree.ICorRuntimeHost host = new mscoree.CorRuntimeHostClass();
+                object domain;
+                host.GetDefaultDomain(out domain);
+                return (AppDomain)domain;
+            }
+        }*/
 
         /// <summary>
         /// Create a new CrossAppDomainCleanUp object for the current AppDomain.
@@ -344,8 +344,11 @@ namespace RazorEngine.Compilation
             adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
 
             StrongName razorEngineAssembly = typeof(RazorEngine.Templating.RazorEngineService).Assembly.Evidence.GetHostEvidence<StrongName>();
+#if RAZOR4
+            StrongName razorAssembly = typeof(Microsoft.AspNet.Razor.RazorTemplateEngine).Assembly.Evidence.GetHostEvidence<StrongName>();
+#else
             StrongName razorAssembly = typeof(System.Web.Razor.RazorTemplateEngine).Assembly.Evidence.GetHostEvidence<StrongName>();
-
+#endif
 
             _domain = AppDomain.CreateDomain(
                 "CleanupHelperDomain_" + Guid.NewGuid().ToString(), null, 
