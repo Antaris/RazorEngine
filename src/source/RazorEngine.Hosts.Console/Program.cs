@@ -7,21 +7,36 @@
     using Templating;
     using RazorEngine.Text;
     using RazorEngine.Configuration;
+    /// <summary>
+    /// A simple helper demonstrating the @Html.Raw
+    /// </summary>
     public class MyHtmlHelper
     {
+        /// <summary>
+        /// A simple helper demonstrating the @Html.Raw
+        /// </summary>
         public IEncodedString Raw(string rawString)
         {
             return new RawString(rawString);
         }
     }
 
+    /// <summary>
+    /// A simple helper demonstrating the @Html.Raw
+    /// </summary>
     public abstract class MyClassImplementingTemplateBase<T> : TemplateBase<T>
     {
+        /// <summary>
+        /// A simple helper demonstrating the @Html.Raw
+        /// </summary>
         public MyClassImplementingTemplateBase()
         {
             Html = new MyHtmlHelper();
         }
 
+        /// <summary>
+        /// A simple helper demonstrating the @Html.Raw
+        /// </summary>
         public MyHtmlHelper Html { get; set; }
     }
 

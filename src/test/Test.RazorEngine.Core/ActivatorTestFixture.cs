@@ -42,7 +42,9 @@
                                  BaseTemplateType = typeof(CustomTemplateBase<>)
                              };
 
+#pragma warning disable 0618 // Fine because we still want to test if
             using (var service = new TemplateService(config))
+#pragma warning restore 0618 // Fine because we still want to test if
             {
                 const string template = "<h1>Hello @Format(Model.Forename)</h1>";
                 const string expected = "<h1>Hello ttaM</h1>";

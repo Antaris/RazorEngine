@@ -17,10 +17,10 @@
     @dependencies@
   </metadata>
   <files>
-    <file src="release\lib\net45\RazorEngine.dll" target="lib\net45\RazorEngine.dll" />
-    <file src="release\lib\net45\RazorEngine.xml" target="lib\net45\RazorEngine.xml" />
-    <file src="release\lib\net40\RazorEngine.dll" target="lib\net40\RazorEngine.dll" />
-    <file src="release\lib\net40\RazorEngine.xml" target="lib\net40\RazorEngine.xml" />
-    <file src="doc\LICENSE.md" target="LICENSE.md" />
+    <file src="release/lib/net45/RazorEngine.dll" target="lib/net45/RazorEngine.dll" />
+    <file src="release/lib/net45/RazorEngine.xml" target="lib/net45/RazorEngine.xml" />
+    <file src="release/lib/net40/RazorEngine.dll" target="lib/net40/RazorEngine.dll" />
+    <file src="release/lib/net40/RazorEngine.xml" target="lib/net40/RazorEngine.xml" />
+    <file src="doc/LICENSE.md" target="LICENSE.md" />
   </files>
 </package>

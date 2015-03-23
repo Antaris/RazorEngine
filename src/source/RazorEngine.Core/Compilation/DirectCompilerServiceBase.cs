@@ -175,8 +175,10 @@
             // Generate any constructors required by the base template type.
             GenerateConstructors(CompilerServicesUtility.GetConstructors(context.TemplateType), generatedType);
 
+#pragma warning disable 0618 // Backwards Compat.
             // Despatch any inspectors
             Inspect(results.GeneratedCode);
+#pragma warning restore 0618 // Backwards Compat.
             
             string generatedCode;
             var builder = new StringBuilder();

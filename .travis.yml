@@ -1,7 +1,6 @@
 language: csharp
 
-before_script:
-- chmod +x build.sh
+sudo: false
 
 script: 
   - ./build.sh All
@@ -9,3 +8,11 @@ script:
 branches:
   except:
     - gh-pages
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/4a71432bc093517cf9e2
+    on_success: change  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: false     # default: false

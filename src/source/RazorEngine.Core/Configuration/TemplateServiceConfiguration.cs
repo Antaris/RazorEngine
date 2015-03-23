@@ -17,7 +17,9 @@ namespace RazorEngine.Configuration
     /// </summary>
     public class TemplateServiceConfiguration : ITemplateServiceConfiguration
     {
+#pragma warning disable 0618 // Backwards Compat.
         private ITemplateResolver resolver;
+#pragma warning restore 0618 // Backwards Compat.
 
         #region Constructor
         /// <summary>
@@ -33,12 +35,16 @@ namespace RazorEngine.Configuration
             CompilerServiceFactory = xmlConfig.CompilerServiceFactory ?? new DefaultCompilerServiceFactory();
             EncodedStringFactory = xmlConfig.EncodedStringFactory ?? new HtmlEncodedStringFactory();
 #if !RAZOR4
-            CodeInspectors = xmlConfig.CodeInspectors != null ? xmlConfig.CodeInspectors.ToList()  : new List<ICodeInspector>();
+#pragma warning disable 0618 // Backwards Compat.
+            CodeInspectors = xmlConfig.CodeInspectors != null ? xmlConfig.CodeInspectors.ToList() : new List<ICodeInspector>();
+#pragma warning restore 0618 // Backwards Compat.
 #endif
             Language = xmlConfig.Language;
             ReferenceResolver = xmlConfig.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
             CachingProvider = xmlConfig.CachingProvider ?? new DefaultCachingProvider();
+#pragma warning disable 0618 // Backwards Compat.
             Resolver = xmlConfig.Resolver;
+#pragma warning restore 0618 // Backwards Compat.
             TemplateManager =
                 xmlConfig.TemplateManager ?? 
                 new DelegateTemplateManager(name => {
@@ -74,8 +80,9 @@ namespace RazorEngine.Configuration
         /// Gets or sets the base template type.
         /// </summary>
         public Type BaseTemplateType { get; set; }
-        
+
 #if !RAZOR4
+#pragma warning disable 0618 // Backwards Compat.
         /// <summary>
         /// Gets the set of code inspectors.
         /// </summary>
@@ -87,6 +94,7 @@ namespace RazorEngine.Configuration
         /// </summary>
         [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
         public IList<ICodeInspector> CodeInspectors { get; private set; }
+#pragma warning restore 0618 // Backwards Compat.
 #endif
         
         /// <summary>

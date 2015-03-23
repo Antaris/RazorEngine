@@ -265,7 +265,7 @@ namespace RazorEngine.Compilation.ImpromptuInterface
         /// <param name="arg">The arg.</param>
         /// <param name="op">The op.</param>
         /// <returns></returns>
-        public static dynamic InvokeUnaryOpartor(ExpressionType op, dynamic arg)
+        public static dynamic InvokeUnaryOperator(ExpressionType op, dynamic arg)
         {
             switch (op)
             {
@@ -280,8 +280,6 @@ namespace RazorEngine.Compilation.ImpromptuInterface
                 default:
                     throw new ArgumentException("Unsupported Operator", "op");
             }
-
-            return null;
         }
 
         /// <summary>

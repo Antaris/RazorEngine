@@ -338,23 +338,15 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Releases managed resources used by this instance.
         /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases managed resources used by this instance.
-        /// </summary>
         /// <param name="disposing">Are we explicitly disposing of this instance?</param>
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposed && disposing)
             {
                 _service.Dispose();
                 disposed = true;
             }
+            base.Dispose(disposing);
         }
 
         /// <summary>

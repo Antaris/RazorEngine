@@ -14,6 +14,7 @@
     using System.Runtime.Serialization;
     using System.Security;
     using System.Security.Permissions;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Wraps a dynamic object for serialization of dynamic objects and anonymous type support.
@@ -90,6 +91,16 @@
             }
 
             /// <summary>
+            /// Unwrap the currently wrapped object 
+            /// (note that this can cause crossing an app-domain boundary).
+            /// </summary>
+            /// <returns></returns>
+            public object Unwrap()
+            {
+                return _component;
+            }
+
+            /// <summary>
             /// This method is used to delegate the invocation across the <see cref="AppDomain"/>.
             /// </summary>
             /// <param name="invocation">The invocation to cross the <see cref="AppDomain"/>.</param>
@@ -104,9 +115,23 @@
                 Type[] paramTypes = args.Select(o => o.GetType()).ToArray();
                 try
                 {
-                    // First we try to resolve via DLR
-                    dynamic target = _component;
-                    result = invocation.InvokeWithStoredArgs(_component);
+                    if (invocation.Kind == InvocationKind.NotSet && invocation.Name.Name == "_BinaryOperator")
+                    { // We use that for operators
+                        var exp = (ExpressionType)args[0];
+                        object other = args[1];
+                        result = Impromptu.InvokeBinaryOperator(_component, exp, other);
+                    }
+                    else if (invocation.Kind == InvocationKind.NotSet && invocation.Name.Name == "_UnaryOperator")
+                    { // We use that for operators
+                        var exp = (ExpressionType)args[0];
+                        result = Impromptu.InvokeUnaryOperator(exp, _component);
+                    }
+                    else
+                    {
+                        // First we try to resolve via DLR
+                        dynamic target = _component;
+                        result = invocation.InvokeWithStoredArgs(_component);
+                    }
                 }
                 catch (RuntimeBinderException)
                 {
@@ -278,7 +303,7 @@
         /// </summary>
         /// <param name="wrapped">the object to check.</param>
         /// <returns></returns>
-        private static bool IsWrapped(object wrapped)
+        public static bool IsWrapped(object wrapped)
         {
             if (wrapped is RazorDynamicObject)
             {
@@ -309,7 +334,7 @@
                 return wrapped;
             }
             var wrapper = new RazorDynamicObject(wrapped, allowMissingMembers);
-            var interfaces = 
+            var interfaces =
                 wrapped.GetType().GetInterfaces()
                 .Where(t => t.IsPublic && t != typeof(IDynamicMetaObjectProvider))
                 .Select(MapInterface).ToArray();
@@ -418,6 +443,38 @@
         }
 
         /// <summary>
+        /// Unwraps the current RazorDynamicObject.
+        /// </summary>
+        /// <returns>the unwrapped object.</returns>
+        private object DynamicUnwrap()
+        {
+            return _component.Unwrap();
+        }
+
+        /// <summary>
+        /// Unwraps the current dynamic object.
+        /// </summary>
+        /// <returns>the unwrapped object.</returns>
+        public static object Unwrap(object wrapped)
+        {
+            var o = wrapped as RazorDynamicObject;
+            if (o != null)
+            {
+                return o.DynamicUnwrap();
+            }
+            else if (wrapped is IActLikeProxy)
+            {
+                var actLike = (IActLikeProxy)wrapped;
+                object orig = actLike.Original;
+                return Unwrap(orig);
+            }
+            else
+            {
+                throw new InvalidOperationException("The given instance is not wrapped");
+            }
+        }
+
+        /// <summary>
         /// Tries to convert the current instance.
         /// </summary>
         /// <param name="binder">The binder.</param>
@@ -444,7 +501,15 @@
                     else
                     {
                         // We can not present ourself as any class so we just try keep beeing dynamic.
-                        result = tempResult;
+                        if (IsWrapped(tempResult))
+                        {
+                            // Maybe we need to unwrap here.
+                            result = Unwrap(tempResult); 
+                        }
+                        else
+                        {
+                            result = tempResult;
+                        }
                     }
                 }
                 return true;
@@ -461,6 +526,29 @@
         public override bool TrySetMember(System.Dynamic.SetMemberBinder binder, object value)
         {
             return RemoteInvoke(new Invocation(InvocationKind.Set, binder.Name, value), out value);
+        }
+
+        /// <summary>
+        /// Forwards the binary operation
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="arg"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
+        {
+            return RemoteInvoke(new Invocation(InvocationKind.NotSet, "_BinaryOperator", new [] {binder.Operation, arg}), out result);
+        }
+
+        /// <summary>
+        /// Forwads the unary operation
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public override bool TryUnaryOperation(UnaryOperationBinder binder, out object result)
+        {
+            return RemoteInvoke(new Invocation(InvocationKind.NotSet, "_UnaryOperator", new[] { binder.Operation }), out result);
         }
 
         /// <summary>

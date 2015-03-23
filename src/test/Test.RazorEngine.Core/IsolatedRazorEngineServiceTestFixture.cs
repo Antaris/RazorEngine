@@ -22,22 +22,39 @@ using System.Web.Razor;
 
 namespace Test.RazorEngine
 {
+    /// <summary>
+    /// Tests the IsolatedRazorEngineService.
+    /// </summary>
     [TestFixture]
     public class IsolatedRazorEngineServiceTestFixture
     {
+        /// <summary>
+        /// Check if we are running on mono.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsRunningOnMono()
         {
             return Type.GetType("Mono.Runtime") != null;
         }
 
+        /// <summary>
+        /// Check if we have either an SecurityManager enabled or are running on mono
+        /// and ignore the test.
+        /// </summary>
         public static void CheckMono()
         {
+#pragma warning disable 0618 // Mono recommends to do this.
             if (!SecurityManager.SecurityEnabled)
                 Assert.Ignore("SecurityManager.SecurityEnabled is OFF");
+#pragma warning restore 0618
             if (IsRunningOnMono())
                 Assert.Ignore("IsolatedRazorEngineServiceTestFixture is not supported on mono");
         }
 
+        /// <summary>
+        /// Creates a sandbox for testing.
+        /// </summary>
+        /// <returns></returns>
         public static AppDomain SandboxCreator()
         {
             CheckMono();
@@ -151,6 +168,9 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
             }
         }
 
+        /// <summary>
+        /// Helper class to check the state of the remote AppDomain.
+        /// </summary>
         public class AssemblyChecker : global::RazorEngine.CrossAppDomainObject
         {
             /// <summary>
@@ -158,6 +178,10 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
             /// </summary>
             const string CompiledAssemblyPrefix = CompilerServiceBase.DynamicTemplateNamespace + "." + CompilerServiceBase.ClassNamePrefix;
             
+            /// <summary>
+            /// Check if a compiled assembly exists.
+            /// </summary>
+            /// <returns></returns>
             public bool ExistsCompiledAssembly() {
                 (new PermissionSet(PermissionState.Unrestricted)).Assert();
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -168,6 +192,9 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 return razorEngine != null;
             }
 
+            /// <summary>
+            /// Check if everything is cleaned up.
+            /// </summary>
             public void IsolatedRazorEngineService_CleanUpWorks()
             {
                 var appDomain = SandboxCreator();

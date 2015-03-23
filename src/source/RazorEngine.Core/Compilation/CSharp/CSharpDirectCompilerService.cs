@@ -63,6 +63,7 @@
         /// Builds a type name for the specified template type.
         /// </summary>
         /// <param name="templateType">The template type.</param>
+        /// <param name="modelType">The model type.</param>
         /// <returns>The string type name (including namespace).</returns>
         [Pure]
         public override string BuildTypeName(Type templateType, Type modelType)

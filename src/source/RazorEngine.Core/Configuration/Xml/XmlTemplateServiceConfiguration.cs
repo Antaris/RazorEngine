@@ -196,6 +196,7 @@
             // Sets the reference resolver.
             SetReferenceResolver(config.ReferenceResolverType);
 
+#pragma warning disable 0618 // Backwards Compat.
             // Sets the template resolver.
             SetTemplateResolver(config.TemplateResolverType);
 
@@ -203,6 +204,7 @@
             {
                 TemplateManager = new WrapperTemplateManager(Resolver);
             }
+#pragma warning restore 0618 // Backwards Compat.
 
             // Sets the template manager.
             SetTemplateManager(config.TemplateManagerType);
@@ -292,8 +294,10 @@
         private void SetTemplateResolver(string templateResolverType)
         {
             var type = GetType(templateResolverType);
+#pragma warning disable 0618 // Backwards Compat.
             if (type != null)
                 Resolver = GetInstance<ITemplateResolver>(type);
+#pragma warning restore 0618 // Backwards Compat.
         }
 
         /// <summary>

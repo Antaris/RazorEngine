@@ -7,3 +7,9 @@ version: 0.0.1.{build}
 artifacts:
   - path: bin
     name: bin
+    
+notifications:
+  - provider: Webhook
+    url: https://webhooks.gitter.im/e/40fcaa9afb4b47ecafe7
+    on_build_success: true
+    on_build_failure: true
