@@ -29,6 +29,11 @@ open AssemblyInfoFile
 
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
+if File.Exists ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll") then
+  File.Delete ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll")
+if File.Exists ("packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll") then
+  File.Delete ("packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll")
+
 
 let projectName_roslyn = "RazorEngine.Roslyn"
 let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
