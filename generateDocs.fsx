@@ -6,7 +6,7 @@ open System.IO
 // Force to load our build!
 // As long as FSharp.Formatting is using the regular net45 build
 // This should work as expected.
-//#I @"build/net45"
+#I @"build/net45"
 #r @"build/net45/System.Web.Razor.dll"
 #r @"build/net45/RazorEngine.dll"
 
