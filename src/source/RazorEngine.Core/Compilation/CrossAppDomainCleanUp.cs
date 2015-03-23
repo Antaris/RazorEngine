@@ -357,17 +357,19 @@ namespace RazorEngine.Compilation
             AppDomainSetup adSetup = new AppDomainSetup();
             adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
             
-            StrongName razorEngineAssembly = FromAssembly(typeof(RazorEngine.Templating.RazorEngineService).Assembly);
-#if RAZOR4
-            StrongName razorAssembly = FromAssembly(typeof(Microsoft.AspNet.Razor.RazorTemplateEngine).Assembly);
-#else
-            StrongName razorAssembly = FromAssembly(typeof(System.Web.Razor.RazorTemplateEngine).Assembly);
-#endif
+//#if RAZOR4 // currently not signed!
+            var strongNames = new StrongName[0];
+//#else
+//            var strongNames = new[] {
+//                FromAssembly(typeof(RazorEngine.Templating.RazorEngineService).Assembly),
+//                FromAssembly(typeof(System.Web.Razor.RazorTemplateEngine).Assembly)
+//            };
+//#endif
 
             _domain = AppDomain.CreateDomain(
                 "CleanupHelperDomain_" + Guid.NewGuid().ToString(), null, 
                 current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
-                razorEngineAssembly, razorAssembly);
+                strongNames);
 
             ObjectHandle handle =
                 Activator.CreateInstanceFrom(
