@@ -15,6 +15,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Test.RazorEngine.TestTypes.BaseTypes;
+using System.Runtime.Remoting;
+using System.Collections.Concurrent;
 
 namespace Test.RazorEngine
 {

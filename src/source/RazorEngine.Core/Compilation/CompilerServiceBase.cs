@@ -24,6 +24,7 @@
     using System.Security;
     using System.Globalization;
     using System.Text;
+    using System.Security.Permissions;
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
@@ -129,8 +130,10 @@
 
         #region Methods
 
+        [SecurityCritical]
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
+            (new PermissionSet(PermissionState.Unrestricted)).Assert();
             var assemblyName = args.Name;
             // First try the loaded ones
             foreach (var reference in references)

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,7 +62,8 @@ namespace RazorEngine.Templating
                 // new item added
                 _assemblies.Add(template.TemplateAssembly);
                 var dict = new ConcurrentDictionary<Type, ICompiledTemplate>();
-                dict.AddOrUpdate(modelTypeKey, template, (t, old) => template);
+                dict.AddOrUpdate(modelTypeKey, template, (t, old) => {
+                    throw new Exception("Expected the dictionary to be empty."); });
                 return dict;
             }, (key, dict) =>
             {
@@ -87,6 +89,8 @@ namespace RazorEngine.Templating
         public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
         {
             var modelTypeKey = GetModelTypeKey(template.ModelType);
+            RazorEngine.Compilation.CrossAppDomainCleanUp.CurrentCleanup
+                .RegisterCleanupPath(template.CompilationData.TmpFolder);
             CacheTemplateHelper(template, templateKey, modelTypeKey);
             var typeArgs = template.TemplateType.BaseType.GetGenericArguments();
             if (typeArgs.Length > 0)
