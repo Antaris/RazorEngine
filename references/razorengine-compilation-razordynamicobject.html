@@ -10,13 +10,13 @@
     <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
     <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
     <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
     <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/style.css" />
     <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/prism.css" />
     <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/tips.js"></script>
-	<script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/prism.js"></script>
+    <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/prism.js"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,7 +27,7 @@
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
           <li><a href="http://fsharp.org">fsharp.org</a></li>
-          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="https://matthid.github.io/Yaaf.AdvancedBuilding/content/img/FSharp.Formatting.png" /> F# Formatting</a></li>
         </ul>
         <h3 class="muted"><a href="https://Antaris.github.io/RazorEngine/index.html">RazorEngine</a></h3>
       </div>
@@ -56,10 +56,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '116', 116)" onmouseover="showTip(event, '116', 116)">
+          <code onmouseout="hideTip(event, '115', 115)" onmouseover="showTip(event, '115', 115)">
             new(info, context)
           </code>
-          <div class="tip" id="116">
+          <div class="tip" id="115">
             <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
                       </div>
         </td>
@@ -80,10 +80,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '117', 117)" onmouseover="showTip(event, '117', 117)">
+          <code onmouseout="hideTip(event, '116', 116)" onmouseover="showTip(event, '116', 116)">
             Dispose()
           </code>
-          <div class="tip" id="117">
+          <div class="tip" id="116">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -97,10 +97,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '118', 118)" onmouseover="showTip(event, '118', 118)">
+          <code onmouseout="hideTip(event, '117', 117)" onmouseover="showTip(event, '117', 117)">
             GetObjectData(info, context)
           </code>
-          <div class="tip" id="118">
+          <div class="tip" id="117">
             <strong>Signature:</strong> (info:SerializationInfo * context:StreamingContext) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -114,10 +114,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '119', 119)" onmouseover="showTip(event, '119', 119)">
+          <code onmouseout="hideTip(event, '118', 118)" onmouseover="showTip(event, '118', 118)">
             ToString()
           </code>
-          <div class="tip" id="119">
+          <div class="tip" id="118">
             <strong>Signature:</strong> unit -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -126,6 +126,21 @@
           
             Override ToString and remotely invoke our wrapped instance.
             </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '119', 119)" onmouseover="showTip(event, '119', 119)">
+            TryBinaryOperation(binder, arg, result)
+          </code>
+          <div class="tip" id="119">
+            <strong>Signature:</strong> (binder:BinaryOperationBinder * arg:obj * result:byref&lt;obj&gt;) -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
         </td>
       </tr>
       <tr>
@@ -220,6 +235,21 @@
             </br>
         </td>
       </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '126', 126)" onmouseover="showTip(event, '126', 126)">
+            TryUnaryOperation(binder, result)
+          </code>
+          <div class="tip" id="126">
+            <strong>Signature:</strong> (binder:UnaryOperationBinder * result:byref&lt;obj&gt;) -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
     </tbody>
   </table>
   <h3>Static members</h3>
@@ -231,10 +261,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '126', 126)" onmouseover="showTip(event, '126', 126)">
+          <code onmouseout="hideTip(event, '127', 127)" onmouseover="showTip(event, '127', 127)">
             Cast(o)
           </code>
-          <div class="tip" id="126">
+          <div class="tip" id="127">
             <strong>Signature:</strong> o:obj -&gt; obj<br />
                           <strong>Type parameters:</strong> 'T          </div>
         </td>
@@ -247,10 +277,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '127', 127)" onmouseover="showTip(event, '127', 127)">
+          <code onmouseout="hideTip(event, '128', 128)" onmouseover="showTip(event, '128', 128)">
             CompatibleWith(...)
           </code>
-          <div class="tip" id="127">
+          <div class="tip" id="128">
             <strong>Signature:</strong> (parameterInfo:ParameterInfo [] * paramTypes:Type []) -&gt; bool<br />
                       </div>
         </td>
@@ -261,10 +291,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '128', 128)" onmouseover="showTip(event, '128', 128)">
+          <code onmouseout="hideTip(event, '129', 129)" onmouseover="showTip(event, '129', 129)">
             Create(wrapped, allowMissingMembers)
           </code>
-          <div class="tip" id="128">
+          <div class="tip" id="129">
             <strong>Signature:</strong> (wrapped:obj * allowMissingMembers:bool) -&gt; obj<br />
                       </div>
         </td>
@@ -280,10 +310,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '129', 129)" onmouseover="showTip(event, '129', 129)">
+          <code onmouseout="hideTip(event, '130', 130)" onmouseover="showTip(event, '130', 130)">
             DynamicCast(o, targetType)
           </code>
-          <div class="tip" id="129">
+          <div class="tip" id="130">
             <strong>Signature:</strong> (o:obj * targetType:Type) -&gt; obj<br />
                       </div>
         </td>
@@ -296,10 +326,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '130', 130)" onmouseover="showTip(event, '130', 130)">
+          <code onmouseout="hideTip(event, '131', 131)" onmouseover="showTip(event, '131', 131)">
             IsPrimitive(target)
           </code>
-          <div class="tip" id="130">
+          <div class="tip" id="131">
             <strong>Signature:</strong> target:obj -&gt; bool<br />
                       </div>
         </td>
@@ -313,10 +343,26 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '131', 131)" onmouseover="showTip(event, '131', 131)">
+          <code onmouseout="hideTip(event, '132', 132)" onmouseover="showTip(event, '132', 132)">
+            IsWrapped(wrapped)
+          </code>
+          <div class="tip" id="132">
+            <strong>Signature:</strong> wrapped:obj -&gt; bool<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Check if an instance is already wrapped with <a href="razorengine-compilation-razordynamicobject.html">RazorDynamicObject</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '133', 133)" onmouseover="showTip(event, '133', 133)">
             MapInterface(interface)
           </code>
-          <div class="tip" id="131">
+          <div class="tip" id="133">
             <strong>Signature:</strong> interface:Type -&gt; Type<br />
                       </div>
         </td>
@@ -330,10 +376,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '132', 132)" onmouseover="showTip(event, '132', 132)">
+          <code onmouseout="hideTip(event, '134', 134)" onmouseover="showTip(event, '134', 134)">
             MapType(type)
           </code>
-          <div class="tip" id="132">
+          <div class="tip" id="134">
             <strong>Signature:</strong> type:Type -&gt; Type<br />
                       </div>
         </td>
@@ -341,6 +387,22 @@
           
             Try to find a type instance which has no references to anonymous types.
             Either we use the type or create a new one which implements the same interfaces.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '135', 135)" onmouseover="showTip(event, '135', 135)">
+            Unwrap(wrapped)
+          </code>
+          <div class="tip" id="135">
+            <strong>Signature:</strong> wrapped:obj -&gt; obj<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Unwraps the current dynamic object.
             </br>
         </td>
       </tr>
@@ -360,8 +422,8 @@
             <li class="divider"></li>
             <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
-            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
-            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris//issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris//issues/new">Report Issue or Request Feature</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/blob/develop/doc/LICENSE.md">License (MS-PL)</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
             
