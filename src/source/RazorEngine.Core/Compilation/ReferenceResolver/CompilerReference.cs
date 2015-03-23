@@ -163,6 +163,11 @@ namespace RazorEngine.Compilation.ReferenceResolver
             return false;
         }
 
+        /// <summary>
+        /// Checks if the given object is equal to the current object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             var other = obj as CompilerReference;
@@ -214,6 +219,10 @@ namespace RazorEngine.Compilation.ReferenceResolver
             return false;
         }
 
+        /// <summary>
+        /// Gets a hashcode for the current object.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             var thisAssembly = this as DirectAssemblyReference;

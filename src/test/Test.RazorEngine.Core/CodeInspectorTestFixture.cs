@@ -14,6 +14,7 @@
     /// Defines a test fixture that provides tests for the <see cref="ICodeInspector"/> type.
     /// </summary>
     [TestFixture]
+    [Obsolete("Removed eventually.")]
     public class CodeInspectorTestFixture
     {
         #region Tests

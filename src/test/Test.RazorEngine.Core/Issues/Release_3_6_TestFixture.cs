@@ -16,6 +16,7 @@
     /// Provides tests for the Release 3.6
     /// </summary>
     [TestFixture]
+    [Obsolete("Needs to be updated to RazorEngineService")]
     public class Release_3_6_TestFixture
     {
         /// <summary>

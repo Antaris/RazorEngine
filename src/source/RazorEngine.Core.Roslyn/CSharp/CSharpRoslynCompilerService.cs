@@ -35,6 +35,11 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         private Microsoft.CSharp.CSharpCodeProvider _codeDomProvider; 
 #endif
+        /// <summary>
+        /// Creates a new CSharpRoslynCompilerService instance.
+        /// </summary>
+        /// <param name="strictMode"></param>
+        /// <param name="markupParserFactory"></param>
         public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
             : base(
                 new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode),

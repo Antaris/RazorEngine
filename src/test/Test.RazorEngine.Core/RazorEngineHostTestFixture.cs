@@ -18,6 +18,7 @@ namespace RazorEngine.Tests
     /// Defines a test fixture that provides tests for the <see cref="TemplateBase"/> type.
     /// </summary>
     [TestFixture]
+    [System.Obsolete("Needs to be updated to RazorEngineService")]
     public class RazorEngineHostTestFixture
     {
         #region Tests

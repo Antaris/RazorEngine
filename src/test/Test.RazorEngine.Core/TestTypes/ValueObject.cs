@@ -3,6 +3,9 @@
     using System.Collections.Generic;
     using System.Dynamic;
 
+    /// <summary>
+    /// Test class.
+    /// </summary>
     public class ValueObject : DynamicObject
     {
         #region Fields
@@ -10,6 +13,9 @@
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Test class.
+        /// </summary>
         public ValueObject(IDictionary<string, object> values)
         {
             _values = values;
@@ -17,6 +23,9 @@
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Test class.
+        /// </summary>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             if (_values.ContainsKey(binder.Name))

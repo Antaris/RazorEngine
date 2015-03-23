@@ -23,5 +23,22 @@ namespace Test.RazorEngine
         {
             typeof(Engine).Assembly.GetTypes();
         }
+        /*
+        /// <summary>
+        /// Check that Contracts are enabled and work on this build machine.
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConstractsWork()
+        {
+            System.Diagnostics.Contracts.Contract.Requires<ArgumentException>(false);
+        }
+
+        [Test]
+        //[ExpectedException(typeof(Exception))]
+        public void ConstractsWork_2()
+        {
+            System.Diagnostics.Contracts.Contract.Requires(false);
+        }*/
     }
 }

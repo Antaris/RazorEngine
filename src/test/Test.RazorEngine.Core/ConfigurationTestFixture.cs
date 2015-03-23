@@ -37,8 +37,9 @@
         {
             var config = new FluentTemplateServiceConfiguration(
                 c => c.IncludeNamespaces("System.IO"));
-
+#pragma warning disable 0618 // TODO: Update test.
             using (var service = new TemplateService(config))
+#pragma warning restore 0618 // TODO: Update test.
             {
                 const string template = @"@Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), ""*.*"").Length";
 
@@ -72,7 +73,9 @@
             var config = new FluentTemplateServiceConfiguration(
                 c => c.WithCodeLanguage(Language.VisualBasic));
 
+#pragma warning disable 0618 // TODO: Update test.
             using (var service = new TemplateService(config))
+#pragma warning restore 0618 // TODO: Update test.
             {
                 const string template = "@Code Dim name = \"Matt\" End Code\n@name";
                 const string expected = "\nMatt";
@@ -93,7 +96,9 @@
             var config = new FluentTemplateServiceConfiguration(
                 c => c.WithEncoding(Encoding.Raw));
 
+#pragma warning disable 0618 // TODO: Update test.
             using (var service = new TemplateService(config))
+#pragma warning restore 0618 // TODO: Update test.
             {
                 const string template = "<h1>Hello @Model.String</h1>";
                 const string expected = "<h1>Hello Matt & World</h1>";

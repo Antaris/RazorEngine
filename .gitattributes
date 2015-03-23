@@ -1,27 +1,26 @@
-﻿# Auto detect text files and perform LF normalization
-* text=auto
+# Auto detect text files
+* text=auto 
+*.sh -crlf text=auto eol=lf
 
-# Text files that should be normalized to LF.
-*.cs       text diff=csharp
-*.sln      text
-*.csproj   text
-*.nuspec   text
-*.fsx      text
-*.sh       text
-*.ps1      text
-*.cmd      text
-*.bat      text
-*.md       text
-*.markdown text
+# Custom for Visual Studio
+*.cs diff=csharp text=auto eol=lf
+*.fs diff=csharp text=auto eol=lf
+*.fsi diff=csharp text=auto eol=lf
+*.fsx diff=csharp text=auto eol=lf
+*.sln text eol=crlf merge=union
+*.csproj merge=union
+*.vbproj merge=union
+*.fsproj merge=union
+*.dbproj merge=union
 
-
-# Binary files that should not be normalized or diffed
-*.png    binary
-*.jpg    binary
-*.gif    binary
-*.ico    binary
-*.snk    binary
-*.dll    binary
-*.exe    binary
-*.lib    binary
-*.pdb    binary
+# Standard to msysgit
+*.doc diff=astextplain
+*.DOC diff=astextplain
+*.docx diff=astextplain
+*.DOCX diff=astextplain
+*.dot diff=astextplain
+*.DOT diff=astextplain
+*.pdf diff=astextplain
+*.PDF diff=astextplain
+*.rtf diff=astextplain
+*.RTF diff=astextplain

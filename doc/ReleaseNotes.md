@@ -1,4 +1,11 @@
-﻿### 3.6.1 / 4.1.1-beta1
+﻿
+### 3.6.2 / 4.1.2-beta1
+* Add support for escaping the dynamic wrapper in certain situations
+  - Implicit or explicit casts
+  - By using `RazorEngine.Compilation.RazorDynamicObject.Unwrap(Model.ToUnwrap)`
+* Wrapper now supports binary and unary operations (thanks devteamexpress): https://github.com/Antaris/RazorEngine/issues/248
+
+### 3.6.1 / 4.1.1-beta1
 * Add support for nested model types as well
 * Fix a bug with non-generic nested template base classes.
 

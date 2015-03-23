@@ -18,13 +18,16 @@
     {
         #region Constructors
         /// <summary>
-        /// Creates a new instance of DynamicViewBag, setting initial values in the ViewBag.
+        /// Creates a new instance of ExecuteContext 
         /// </summary>
-        /// <param name="viewBag">The initial view bag data or NULL for an empty ViewBag.</param>
         public ExecuteContext()
         {
             _currentSectionStack.Push(new HashSet<string>());
         }
+        /// <summary>
+        /// Creates a new instance of ExecuteContext.
+        /// </summary>
+        /// <param name="viewbag">The initial view bag data or NULL for an empty ViewBag.</param>
         [Obsolete("RUNTIME FAILURE: This kind of usage is no longer supported.")]
         public ExecuteContext(DynamicViewBag viewbag)
         {

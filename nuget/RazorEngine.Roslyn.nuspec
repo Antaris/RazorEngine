@@ -17,8 +17,8 @@
     @dependencies@
   </metadata>
   <files>
-    <file src="release\lib\net45\RazorEngine.Roslyn.dll" target="lib\net45\RazorEngine.Roslyn.dll" />
-    <file src="release\lib\net45\RazorEngine.Roslyn.xml" target="lib\net45\RazorEngine.Roslyn.xml" />
-    <file src="doc\LICENSE.md" target="LICENSE.md" />
+    <file src="release/lib/net45/RazorEngine.Roslyn.dll" target="lib/net45/RazorEngine.Roslyn.dll" />
+    <file src="release/lib/net45/RazorEngine.Roslyn.xml" target="lib/net45/RazorEngine.Roslyn.xml" />
+    <file src="doc/LICENSE.md" target="LICENSE.md" />
   </files>
 </package>

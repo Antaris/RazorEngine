@@ -5,6 +5,9 @@
     /// </summary>
     public class AnimalViewModel
     {
+        /// <summary>
+        /// Test class.
+        /// </summary>
         public Animal[] Animals { get; set; }
     }
 }

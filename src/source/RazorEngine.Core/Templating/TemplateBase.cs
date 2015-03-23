@@ -32,6 +32,9 @@ namespace RazorEngine.Templating
         /// </summary>
         private bool modelInit = false;
         private dynamic viewBag = null;
+        /// <summary>
+        /// The current context, filled when we are currently writing a template instance.
+        /// </summary>
         protected ExecuteContext _context;
         #endregion
 
@@ -66,11 +69,18 @@ namespace RazorEngine.Templating
         /// </summary>
         [Obsolete("Only provided for backwards compatibility, use RazorEngine instead.")]
         public ITemplateService TemplateService { get; set; }
-
+#if RAZOR4
+#else
         /// <summary>
         /// Gets or sets the current <see cref="IRazorEngineService"/> instance.
         /// </summary>
-        public IRazorEngineService RazorEngine { get; set; }
+        [Obsolete("Use the Razor property instead, this is obsolete as it makes it difficult to use the RazorEngine namespace within templates.")]
+        public IRazorEngineService RazorEngine { get { return Razor; } set { Razor = value; } }
+#endif
+        /// <summary>
+        /// Gets or sets the current <see cref="IRazorEngineService"/> instance.
+        /// </summary>
+        public IRazorEngineService Razor { get; set; }
 
         /// <summary>
         /// Gets the viewbag that allows sharing state between layout and child templates.
@@ -158,7 +168,7 @@ namespace RazorEngine.Templating
         /// Executes the compiled template.
         /// </summary>
 #if RAZOR4
-        public virtual async Task Execute() { }
+        public virtual Task Execute() { return Task.FromResult(0); }
 #else
         public virtual void Execute() { }
 #endif
@@ -427,7 +437,7 @@ namespace RazorEngine.Templating
         }
 
         /// <summary>
-        /// Writes a <see cref="PositionTagged{}" /> literal to the result.
+        /// Writes a <see cref="PositionTagged{T}" /> literal to the result.
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="value">The literal to be written.</param>

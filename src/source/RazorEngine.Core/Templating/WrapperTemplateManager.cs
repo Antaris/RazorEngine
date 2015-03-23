@@ -11,6 +11,7 @@ namespace RazorEngine.Configuration.Xml
     /// This is a simple wrapper around an <see cref="ITemplateResolver"/> to provide
     /// an <see cref="ITemplateManager"/> service.
     /// </summary>
+    [Obsolete("Use TemplateManager instead, this api is provided for backwards compatibility.")]
     public class WrapperTemplateManager : ITemplateManager
     {
         #region Fields

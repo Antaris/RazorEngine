@@ -123,6 +123,9 @@ namespace RazorEngine.Compilation
             }
         }
 
+        /// <summary>
+        /// Destructs the current instance.
+        /// </summary>
         ~CompilationData()
         {
             Dispose(false);
@@ -137,7 +140,11 @@ namespace RazorEngine.Compilation
             Dispose(true);
         }
 
-        public virtual void Dispose(bool disposing)
+        /// <summary>
+        /// Cleans up the data of the current compilation.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
             {

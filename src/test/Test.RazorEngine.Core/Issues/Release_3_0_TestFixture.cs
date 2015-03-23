@@ -13,6 +13,7 @@
     /// Provides tests for the Release 3.0
     /// </summary>
     [TestFixture]
+    [Obsolete("Needs to be updated to the new API")]
     public class Release_3_0_TestFixture
     {
         #region Tests

@@ -15,6 +15,7 @@
     /// Defines a test fixture that provides tests for the <see cref="TemplateBase"/> type.
     /// </summary>
     [TestFixture]
+    [System.Obsolete("Needs to be updated/replaced with RazorEngineService.")]
     public class TemplateBaseTestFixture
     {
         #region Tests

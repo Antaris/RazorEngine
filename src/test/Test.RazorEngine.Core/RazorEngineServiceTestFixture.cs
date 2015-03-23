@@ -18,9 +18,17 @@ using Test.RazorEngine.TestTypes.BaseTypes;
 
 namespace Test.RazorEngine
 {
+    /// <summary>
+    /// Tests for the RazorEngineService API.
+    /// </summary>
     [TestFixture]
     public class RazorEngineServiceTestFixture
     {
+        /// <summary>
+        /// Helper API to run tests.
+        /// </summary>
+        /// <param name="test"></param>
+        /// <param name="withConfig"></param>
         public static void RunTestHelper(Action<IRazorEngineService> test, Action<TemplateServiceConfiguration> withConfig = null)
         {
             if (withConfig == null)
@@ -45,16 +53,31 @@ namespace Test.RazorEngine
             }
         }
 
+        /// <summary>
+        /// Test Class.
+        /// </summary>
         public interface IMyInterface
         {
+            /// <summary>
+            /// Test Class.
+            /// </summary>
             string Test();
         }
+        /// <summary>
+        /// Test Class.
+        /// </summary>
         public class MyClass : IMyInterface
         {
+            /// <summary>
+            /// Test Class.
+            /// </summary>
             public string Test()
             {
                 return "test";
             }
+            /// <summary>
+            /// Test Class.
+            /// </summary>
             public string More()
             {
                 return "more";
@@ -456,5 +479,193 @@ namespace Test.RazorEngine
                 Assert.AreEqual("test", result);
             });
         }
+
+        /// <summary>
+        /// Tests that enumerating dynamic works.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestEnumeratingDynamicObject()
+        {
+            RunTestHelper(service =>
+            {
+                var list = new List<Person>();
+                list.Add(new Person() { Forename = "test1" });
+                list.Add(new Person() { Forename = "test2" });
+                var model = new { Types = list };
+                var template = @"@{
+var l = new System.Collections.Generic.List<dynamic>();
+foreach (var t in Model.Types) { l.Add(t); }
+}@foreach (var m in l) {<text>@m.Forename</text>}";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("test1test2", result);
+            });
+        }
+
+        /// <summary>
+        /// Tests that casting back to IEnumerable works.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestImplicitCastIEnumerable()
+        {
+            RunTestHelper(service =>
+            {
+                var list = new List<Person>();
+                list.Add(new Person() { Forename = "test1" });
+                list.Add(new Person() { Forename = "test2" });
+                var model = new { Types = list };
+                var template = @"@{
+var l = new System.Collections.Generic.List<dynamic>();
+IEnumerable<dynamic> types = Model.Types;
+l.AddRange(types);
+}@foreach (var m in l) {<text>@m.Forename</text>}";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("test1test2", result);
+            });
+        }
+
+        /// <summary>
+        /// Tests that casting back to IEnumerable works.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestCastingToIEnumerable()
+        {
+            RunTestHelper(service =>
+            {
+                var list = new List<Person>();
+                list.Add(new Person() { Forename = "test1" });
+                list.Add(new Person() { Forename = "test2" });
+                var model = new { Types = list };
+                var template = @"@{
+var l = new System.Collections.Generic.List<dynamic>();
+l.AddRange((IEnumerable<dynamic>)Model.Types);
+}@foreach (var m in l) {<text>@m.Forename</text>}";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("test1test2", result);
+            });
+        }
+
+        /// <summary>
+        /// Tests that we can get back the concrete type if we want it.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestImplicitCastToConcreteType()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new { Person = new Person() { Forename = "test1" } };
+                var template = @"@{
+RazorEngine.Tests.TestTypes.Person p = Model.Person;
+}
+@p.Forename";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("test1", result.TrimStart());
+            });
+        }
+
+        /// <summary>
+        /// Tests that we can get back the concrete type if we want it.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestExplicitCastToConcreteType()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new { Person = new Person() { Forename = "test1" } };
+                var template = @"@{
+var p = (RazorEngine.Tests.TestTypes.Person)Model.Person;
+}
+@p.Forename";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("test1", result.TrimStart());
+            });
+        }
+
+        /// <summary>
+        /// Enum for testing purposes.
+        /// </summary>
+        public enum MyEnum
+        {
+            /// <summary>
+            /// State 1
+            /// </summary>
+            State1, 
+            /// <summary>
+            /// State 2
+            /// </summary>
+            State2
+        }
+
+        /// <summary>
+        /// Tests that we can compare dynamic object with an enum.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestCompareWithEnumAfterUnwrap()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new { State = MyEnum.State1 };
+                var template =
+@"@using RazorEngine.Compilation
+@{
+if (RazorDynamicObject.Unwrap(Model.State) == Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum.State1)
+{<text>correct</text>}else{<text>wrong</text>}}";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("correct", result.TrimStart());
+            });
+        }
+        
+        /// <summary>
+        /// Tests that we can compare dynamic object with an enum.
+        /// </summary>
+        [Test]
+        //[Ignore]
+        public void RazorEngineService_TestCompareWithEnum()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new { State = MyEnum.State1 };
+                var template =
+@"@{
+if (Model.State == Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum.State1)
+{<text>correct</text>}else{<text>wrong</text>}}";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("correct", result.TrimStart());
+            });
+        }
+
+        /// <summary>
+        /// Tests that we can compare dynamic object with an enum.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestCompareWithEnumImplicitCastBefore()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new { State = MyEnum.State1 };
+                var template =
+@"@{Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum v = Model.State;
+if (v == Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum.State1){<text>correct</text>}else{<text>wrong</text>}}";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("correct", result.TrimStart());
+            });
+        }
+
+        /// <summary>
+        /// Tests that we can compare dynamic object with an enum.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestCompareWithEnumExplicitCastBefore()
+        {
+            RunTestHelper(service =>
+            {
+                var model = new { State = MyEnum.State1 };
+                var template =
+@"@{
+if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum.State1){<text>correct</text>}else{<text>wrong</text>}}";
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("correct", result.TrimStart());
+            });
+        }
+
     }
 }

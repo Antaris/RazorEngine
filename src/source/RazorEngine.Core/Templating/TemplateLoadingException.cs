@@ -22,7 +22,7 @@ namespace RazorEngine.Templating
         /// Initialises a new instance of <see cref="TemplateLoadingException"/>.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="message">The root cause.</param>
+        /// <param name="inner">The root cause.</param>
         internal TemplateLoadingException(string message, Exception inner)
             : base(message, inner) { }
     }

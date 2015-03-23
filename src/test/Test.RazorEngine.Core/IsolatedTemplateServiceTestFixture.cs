@@ -19,6 +19,7 @@
     /// Defines a test fixture that provides tests for the <see cref="IsolatedTemplateService"/> type.
     /// </summary>
     [TestFixture]
+    [Obsolete("Needs to be updated/removed.")]
     public class IsolatedTemplateServiceTestFixture
     {
         #region Tests
