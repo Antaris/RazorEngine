@@ -168,7 +168,7 @@ namespace RazorEngine.Templating
         /// Executes the compiled template.
         /// </summary>
 #if RAZOR4
-        public virtual async Task Execute() { }
+        public virtual Task Execute() { return Task.FromResult(0); }
 #else
         public virtual void Execute() { }
 #endif

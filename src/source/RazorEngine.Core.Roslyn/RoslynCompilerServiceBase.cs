@@ -57,16 +57,29 @@ namespace RazorEngine.Roslyn.CSharp
         protected class RazorEngineSourceReferenceResolver : SourceReferenceResolver
         {
             private string _sourceCodeFile;
+            /// <summary>
+            /// Constructs a new RazorEngineSourceReferenceResolver instance.
+            /// </summary>
+            /// <param name="sourceCodeFile"></param>
             public RazorEngineSourceReferenceResolver(string sourceCodeFile)
             {
                 _sourceCodeFile = sourceCodeFile;
             }
 
+            /// <summary>
+            /// Checkts if the current instance equals the given instance.
+            /// </summary>
+            /// <param name="other"></param>
+            /// <returns></returns>
             public override bool Equals(object other)
             {
                 return object.Equals(this, other);
             }
 
+            /// <summary>
+            /// Calculates a hashcode for the current instance.
+            /// </summary>
+            /// <returns></returns>
             public override int GetHashCode()
             {
                 return 0;
