@@ -41,12 +41,9 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.1.2.0"
-let version_razor4_nuget = "4.1.2-beta1"
-let version_roslyn = "3.5.1"
-let version_roslyn_nuget = "3.5.1-beta1"
-let version_roslyn_razor4 = "4.0.1"
-let version_roslyn_razor4_nuget = "4.0.1-beta1"
+let version_razor4 = "4.1.3-beta1"
+let version_roslyn = "3.5.1-beta1"
+let version_roslyn_razor4 = "4.0.1-beta1"
 
 // This is set to true when we want to update the roslyn packages via CI as well
 // (otherwise this value doesn't matter). You can always push manually!
@@ -84,7 +81,7 @@ let buildConfig =
                     Dependencies = [ "Microsoft.AspNet.Razor", "3.0.0" ] } ] })
         "RazorEngine-razor4.nuspec", (fun config p ->
           { p with
-              Version = version_razor4_nuget
+              Version = version_razor4
               ReleaseNotes = toLines release.Notes
               Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta1" ] })
         "RazorEngine.Roslyn.nuspec", (fun config p ->
@@ -92,7 +89,7 @@ let buildConfig =
               Project = projectName_roslyn
               Summary = projectSummary_roslyn
               Description = projectDescription_roslyn
-              Version = version_roslyn_nuget
+              Version = version_roslyn
               Publish = roslyn_publish
               ReleaseNotes = toLines release.Notes
               Dependencies =
@@ -107,12 +104,12 @@ let buildConfig =
               Project = projectName_roslyn
               Summary = projectSummary_roslyn
               Description = projectDescription_roslyn
-              Version = version_roslyn_razor4_nuget
+              Version = version_roslyn_razor4
               ReleaseNotes = toLines release.Notes
               Publish = roslyn_publish
               Dependencies =
                 let exact =
-                  [ config.ProjectName, version_razor4_nuget
+                  [ config.ProjectName, version_razor4
                     "Microsoft.AspNet.Razor", "4.0.0-beta1" ]
                 [ "Microsoft.CodeAnalysis" ]
                 |> List.map (fun name -> name, (GetPackageVersion "packages" name))
@@ -136,7 +133,7 @@ let buildConfig =
           Attribute.Copyright config.CopyrightNotice
           Attribute.Version version_razor4
           Attribute.FileVersion version_razor4
-          Attribute.InformationalVersion version_razor4_nuget ]
+          Attribute.InformationalVersion version_razor4 ]
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo-Razor4.cs" info_razor4
       let info_roslyn =
         [ Attribute.Company projectName_roslyn
@@ -144,7 +141,7 @@ let buildConfig =
           Attribute.Copyright config.CopyrightNotice
           Attribute.Version version_roslyn
           Attribute.FileVersion version_roslyn
-          Attribute.InformationalVersion version_roslyn_nuget ]
+          Attribute.InformationalVersion version_roslyn ]
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn.cs" info_roslyn
       let info_roslyn_razor4 =
         [ Attribute.Company projectName_roslyn
@@ -152,7 +149,7 @@ let buildConfig =
           Attribute.Copyright config.CopyrightNotice
           Attribute.Version version_roslyn_razor4
           Attribute.FileVersion version_roslyn_razor4
-          Attribute.InformationalVersion version_roslyn_razor4_nuget ]
+          Attribute.InformationalVersion version_roslyn_razor4 ]
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn-Razor4.cs" info_roslyn_razor4
      )
     EnableProjectFileCreation = false
@@ -174,17 +171,17 @@ let buildConfig =
       else None
     BuildTargets =
      [ { BuildParams.WithSolution with
-          // The default build
+          // The net40 (razor2) build
           PlatformName = "Net40"
           SimpleBuildName = "net40"
           FindUnitTestDlls = unitTestFinder }
        { BuildParams.WithSolution with
-          // The default build
+          // The razor4 (net45) build
           PlatformName = "Razor4"
           SimpleBuildName = "razor4"
           FindUnitTestDlls = unitTestFinder }
        { BuildParams.WithSolution with
-          // The default build
+          // The net45 (razor3) build
           PlatformName = "Net45"
           SimpleBuildName = "net45"
           FindUnitTestDlls = unitTestFinder } ]
