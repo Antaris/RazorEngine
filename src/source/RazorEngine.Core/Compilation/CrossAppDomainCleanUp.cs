@@ -183,6 +183,12 @@ namespace RazorEngine.Compilation
                     ignore(domain.FriendlyName);
                     return false;
                 }
+                catch (System.Threading.ThreadAbortException)
+                { // Mono bug, it throws ThreadAbortExceptions a lot more aggressively
+                    // We will shutdown after cleanup, se leave us alone.
+                    Thread.ResetAbort();
+                    return true;
+                }
                 catch (System.Runtime.Remoting.RemotingException)
                 { // Mono bug, should throw AppDomainUnloadedException instead
                     return true;
