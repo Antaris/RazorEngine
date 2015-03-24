@@ -186,6 +186,39 @@ By default the `UseCurrentAssembliesReferenceResolver` class is used, which will
 
 > If you manage to find a working cross-platform implementation, please open a pull request / issue!
 
+## Temporary files
+
+RazorEngine tries hard to delete the temporary files it creates, but this is not always possible.
+This is especially true if you run RazorEngine from the default `AppDomain`. 
+RazorEngine will warn you in this situation by writing to the stderr. 
+One way to switch into a new AppDomain is the following snippet:
+
+```csharp
+static int Main(string[] args)
+{
+    if (AppDomain.CurrentDomain.IsDefaultAppDomain())
+    {
+        // RazorEngine cannot clean up from the default appdomain...
+        Console.WriteLine("Switching to secound AppDomain, for RazorEngine...");
+        AppDomainSetup adSetup = new AppDomainSetup();
+        adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+        var current = AppDomain.CurrentDomain;
+        // You only need to add strongnames when your appdomain is not a full trust environment.
+        var strongNames = new StrongName[0];
+
+        var domain = AppDomain.CreateDomain(
+            "MyMainDomain", null,
+            current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
+            strongNames);
+        return domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location);
+    }
+    // Continue with your code.
+}
+```
+
+Depending on your scenario you probably need to edit it to your needs.
+See also https://github.com/Antaris/RazorEngine/issues/244 for more details.
+
 ## More
 
 On the right side you can find links to advanced topics and additional [documentation](http://antaris.github.io/RazorEngine/).
