@@ -1,4 +1,8 @@
-﻿### 3.6.3-beta1 / 4.1.3-beta1
+﻿### 3.6.3-beta2
+* Fix some race conditions in cleanup.
+* Fix https://github.com/Antaris/RazorEngine/issues/253.
+
+### 3.6.3-beta1 / 4.1.3-beta1
 * Cleanup temporary files when RazorEngine is not used in the default AppDomain
 * Add an API to change the temporary directory (by subclassing CompilerService)
 
