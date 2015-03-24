@@ -211,9 +211,8 @@ static int Main(string[] args)
             current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
             strongNames);
         var exitCode = domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location);
+        // RazorEngine will cleanup. 
         AppDomain.Unload(domain);
-        // Wait for RazorEngine to cleanup
-        Thread.Sleep(2000);
         return exitCode;
     }
     // Continue with your code.

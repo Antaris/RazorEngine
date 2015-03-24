@@ -89,8 +89,8 @@ namespace RazorEngine.Templating
         public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
         {
             var modelTypeKey = GetModelTypeKey(template.ModelType);
-            RazorEngine.Compilation.CrossAppDomainCleanUp.CurrentCleanup
-                .RegisterCleanupPath(template.CompilationData.TmpFolder);
+            RazorEngine.Compilation.CrossAppDomainCleanUp
+                .RegisterCleanup(template.CompilationData.TmpFolder, false);
             CacheTemplateHelper(template, templateKey, modelTypeKey);
             var typeArgs = template.TemplateType.BaseType.GetGenericArguments();
             if (typeArgs.Length > 0)

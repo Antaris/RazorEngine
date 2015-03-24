@@ -382,6 +382,7 @@ namespace RazorEngine.Compilation
 
         private static IPrinter currentPrinter = new ErrorOnlyPrinter();
         private static Lazy<CrossAppDomainCleanUp> cleanup = new Lazy<CrossAppDomainCleanUp>(CreateInitial);
+        private static bool writtenLongMessage = false;
 
         /// <summary>
         /// Gets or sets the printer that is used by default when creating new CrossAppDomainCleanUp objects.
@@ -414,6 +415,35 @@ namespace RazorEngine.Compilation
             byte[] pk = name.GetPublicKey();
             var blob = new StrongNamePublicKeyBlob(pk);
             return new StrongName(blob, name.Name, name.Version);
+        }
+
+        /// <summary>
+        /// A helper method to register items to cleanup for the current AppDomain.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="throwOnDefault">Throw an exception when we are on the default AppDomain</param>
+        public static void RegisterCleanup(string item, bool throwOnDefault = true)
+        {
+            if (AppDomain.CurrentDomain.IsDefaultAppDomain())
+            {
+                if (!writtenLongMessage)
+                {
+                    System.Console.Error.WriteLine("RazorEngine: We can't cleanup temp files if you use RazorEngine on the default Appdomain.");
+                    System.Console.Error.WriteLine("Create a new AppDomain and use RazorEngine from there.");
+                    System.Console.Error.WriteLine("Read the quickstart or https://github.com/Antaris/RazorEngine/issues/244 for details!");
+                    writtenLongMessage = true;
+                }
+                if (throwOnDefault)
+                {
+                    throw new InvalidOperationException("Cleanup doesn't work for the default AppDomain.");
+                }
+                else
+                {
+                    System.Console.Error.WriteLine("Please clean '{0}' manually!", item);
+                    return;
+                }
+            }
+            CurrentCleanup.RegisterCleanupPath(item);
         }
 
         private readonly AppDomain _domain;
