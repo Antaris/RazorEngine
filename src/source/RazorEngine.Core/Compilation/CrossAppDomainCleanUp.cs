@@ -434,6 +434,18 @@ namespace RazorEngine.Compilation
         /// <param name="throwOnDefault">Throw an exception when we are on the default AppDomain</param>
         public static void RegisterCleanup(string item, bool throwOnDefault = true)
         {
+            if (Type.GetType("Mono.Runtime") != null)
+            {
+                // our cleanup logic doesn't work on mono (mono bugs)
+                // We don't need it on unix, as we can just delete the files there
+                // (handled by the caller)
+                if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+                {
+                    return;
+                }
+
+                System.Console.Error.WriteLine("Mono can't handle our cleanup logic, so please report crashes to mono.", item);
+            }
             if (AppDomain.CurrentDomain.IsDefaultAppDomain())
             {
                 if (!writtenLongMessage)
@@ -453,6 +465,7 @@ namespace RazorEngine.Compilation
                     return;
                 }
             }
+            
             CurrentCleanup.RegisterCleanupPath(item);
         }
 
