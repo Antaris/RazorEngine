@@ -300,6 +300,9 @@ namespace RazorEngine.Compilation
                 _toCleanup.Add(path);
             }
 
+            /// <summary>
+            /// Setup AssemblyResolve.
+            /// </summary>
             [SecurityCritical]
             public void SetupDomain()
             {
