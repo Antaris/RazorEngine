@@ -227,6 +227,19 @@ namespace RazorEngine.Compilation
                 }
             }
 
+            public static bool IsUnloaded (AppDomain domain)
+            {
+                Action<string> ignore = z => { };
+                try
+                {
+                    ignore(domain.FriendlyName);
+                    return false;
+                }
+                catch (AppDomainUnloadedException)
+                {
+                    return true;
+                }
+            }
 
             [SecurityCritical]
             void domain_DomainUnload(object sender, EventArgs e)
@@ -240,7 +253,10 @@ namespace RazorEngine.Compilation
                     try
                     {
                         _printer.Print("waiting a bit for {0}...", friendlyName);
-                        Thread.Sleep(300);
+                        while (!IsUnloaded(senderDomain))
+                        {
+                            Thread.Sleep(100);
+                        }
                         _printer.Print("cleanup after {0}...", friendlyName);
 
                         foreach (var item in _toCleanup)
