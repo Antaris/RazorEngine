@@ -336,7 +336,7 @@ namespace RazorEngine.Compilation
                         }
                         catch (Exception pExn)
                         {
-                            /// Write in console just in case our printer has died.
+                            // Write in console just in case our printer has died.
                             System.Console.Error.WriteLine("RazorEngine: Error in cleanup code: {0}", exn);
                             System.Console.Error.WriteLine("RazorEngine: Printer has died as well: {0}", pExn);
                         }
