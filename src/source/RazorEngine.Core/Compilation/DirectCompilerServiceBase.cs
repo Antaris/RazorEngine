@@ -157,9 +157,9 @@
                         foreach (CodeTypeMember member in @type.Members.Cast<CodeTypeMember>().ToList())
                         {
                             var snippet = member as CodeSnippetTypeMember;
-                            if (snippet != null && snippet.Text == "#line hidden")
+                            if (snippet != null && snippet.Text.Contains("#line hidden"))
                             {
-                                @type.Members.Remove(snippet);
+                                snippet.Text = snippet.Text.Replace("#line hidden", "");
                             }
                         }
                     }

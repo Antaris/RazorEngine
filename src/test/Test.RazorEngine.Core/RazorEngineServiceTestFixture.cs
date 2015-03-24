@@ -15,6 +15,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Test.RazorEngine.TestTypes.BaseTypes;
+using System.Runtime.Remoting;
+using System.Collections.Concurrent;
 
 namespace Test.RazorEngine
 {
@@ -665,6 +667,66 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
                 string result = service.RunCompile(template, "key", null, model);
                 Assert.AreEqual("correct", result.TrimStart());
             });
+        }
+
+        /// <summary>
+        /// Tests that debugging works with @helper syntax.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestDebuggingWithHelperWithTemplateFile()
+        {
+            var cache = new DefaultCachingProvider();
+            var file = System.IO.Path.GetTempFileName();
+
+            var template =
+@"@helper Display(int price) {
+    if (price == 0) {
+        <text>free</text>
+    } else {
+        <text>@price</text>
+    }
+}
+@Display(Model.MyPrice)";
+            File.WriteAllText(file, template);
+            RunTestHelper(service =>
+            {
+                var model = new { MyPrice = 0 };
+                string result = service.RunCompile(new LoadedTemplateSource(template, file), "key", null, model);
+                Assert.AreEqual("free", result.Trim());
+            }, config => config.CachingProvider = cache);
+            ICompiledTemplate compiledTemplate;
+            Assert.IsTrue(cache.TryRetrieveTemplate(new NameOnlyTemplateKey("key", ResolveType.Global, null), null, out compiledTemplate));
+            // Contains line pragmas with the template file.
+            Assert.IsTrue(compiledTemplate.CompilationData.SourceCode.Contains(file), "");
+            File.Delete(file);
+        }
+
+        /// <summary>
+        /// Tests that debugging works with @helper syntax.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestDebuggingWithHelper()
+        {
+            var cache = new DefaultCachingProvider();
+            var template =
+@"@helper Display(int price) {
+    if (price == 0) {
+        <text>free</text>
+    } else {
+        <text>@price</text>
+    }
+}
+@Display(Model.MyPrice)";
+            RunTestHelper(service =>
+            {
+                var model = new { MyPrice = 0 };
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("free", result.Trim());
+            }, config => config.CachingProvider = cache);
+            ICompiledTemplate compiledTemplate;
+            Assert.IsTrue(cache.TryRetrieveTemplate(new NameOnlyTemplateKey("key", ResolveType.Global, null), null, out compiledTemplate));
+            // #line hidden should be removed, so make debugging work, see https://github.com/Antaris/RazorEngine/issues/253.
+            Assert.IsFalse(compiledTemplate.CompilationData.SourceCode.Contains("#line hidden"));
         }
 
     }
