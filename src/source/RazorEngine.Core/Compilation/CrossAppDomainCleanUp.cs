@@ -299,6 +299,23 @@ namespace RazorEngine.Compilation
                 CheckInit();
                 _toCleanup.Add(path);
             }
+
+            [SecurityCritical]
+            public void SetupDomain()
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            }
+
+            Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+            {
+                var name = Assembly.GetExecutingAssembly().GetName();
+                if (args.Name == name.FullName)
+                {
+                    return Assembly.GetExecutingAssembly();
+                }
+
+                return null;
+            }
         }
 
         private readonly AppDomain _domain;
@@ -377,6 +394,7 @@ namespace RazorEngine.Compilation
                     typeof(CleanupHelper).FullName
                 );
             _helper = (CleanupHelper)handle.Unwrap();
+            _helper.SetupDomain();
             _helper.Init(current, CrossAppDomainCleanUp.CurrentPrinter);
         }
 
