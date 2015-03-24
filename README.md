@@ -189,9 +189,9 @@ By default the `UseCurrentAssembliesReferenceResolver` class is used, which will
 ## Temporary files
 
 RazorEngine tries hard to delete the temporary files it creates, but this is not always possible.
-This is especially true if you run RazorEngine from the default `AppDomain`. 
+This is especially true if you run RazorEngine from the default `AppDomain`.
 RazorEngine will warn you in this situation by writing to the stderr. 
-One way to switch into a new AppDomain is the following snippet:
+One way to switch into a new AppDomain is to use the following snippet:
 
 ```csharp
 static int Main(string[] args)
@@ -210,13 +210,18 @@ static int Main(string[] args)
             "MyMainDomain", null,
             current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
             strongNames);
-        return domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location);
+        var exitCode = domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location);
+        AppDomain.Unload(domain);
+        // Wait for RazorEngine to cleanup
+        Thread.Sleep(2000);
+        return exitCode;
     }
     // Continue with your code.
 }
 ```
 
 Depending on your scenario you probably need to edit it to your needs.
+Note that you need to `Unload` the domain to trigger cleanup.
 See also https://github.com/Antaris/RazorEngine/issues/244 for more details.
 
 ## More
