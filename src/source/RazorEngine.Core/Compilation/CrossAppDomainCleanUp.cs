@@ -183,6 +183,10 @@ namespace RazorEngine.Compilation
                     ignore(domain.FriendlyName);
                     return false;
                 }
+                catch (System.Runtime.Remoting.RemotingException)
+                { // Mono bug, should throw AppDomainUnloadedException instead
+                    return true;
+                }
                 catch (AppDomainUnloadedException)
                 {
                     return true;
