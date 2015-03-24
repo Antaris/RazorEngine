@@ -669,5 +669,57 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
             });
         }
 
+        /// <summary>
+        /// Tests that debugging works with @helper syntax.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestDebuggingWithHelperWithTemplateFile()
+        {
+            // Manual: Check if you can debug into the helper function
+            var file = System.IO.Path.GetTempFileName();
+
+            var template =
+@"@helper Display(int price) {
+    if (price == 0) {
+        <text>free</text>
+    } else {
+        <text>@price</text>
+    }
+}
+@Display(Model.MyPrice)";
+            File.WriteAllText(file, template);
+            RunTestHelper(service =>
+            {
+                var model = new { MyPrice = 0 };
+                string result = service.RunCompile(new LoadedTemplateSource(template, file), "key", null, model);
+                Assert.AreEqual("free", result.Trim());
+            });
+            File.Delete(file);
+        }
+
+        /// <summary>
+        /// Tests that debugging works with @helper syntax.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestDebuggingWithHelper()
+        {
+            // Manual: Check if you can debug into the helper function.
+            var template =
+@"@helper Display(int price) {
+    if (price == 0) {
+        <text>free</text>
+    } else {
+        <text>@price</text>
+    }
+}
+@Display(Model.MyPrice)";
+            RunTestHelper(service =>
+            {
+                var model = new { MyPrice = 0 };
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("free", result.Trim());
+            });
+        }
+
     }
 }
