@@ -227,6 +227,11 @@ namespace RazorEngine.Compilation
                 }
             }
 
+            /// <summary>
+            /// Check if the given AppDomain is unloaded.
+            /// </summary>
+            /// <param name="domain"></param>
+            /// <returns></returns>
             public static bool IsUnloaded (AppDomain domain)
             {
                 Action<string> ignore = z => { };
