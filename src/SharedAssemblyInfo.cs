@@ -6,7 +6,7 @@ using System.Reflection;
 [assembly: AssemblyCopyrightAttribute("RazorEngine Copyright © RazorEngine Project 2011-2015")]
 [assembly: AssemblyVersionAttribute("3.6.3")]
 [assembly: AssemblyFileVersionAttribute("3.6.3")]
-[assembly: AssemblyInformationalVersionAttribute("3.6.3-beta2")]
+[assembly: AssemblyInformationalVersionAttribute("3.6.3")]
 namespace System {
     internal static class AssemblyVersionInformation {
         internal const string Version = "3.6.3";
