@@ -105,7 +105,8 @@ namespace RazorEngine.Compilation
         }
 
         /// <summary>
-        /// Helper class to check the state of the remote AppDomain.
+        /// Helper class to communicate with the Cleanup AppDomain.
+        /// Inits the cleanup AppDomain (AssemblyResolve) and registers items to delete.
         /// </summary>
         [SecurityCritical]
         public class CleanupHelper : global::RazorEngine.CrossAppDomainObject
@@ -169,9 +170,29 @@ namespace RazorEngine.Compilation
             }
 
 
+            /// <summary>
+            /// Check if the given AppDomain is unloaded.
+            /// </summary>
+            /// <param name="domain"></param>
+            /// <returns></returns>
+            public static bool IsUnloaded(AppDomain domain)
+            {
+                Action<string> ignore = z => { };
+                try
+                {
+                    ignore(domain.FriendlyName);
+                    return false;
+                }
+                catch (AppDomainUnloadedException)
+                {
+                    return true;
+                }
+            }
+
             private readonly List<string> _toCleanup = new List<string>();
             private AppDomain _domain;
             private IPrinter _printer;
+
             private void CheckInit()
             {
                 if (_domain == null)
@@ -188,7 +209,6 @@ namespace RazorEngine.Compilation
             public void Init(AppDomain domain, IPrinter printer = null)
             {
                 (new PermissionSet(PermissionState.Unrestricted)).Assert();
-                //(new System.Security.Permissions.ReflectionPermission(ReflectionPermissionFlag.AllFlags)).Assert();
                 if (_domain != null)
                 {
                     throw new InvalidOperationException("CleanupHelper can be used only for a single domain.");
@@ -227,23 +247,47 @@ namespace RazorEngine.Compilation
                 }
             }
 
-            /// <summary>
-            /// Check if the given AppDomain is unloaded.
-            /// </summary>
-            /// <param name="domain"></param>
-            /// <returns></returns>
-            public static bool IsUnloaded (AppDomain domain)
+            private bool DoCleanUp()
             {
-                Action<string> ignore = z => { };
-                try
+                bool success = true;
+                foreach (var item in _toCleanup)
                 {
-                    ignore(domain.FriendlyName);
-                    return false;
+                    if (File.Exists(item))
+                    {
+                        try
+                        {
+                            File.Delete(item);
+                        }
+                        catch (IOException exn)
+                        {
+                            success = false;
+                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                        }
+                        catch (UnauthorizedAccessException exn)
+                        {
+                            success = false;
+                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                        }
+                    }
+                    if (Directory.Exists(item))
+                    {
+                        try
+                        {
+                            Directory.Delete(item, true);
+                        }
+                        catch (IOException exn)
+                        {
+                            success = false;
+                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                        }
+                        catch (UnauthorizedAccessException exn)
+                        {
+                            success = false;
+                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                        }
+                    }
                 }
-                catch (AppDomainUnloadedException)
-                {
-                    return true;
-                }
+                return success;
             }
 
             [SecurityCritical]
@@ -253,7 +297,7 @@ namespace RazorEngine.Compilation
                 var friendlyName = senderDomain.FriendlyName;
                 _printer.Print("Domain {0} is unloading starting task...", friendlyName);
                 // NOTE: a background thread or task will get killed before it can finish the work!
-                var t = new Thread(() => 
+                var t = new Thread(() =>
                 {
                     try
                     {
@@ -262,46 +306,40 @@ namespace RazorEngine.Compilation
                         {
                             Thread.Sleep(100);
                         }
+                        // HACK: Race condition because there is no way to detect if an AppDomain is fully unloaded.
+                        Thread.Sleep(200);
                         _printer.Print("cleanup after {0}...", friendlyName);
 
-                        foreach (var item in _toCleanup)
+                        // Because AppDomain could still be up we try 
+                        int max_tries = 10;
+                        while (!DoCleanUp() && max_tries > 0)
                         {
-                            if (File.Exists(item))
+                            max_tries--;
+                            if (max_tries > 0)
                             {
-                                try
-                                {
-                                    File.Delete(item);
-                                }
-                                catch (IOException exn)
-                                {
-                                    _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
-                                }
-                                catch (UnauthorizedAccessException exn)
-                                {
-                                    _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
-                                }
+                                _printer.Print("Could not delete everything of {0}, trying again...", friendlyName);
+                                Thread.Sleep(500);
                             }
-                            if (Directory.Exists(item))
+                            else
                             {
-                                try
-                                {
-                                    Directory.Delete(item, true);
-                                }
-                                catch (IOException exn)
-                                {
-                                    _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
-                                }
-                                catch (UnauthorizedAccessException exn)
-                                {
-                                    _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
-                                }
+                                _printer.PrintError("Could not clean up {0}, giving up...", friendlyName);
                             }
                         }
+
                         _printer.Print("unload ourself {0}...", AppDomain.CurrentDomain.FriendlyName);
                     }
                     catch (Exception exn)
                     {
-                        _printer.PrintError("Unhandled error while cleaning up after {0}: {1}", friendlyName, exn.ToString());
+                        try
+                        {
+                            _printer.PrintError("Unhandled error while cleaning up after {0}: {1}", friendlyName, exn.ToString());
+                        }
+                        catch (Exception pExn)
+                        {
+                            /// Write in console just in case our printer has died.
+                            System.Console.Error.WriteLine("RazorEngine: Error in cleanup code: {0}", exn);
+                            System.Console.Error.WriteLine("RazorEngine: Printer has died as well: {0}", pExn);
+                        }
                     }
                     // We are not needed anymore.
                     //AppDomain.Unload(AppDomain.CurrentDomain);
@@ -342,6 +380,42 @@ namespace RazorEngine.Compilation
             }
         }
 
+        private static IPrinter currentPrinter = new ErrorOnlyPrinter();
+        private static Lazy<CrossAppDomainCleanUp> cleanup = new Lazy<CrossAppDomainCleanUp>(CreateInitial);
+
+        /// <summary>
+        /// Gets or sets the printer that is used by default when creating new CrossAppDomainCleanUp objects.
+        /// Do not use this property unless you know what you are doing.
+        /// Settings this to a serializable object is safe, however setting this to a marshalbyrefobject
+        /// can lead to errors if the object lives in the domain that is watched for unloading
+        /// </summary>
+        public static IPrinter CurrentPrinter { get { return currentPrinter; } set { currentPrinter = value; } }
+
+
+        /// <summary>
+        /// A cleanup instance for the current AppDomain
+        /// </summary>
+        public static CrossAppDomainCleanUp CurrentCleanup { get { return cleanup.Value; } }
+
+        [SecuritySafeCritical]
+        private static CrossAppDomainCleanUp CreateInitial()
+        {
+            return new CrossAppDomainCleanUp(AppDomain.CurrentDomain, currentPrinter);
+        }
+
+        /// <summary>
+        /// Get the StrongName of the given assembly.
+        /// </summary>
+        /// <param name="ass"></param>
+        /// <returns></returns>
+        public static StrongName FromAssembly(Assembly ass)
+        {
+            var name = ass.GetName();
+            byte[] pk = name.GetPublicKey();
+            var blob = new StrongNamePublicKeyBlob(pk);
+            return new StrongName(blob, name.Name, name.Version);
+        }
+
         private readonly AppDomain _domain;
         private readonly CleanupHelper _helper;
         /*
@@ -368,18 +442,6 @@ namespace RazorEngine.Compilation
             }
         }*/
 
-        /// <summary>
-        /// Get the StrongName of the given assembly.
-        /// </summary>
-        /// <param name="ass"></param>
-        /// <returns></returns>
-        public static StrongName FromAssembly(Assembly ass)
-        {
-            var name = ass.GetName();
-            byte[] pk = name.GetPublicKey();
-            var blob = new StrongNamePublicKeyBlob(pk);
-            return new StrongName(blob, name.Name, name.Version);
-        }
 
         /// <summary>
         /// Create a new CrossAppDomainCleanUp object for the current AppDomain.
@@ -397,18 +459,18 @@ namespace RazorEngine.Compilation
 
             AppDomainSetup adSetup = new AppDomainSetup();
             adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            
-//#if RAZOR4 // currently not signed!
+
+            //#if RAZOR4 // currently not signed!
             var strongNames = new StrongName[0];
-//#else
-//            var strongNames = new[] {
-//                FromAssembly(typeof(RazorEngine.Templating.RazorEngineService).Assembly),
-//                FromAssembly(typeof(System.Web.Razor.RazorTemplateEngine).Assembly)
-//            };
-//#endif
+            //#else
+            //            var strongNames = new[] {
+            //                FromAssembly(typeof(RazorEngine.Templating.RazorEngineService).Assembly),
+            //                FromAssembly(typeof(System.Web.Razor.RazorTemplateEngine).Assembly)
+            //            };
+            //#endif
 
             _domain = AppDomain.CreateDomain(
-                "CleanupHelperDomain_" + Guid.NewGuid().ToString(), null, 
+                "CleanupHelperDomain_" + Guid.NewGuid().ToString(), null,
                 current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
                 strongNames);
 
@@ -443,27 +505,5 @@ namespace RazorEngine.Compilation
             _helper.Dispose();
         }
 
-        [SecuritySafeCritical]
-        private static CrossAppDomainCleanUp CreateInitial()
-        {
-            return new CrossAppDomainCleanUp(AppDomain.CurrentDomain, currentPrinter);
-        }
-
-        private static IPrinter currentPrinter = new ErrorOnlyPrinter();
-
-        /// <summary>
-        /// Gets or sets the printer that is used by default when creating new CrossAppDomainCleanUp objects.
-        /// Do not use this property unless you know what you are doing.
-        /// Settings this to a serializable object is safe, however setting this to a marshalbyrefobject
-        /// can lead to errors if the object lives in the domain that is watched for unloading
-        /// </summary>
-        public static IPrinter CurrentPrinter { get { return currentPrinter; } set { currentPrinter = value; } }
-
-        private static Lazy<CrossAppDomainCleanUp> cleanup = new Lazy<CrossAppDomainCleanUp>(CreateInitial);
-
-        /// <summary>
-        /// A cleanup instance for the current AppDomain
-        /// </summary>
-        public static CrossAppDomainCleanUp CurrentCleanup { get { return cleanup.Value; } }
     }
 }
