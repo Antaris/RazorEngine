@@ -675,7 +675,7 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
         [Test]
         public void RazorEngineService_TestDebuggingWithHelperWithTemplateFile()
         {
-            // Manual: Check if you can debug into the helper function
+            var cache = new DefaultCachingProvider();
             var file = System.IO.Path.GetTempFileName();
 
             var template =
@@ -693,7 +693,11 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
                 var model = new { MyPrice = 0 };
                 string result = service.RunCompile(new LoadedTemplateSource(template, file), "key", null, model);
                 Assert.AreEqual("free", result.Trim());
-            });
+            }, config => config.CachingProvider = cache);
+            ICompiledTemplate compiledTemplate;
+            Assert.IsTrue(cache.TryRetrieveTemplate(new NameOnlyTemplateKey("key", ResolveType.Global, null), null, out compiledTemplate));
+            // Contains line pragmas with the template file.
+            Assert.IsTrue(compiledTemplate.CompilationData.SourceCode.Contains(file), "");
             File.Delete(file);
         }
 
@@ -703,7 +707,7 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
         [Test]
         public void RazorEngineService_TestDebuggingWithHelper()
         {
-            // Manual: Check if you can debug into the helper function.
+            var cache = new DefaultCachingProvider();
             var template =
 @"@helper Display(int price) {
     if (price == 0) {
@@ -718,7 +722,11 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
                 var model = new { MyPrice = 0 };
                 string result = service.RunCompile(template, "key", null, model);
                 Assert.AreEqual("free", result.Trim());
-            });
+            }, config => config.CachingProvider = cache);
+            ICompiledTemplate compiledTemplate;
+            Assert.IsTrue(cache.TryRetrieveTemplate(new NameOnlyTemplateKey("key", ResolveType.Global, null), null, out compiledTemplate));
+            // #line hidden should be removed, so make debugging work, see https://github.com/Antaris/RazorEngine/issues/253.
+            Assert.IsFalse(compiledTemplate.CompilationData.SourceCode.Contains("#line hidden"));
         }
 
     }
