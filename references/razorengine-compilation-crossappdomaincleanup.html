@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CSharpDirectCompilerService - RazorEngine</title>
+    <title>CrossAppDomainCleanUp - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,14 @@
 
 
 
-<h1>CSharpDirectCompilerService </h1>
+<h1>CrossAppDomainCleanUp </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Defines a direct compiler service for the C# syntax.
+            Helper class to cleanup locked files and folders after the current AppDomain has been unloaded.
+            (Because of locking they can't be deleted while the current AppDomain is up, see https://github.com/Antaris/RazorEngine/issues/244)
             </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
@@ -55,15 +56,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '153', 153)" onmouseover="showTip(event, '153', 153)">
-            new(strictMode, markupParserFactory)
+          <code onmouseout="hideTip(event, '101', 101)" onmouseover="showTip(event, '101', 101)">
+            new(toWatch, printer)
           </code>
-          <div class="tip" id="153">
-            <strong>Signature:</strong> (strictMode:bool * markupParserFactory:Func&lt;ParserBase&gt;) -&gt; unit<br />
+          <div class="tip" id="101">
+            <strong>Signature:</strong> (toWatch:AppDomain * printer:IPrinter) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+            Create a new CrossAppDomainCleanUp object for the current AppDomain.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -77,51 +80,108 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '154', 154)" onmouseover="showTip(event, '154', 154)">
-            BuildTypeName(templateType, modelType)
+          <code onmouseout="hideTip(event, '102', 102)" onmouseover="showTip(event, '102', 102)">
+            Dispose()
           </code>
-          <div class="tip" id="154">
-            <strong>Signature:</strong> (templateType:Type * modelType:Type) -&gt; string<br />
+          <div class="tip" id="102">
+            <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Builds a type name for the specified template type.
+            Dispose the current instance.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '155', 155)" onmouseover="showTip(event, '155', 155)">
-            IncludeReferences()
+          <code onmouseout="hideTip(event, '103', 103)" onmouseover="showTip(event, '103', 103)">
+            RegisterCleanupPath(path)
           </code>
-          <div class="tip" id="155">
-            <strong>Signature:</strong> unit -&gt; IEnumerable&lt;CompilerReference&gt;<br />
-              <strong>Modifiers:</strong> abstract<br />
+          <div class="tip" id="103">
+            <strong>Signature:</strong> path:string -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Returns a set of assemblies that must be referenced by the compiled template.
+            Register the given path for cleanup.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '104', 104)" onmouseover="showTip(event, '104', 104)">
+            CurrentCleanup
+          </code>
+          <div class="tip" id="104">
+            <strong>Signature:</strong> CrossAppDomainCleanUp<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            A cleanup instance for the current AppDomain
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '156', 156)" onmouseover="showTip(event, '156', 156)">
-            SourceFileExtension
+          <code onmouseout="hideTip(event, '105', 105)" onmouseover="showTip(event, '105', 105)">
+            CurrentPrinter()
           </code>
-          <div class="tip" id="156">
-            <strong>Signature:</strong> string<br />
-              <strong>Modifiers:</strong> abstract<br />
+          <div class="tip" id="105">
+            <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Extension of a source file without dot ("cs" for C# files or "vb" for VB.NET files).
+            Gets or sets the printer that is used by default when creating new CrossAppDomainCleanUp objects.
+            Do not use this property unless you know what you are doing.
+            Settings this to a serializable object is safe, however setting this to a marshalbyrefobject
+            can lead to errors if the object lives in the domain that is watched for unloading
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '106', 106)" onmouseover="showTip(event, '106', 106)">
+            FromAssembly(ass)
+          </code>
+          <div class="tip" id="106">
+            <strong>Signature:</strong> ass:Assembly -&gt; StrongName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Get the StrongName of the given assembly.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '107', 107)" onmouseover="showTip(event, '107', 107)">
+            RegisterCleanup(item, throwOnDefault)
+          </code>
+          <div class="tip" id="107">
+            <strong>Signature:</strong> (item:string * throwOnDefault:bool) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            A helper method to register items to cleanup for the current AppDomain.
             </br>
         </td>
       </tr>

@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 43cde347cb4696cd2961b0aebfd458c97debb19a -->
+<!-- GENERATED FROM COMMIT: 0765605d96cf5eac17a24ccb073841d93e933249 -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
 
 <p><a href="https://gitter.im/Antaris/RazorEngine?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/Antaris/RazorEngine" /></a></p>
@@ -224,6 +224,42 @@ class MyIReferenceResolver : IReferenceResolver {
 That means just use the default resolution when running on Windows and your implementation on mono.
 If you manage to find a working cross-platform implementation, please open a pull request / issue!</p>
 </blockquote>
+
+<h2><a name="Temporary-files" class="anchor" href="#Temporary-files">Temporary files</a></h2>
+
+<p>RazorEngine tries hard to delete the temporary files it creates, but this is not always possible.
+This is especially true if you run RazorEngine from the default <code>AppDomain</code>.
+RazorEngine will warn you in this situation by writing to the stderr. 
+One way to switch into a new AppDomain is to use the following snippet:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">static int Main(string[] args)
+{
+    if (AppDomain.CurrentDomain.IsDefaultAppDomain())
+    {
+        // RazorEngine cannot clean up from the default appdomain...
+        Console.WriteLine(&quot;Switching to secound AppDomain, for RazorEngine...&quot;);
+        AppDomainSetup adSetup = new AppDomainSetup();
+        adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+        var current = AppDomain.CurrentDomain;
+        // You only need to add strongnames when your appdomain is not a full trust environment.
+        var strongNames = new StrongName[0];
+
+        var domain = AppDomain.CreateDomain(
+            &quot;MyMainDomain&quot;, null,
+            current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
+            strongNames);
+        var exitCode = domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location);
+        // RazorEngine will cleanup. 
+        AppDomain.Unload(domain);
+        return exitCode;
+    }
+    // Continue with your code.
+}
+</code></pre>
+
+<p>Depending on your scenario you probably need to edit it to your needs.
+Note that you need to <code>Unload</code> the domain to trigger cleanup.
+See also <a href="https://github.com/Antaris/RazorEngine/issues/244">https://github.com/Antaris/RazorEngine/issues/244</a> for more details.</p>
 
 <h2><a name="More" class="anchor" href="#More">More</a></h2>
 
