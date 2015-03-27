@@ -1,4 +1,7 @@
-﻿### 3.6.3 / 4.1.3-beta2
+﻿### 3.6.4 / 4.1.4-beta1
+* Use /nostdlib when we find a mscorlib (improves mono support)
+
+### 3.6.3 / 4.1.3-beta2
 * Cleanup temporary files when RazorEngine is not used in the default AppDomain
 * Write to stderr when cleanup is not successful.
 * Add an API to change the temporary directory (by subclassing CompilerService)
