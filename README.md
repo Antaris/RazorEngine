@@ -24,6 +24,7 @@ First install the nuget package (>=3.5.0).
 	Install-Package RazorEngine
 
 A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
+You can find an introduction [here](http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-%28c%29).
 All you need to do is use the static `Engine` class (the `Engine.Razor` instance):
 
 ```csharp
@@ -146,46 +147,6 @@ public class MyTemplateManager : ITemplateManager
 }
 ```
 
-### Set a reference resolver 
-
-Templates are first transformed to a source code file and then dynamically compiled by invoking the compiler.
-Because you can use source code within the template itself you are free to use any libraries within a template.
-However the compiler needs to be able to resolve everything and the default strategy is to reference all currently loaded assemblies.
-This can lead to problems when you want to use a library (in the template) which is not referenced in the 
-hosting code or not loaded by the runtime (because it is unused).
-It is also possible that you run into problems on Mono because mcs behaves differently.
-To be able to resolve such issues you can control this behaviour and set your own `IReferenceResolver` implementation.
-
-```csharp
-config.ReferenceResolver = new MyIReferenceResolver();
-
-class MyIReferenceResolver : IReferenceResolver {
-    public IEnumerable<CompilerReference> GetReferences(TypeContext context, IEnumerable<CompilerReference> includeAssemblies) {
-		// You must make sure to include all libraries that are required, even standard libraries!
-		var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(context, includeAssemblies);
-		// This already includes all loaded assemblies
-		// and "includeAssemblies", those are requested by the Compiler (Microsoft.CSharp for example).
-		foreach (var reference in loadedAssemblies)
-			yield return reference;
-		
-		// TypeContext gives you some context for the compilation (which templates, which namespaces and types)
-		// WARNING: If these types are also required for execution they will eventually be loaded by RazorEngine
-		// And therefore added to the above list
-		yield return CompilerReference.From("Path-to-my-custom-assembly"); // file path (string)
-		yield return CompilerReference.From(typeof(MyType).Assembly); // Assembly
-		yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)
-		yield return CompilerReference.From(File.OpenRead(assembly)); // stream (roslyn only)
-	}
-}
-```
-
-By default the `UseCurrentAssembliesReferenceResolver` class is used, which will always returns all currently loaded assemblies.
-
-> It is useful to just manually return all the assemblies you need to get running on mono.
-> That means just use the default resolution when running on Windows and your implementation on mono.
-
-> If you manage to find a working cross-platform implementation, please open a pull request / issue!
-
 ## Temporary files
 
 RazorEngine tries hard to delete the temporary files it creates, but this is not always possible.
@@ -221,7 +182,19 @@ static int Main(string[] args)
 
 Depending on your scenario you probably need to edit it to your needs.
 Note that you need to `Unload` the domain to trigger cleanup.
+
+For the following scenario:
+
+ * Your templates are limited in number.
+ * You fully trust your templates / don't need isolation.
+ * You don't need any kind of debugging support.
+ * Your templates do not change in runtime.
+
+You can use `config.DisableTempFileLocking = true` as well. This will work in any AppDomain (including the default one).
+To remove the RazorEngine warnings you can additionally use `config.CachingProvider = new DefaultCachingProvider(t => {})`.
+
 See also https://github.com/Antaris/RazorEngine/issues/244 for more details.
+
 
 ## More
 

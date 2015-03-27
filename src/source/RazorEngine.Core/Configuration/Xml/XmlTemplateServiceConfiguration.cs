@@ -50,6 +50,18 @@
         public bool AllowMissingPropertiesOnDynamic { get; private set; }
 
         /// <summary>
+        /// Loads all dynamic assemblies with Assembly.Load(byte[]).
+        /// This prevents temp files from being locked (which makes it impossible for RazorEngine to delete them).
+        /// At the same time this completely shuts down any sandboxing/security.
+        /// Use this only if you have a limited amount of static templates (no modifications on rumtime), 
+        /// which you fully trust and when a seperate AppDomain is no solution for you!.
+        /// This option will also hurt debugging.
+        /// 
+        /// OK, YOU HAVE BEEN WARNED.
+        /// </summary>
+        public bool DisableTempFileLocking { get; private set; }
+
+        /// <summary>
         /// Gets the base template type.
         /// </summary>
         public Type BaseTemplateType { get; private set; }
@@ -183,6 +195,9 @@
         {
             // Set whether we are allowing missing properties on dynamic.
             AllowMissingPropertiesOnDynamic = config.AllowMissingPropertiesOnDynamic;
+
+            // Set whether we load templates with Assembly.Load(byte[]).
+            DisableTempFileLocking = config.DisableTempFileLocking;
 
             // Add the global namespaces.
             AddNamespaces(config.Namespaces);

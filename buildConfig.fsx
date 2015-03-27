@@ -41,9 +41,9 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.1.3-beta2"
-let version_roslyn = "3.5.1-beta1"
-let version_roslyn_razor4 = "4.0.1-beta1"
+let version_razor4 = "4.1.4-beta1"
+let version_roslyn = "3.5.2-beta1"
+let version_roslyn_razor4 = "4.0.2-beta1"
 
 // This is set to true when we want to update the roslyn packages via CI as well
 // (otherwise this value doesn't matter). You can always push manually!
@@ -153,22 +153,7 @@ let buildConfig =
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn-Razor4.cs" info_roslyn_razor4
      )
     EnableProjectFileCreation = false
-    DocRazorReferences =
-      if isMono then
-        let loadedList =
-          System.AppDomain.CurrentDomain.GetAssemblies()
-          |> Seq.choose (fun a -> try Some (a.Location) with _ -> None)
-          |> Seq.cache
-        let getItem name = loadedList |> Seq.find (fun l -> l.Contains name)
-        [ (getItem "FSharp.Core").Replace("4.3.0.0", "4.3.1.0")  // (if isMono then "/usr/lib64/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp.Core.dll" else "FSharp.Core") 
-          Path.GetFullPath "./packages/FSharp.Compiler.Service/lib/net40/FSharp.Compiler.Service.dll"
-          Path.GetFullPath "./build/net45/System.Web.Razor.dll"
-          Path.GetFullPath "./build/net45/RazorEngine.dll"
-          Path.GetFullPath "./packages/FSharp.Formatting/lib/net40/FSharp.Literate.dll"
-          Path.GetFullPath "./packages/FSharp.Formatting/lib/net40/FSharp.CodeFormat.dll"
-          Path.GetFullPath "./packages/FSharp.Formatting/lib/net40/FSharp.MetadataFormat.dll" ]
-        |> Some
-      else None
+    DocRazorReferences = None
     BuildTargets =
      [ { BuildParams.WithSolution with
           // The net40 (razor2) build

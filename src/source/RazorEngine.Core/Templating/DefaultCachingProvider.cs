@@ -20,13 +20,25 @@ namespace RazorEngine.Templating
             new ConcurrentDictionary<string, ConcurrentDictionary<Type, ICompiledTemplate>>();
 
         private readonly TypeLoader _loader;
+        private readonly Action<string> _registerForCleanup;
         private readonly ConcurrentBag<Assembly> _assemblies = new ConcurrentBag<Assembly>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCachingProvider"/> class.
         /// </summary>
-        public DefaultCachingProvider()
+        public DefaultCachingProvider() : this(null)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultCachingProvider"/> class.
+        /// </summary>
+        /// <param name="registerForCleanup">callback for files which need to be cleaned up.</param>
+        public DefaultCachingProvider(Action<string> registerForCleanup)
+        {
+            _registerForCleanup = 
+                registerForCleanup ?? 
+                (item => RazorEngine.Compilation.CrossAppDomainCleanUp.RegisterCleanup(item, false));
             _loader = new TypeLoader(AppDomain.CurrentDomain, _assemblies);
         }
 
@@ -89,8 +101,7 @@ namespace RazorEngine.Templating
         public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
         {
             var modelTypeKey = GetModelTypeKey(template.ModelType);
-            RazorEngine.Compilation.CrossAppDomainCleanUp
-                .RegisterCleanup(template.CompilationData.TmpFolder, false);
+            _registerForCleanup(template.CompilationData.TmpFolder); 
             CacheTemplateHelper(template, templateKey, modelTypeKey);
             var typeArgs = template.TemplateType.BaseType.GetGenericArguments();
             if (typeArgs.Length > 0)

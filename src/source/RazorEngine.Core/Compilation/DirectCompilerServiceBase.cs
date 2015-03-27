@@ -71,18 +71,6 @@
                 throw new ObjectDisposedException(GetType().Name);
 
             var sourceCode = GetCodeCompileUnit(context);
-
-            var @params = new CompilerParameters
-            {
-                GenerateInMemory = false,
-                GenerateExecutable = false,
-                IncludeDebugInformation = Debug,
-                TreatWarningsAsErrors = false,
-                TempFiles = new TempFileCollection(GetTemporaryDirectory(), true),
-                CompilerOptions = "/target:library /optimize /define:RAZORENGINE"
-            };
-
-
             var assemblies = GetAllReferences(context);
 
             var fileAssemblies = assemblies
@@ -92,9 +80,24 @@
                             "Unsupported CompilerReference given to CodeDom compiler (only references which can be resolved to files are supported: {0})!",
                             msg))))
                 .Where(a => !string.IsNullOrWhiteSpace(a))
-                .Distinct(StringComparer.InvariantCultureIgnoreCase);
+                .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                .ToArray();
+            var haveMscorlib = fileAssemblies.Any(a => a.Contains("mscorlib.dll"));
 
-            @params.ReferencedAssemblies.AddRange(fileAssemblies.ToArray());
+            var @params = new CompilerParameters
+            {
+                GenerateInMemory = false,
+                GenerateExecutable = false,
+                IncludeDebugInformation = Debug,
+                TreatWarningsAsErrors = false,
+                TempFiles = new TempFileCollection(GetTemporaryDirectory(), true),
+                CompilerOptions =
+                    string.Format("/target:library /optimize /define:RAZORENGINE {0}",
+                        haveMscorlib ? "/nostdlib" : "")
+            };
+
+
+            @params.ReferencedAssemblies.AddRange(fileAssemblies);
             var tempDir = @params.TempFiles.TempDir;
             var assemblyName = Path.Combine(tempDir,
                 String.Format("{0}.dll", GetAssemblyName(context)));
@@ -255,7 +258,14 @@
             // Make sure we load the assembly from a file and not with
             // Load(byte[]) (or it will be fully trusted!)
             var assemblyPath = compileResult.PathToAssembly;
-            compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
+            if (DisableTempFileLocking)
+            {
+                compileResult.CompiledAssembly = Assembly.Load(File.ReadAllBytes(assemblyPath));
+            }
+            else
+            {
+                compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
+            }
             var type = compileResult.CompiledAssembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
             if (type == null)
             {
