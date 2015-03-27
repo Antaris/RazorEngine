@@ -82,7 +82,7 @@ namespace Test.RazorEngine
         [Test]
         public void RazorEngineService_TestDisableTempFileLocking()
         {
-            var cache = new DefaultCachingProvider();
+            var cache = new DefaultCachingProvider(t => { });
             var template = "@Model.Property";
             RazorEngineServiceTestFixture.RunTestHelper(service =>
             {

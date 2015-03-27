@@ -215,7 +215,7 @@ namespace Test.RazorEngine.Core.Roslyn
         [Test]
         public void Roslyn_TestDisableTempFileLocking()
         {
-            var cache = new DefaultCachingProvider();
+            var cache = new DefaultCachingProvider(t => { });
             var template = "@Model.Property";
             RunTestHelper(service =>
             {
