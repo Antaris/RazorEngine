@@ -112,19 +112,27 @@
                 sourceCodeMessage = string.Format(rawSourceCode, Separate(files.SourceCode));
             }
 
+            string loadedAssemblies =
+                "\nList of loaded Assemblies:\n" +
+                string.Join("\n\tLoaded Assembly: ",
+                    (new Compilation.ReferenceResolver.UseCurrentAssembliesReferenceResolver())
+                    .GetReferences().Select(r => r.GetFile()));
+
             var rawMessage = @"Errors while compiling a Template.
 Please try the following to solve the situation:
-  * If the problem is about missing references either try to load the missing references manually (in the compiling appdomain!) or
+  * If the problem is about missing/invalid references or multiple defines either try to load 
+    the missing references manually (in the compiling appdomain!) or
     Specify your references manually by providing your own IReferenceResolver implementation.
+    See https://antaris.github.io/RazorEngine/ReferenceResolver.html for details.
     Currently all references have to be available as files!
   * If you get 'class' does not contain a definition for 'member': 
-        try another modelType (for example 'null' or 'typeof(DynamicObject)' to make the model dynamic).
-        NOTE: You CANNOT use typeof(dynamic)!
+        try another modelType (for example 'null' to make the model dynamic).
+        NOTE: You CANNOT use typeof(dynamic) to make the model dynamic!
     Or try to use static instead of anonymous/dynamic types.
 More details about the error:
 {0}
-{1}{2}{3}";
-            return string.Format(rawMessage, errorMsgs, tempFilesMsg, templateFileMsg, sourceCodeMessage);
+{1}{2}{3}{4}";
+            return string.Format(rawMessage, errorMsgs, tempFilesMsg, templateFileMsg, sourceCodeMessage, loadedAssemblies);
         }
 
         #region Constructors
