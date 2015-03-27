@@ -30,7 +30,7 @@ namespace RazorEngine.Templating
         {
             Contract.Requires(config != null);
             Contract.Requires(config.TemplateManager != null);
-
+            
             _config = config;
             _cached = cached;
         }
@@ -108,6 +108,7 @@ namespace RazorEngine.Templating
                 .CompilerServiceFactory
                 .CreateCompilerService(_config.Language);
             service.Debug = _config.Debug;
+            service.DisableTempFileLocking = _config.DisableTempFileLocking;
 #if !RAZOR4
 #pragma warning disable 0618 // Backwards Compat.
             service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();

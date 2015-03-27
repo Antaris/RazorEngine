@@ -12,6 +12,7 @@
         #region Fields
         private const string ActivatorAttribute = "activatorType";
         private const string AllowMissingPropertiesOnDynamicAttribute = "allowMissingPropertiesOnDynamic";
+        private const string DisableTempFileLockingAttribute = "disableTempFileLocking";
         private const string CompilerServiceFactoryAttribute = "compilerServiceFactoryType";
         private const string DefaultLanguageAttribute = "defaultLanguage";
         private const string NamespacesElement = "namespaces";
@@ -40,6 +41,15 @@
         public bool AllowMissingPropertiesOnDynamic
         {
             get { return (bool)this[AllowMissingPropertiesOnDynamicAttribute]; }
+        }
+
+        /// <summary>
+        /// Gets or sets whether to allow missing properties on dynamic models.
+        /// </summary>
+        [ConfigurationProperty(DisableTempFileLockingAttribute, IsRequired = false, DefaultValue = false)]
+        public bool DisableTempFileLocking
+        {
+            get { return (bool)this[DisableTempFileLockingAttribute]; }
         }
 
         /// <summary>

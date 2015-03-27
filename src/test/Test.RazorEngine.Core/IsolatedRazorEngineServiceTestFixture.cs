@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Razor;
 #else
 using System.Web.Razor;
+using RazorEngine.Configuration;
 #endif
 
 namespace Test.RazorEngine
@@ -566,5 +567,43 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 { }
             });
         }
+
+        /// <summary>
+        /// Test Type.
+        /// </summary>
+        [Serializable]
+        public class InsecureConfigCreator : IsolatedRazorEngineService.IConfigCreator
+        {
+            /// <summary>
+            /// Test Type.
+            /// </summary>
+            public ITemplateServiceConfiguration CreateConfiguration()
+            {
+                var config = new TemplateServiceConfiguration();
+                config.DisableTempFileLocking = true;
+                return config;
+            }
+        }
+
+        /// <summary>
+        /// Tests that we cannot create an insecure sandbox.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_WillThrowException_WhenUsingDisableFileLocking()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+                {
+                    using (var service = IsolatedRazorEngineService.Create(new InsecureConfigCreator(), SandboxCreator))
+                    {
+                        const string template = "<h1>Hello World</h1>";
+                        const string expected = template;
+
+                        string result = service.RunCompile(template, "test");
+
+                        Assert.That(result == expected, "Result does not match expected: " + result);
+                    }
+                });
+        }
+
     }
 }

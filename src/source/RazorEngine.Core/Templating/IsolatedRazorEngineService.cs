@@ -206,6 +206,11 @@
         {
             configCreator = configCreator ?? new DefaultConfigCreator();
             var config = configCreator.CreateConfiguration();
+            if (config.DisableTempFileLocking)
+            {
+                throw new InvalidOperationException("DisableTempFileLocking is not supported in the context of Isolation, because it will escape any kind of sandbox. Besides that it's not required because RazorEngine will be able to cleanup the tempfiles in this scenario. Just make sure to call AppDomain.Unload when you are done.");
+            }
+
             var isolated = new IsolatedRazorEngineService(configCreator, appDomainFactory);
             return new DynamicWrapperService(isolated, true, config.AllowMissingPropertiesOnDynamic);
         }

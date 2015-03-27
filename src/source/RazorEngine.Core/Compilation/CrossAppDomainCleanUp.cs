@@ -453,6 +453,7 @@ namespace RazorEngine.Compilation
                     System.Console.Error.WriteLine("RazorEngine: We can't cleanup temp files if you use RazorEngine on the default Appdomain.");
                     System.Console.Error.WriteLine("Create a new AppDomain and use RazorEngine from there.");
                     System.Console.Error.WriteLine("Read the quickstart or https://github.com/Antaris/RazorEngine/issues/244 for details!");
+                    System.Console.Error.WriteLine("You can ignore this and all following 'Please clean ... manually' messages if you are using DisableTempFileLocking, which is not recommended.");
                     writtenLongMessage = true;
                 }
                 if (throwOnDefault)
