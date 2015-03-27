@@ -79,7 +79,7 @@
                 IncludeDebugInformation = Debug,
                 TreatWarningsAsErrors = false,
                 TempFiles = new TempFileCollection(GetTemporaryDirectory(), true),
-                CompilerOptions = "/target:library /optimize /define:RAZORENGINE"
+                CompilerOptions = "/target:library /optimize /define:RAZORENGINE /nostdlib"
             };
 
 
