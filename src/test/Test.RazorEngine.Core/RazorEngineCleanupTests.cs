@@ -102,6 +102,5 @@ namespace Test.RazorEngine
             data.DeleteAll();
             Assert.IsFalse(Directory.Exists(folder));
         }
-
     }
 }

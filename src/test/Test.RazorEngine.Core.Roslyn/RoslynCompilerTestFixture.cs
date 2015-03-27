@@ -208,5 +208,33 @@ namespace Test.RazorEngine.Core.Roslyn
                 }
             });
         }
+
+        /// <summary>
+        /// Tests whether we can delete tempfiles when DisableTempFileLocking is true.
+        /// </summary>
+        [Test]
+        public void Roslyn_TestDisableTempFileLocking()
+        {
+            var cache = new DefaultCachingProvider();
+            var template = "@Model.Property";
+            RunTestHelper(service =>
+            {
+                var model = new { Property = 0 };
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("0", result.Trim());
+            }, config =>
+            {
+                config.Debug = false;
+                config.CachingProvider = cache;
+                config.DisableTempFileLocking = true;
+            });
+            ICompiledTemplate compiledTemplate;
+            Assert.IsTrue(cache.TryRetrieveTemplate(new NameOnlyTemplateKey("key", ResolveType.Global, null), null, out compiledTemplate));
+            var data = compiledTemplate.CompilationData;
+            var folder = data.TmpFolder;
+            Assert.IsTrue(Directory.Exists(folder));
+            data.DeleteAll();
+            Assert.IsFalse(Directory.Exists(folder));
+        }
     }
 }
