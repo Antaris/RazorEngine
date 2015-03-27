@@ -14,11 +14,11 @@ using System.Security.Permissions;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using RazorEngine.Configuration;
 #if RAZOR4
 using Microsoft.AspNet.Razor;
 #else
 using System.Web.Razor;
-using RazorEngine.Configuration;
 #endif
 
 namespace Test.RazorEngine
