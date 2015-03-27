@@ -35,6 +35,17 @@
       <div class="row">
         <div class="span9" id="main">
           
+<h3><a name="3-6-4-4-1-4-beta1" class="anchor" href="#3-6-4-4-1-4-beta1">3.6.4 / 4.1.4-beta1</a></h3>
+
+<ul>
+<li>Use /nostdlib when we find a mscorlib (improves mono support)</li>
+<li>Added <code>DisableTempFileLocking</code> to load assemblies in memory (to prevent temp file locking), 
+this is only recommended in a very limited amount of scenarios.
+Please be aware of the consequences before using it.
+Please read <a href="https://github.com/Antaris/RazorEngine/issues/244">https://github.com/Antaris/RazorEngine/issues/244</a> for details.
+Note that this can introduce memory leaks to your application.</li>
+</ul>
+
 <h3><a name="3-6-3-4-1-3-beta2" class="anchor" href="#3-6-3-4-1-3-beta2">3.6.3 / 4.1.3-beta2</a></h3>
 
 <ul>
@@ -184,6 +195,7 @@ See <a href="https://github.com/Antaris/RazorEngine/issues/218">https://github.c
             <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>

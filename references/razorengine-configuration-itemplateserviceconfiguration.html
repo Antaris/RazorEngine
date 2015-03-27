@@ -55,10 +55,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '538', 538)" onmouseover="showTip(event, '538', 538)">
+          <code onmouseout="hideTip(event, '542', 542)" onmouseover="showTip(event, '542', 542)">
             Activator
           </code>
-          <div class="tip" id="538">
+          <div class="tip" id="542">
             <strong>Signature:</strong> IActivator<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -72,10 +72,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '539', 539)" onmouseover="showTip(event, '539', 539)">
+          <code onmouseout="hideTip(event, '543', 543)" onmouseover="showTip(event, '543', 543)">
             AllowMissingPropertiesOnDynamic
           </code>
-          <div class="tip" id="539">
+          <div class="tip" id="543">
             <strong>Signature:</strong> bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -89,10 +89,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '540', 540)" onmouseover="showTip(event, '540', 540)">
+          <code onmouseout="hideTip(event, '544', 544)" onmouseover="showTip(event, '544', 544)">
             BaseTemplateType
           </code>
-          <div class="tip" id="540">
+          <div class="tip" id="544">
             <strong>Signature:</strong> Type<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -106,10 +106,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '541', 541)" onmouseover="showTip(event, '541', 541)">
+          <code onmouseout="hideTip(event, '545', 545)" onmouseover="showTip(event, '545', 545)">
             CachingProvider
           </code>
-          <div class="tip" id="541">
+          <div class="tip" id="545">
             <strong>Signature:</strong> ICachingProvider<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -123,10 +123,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '542', 542)" onmouseover="showTip(event, '542', 542)">
+          <code onmouseout="hideTip(event, '546', 546)" onmouseover="showTip(event, '546', 546)">
             CodeInspectors
           </code>
-          <div class="tip" id="542">
+          <div class="tip" id="546">
             <strong>Signature:</strong> IEnumerable&lt;ICodeInspector&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -140,10 +140,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '543', 543)" onmouseover="showTip(event, '543', 543)">
+          <code onmouseout="hideTip(event, '547', 547)" onmouseover="showTip(event, '547', 547)">
             CompilerServiceFactory
           </code>
-          <div class="tip" id="543">
+          <div class="tip" id="547">
             <strong>Signature:</strong> ICompilerServiceFactory<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -157,10 +157,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '544', 544)" onmouseover="showTip(event, '544', 544)">
+          <code onmouseout="hideTip(event, '548', 548)" onmouseover="showTip(event, '548', 548)">
             Debug
           </code>
-          <div class="tip" id="544">
+          <div class="tip" id="548">
             <strong>Signature:</strong> bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -174,10 +174,34 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '545', 545)" onmouseover="showTip(event, '545', 545)">
+          <code onmouseout="hideTip(event, '549', 549)" onmouseover="showTip(event, '549', 549)">
+            DisableTempFileLocking
+          </code>
+          <div class="tip" id="549">
+            <strong>Signature:</strong> bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Loads all dynamic assemblies with Assembly.Load(byte[]).
+            This prevents temp files from being locked (which makes it impossible for RazorEngine to delete them).
+            At the same time this completely shuts down any sandboxing/security.
+            Use this only if you have a limited amount of static templates (no modifications on rumtime), 
+            which you fully trust and when a seperate AppDomain is no solution for you!.
+            This option will also hurt debugging.
+            
+            OK, YOU HAVE BEEN WARNED.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '550', 550)" onmouseover="showTip(event, '550', 550)">
             EncodedStringFactory
           </code>
-          <div class="tip" id="545">
+          <div class="tip" id="550">
             <strong>Signature:</strong> IEncodedStringFactory<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -191,10 +215,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '546', 546)" onmouseover="showTip(event, '546', 546)">
+          <code onmouseout="hideTip(event, '551', 551)" onmouseover="showTip(event, '551', 551)">
             Language
           </code>
-          <div class="tip" id="546">
+          <div class="tip" id="551">
             <strong>Signature:</strong> Language<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -208,10 +232,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '547', 547)" onmouseover="showTip(event, '547', 547)">
+          <code onmouseout="hideTip(event, '552', 552)" onmouseover="showTip(event, '552', 552)">
             Namespaces
           </code>
-          <div class="tip" id="547">
+          <div class="tip" id="552">
             <strong>Signature:</strong> ISet&lt;string&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -225,10 +249,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '548', 548)" onmouseover="showTip(event, '548', 548)">
+          <code onmouseout="hideTip(event, '553', 553)" onmouseover="showTip(event, '553', 553)">
             ReferenceResolver
           </code>
-          <div class="tip" id="548">
+          <div class="tip" id="553">
             <strong>Signature:</strong> IReferenceResolver<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -242,10 +266,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '549', 549)" onmouseover="showTip(event, '549', 549)">
+          <code onmouseout="hideTip(event, '554', 554)" onmouseover="showTip(event, '554', 554)">
             Resolver
           </code>
-          <div class="tip" id="549">
+          <div class="tip" id="554">
             <strong>Signature:</strong> ITemplateResolver<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -259,10 +283,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '550', 550)" onmouseover="showTip(event, '550', 550)">
+          <code onmouseout="hideTip(event, '555', 555)" onmouseover="showTip(event, '555', 555)">
             TemplateManager
           </code>
-          <div class="tip" id="550">
+          <div class="tip" id="555">
             <strong>Signature:</strong> ITemplateManager<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -300,6 +324,7 @@
             <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>

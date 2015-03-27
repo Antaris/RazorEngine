@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 0765605d96cf5eac17a24ccb073841d93e933249 -->
+<!-- GENERATED FROM COMMIT: c104c5306f120d73916dfd08ba17a0938118011c -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
 
 <p><a href="https://gitter.im/Antaris/RazorEngine?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/Antaris/RazorEngine" /></a></p>
@@ -71,6 +71,7 @@
 </table>
 
 <p>A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
+You can find an introduction <a href="http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-%28c%29">here</a>.
 All you need to do is use the static <code>Engine</code> class (the <code>Engine.Razor</code> instance):</p>
 
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
@@ -185,46 +186,6 @@ public class MyTemplateManager : ITemplateManager
 }
 </code></pre>
 
-<h3><a name="Set-a-reference-resolver" class="anchor" href="#Set-a-reference-resolver">Set a reference resolver</a></h3>
-
-<p>Templates are first transformed to a source code file and then dynamically compiled by invoking the compiler.
-Because you can use source code within the template itself you are free to use any libraries within a template.
-However the compiler needs to be able to resolve everything and the default strategy is to reference all currently loaded assemblies.
-This can lead to problems when you want to use a library (in the template) which is not referenced in the 
-hosting code or not loaded by the runtime (because it is unused).
-It is also possible that you run into problems on Mono because mcs behaves differently.
-To be able to resolve such issues you can control this behaviour and set your own <code>IReferenceResolver</code> implementation.</p>
-
-<pre class="line-numbers language-csharp"><code class="language-csharp">config.ReferenceResolver = new MyIReferenceResolver();
-
-class MyIReferenceResolver : IReferenceResolver {
-    public IEnumerable&lt;CompilerReference&gt; GetReferences(TypeContext context, IEnumerable&lt;CompilerReference&gt; includeAssemblies) {
-        // You must make sure to include all libraries that are required, even standard libraries!
-        var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(context, includeAssemblies);
-        // This already includes all loaded assemblies
-        // and &quot;includeAssemblies&quot;, those are requested by the Compiler (Microsoft.CSharp for example).
-        foreach (var reference in loadedAssemblies)
-            yield return reference;
-        
-        // TypeContext gives you some context for the compilation (which templates, which namespaces and types)
-        // WARNING: If these types are also required for execution they will eventually be loaded by RazorEngine
-        // And therefore added to the above list
-        yield return CompilerReference.From(&quot;Path-to-my-custom-assembly&quot;); // file path (string)
-        yield return CompilerReference.From(typeof(MyType).Assembly); // Assembly
-        yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)
-        yield return CompilerReference.From(File.OpenRead(assembly)); // stream (roslyn only)
-    }
-}
-</code></pre>
-
-<p>By default the <code>UseCurrentAssembliesReferenceResolver</code> class is used, which will always returns all currently loaded assemblies.</p>
-
-<blockquote>
-  <p>It is useful to just manually return all the assemblies you need to get running on mono.
-That means just use the default resolution when running on Windows and your implementation on mono.
-If you manage to find a working cross-platform implementation, please open a pull request / issue!</p>
-</blockquote>
-
 <h2><a name="Temporary-files" class="anchor" href="#Temporary-files">Temporary files</a></h2>
 
 <p>RazorEngine tries hard to delete the temporary files it creates, but this is not always possible.
@@ -258,8 +219,21 @@ One way to switch into a new AppDomain is to use the following snippet:</p>
 </code></pre>
 
 <p>Depending on your scenario you probably need to edit it to your needs.
-Note that you need to <code>Unload</code> the domain to trigger cleanup.
-See also <a href="https://github.com/Antaris/RazorEngine/issues/244">https://github.com/Antaris/RazorEngine/issues/244</a> for more details.</p>
+Note that you need to <code>Unload</code> the domain to trigger cleanup.</p>
+
+<p>For the following scenario:</p>
+
+<ul>
+<li>Your templates are limited in number.</li>
+<li>You fully trust your templates / don't need isolation.</li>
+<li>You don't need any kind of debugging support.</li>
+<li>Your templates do not change in runtime.</li>
+</ul>
+
+<p>You can use <code>config.DisableTempFileLocking = true</code> as well. This will work in any AppDomain (including the default one).
+To remove the RazorEngine warnings you can additionally use <code>config.CachingProvider = new DefaultCachingProvider(t =&gt; {})</code>.</p>
+
+<p>See also <a href="https://github.com/Antaris/RazorEngine/issues/244">https://github.com/Antaris/RazorEngine/issues/244</a> for more details.</p>
 
 <h2><a name="More" class="anchor" href="#More">More</a></h2>
 
@@ -291,6 +265,7 @@ You should definitely read "About Razor" and "Template basics".</p>
             <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>

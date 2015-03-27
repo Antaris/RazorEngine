@@ -163,9 +163,27 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '76', 76)" onmouseover="showTip(event, '76', 76)">
-            GetCodeCompileUnit(...)
+            DisableTempFileLocking()
           </code>
           <div class="tip" id="76">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets or sets whether the compiler should load assemblies with Assembly.Load(byte[])
+            to prevent files from being locked.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '77', 77)" onmouseover="showTip(event, '77', 77)">
+            GetCodeCompileUnit(...)
+          </code>
+          <div class="tip" id="77">
             <strong>Signature:</strong> (className:string * template:ITemplateSource * namespaceImports:ISet&lt;string&gt; * templateType:Type * modelType:Type) -&gt; string<br />
                       </div>
         </td>
@@ -176,10 +194,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '77', 77)" onmouseover="showTip(event, '77', 77)">
+          <code onmouseout="hideTip(event, '78', 78)" onmouseover="showTip(event, '78', 78)">
             GetCodeCompileUnit(context)
           </code>
-          <div class="tip" id="77">
+          <div class="tip" id="78">
             <strong>Signature:</strong> context:TypeContext -&gt; string<br />
                       </div>
         </td>
@@ -192,10 +210,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '78', 78)" onmouseover="showTip(event, '78', 78)">
+          <code onmouseout="hideTip(event, '79', 79)" onmouseover="showTip(event, '79', 79)">
             IncludeAssemblies()
           </code>
-          <div class="tip" id="78">
+          <div class="tip" id="79">
             <strong>Signature:</strong> unit -&gt; IEnumerable&lt;string&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -209,10 +227,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '79', 79)" onmouseover="showTip(event, '79', 79)">
+          <code onmouseout="hideTip(event, '80', 80)" onmouseover="showTip(event, '80', 80)">
             IncludeReferences()
           </code>
-          <div class="tip" id="79">
+          <div class="tip" id="80">
             <strong>Signature:</strong> unit -&gt; IEnumerable&lt;CompilerReference&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -226,10 +244,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '80', 80)" onmouseover="showTip(event, '80', 80)">
+          <code onmouseout="hideTip(event, '81', 81)" onmouseover="showTip(event, '81', 81)">
             InspectSource(results, context)
           </code>
-          <div class="tip" id="80">
+          <div class="tip" id="81">
             <strong>Signature:</strong> (results:GeneratorResults * context:TypeContext) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -243,10 +261,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '81', 81)" onmouseover="showTip(event, '81', 81)">
+          <code onmouseout="hideTip(event, '82', 82)" onmouseover="showTip(event, '82', 82)">
             MarkupParserFactory()
           </code>
-          <div class="tip" id="81">
+          <div class="tip" id="82">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -259,10 +277,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '82', 82)" onmouseover="showTip(event, '82', 82)">
+          <code onmouseout="hideTip(event, '83', 83)" onmouseover="showTip(event, '83', 83)">
             ReferenceResolver()
           </code>
-          <div class="tip" id="82">
+          <div class="tip" id="83">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -276,10 +294,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '83', 83)" onmouseover="showTip(event, '83', 83)">
+          <code onmouseout="hideTip(event, '84', 84)" onmouseover="showTip(event, '84', 84)">
             SourceFileExtension
           </code>
-          <div class="tip" id="83">
+          <div class="tip" id="84">
             <strong>Signature:</strong> string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -317,6 +335,7 @@
             <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>

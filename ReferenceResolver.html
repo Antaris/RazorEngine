@@ -2,9 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>ThisAction<'T1, 'T2, 'T3> - RazorEngine</title>
+    <title>Reference Resolver
+</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="description" content="Simple templating using Razor syntax.">
     <meta name="author" content="Matthew Abbott">
 
     <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
@@ -35,92 +36,55 @@
       <div class="row">
         <div class="span9" id="main">
           
+<h1><a name="Reference-Resolver" class="anchor" href="#Reference-Resolver">Reference Resolver</a></h1>
 
+<p>Templates are first transformed to a source code file and then dynamically compiled by invoking the compiler.
+Because you can use source code within the template itself you are free to use any libraries within a template.
+However the compiler needs to be able to resolve everything and the default strategy is to reference all currently loaded assemblies.
+This can lead to problems when you want to use a library (in the template) which is not referenced in the 
+hosting code or not loaded by the runtime (because it is unused).
+It is also possible that you run into problems on Mono because mcs behaves differently.
+To be able to resolve such issues you can control this behaviour and set your own <code>IReferenceResolver</code> implementation.</p>
 
+<pre class="line-numbers language-csharp"><code class="language-csharp">config.ReferenceResolver = new MyIReferenceResolver();
 
-<h1>ThisAction<'T1, 'T2, 'T3> </h1>
-<div class="xmldoc">
-    Defined in RazorEngine.dll.
-</div>
-<div class="xmldoc">
+class MyIReferenceResolver : IReferenceResolver {
+    public string FindLoaded(IEnumerable&lt;string&gt; refs, string find) {
+        return refs.First(r =&gt; r == find);
+    }
+    public IEnumerable&lt;CompilerReference&gt; GetReferences(TypeContext context, IEnumerable&lt;CompilerReference&gt; includeAssemblies) {
+        // You must make sure to include all libraries that are required!
+        // Mono compiler does add more standard references by default
+        // If you want mono compatibility include ALL references here, including mscorlib!
+        // If you include a mscorlib here the compiler is called with /nostdlib.
+        IEnumerable&lt;string&gt; loadedAssemblies = (new UseCurrentAssembliesReferenceResolver())
+            .GetReferences(context, includeAssemblies)
+            .Select(r =&gt; r.GetFile())
+            .ToArray();
 
-            Special Delegate used to make impromptu object methods first parameter is this.
-            </br></div>
-  <h3>Constructors</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Constructor</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
+        yield return CompilerReference.From(FindLoaded(loadedAssemblies, &quot;mscorlib.dll&quot;));
+        yield return CompilerReference.From(FindLoaded(loadedAssemblies, &quot;System.dll&quot;));
+        yield return CompilerReference.From(FindLoaded(loadedAssemblies, &quot;System.Core.dll&quot;));
+        // TypeContext gives you some context for the compilation (which templates, which namespaces and types)
+        yield return CompilerReference.From(&quot;Path-to-my-custom-assembly&quot;); // file path (string)
+        yield return CompilerReference.From(typeof(MyIReferenceResolver).Assembly); // Assembly
+        byte[] assemblyInByteArray = null;
+        yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)
+        string assemblyFile = null;
+        yield return CompilerReference.From(File.OpenRead(assemblyFile)); // stream (roslyn only)
+    }
+}
 
-          <code onmouseout="hideTip(event, '346', 346)" onmouseover="showTip(event, '346', 346)">
-            new(object, method)
-          </code>
-          <div class="tip" id="346">
-            <strong>Signature:</strong> (object:obj * method:nativeint) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3>Instance members</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Instance member</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
+</code></pre>
 
-          <code onmouseout="hideTip(event, '347', 347)" onmouseover="showTip(event, '347', 347)">
-            BeginInvoke(...)
-          </code>
-          <div class="tip" id="347">
-            <strong>Signature:</strong> (this:obj * arg1:&#39;T1 * arg2:&#39;T2 * arg3:&#39;T3 * callback:AsyncCallback * object:obj) -&gt; IAsyncResult<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+<p>By default the <code>UseCurrentAssembliesReferenceResolver</code> class is used, which will always returns all currently loaded assemblies, 
+which can be resolved to a file (so this excludes dynamic assemblies).</p>
 
-          <code onmouseout="hideTip(event, '348', 348)" onmouseover="showTip(event, '348', 348)">
-            EndInvoke(result)
-          </code>
-          <div class="tip" id="348">
-            <strong>Signature:</strong> result:IAsyncResult -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+<blockquote>
+  <p>Instead of trying to make it work without /nostdlib it is useful to just manually return
+all assemblies (including mscorlib.dll) to stay compatible with mono.</p>
+</blockquote>
 
-          <code onmouseout="hideTip(event, '349', 349)" onmouseover="showTip(event, '349', 349)">
-            Invoke(this, arg1, arg2, arg3)
-          </code>
-          <div class="tip" id="349">
-            <strong>Signature:</strong> (this:obj * arg1:&#39;T1 * arg2:&#39;T2 * arg3:&#39;T3) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
         </div>
         <div class="span3">
