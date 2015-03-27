@@ -153,22 +153,7 @@ let buildConfig =
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn-Razor4.cs" info_roslyn_razor4
      )
     EnableProjectFileCreation = false
-    DocRazorReferences = // None
-      if isMono then
-        let loadedList =
-          System.AppDomain.CurrentDomain.GetAssemblies()
-          |> Seq.choose (fun a -> try Some (a.Location) with _ -> None)
-          |> Seq.cache
-        let getItem name = loadedList |> Seq.find (fun l -> l.Contains name)
-        [ (getItem "FSharp.Core").Replace("4.3.0.0", "4.3.1.0")  // (if isMono then "/usr/lib64/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp.Core.dll" else "FSharp.Core") 
-          Path.GetFullPath "./packages/FSharp.Compiler.Service/lib/net40/FSharp.Compiler.Service.dll"
-          Path.GetFullPath "./build/net45/System.Web.Razor.dll"
-          Path.GetFullPath "./build/net45/RazorEngine.dll"
-          Path.GetFullPath "./packages/FSharp.Formatting/lib/net40/FSharp.Literate.dll"
-          Path.GetFullPath "./packages/FSharp.Formatting/lib/net40/FSharp.CodeFormat.dll"
-          Path.GetFullPath "./packages/FSharp.Formatting/lib/net40/FSharp.MetadataFormat.dll" ]
-        |> Some
-      else None
+    DocRazorReferences = None
     BuildTargets =
      [ { BuildParams.WithSolution with
           // The net40 (razor2) build
