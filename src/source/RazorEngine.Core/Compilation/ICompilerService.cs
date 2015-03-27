@@ -31,6 +31,13 @@
         /// Gets or sets whether the compiler service is operating in debug mode.
         /// </summary>
         bool Debug { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the compiler should load assemblies with Assembly.Load(byte[])
+        /// to prevent files from being locked.
+        /// </summary>
+        bool DisableTempFileLocking { get; set; }
+
         #endregion
 
         #region Methods

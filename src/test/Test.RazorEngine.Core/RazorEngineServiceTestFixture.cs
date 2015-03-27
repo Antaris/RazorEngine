@@ -729,5 +729,28 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
             Assert.IsFalse(compiledTemplate.CompilationData.SourceCode.Contains("#line hidden"));
         }
 
+
+        /// <summary>
+        /// Tests whether we can delete tempfiles when DisableTempFileLocking is true.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestThatWeThrowWhenDebugAndDisableLockingAreEnabled()
+        {
+            var template = "@Model.Property";
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                RazorEngineServiceTestFixture.RunTestHelper(service =>
+                {
+                    var model = new { Property = 0 };
+                    string result = service.RunCompile(template, "key", null, model);
+                    Assert.AreEqual("0", result.Trim());
+                }, config =>
+                {
+                    config.Debug = true;
+                    config.DisableTempFileLocking = true;
+                });
+            });
+        }
+
     }
 }

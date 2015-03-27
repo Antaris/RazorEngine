@@ -182,7 +182,19 @@ static int Main(string[] args)
 
 Depending on your scenario you probably need to edit it to your needs.
 Note that you need to `Unload` the domain to trigger cleanup.
+
+For the following scenario:
+
+ * Your templates are limited in number.
+ * You fully trust your templates / don't need isolation.
+ * You don't need any kind of debugging support.
+ * Your templates do not change in runtime.
+
+You can use `config.DisableTempFileLocking = true` as well. This will work in any AppDomain (including the default one).
+To remove the RazorEngine warnings you can additionally use `config.CachingProvider = new DefaultCachingProvider(t => {})`.
+
 See also https://github.com/Antaris/RazorEngine/issues/244 for more details.
+
 
 ## More
 

@@ -41,9 +41,9 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.1.3-beta2"
-let version_roslyn = "3.5.1-beta1"
-let version_roslyn_razor4 = "4.0.1-beta1"
+let version_razor4 = "4.1.4-beta2"
+let version_roslyn = "3.5.2-beta1"
+let version_roslyn_razor4 = "4.0.2-beta1"
 
 // This is set to true when we want to update the roslyn packages via CI as well
 // (otherwise this value doesn't matter). You can always push manually!

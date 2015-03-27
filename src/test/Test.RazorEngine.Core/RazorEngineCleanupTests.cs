@@ -76,5 +76,31 @@ namespace Test.RazorEngine
             Assert.IsFalse(Directory.Exists(tmp_folder));
         }
 
+        /// <summary>
+        /// Tests whether we can delete tempfiles when DisableTempFileLocking is true.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestDisableTempFileLocking()
+        {
+            var cache = new DefaultCachingProvider();
+            var template = "@Model.Property";
+            RazorEngineServiceTestFixture.RunTestHelper(service =>
+            {
+                var model = new { Property = 0 };
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("0", result.Trim());
+            }, config =>
+            {
+                config.CachingProvider = cache;
+                config.DisableTempFileLocking = true;
+            });
+            ICompiledTemplate compiledTemplate;
+            Assert.IsTrue(cache.TryRetrieveTemplate(new NameOnlyTemplateKey("key", ResolveType.Global, null), null, out compiledTemplate));
+            var data = compiledTemplate.CompilationData;
+            var folder = data.TmpFolder;
+            Assert.IsTrue(Directory.Exists(folder));
+            data.DeleteAll();
+            Assert.IsFalse(Directory.Exists(folder));
+        }
     }
 }

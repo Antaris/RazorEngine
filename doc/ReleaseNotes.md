@@ -1,5 +1,10 @@
 ﻿### 3.6.4 / 4.1.4-beta1
 * Use /nostdlib when we find a mscorlib (improves mono support)
+* Added `DisableTempFileLocking` to load assemblies in memory (to prevent temp file locking), 
+  this is only recommended in a very limited amount of scenarios.
+  Please be aware of the consequences before using it.
+  Please read https://github.com/Antaris/RazorEngine/issues/244 for details.
+  Note that this can introduce memory leaks to your application.
 
 ### 3.6.3 / 4.1.3-beta2
 * Cleanup temporary files when RazorEngine is not used in the default AppDomain

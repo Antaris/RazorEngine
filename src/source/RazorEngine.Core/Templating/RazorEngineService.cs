@@ -37,6 +37,10 @@ namespace RazorEngine.Templating
         internal RazorEngineService(ITemplateServiceConfiguration config)
         {
             Contract.Requires(config != null);
+            if (config.Debug && config.DisableTempFileLocking)
+            {
+                throw new InvalidOperationException("Debug && DisableTempFileLocking is not supported, you need to disable one of them. When Roslyn has been released and you are seeing this, open an issue as this might be possible now.");
+            }
 
             _config = config;
             //_core = new RazorEngineCore(config, this);

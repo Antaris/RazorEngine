@@ -248,7 +248,17 @@ namespace RazorEngine.Roslyn.CSharp
             }
 
             // load file and return loaded type.
-            var assembly = Assembly.LoadFrom(assemblyFile);
+            Assembly assembly;
+            if (DisableTempFileLocking)
+            {
+                assembly = File.Exists(assemblyPdbFile)
+                    ? Assembly.Load(File.ReadAllBytes(assemblyFile), File.ReadAllBytes(assemblyPdbFile))
+                    : Assembly.Load(File.ReadAllBytes(assemblyFile));
+            }
+            else
+            {
+                assembly = Assembly.LoadFrom(assemblyFile);
+            }
             var type = assembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
             return Tuple.Create(type, compilationData);
         }

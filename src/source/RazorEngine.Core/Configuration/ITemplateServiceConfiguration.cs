@@ -59,6 +59,18 @@
         bool Debug { get; }
 
         /// <summary>
+        /// Loads all dynamic assemblies with Assembly.Load(byte[]).
+        /// This prevents temp files from being locked (which makes it impossible for RazorEngine to delete them).
+        /// At the same time this completely shuts down any sandboxing/security.
+        /// Use this only if you have a limited amount of static templates (no modifications on rumtime), 
+        /// which you fully trust and when a seperate AppDomain is no solution for you!.
+        /// This option will also hurt debugging.
+        /// 
+        /// OK, YOU HAVE BEEN WARNED.
+        /// </summary>
+        bool DisableTempFileLocking { get; }
+
+        /// <summary>
         /// Gets the encoded string factory.
         /// </summary>
         IEncodedStringFactory EncodedStringFactory { get; }

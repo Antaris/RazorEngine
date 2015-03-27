@@ -112,6 +112,12 @@
         public bool Debug { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the compiler should load assemblies with Assembly.Load(byte[])
+        /// to prevent files from being locked.
+        /// </summary>
+        public bool DisableTempFileLocking { get; set; }
+
+        /// <summary>
         /// Gets the markup parser.
         /// </summary>
         public ParserBaseCreator MarkupParserFactory { [SecurityCritical] get; [SecurityCritical] private set; }

@@ -258,7 +258,14 @@
             // Make sure we load the assembly from a file and not with
             // Load(byte[]) (or it will be fully trusted!)
             var assemblyPath = compileResult.PathToAssembly;
-            compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
+            if (DisableTempFileLocking)
+            {
+                compileResult.CompiledAssembly = Assembly.Load(File.ReadAllBytes(assemblyPath));
+            }
+            else
+            {
+                compileResult.CompiledAssembly = Assembly.LoadFile(assemblyPath);
+            }
             var type = compileResult.CompiledAssembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
             if (type == null)
             {
