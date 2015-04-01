@@ -50,13 +50,15 @@ To be able to resolve such issues you can control this behaviour and set your ow
 
 class MyIReferenceResolver : IReferenceResolver {
     public string FindLoaded(IEnumerable&lt;string&gt; refs, string find) {
-        return refs.First(r =&gt; r == find);
+        return refs.First(r =&gt; r.EndsWith(System.IO.Path.DirectorySeparatorChar + find));
     }
     public IEnumerable&lt;CompilerReference&gt; GetReferences(TypeContext context, IEnumerable&lt;CompilerReference&gt; includeAssemblies) {
+        // TypeContext gives you some context for the compilation (which templates, which namespaces and types)
+        
         // You must make sure to include all libraries that are required!
-        // Mono compiler does add more standard references by default
+        // Mono compiler does add more standard references than csc! 
         // If you want mono compatibility include ALL references here, including mscorlib!
-        // If you include a mscorlib here the compiler is called with /nostdlib.
+        // If you include mscorlib here the compiler is called with /nostdlib.
         IEnumerable&lt;string&gt; loadedAssemblies = (new UseCurrentAssembliesReferenceResolver())
             .GetReferences(context, includeAssemblies)
             .Select(r =&gt; r.GetFile())
@@ -65,13 +67,14 @@ class MyIReferenceResolver : IReferenceResolver {
         yield return CompilerReference.From(FindLoaded(loadedAssemblies, &quot;mscorlib.dll&quot;));
         yield return CompilerReference.From(FindLoaded(loadedAssemblies, &quot;System.dll&quot;));
         yield return CompilerReference.From(FindLoaded(loadedAssemblies, &quot;System.Core.dll&quot;));
-        // TypeContext gives you some context for the compilation (which templates, which namespaces and types)
-        yield return CompilerReference.From(&quot;Path-to-my-custom-assembly&quot;); // file path (string)
         yield return CompilerReference.From(typeof(MyIReferenceResolver).Assembly); // Assembly
-        byte[] assemblyInByteArray = null;
-        yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)
-        string assemblyFile = null;
-        yield return CompilerReference.From(File.OpenRead(assemblyFile)); // stream (roslyn only)
+        
+        // There are several ways to load an assembly:
+        //yield return CompilerReference.From(&quot;Path-to-my-custom-assembly&quot;); // file path (string)
+        //byte[] assemblyInByteArray = --- Load your assembly ---;
+        //yield return CompilerReference.From(assemblyInByteArray); // byte array (roslyn only)
+        //string assemblyFile = --- Get the path to the assembly ---;
+        //yield return CompilerReference.From(File.OpenRead(assemblyFile)); // stream (roslyn only)
     }
 }
 

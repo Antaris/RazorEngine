@@ -36,12 +36,12 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 10c3643448d1f3d70db9acf76c67a26aaaf894f6 -->
+<!-- GENERATED FROM COMMIT: 6ce5a0a72143008355aea650eaa87154319adc02 -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
 
 <p><a href="https://gitter.im/Antaris/RazorEngine?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/Antaris/RazorEngine" /></a></p>
 
-<p><em>latest</em> documentation available on <a href="http://antaris.github.io/RazorEngine/.">http://antaris.github.io/RazorEngine/.</a></p>
+<p><em>latest</em> documentation available on <a href="https://antaris.github.io/RazorEngine/.">https://antaris.github.io/RazorEngine/.</a></p>
 
 <h2><a name="Build-status" class="anchor" href="#Build-status">Build status</a></h2>
 
@@ -74,7 +74,8 @@
 You can find an introduction <a href="http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-%28c%29">here</a>.
 All you need to do is use the static <code>Engine</code> class (the <code>Engine.Razor</code> instance):</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
+<pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
+string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
 var result =
     Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
 </code></pre>
@@ -85,14 +86,16 @@ var result =
 
 <p>The <code>"templateKey"</code> must be unique and after running the above example you can re-run the cached template with this key.</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">var result =
+<pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
+var result =
     Engine.Razor.Run(&quot;templateKey&quot;, null, new { Name = &quot;Max&quot; });
 </code></pre>
 
 <p>The null parameter is the <code>modelType</code> and <code>null</code> in this case means we use <code>dynamic</code> as the type of the model.
 You can use a static model as well by providing a type object.</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">var result =
+<pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
+var result =
     Engine.Razor.RunCompile(&quot;templateKey&quot;, typeof(Person), new Person { Name = &quot;Max&quot; });
 </code></pre>
 
@@ -142,7 +145,8 @@ RazorEngine also supports debugging directly into the template files (normally <
 As as you might see in the above code there is no file to debug into.
 To provide RazorEngine with the necessary information you need to tell where the file can be found:</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
+<pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
+string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
 string templateFile = &quot;C:/mytemplate.cshtml&quot;
 var result =
     Engine.Razor.RunCompile(new LoadedTemplateSource(template, templateFile), &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
