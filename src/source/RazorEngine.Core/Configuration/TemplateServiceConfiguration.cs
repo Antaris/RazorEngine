@@ -11,6 +11,7 @@ namespace RazorEngine.Configuration
     using Templating;
     using Text;
     using RazorEngine.Compilation.ReferenceResolver;
+    using System.Security;
 
     /// <summary>
     /// Provides a default implementation of a template service configuration.
@@ -22,14 +23,22 @@ namespace RazorEngine.Configuration
 #pragma warning restore 0618 // Backwards Compat.
 
         #region Constructor
+
         /// <summary>
         /// Initialises a new instance of <see cref="TemplateServiceConfiguration"/>.
         /// </summary>
+        [SecuritySafeCritical]
         public TemplateServiceConfiguration()
+
         {
             // Read configuration values from App.config / Web.config
             // and fallback to appropriate defaults. 
-            var xmlConfig = new XmlTemplateServiceConfiguration();
+            XmlTemplateServiceConfiguration xmlConfig = null;
+            // Fix for Release_3_6_TestFixture.RazorEngineService_Issue267Ext.
+            using (var flow = System.Threading.ExecutionContext.SuppressFlow())
+            {
+                xmlConfig = TaskRunner.Run(() => new XmlTemplateServiceConfiguration()).Result;
+            }
 
             Activator = xmlConfig.Activator ?? new DefaultActivator();
             CompilerServiceFactory = xmlConfig.CompilerServiceFactory ?? new DefaultCompilerServiceFactory();

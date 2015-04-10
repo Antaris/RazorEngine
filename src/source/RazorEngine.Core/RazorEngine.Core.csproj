@@ -262,6 +262,7 @@
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElement.cs" />
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElementCollection.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="TaskRunner.cs" />
     <Compile Include="Templating\DynamicWrapperService.cs" />
     <Compile Include="Templating\IsolatedRazorEngineService.cs" />
     <Compile Include="Templating\TemplateLoadingException.cs" />

@@ -470,6 +470,39 @@ namespace RazorEngine.Compilation
             CurrentCleanup.RegisterCleanupPath(item);
         }
 
+        /// <summary>
+        /// Helper method to stop the Execution flow and run the delegate in a new Task.
+        /// See https://github.com/Antaris/RazorEngine/issues/267 for details.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        [SecurityCritical]
+        private static T CallHelperSafe<T>(Func<T> a)
+        {
+            using (var flow = System.Threading.ExecutionContext.SuppressFlow())
+            {
+                // in the new task we got rid of any executioncontext, see https://github.com/Antaris/RazorEngine/issues/267
+                return TaskRunner.Run(a).Result;
+            }
+        }
+
+        /// <summary>
+        /// Helper method to stop the Execution flow and run the delegate in a new Task.
+        /// See https://github.com/Antaris/RazorEngine/issues/267 for details.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        [SecurityCritical]
+        private static void CallHelperSafe(Action a)
+        {
+            using (var flow = System.Threading.ExecutionContext.SuppressFlow())
+            {
+                // in the new task we got rid of any executioncontext, see https://github.com/Antaris/RazorEngine/issues/267
+                TaskRunner.Run(a).Wait();
+            }
+        }
+
         private readonly AppDomain _domain;
         private readonly CleanupHelper _helper;
         /*
@@ -528,16 +561,48 @@ namespace RazorEngine.Compilation
                 current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
                 strongNames);
 
-            ObjectHandle handle =
-                Activator.CreateInstanceFrom(
-                    _domain, typeof(CleanupHelper).Assembly.ManifestModule.FullyQualifiedName,
-                    typeof(CleanupHelper).FullName
-                );
-            _helper = (CleanupHelper)handle.Unwrap();
-            _helper.SetupDomain();
-            _helper.Init(current, CrossAppDomainCleanUp.CurrentPrinter);
+            var initHelper = new InitHelper() { Domain = _domain, Current = current };
+            _helper = CallHelperSafe(new Func<CleanupHelper>(initHelper.CreateHelper));
+        }
+        
+        /// <summary>
+        /// This class only exists because we can't use a simple lambda.
+        /// </summary>
+        [SecuritySafeCritical]
+        private class InitHelper
+        {
+            internal AppDomain Domain { get; set; }
+            internal AppDomain Current { get; set; }
+            [SecuritySafeCritical]
+            internal CleanupHelper CreateHelper()
+            {
+                (new PermissionSet(PermissionState.Unrestricted)).Assert();
+                ObjectHandle handle =
+                    Activator.CreateInstanceFrom(
+                        Domain, typeof(CleanupHelper).Assembly.ManifestModule.FullyQualifiedName,
+                        typeof(CleanupHelper).FullName
+                    );
+                var helper = (CleanupHelper)handle.Unwrap();
+                helper.SetupDomain();
+                helper.Init(Current, CrossAppDomainCleanUp.CurrentPrinter);
+                return helper;
+            }
+
         }
 
+        /// <summary>
+        /// This class only exists because we can't use a simple lambda.
+        /// </summary>
+        [SecuritySafeCritical]
+        private class RegisterCleanupHelper
+        {
+            internal string Path { get; set; }
+            internal CleanupHelper Helper { get; set; }
+            [SecuritySafeCritical]
+            internal void RegisterCleanupPath (){
+                Helper.RegisterCleanupPath(Path);
+            }
+        }
         /// <summary>
         /// Register the given path for cleanup.
         /// </summary>
@@ -546,7 +611,8 @@ namespace RazorEngine.Compilation
         [SecuritySafeCritical]
         public void RegisterCleanupPath(string path)
         {
-            _helper.RegisterCleanupPath(path);
+            var caller = new RegisterCleanupHelper() { Helper = _helper, Path = path };
+            CallHelperSafe(caller.RegisterCleanupPath);
         }
 
         /// <summary>
@@ -556,7 +622,7 @@ namespace RazorEngine.Compilation
         [SecuritySafeCritical]
         public void Dispose()
         {
-            _helper.Dispose();
+            CallHelperSafe(_helper.Dispose);
         }
 
     }

@@ -752,5 +752,70 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
             });
         }
 
+        /// <summary>
+        /// Test that we can check for missing properties
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CheckForMissingProperty()
+        {
+            var template = @"
+@try {
+  // save all properties which might be missing beforehand in variables (otherwise there will be partial ouput).
+  var link = Model.Foo.Link; 
+  // Use them as you would normally.
+  <a href=""@link"">@Model.Foo.Text</a>
+}
+catch (RuntimeBinderException) {
+  <p>@Model.Foo.Text</p>
+}";
+            RunTestHelper(service =>
+            {
+                service.Compile(template, "key", null);
+                dynamic model = new { Foo = new { Link = "link", Text = "text"} };
+                string result = service.Run("key", null, (object)model);
+                Assert.AreEqual("<a href=\"link\">text</a>", result.Trim());
+                
+                model = new { Foo = new { Text = "text" } };
+                result = service.Run("key", null, (object)model);
+                Assert.AreEqual("<p>text</p>", result.Trim());
+            }, config => {
+                config.Namespaces.Add("RazorEngine.Compilation");
+                config.Namespaces.Add("Microsoft.CSharp.RuntimeBinder");
+                //config.AllowMissingPropertiesOnDynamic = true; 
+                config.Debug = true; });
+        }
+        
+        /// <summary>
+        /// Test that we can check for missing properties with empty string.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CheckForMissingPropertyEmptyString()
+        {
+            var template = @"
+@if (!string.IsNullOrEmpty(Model.Foo.Link.ToString())) {
+  <a href=""@Model.Foo.Link"">@Model.Foo.Text</a>
+}
+else {
+  <p>@Model.Foo.Text</p>
+}";
+            RunTestHelper(service =>
+            {
+                service.Compile(template, "key", null);
+                dynamic model = new { Foo = new { Link = "link", Text = "text" } };
+                string result = service.Run("key", null, (object)model);
+                Assert.AreEqual("<a href=\"link\">text</a>", result.Trim());
+
+                model = new { Foo = new { Text = "text" } };
+                result = service.Run("key", null, (object)model);
+                Assert.AreEqual("<p>text</p>", result.Trim());
+            }, config =>
+            {
+                config.Namespaces.Add("RazorEngine.Compilation");
+                config.Namespaces.Add("Microsoft.CSharp.RuntimeBinder");
+                config.AllowMissingPropertiesOnDynamic = true; 
+                config.Debug = true;
+            });
+        }
+
     }
 }
