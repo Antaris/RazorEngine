@@ -483,7 +483,7 @@ namespace RazorEngine.Compilation
             using (var flow = System.Threading.ExecutionContext.SuppressFlow())
             {
                 // in the new task we got rid of any executioncontext, see https://github.com/Antaris/RazorEngine/issues/267
-                return Task.Run(a).Result;
+                return TaskRunner.Run(a).Result;
             }
         }
 
@@ -499,7 +499,7 @@ namespace RazorEngine.Compilation
             using (var flow = System.Threading.ExecutionContext.SuppressFlow())
             {
                 // in the new task we got rid of any executioncontext, see https://github.com/Antaris/RazorEngine/issues/267
-                Task.Run(a).Wait();
+                TaskRunner.Run(a).Wait();
             }
         }
 

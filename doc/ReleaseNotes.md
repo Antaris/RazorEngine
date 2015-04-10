@@ -1,4 +1,7 @@
-﻿### 3.6.4 / 4.1.4-beta1
+﻿### 3.6.4-beta1 / 4.1.4-beta2
+* Fix https://github.com/Antaris/RazorEngine/issues/267
+
+### 3.6.4 / 4.1.4-beta1
 * Use /nostdlib when we find a mscorlib (improves mono support)
 * Added `DisableTempFileLocking` to load assemblies in memory (to prevent temp file locking), 
   this is only recommended in a very limited amount of scenarios.

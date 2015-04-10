@@ -37,7 +37,7 @@ namespace RazorEngine.Configuration
             // Fix for Release_3_6_TestFixture.RazorEngineService_Issue267Ext.
             using (var flow = System.Threading.ExecutionContext.SuppressFlow())
             {
-                xmlConfig = System.Threading.Tasks.Task.Run(() => new XmlTemplateServiceConfiguration()).Result;
+                xmlConfig = TaskRunner.Run(() => new XmlTemplateServiceConfiguration()).Result;
             }
 
             Activator = xmlConfig.Activator ?? new DefaultActivator();
