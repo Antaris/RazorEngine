@@ -12,6 +12,12 @@ namespace RazorEngine
     /// </summary>
     internal class TaskRunner
     {
+        /// <summary>
+        /// Runs the given delegate in a new task (like Task.Run but works on net40).
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static Task<T> Run<T>(Func<T> t)
         {
 #if NET40
@@ -22,6 +28,12 @@ namespace RazorEngine
             return Task.Run(t);
 #endif
         }
+
+        /// <summary>
+        /// Runs the given delegate in a new task (like Task.Run but works on net40).
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static Task Run(Action t)
         {
 #if NET40
