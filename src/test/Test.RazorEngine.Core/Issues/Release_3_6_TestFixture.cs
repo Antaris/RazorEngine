@@ -54,7 +54,6 @@
         /// See https://github.com/Antaris/RazorEngine/issues/267
         /// </summary>
         [Test]
-        [Ignore]
         public void RazorEngineService_Issue267Ext()
         {
             var template = @"test";
