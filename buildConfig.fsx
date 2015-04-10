@@ -41,7 +41,7 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.1.4-beta2"
+let version_razor4 = "4.1.5-beta1"
 let version_roslyn = "3.5.2-beta1"
 let version_roslyn_razor4 = "4.0.2-beta1"
 
