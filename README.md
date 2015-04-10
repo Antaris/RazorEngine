@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/Antaris/RazorEngine](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Antaris/RazorEngine?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-*latest* documentation available on http://antaris.github.io/RazorEngine/.
+*latest* documentation available on https://antaris.github.io/RazorEngine/.
 
 ## Build status
 
@@ -28,6 +28,7 @@ You can find an introduction [here](http://www.asp.net/web-pages/overview/gettin
 All you need to do is use the static `Engine` class (the `Engine.Razor` instance):
 
 ```csharp
+// using RazorEngine.Templating; // Dont forget to include this.
 string template = "Hello @Model.Name, welcome to RazorEngine!";
 var result =
 	Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
@@ -38,6 +39,7 @@ var result =
 The `"templateKey"` must be unique and after running the above example you can re-run the cached template with this key.
 
 ```csharp
+// using RazorEngine.Templating; // Dont forget to include this.
 var result =
 	Engine.Razor.Run("templateKey", null, new { Name = "Max" });
 ```
@@ -46,6 +48,7 @@ The null parameter is the `modelType` and `null` in this case means we use `dyna
 You can use a static model as well by providing a type object.
 
 ```csharp
+// using RazorEngine.Templating; // Dont forget to include this.
 var result =
 	Engine.Razor.RunCompile("templateKey", typeof(Person), new Person { Name = "Max" });
 ```
@@ -102,6 +105,7 @@ As as you might see in the above code there is no file to debug into.
 To provide RazorEngine with the necessary information you need to tell where the file can be found:
 
 ```csharp
+// using RazorEngine.Templating; // Dont forget to include this.
 string template = "Hello @Model.Name, welcome to RazorEngine!";
 string templateFile = "C:/mytemplate.cshtml"
 var result =

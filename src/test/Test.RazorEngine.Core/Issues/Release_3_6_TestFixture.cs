@@ -20,6 +20,60 @@
     public class Release_3_6_TestFixture
     {
         /// <summary>
+        /// A test class which should not be serializable.
+        /// </summary>
+        public class Unserializable
+        {
+            
+        }
+
+        /// <summary>
+        /// See https://github.com/Antaris/RazorEngine/issues/267
+        /// </summary>
+        [Test]
+        public void RazorEngineService_Issue267()
+        {
+            var template = @"test";
+            RazorEngineServiceTestFixture.RunTestHelper(service =>
+            {
+                try
+                {   
+                    System.Runtime.Remoting.Messaging.CallContext.LogicalSetData("Unserializable", new Unserializable());
+                    service.Compile(template, "key", null);
+                    string result = service.Run("key", null, (object)null);
+                    Assert.AreEqual("test", result.Trim());
+                }
+                finally
+                {
+                    System.Runtime.Remoting.Messaging.CallContext.FreeNamedDataSlot("Unserializable");
+                }
+            });
+        }
+
+        /// <summary>
+        /// See https://github.com/Antaris/RazorEngine/issues/267
+        /// </summary>
+        [Test]
+        public void RazorEngineService_Issue267Ext()
+        {
+            var template = @"test";
+            try
+            {
+                System.Runtime.Remoting.Messaging.CallContext.LogicalSetData("Unserializable", new Unserializable());
+                RazorEngineServiceTestFixture.RunTestHelper(service =>
+                {
+                    service.Compile(template, "key", null);
+                    string result = service.Run("key", null, (object)null);
+                    Assert.AreEqual("test", result.Trim());
+                });
+            }
+            finally
+            {
+                System.Runtime.Remoting.Messaging.CallContext.FreeNamedDataSlot("Unserializable");
+            }
+        }
+
+        /// <summary>
         /// Anonymous classes do not work when wrapped in dynamic (via a method call).
         /// 
         /// Issue 67: https://github.com/Antaris/RazorEngine/issues/67
