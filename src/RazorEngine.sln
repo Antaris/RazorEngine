@@ -97,6 +97,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.RazorEngine.Core.Rosly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHelper", "test\TestHelper\TestHelper.csproj", "{7899C0AE-844D-4A34-B3BC-96819C73EA68}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRunnerHelper", "test\TestRunnerHelper\TestRunnerHelper.csproj", "{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Net40 = Debug|Net40
@@ -175,6 +177,14 @@ Global
 		{7899C0AE-844D-4A34-B3BC-96819C73EA68}.Release|Net45.ActiveCfg = Release|Net45
 		{7899C0AE-844D-4A34-B3BC-96819C73EA68}.Release|Net45.Build.0 = Release|Net45
 		{7899C0AE-844D-4A34-B3BC-96819C73EA68}.Release|Razor4.ActiveCfg = Release|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Debug|Net40.ActiveCfg = Debug|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Debug|Net45.ActiveCfg = Debug|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Debug|Net45.Build.0 = Debug|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Debug|Razor4.ActiveCfg = Debug|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Release|Net40.ActiveCfg = Release|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Release|Net45.ActiveCfg = Release|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Release|Net45.Build.0 = Release|Net45
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}.Release|Razor4.ActiveCfg = Release|Net45
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +203,7 @@ Global
 		{4213AE6E-A75D-431C-8F7C-3CBDC713FEA9} = {AB84CBF8-2E91-46B4-8803-8CF529CDA7E7}
 		{7CB02F9F-7E88-448B-A25B-7985058296C5} = {AE7E811A-2B9F-45BC-9752-0FB4D1DEE12D}
 		{7899C0AE-844D-4A34-B3BC-96819C73EA68} = {AE7E811A-2B9F-45BC-9752-0FB4D1DEE12D}
+		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030} = {AE7E811A-2B9F-45BC-9752-0FB4D1DEE12D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
