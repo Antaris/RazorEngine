@@ -32,16 +32,6 @@ namespace RazorEngine.Compilation
             }
         }
         [SecurityCritical]
-        private class ActionConv
-        {
-            public Action toCall;
-            public bool Call(bool data)
-            {
-                toCall();
-                return false;
-            }
-        }
-        [SecurityCritical]
         private class FuncConv<T>
         {
             public Func<T> toCall;
