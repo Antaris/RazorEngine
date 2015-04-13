@@ -30,6 +30,11 @@ namespace RazorEngine.Compilation
                 AsAction();
                 return outData;
             }
+
+            public void AsContextCallback(object state)
+            {
+                AsAction();
+            }
         }
         [SecurityCritical]
         private class FuncConv<T>
@@ -38,6 +43,17 @@ namespace RazorEngine.Compilation
             public T Call(bool data)
             {
                 return toCall();
+            }
+        }
+
+        [SecurityCritical]
+        private class ActionConv
+        {
+            public Action toCall;
+            public bool Call(bool data)
+            {
+                toCall();
+                return true;
             }
         }
 
@@ -143,39 +159,48 @@ namespace RazorEngine.Compilation
         }
 
 
-        private static readonly Lazy<ExecutionContextLessThread> defaultThread = new Lazy<ExecutionContextLessThread>(Create);
-        public static ExecutionContextLessThread Default
-        {
-            get
-            {
-                return defaultThread.Value;
-            }
-        }
-
+        //private static readonly Lazy<ExecutionContextLessThread> defaultThread = new Lazy<ExecutionContextLessThread>(Create);
+        //public static ExecutionContextLessThread Default
+        //{
+        //    get
+        //    {
+        //        return defaultThread.Value;
+        //    }
+        //}
         public static void DefaultCallAction(Action a)
         {
-            using (var t = Create())
-            {
-                t.CallAction(a);
-            }
+            var toFunc = new ActionConv() { toCall = a };
+            var helper = new CallHelperSafeHelper<bool, bool>() { inData = true, toCall = new Func<bool, bool>(toFunc.Call) };
+            ExecutionContext.Run(EmptyExecutionContext.Empty, helper.AsContextCallback, null);
+            //using (var t = Create())
+            //{
+            //    t.CallAction(a);
+            //}
             //Default.CallAction(a);
         }
 
         public static O DefaultCallFunc<O>(Func<O> f)
         {
-            using (var t = Create())
-            {
-                return t.CallFunc(f);
-            }
+            var toFunc = new FuncConv<O>() { toCall = f };
+            var helper = new CallHelperSafeHelper<bool, O>() { inData = true, toCall = new Func<bool, O>(toFunc.Call) };
+            ExecutionContext.Run(EmptyExecutionContext.Empty, helper.AsContextCallback, null);
+            return helper.outData;
+            //using (var t = Create())
+            //{
+            //    return t.CallFunc(f);
+            //}
             //return Default.CallFunc(f);
         }
 
         public static O DefaultCallFunc<I, O>(Func<I, O> f, I d)
         {
-            using (var t = Create())
-            {
-                return t.CallFunc(f, d);
-            }
+            var helper = new CallHelperSafeHelper<I, O>() { inData = d, toCall = f };
+            ExecutionContext.Run(EmptyExecutionContext.Empty, helper.AsContextCallback, null);
+            return helper.outData;
+            //using (var t = Create())
+            //{
+            //    return t.CallFunc(f, d);
+            //}
             //return Default.CallFunc(f, d);
         }
 
@@ -195,5 +220,21 @@ namespace RazorEngine.Compilation
                 t.Join();
             }
         }
+    }
+
+    internal static class EmptyExecutionContext {
+        
+        private static ExecutionContext empty;
+
+        [SecurityCritical]
+        static EmptyExecutionContext()
+        {
+            using (var t = ExecutionContextLessThread.Create())
+            {
+                empty = t.CallFunc(ExecutionContext.Capture);
+            }
+        }
+        public static ExecutionContext Empty { get { return empty.CreateCopy(); } }
+
     }
 }
