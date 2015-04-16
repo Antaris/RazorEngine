@@ -31,5 +31,12 @@ namespace RazorEngine.Templating
         /// This instance makes sure that all assemblies can be resolved properly.
         /// </summary>
         TypeLoader TypeLoader { get; }
+
+        /// <summary>
+        /// Try and remove the cached template
+        /// </summary>
+        /// <param name="key">the key of the template.</param>
+        /// <returns>true if a template was in the cache.</returns>
+        bool TryRemoveTemplate(ITemplateKey key);
     }
 }

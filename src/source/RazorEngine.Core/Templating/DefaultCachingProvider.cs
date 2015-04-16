@@ -53,6 +53,12 @@ namespace RazorEngine.Templating
             }
         }
 
+        public bool TryRemoveTemplate(ITemplateKey key)
+        {
+            ConcurrentDictionary<Type, ICompiledTemplate> removed;
+            return _cache.TryRemove(key.GetUniqueKeyString(), out removed);
+        }
+
         /// <summary>
         /// Get the key used within a dictionary for a modelType.
         /// </summary>
