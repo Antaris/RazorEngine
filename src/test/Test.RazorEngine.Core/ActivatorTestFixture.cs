@@ -50,7 +50,7 @@
                 const string expected = "<h1>Hello ttaM</h1>";
 
                 var model = new Person { Forename = "Matt" };
-                string result = service.Parse(template, model, null, null);
+                string result = service.Parse(template, model);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }

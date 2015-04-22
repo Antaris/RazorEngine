@@ -31,7 +31,7 @@
             {
                 const string template = "Hello World";
 
-                Assert.Throws<InvalidOperationException>(() => service.Parse(template, null, null, null));
+                Assert.Throws<InvalidOperationException>(() => service.Parse(template));
             }
         }
         #endregion
