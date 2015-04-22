@@ -241,7 +241,7 @@
         /// <typeparam name="T">Type of the model. Used to find out the type of the model, if model is NULL</typeparam>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="model">The model instance or NULL if no model exists.</param>
-        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
+        /// <param name="viewBag">The ViewBag initial contents or NULL for an initially empty ViewBag.</param>
         /// <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
         /// <returns>The string result of the template.</returns>
         string Parse<T>(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName);

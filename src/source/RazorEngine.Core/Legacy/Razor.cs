@@ -190,11 +190,11 @@
         /// and if they do not exist, new types will be created and instantiated.
         /// </summary>
         /// <param name="razorTemplates">The set of templates to create.</param>
-        /// <param name="cacheNames">The set of cache names.</param>
+        /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
         /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public static IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<string> cacheNames, bool parallel = false)
+        public static IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel = false)
         {
             return TemplateService.GetTemplates(razorTemplates, names, parallel);
         }
@@ -276,7 +276,6 @@
         /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
         /// <param name="razorTemplate">The string template.</param>
         /// <param name="model">The model instance.</param>
         /// <param name="name">The name of the template type in the cache.</param>
@@ -287,44 +286,9 @@
         }
 
         /// <summary>
-        /// Parses and returns the result of the specified string template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="model">The model instance.</param>
-        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
-        /// <param name="cacheName">The name of the template type in the cache or NULL if no caching is desired.</param>
-        /// <returns>The string result of the template.</returns>
-        public static string Parse(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
-        {
-            return TemplateService.Parse(razorTemplate, model, viewBag, cacheName);
-        }
-
-        /// <summary>
-        /// Parses the template and merges with the many models provided.
-        /// </summary>
-        /// <param name="razorTemplate">The razor template.</param>
-        /// <param name="models">
-        /// The set of models (must contain at least one model).
-        /// </param>
-        /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
-        /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public static IEnumerable<string> ParseMany(string razorTemplate, IEnumerable<object> models, bool parallel = false)
-        {
-            if (models == null)
-                throw new ArgumentException("Expected models list (this parameter may not be NULL).");
-
-            if (models.Count() == 0)
-                throw new ArgumentException("Expected at least one entry in models list.");
-
-            List<string> razorTemplateList = Enumerable.Repeat(razorTemplate, models.Count()).ToList();
-            return TemplateService.ParseMany(razorTemplateList, models, null, null, parallel);
-        }
-
-        /// <summary>
         /// Parses the specified set of templates.
         /// </summary>
-        /// <param name="razorTemplates">The set of string templates to parse.</param>
+        /// <param name="razorTemplates">The set of string templates to partse.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
@@ -337,57 +301,13 @@
         /// Parses the specified set of templates.
         /// </summary>
         /// <param name="razorTemplates">The set of string templates to partse.</param>
-        /// <param name="names">The set of cache names.</param>
+        /// <param name="cacheNames">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel = false)
+        public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<string> cacheNames, bool parallel = false)
         {
-            return TemplateService.ParseMany(razorTemplates, names, parallel);
-        }
-
-        /// <summary>
-        /// Parses the specified set of templates.
-        /// </summary>
-        /// <param name="razorTemplates">The set of string templates to parse.</param>
-        /// <param name="models">
-        /// The set of models or NULL if no models exist for all templates.
-        /// Individual elements in this set may be NULL if no model exists for a specific template.
-        /// </param>
-        /// <param name="cacheNames">
-        /// The set of cache names or NULL if no caching is desired for templates.
-        /// Individual elements in this set may be NULL if caching is not desired for a specific template.
-        /// </param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<string> cacheNames, bool parallel = false)
-        {
-            return TemplateService.ParseMany(razorTemplates, models, null, cacheNames, parallel);
-        }
-
-        /// <summary>
-        /// Parses the specified set of templates.
-        /// </summary>
-        /// <param name="razorTemplates">The set of string templates to parse.</param>
-        /// <param name="models">
-        /// The set of models or NULL if no models exist for all templates.
-        /// Individual elements in this set may be NULL if no model exists for a specific template.
-        /// </param>
-        /// <param name="viewBags">
-        /// The set of initial ViewBag contents or NULL for an initially empty ViewBag for all templates.
-        /// Individual elements in this set may be NULL if an initially empty ViewBag is desired for a specific template.
-        /// </param>
-        /// <param name="cacheNames">
-        /// The set of cache names or NULL if no caching is desired for templates.
-        /// Individual elements in this set may be NULL if caching is not desired for a specific template.
-        /// </param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The set of parsed template results.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel = false)
-        {
-            return TemplateService.ParseMany(razorTemplates, models, viewBags, cacheNames, parallel);
+            return TemplateService.ParseMany(razorTemplates, null, null, cacheNames, parallel);
         }
 
         /// <summary>
@@ -395,26 +315,23 @@
         /// </summary>
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="razorTemplate">The razor template.</param>
-        /// <param name="models">
-        /// The set of models (must contain at least one model).
-        /// </param>
+        /// <param name="models">The set of models.</param>
         /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
         /// <returns>The set of parsed template results.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany<T>(string razorTemplate, IEnumerable<T> models, bool parallel = false)
         {
-            return TemplateService.ParseMany(razorTemplate, models, parallel);
+            List<string> razorTemplateList = Enumerable.Repeat(razorTemplate, models.Count()).ToList();
+            List<object> modelList = (from m in models select (object)m).ToList();
+            return TemplateService.ParseMany(razorTemplateList, modelList, null, null, parallel);
         }
 
         /// <summary>
         /// Parses the specified set of templates.
         /// </summary>
         /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The set of string templates to parse.</param>
-        /// <param name="models">
-        /// The set of models or NULL if no models exist for all templates.
-        /// Individual elements in this set may be NULL if no model exists for a specific template.
-        /// </param>
+        /// <param name="razorTemplates">The set of string templates to partse.</param>
+        /// <param name="models">The set of models.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
@@ -427,21 +344,16 @@
         /// Parses the specified set of templates.
         /// </summary>
         /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The set of string templates to parse.</param>
-        /// <param name="models">
-        /// The set of models or NULL if no models exist for all templates.
-        /// Individual elements in this set may be NULL if no model exists for a specific template.
-        /// </param>
-        /// <param name="cacheNames">
-        /// The set of cache names or NULL if no caching is desired for templates.
-        /// Individual elements in this set may be NULL if caching is not desired for a specific template.
-        /// </param>
+        /// <param name="razorTemplates">The set of string templates to partse.</param>
+        /// <param name="models">The set of models.</param>
+        /// <param name="names">The set of cache names.</param>
         /// <param name="parallel">Flag to determine whether parsing in templates.</param>
         /// <returns>The set of parsed template results.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> cacheNames, bool parallel = false)
+        public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false)
         {
-            return TemplateService.ParseMany(razorTemplates, models, names, parallel);
+            List<object> modelList = (from m in models select (object)m).ToList();
+            return TemplateService.ParseMany(razorTemplates, modelList, null, names, parallel);
         }
 
         /// <summary>
@@ -501,18 +413,6 @@
         /// <summary>
         /// Runs the template with the specified name.
         /// </summary>
-        /// <param name="cacheName">The name of the template type in cache.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
-        /// <returns>The string result of the template.</returns>
-        public static string Run(string cacheName, object model, DynamicViewBag viewBag)
-        {
-            return TemplateService.Run(cacheName, model, viewBag);
-        }
-
-        /// <summary>
-        /// Runs the template with the specified name.
-        /// </summary>
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="name">The name of the template.</param>
         /// <param name="model">The model.</param>
@@ -520,19 +420,6 @@
         public static string Run<T>(string name, T model)
         {
             return TemplateService.Run(name, model);
-        }
-
-        /// <summary>
-        /// Runs the template with the specified name.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="cacheName">The name of the template type in cache.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="viewBag">The ViewBag contents or NULL for an initially empty ViewBag.</param>
-        /// <returns>The string result of the template.</returns>
-        public static string Run<T>(string cacheName, T model, DynamicViewBag viewBag)
-        {
-            return TemplateService.Run(cacheName, model, viewBag);
         }
 
         /// <summary>
