@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Net45</Platform>
+    <ProjectGuid>{6B0E2ECB-01EE-482B-951C-9E0F0D80F030}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestRunnerHelper</RootNamespace>
+    <AssemblyName>TestRunnerHelper</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Net45' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Net45' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\source\RazorEngine.Core.Roslyn\RazorEngine.Core.Roslyn.csproj">
+      <Project>{4213ae6e-a75d-431c-8f7c-3cbdc713fea9}</Project>
+      <Name>RazorEngine.Core.Roslyn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\source\RazorEngine.Core\RazorEngine.Core.csproj">
+      <Project>{d268f86d-2dab-4329-a75f-3bcf6d5bcdc4}</Project>
+      <Name>RazorEngine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\source\RazorEngine.Hosts.Console\RazorEngine.Hosts.Console.csproj">
+      <Project>{bc7891a1-8459-4a69-a37c-f40824e28c70}</Project>
+      <Name>RazorEngine.Hosts.Console</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\source\RazorEngine.Mvc\RazorEngine.Mvc.csproj">
+      <Project>{878a8554-acf1-4a0b-9bfc-6bd5fc5048c4}</Project>
+      <Name>RazorEngine.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.RazorEngine.Core.Roslyn\Test.RazorEngine.Core.Roslyn.csproj">
+      <Project>{7cb02f9f-7e88-448b-a25b-7985058296c5}</Project>
+      <Name>Test.RazorEngine.Core.Roslyn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test.RazorEngine.Core\Test.RazorEngine.Core.csproj">
+      <Project>{f4f5ab5f-bf81-4c0c-8f2e-68ab02160c4e}</Project>
+      <Name>Test.RazorEngine.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

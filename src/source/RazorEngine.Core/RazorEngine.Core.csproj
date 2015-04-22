@@ -236,6 +236,7 @@
     <Compile Include="Compilation\DynamicObject\Impromtu\TypeHash.cs" />
     <Compile Include="Compilation\DynamicObject\Impromtu\UseNamedArgumentAttribute.cs" />
     <Compile Include="Compilation\DynamicObject\Impromtu\Util.cs" />
+    <Compile Include="Compilation\ExecutionContextLessThread.cs" />
     <Compile Include="Compilation\HasDynamicModelAttribute.cs" />
     <Compile Include="Compilation\Inspectors\ICodeInspector.cs" />
     <Compile Include="Compilation\ICompilerService.cs" />

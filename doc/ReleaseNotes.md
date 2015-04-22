@@ -1,4 +1,7 @@
-﻿### 3.6.5 / 4.1.5-beta1
+﻿### 3.6.6 / 4.1.6-beta1
+* Another attempt to fix https://github.com/Antaris/RazorEngine/issues/267
+
+### 3.6.5 / 4.1.5-beta1
 * Fix https://github.com/Antaris/RazorEngine/issues/267
 
 ### 3.6.4 / 4.1.4-beta1
