@@ -34,7 +34,7 @@ if isMono then
 if File.Exists ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll") then
   File.Delete ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll")
 // The .fsx load file of FSharp.Formatting expects a System.Web.Razor.dll in ./lib/net40 and force-loads it.
-File.Copy ("packages/.nuget/Microsoft.AspNet.Razor.3.2.2/lib/net45/System.Web.Razor.dll", "packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll", true)
+File.Copy ("packages/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll", "packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll", true)
 
 
 let projectName_roslyn = "RazorEngine.Roslyn"

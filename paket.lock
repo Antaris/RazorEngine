@@ -9,7 +9,7 @@ NUGET
       FSharpVSPowerTools.Core (1.8.0)
     FSharpVSPowerTools.Core (1.8.0)
       FSharp.Compiler.Service (>= 0.0.87)
-    Microsoft.AspNet.Razor (2.0.30506.0)
+    Microsoft.AspNet.Razor (3.2.3)
     Microsoft.CodeAnalysis (1.0.0-rc1)
       Microsoft.CodeAnalysis.CSharp.Workspaces (1.0.0-rc1)
       Microsoft.CodeAnalysis.VisualBasic.Workspaces (1.0.0-rc1)
