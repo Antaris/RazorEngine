@@ -17,21 +17,15 @@
     public class XmlTemplateServiceConfiguration : ITemplateServiceConfiguration
     {
         #region Constructor
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="XmlTemplateServiceConfiguration"/> that only reads the global config values and
-        /// ignores any template service configuration element.
-        /// </summary>
-        public XmlTemplateServiceConfiguration() : this(null)
-        {}
-
         /// <summary>
         /// Initialises a new instance of <see cref="XmlTemplateServiceConfiguration"/>.
         /// </summary>
-        /// <param name="name">The name of the template service configuration to read or null to ignore all the template service configurations 
-        /// and only read the global configuration values.</param>
+        /// <param name="name">The name of the template service configuration.</param>
         public XmlTemplateServiceConfiguration(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("'name' is a required parameter.", "name");
+
             Namespaces = new HashSet<string>();
 
             InitialiseConfiguration(name);
@@ -176,12 +170,15 @@
         {
             var config = RazorEngineConfigurationSection.GetConfiguration();
             if (config == null)
-                return;
+                throw new ConfigurationErrorsException("No <razorEngine> configuration section has been defined.");
 
-            var serviceConfig = (name == null) ? null : config.TemplateServices
+            var serviceConfig = config.TemplateServices
                 .OfType<TemplateServiceConfigurationElement>()
                 .Where(t => t.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 .SingleOrDefault();
+
+            if (serviceConfig == null)
+                throw new ConfigurationErrorsException("No <templateService> configuration element defined with name = '" + name + "'");
 
             InitialiseConfiguration(config, serviceConfig);
         }
@@ -190,7 +187,7 @@
         /// Initialises the configuration.
         /// </summary>
         /// <param name="config">The core configuration.</param>
-        /// <param name="serviceConfig">The service configuration or null if there is no service configuration.</param>
+        /// <param name="serviceConfig">The service configuration.</param>
         private void InitialiseConfiguration(RazorEngineConfigurationSection config, TemplateServiceConfigurationElement serviceConfig)
         {
             // Set whether we are allowing missing properties on dynamic.
@@ -202,12 +199,23 @@
             // Add the global namespaces.
             AddNamespaces(config.Namespaces);
 
+            // Add the specific namespaces.
+            AddNamespaces(serviceConfig.Namespaces);
+                
             // Sets the activator.
             SetActivator(config.ActivatorType);
 
+            // Sets the base template type.
+            SetBaseTemplateType(serviceConfig.BaseTemplateType);
+            
             // Sets the compiler service factory.
             SetCompilerServiceFactory(config.CompilerServiceFactoryType);
 
+            Debug = serviceConfig.Debug;
+            
+            // Sets the encoded string factory.
+            SetEncodedStringFactory(serviceConfig.EncodedStringFactoryType);
+            
             // Sets the reference resolver.
             SetReferenceResolver(config.ReferenceResolverType);
 
@@ -224,26 +232,17 @@
             // Sets the template manager.
             SetTemplateManager(config.TemplateManagerType);
 
-
             // Set the language.
-            Language = config.DefaultLanguage;
+            Language = serviceConfig.Language;
 
-            if (serviceConfig != null)
-            {
-                // Add the specific namespaces.
-                AddNamespaces(serviceConfig.Namespaces);
+            // Sets the activator.
+            SetActivator(config.ActivatorType);
 
-                // Sets the base template type.
-                SetBaseTemplateType(serviceConfig.BaseTemplateType);
+            // Sets the compiler service factory.
+            SetCompilerServiceFactory(config.CompilerServiceFactoryType);
 
-                Debug = serviceConfig.Debug;
-
-                // Sets the encoded string factory.
-                SetEncodedStringFactory(serviceConfig.EncodedStringFactoryType);
-
-                // Override the default language.
-                Language = serviceConfig.Language;
-            }
+            // Sets the tempalte resolver.
+            SetTemplateResolver(config.TemplateResolverType);
         }
 
         /// <summary>
