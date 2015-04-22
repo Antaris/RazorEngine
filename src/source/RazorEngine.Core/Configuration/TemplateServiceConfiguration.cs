@@ -35,10 +35,7 @@ namespace RazorEngine.Configuration
             // and fallback to appropriate defaults. 
             XmlTemplateServiceConfiguration xmlConfig = null;
             // Fix for Release_3_6_TestFixture.RazorEngineService_Issue267Ext.
-            using (var flow = System.Threading.ExecutionContext.SuppressFlow())
-            {
-                xmlConfig = TaskRunner.Run(() => new XmlTemplateServiceConfiguration()).Result;
-            }
+            xmlConfig = ExecutionContextLessThread.DefaultCallFunc(() => new XmlTemplateServiceConfiguration());
 
             Activator = xmlConfig.Activator ?? new DefaultActivator();
             CompilerServiceFactory = xmlConfig.CompilerServiceFactory ?? new DefaultCompilerServiceFactory();

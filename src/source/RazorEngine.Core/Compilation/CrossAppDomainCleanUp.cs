@@ -470,38 +470,7 @@ namespace RazorEngine.Compilation
             CurrentCleanup.RegisterCleanupPath(item);
         }
 
-        /// <summary>
-        /// Helper method to stop the Execution flow and run the delegate in a new Task.
-        /// See https://github.com/Antaris/RazorEngine/issues/267 for details.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a"></param>
-        /// <returns></returns>
-        [SecurityCritical]
-        private static T CallHelperSafe<T>(Func<T> a)
-        {
-            using (var flow = System.Threading.ExecutionContext.SuppressFlow())
-            {
-                // in the new task we got rid of any executioncontext, see https://github.com/Antaris/RazorEngine/issues/267
-                return TaskRunner.Run(a).Result;
-            }
-        }
 
-        /// <summary>
-        /// Helper method to stop the Execution flow and run the delegate in a new Task.
-        /// See https://github.com/Antaris/RazorEngine/issues/267 for details.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <returns></returns>
-        [SecurityCritical]
-        private static void CallHelperSafe(Action a)
-        {
-            using (var flow = System.Threading.ExecutionContext.SuppressFlow())
-            {
-                // in the new task we got rid of any executioncontext, see https://github.com/Antaris/RazorEngine/issues/267
-                TaskRunner.Run(a).Wait();
-            }
-        }
 
         private readonly AppDomain _domain;
         private readonly CleanupHelper _helper;
@@ -562,7 +531,7 @@ namespace RazorEngine.Compilation
                 strongNames);
 
             var initHelper = new InitHelper() { Domain = _domain, Current = current };
-            _helper = CallHelperSafe(new Func<CleanupHelper>(initHelper.CreateHelper));
+            _helper = ExecutionContextLessThread.DefaultCallFunc(new Func<CleanupHelper>(initHelper.CreateHelper));
         }
         
         /// <summary>
@@ -612,7 +581,7 @@ namespace RazorEngine.Compilation
         public void RegisterCleanupPath(string path)
         {
             var caller = new RegisterCleanupHelper() { Helper = _helper, Path = path };
-            CallHelperSafe(caller.RegisterCleanupPath);
+            ExecutionContextLessThread.DefaultCallAction(caller.RegisterCleanupPath);
         }
 
         /// <summary>
@@ -622,7 +591,7 @@ namespace RazorEngine.Compilation
         [SecuritySafeCritical]
         public void Dispose()
         {
-            CallHelperSafe(_helper.Dispose);
+            ExecutionContextLessThread.DefaultCallAction(_helper.Dispose);
         }
 
     }
