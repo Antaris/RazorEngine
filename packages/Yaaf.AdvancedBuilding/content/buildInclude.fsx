@@ -16,6 +16,7 @@
 #else
 // Support when file is opened in Visual Studio
 #load "buildConfigDef.fsx"
+#load "../../../buildConfig.fsx"
 #endif
 
 open BuildConfigDef
@@ -153,7 +154,6 @@ MyTarget "CleanAll" (fun _ ->
 )
 
 MyTarget "RestorePackages" (fun _ ->
-  if config.UseNuget then
     // will catch src/targetsDependencies
     !! "./src/**/packages.config"
     |> Seq.iter 
@@ -163,12 +163,33 @@ MyTarget "RestorePackages" (fun _ ->
                 OutputPath = config.NugetPackageDir }))
 )
 
+MyTarget "CreateDebugFiles" (fun _ ->
+    // creates .mdb from .pdb files
+    !! (config.GlobalPackagesDir + "/**/*.exe")
+    ++ (config.GlobalPackagesDir + "/**/*.dll")
+    |> Seq.iter (fun assembly ->
+        try
+          match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (Path.ChangeExtension (assembly, "mdb")) with
+          | true, false ->
+            // create mdb
+            trace (sprintf "Creating mdb for %s" assembly)
+            Yaaf.AdvancedBuilding.DebugSymbolHelper.writeMdbFromPdb assembly
+          | false, true ->
+            // create pdb
+            trace (sprintf "Creating pdb for %s" assembly)
+            Yaaf.AdvancedBuilding.DebugSymbolHelper.writePdbFromMdb assembly
+          | _, _ -> 
+            // either no debug symbols available or already both.
+            ()
+        with exn -> traceError (sprintf "Error creating symbols: %s" exn.Message)
+    ) 
+)
+
 MyTarget "SetVersions" (fun _ -> 
     config.SetAssemblyFileVersions config
 )
 
 MyTarget "CreateProjectFiles" (fun _ ->
-  if config.EnableProjectFileCreation then
     let generator = new ProjectGenerator("./src/templates")
     let createdFile = ref false
     let projectGenFiles =
@@ -377,6 +398,8 @@ Target "Release" (fun _ ->
     trace "All released!"
 )
 
+Target "ReadyForBuild" ignore
+
 // Clean all
 "Clean" 
   ==> "CleanAll"
@@ -384,14 +407,15 @@ Target "Release" (fun _ ->
   ==> "CleanAll_single"
 
 "Clean"
-  ==> "RestorePackages"
+  =?> ("RestorePackages", config.UseNuget)
   ==> "SetVersions"
-  ==> "CreateProjectFiles"
+  =?> ("CreateProjectFiles", config.EnableProjectFileCreation)
+  ==> "ReadyForBuild"
 
 config.BuildTargets
     |> Seq.iter (fun buildParam ->
         let buildName = sprintf "Build_%s" buildParam.SimpleBuildName
-        "CreateProjectFiles"
+        "ReadyForBuild"
           ==> buildName
           |> ignore
         buildName
@@ -408,8 +432,8 @@ config.BuildTargets
  
 "All" 
   ==> "VersionBump"
-  ==> "GithubDoc"
-  ==> "ReleaseGithubDoc"
+  =?> ("GithubDoc", config.EnableGithub)
+  =?> ("ReleaseGithubDoc", config.EnableGithub)
   ==> "NuGetPush"
   ==> "Release"
 
