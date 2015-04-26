@@ -7,7 +7,7 @@
     <authors>@authors@</authors>
     <owners>@authors@</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/Antaris/RazorEngine/blob/master/doc/LICENSE.md</licenseUrl>
+    <licenseUrl>https://github.com/Antaris/RazorEngine/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/Antaris/RazorEngine</projectUrl>
     <summary>@summary@</summary>
     <description>@description@</description>
@@ -19,6 +19,6 @@
   <files>
     <file src="release/lib/razor4/RazorEngine.dll" target="lib/net45/RazorEngine.dll" />
     <file src="release/lib/razor4/RazorEngine.xml" target="lib/net45/RazorEngine.xml" />
-    <file src="doc/LICENSE.md" target="LICENSE.md" />
+    <file src="LICENSE.md" target="LICENSE.md" />
   </files>
 </package>
