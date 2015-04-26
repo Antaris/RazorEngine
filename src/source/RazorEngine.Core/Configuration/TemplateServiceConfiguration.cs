@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using RazorEngine.Configuration.Xml;
-
-namespace RazorEngine.Configuration
+﻿namespace RazorEngine.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +9,7 @@ namespace RazorEngine.Configuration
     using Text;
     using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
+    using RazorEngine.Configuration.Xml;
 
     /// <summary>
     /// Provides a default implementation of a template service configuration.
@@ -29,30 +27,20 @@ namespace RazorEngine.Configuration
         /// </summary>
         [SecuritySafeCritical]
         public TemplateServiceConfiguration()
-
         {
-            // Read configuration values from App.config / Web.config
-            // and fallback to appropriate defaults. 
-            XmlTemplateServiceConfiguration xmlConfig = null;
-            // Fix for Release_3_6_TestFixture.RazorEngineService_Issue267Ext.
-            xmlConfig = ExecutionContextLessThread.DefaultCallFunc(() => new XmlTemplateServiceConfiguration());
-
-            Activator = xmlConfig.Activator ?? new DefaultActivator();
-            CompilerServiceFactory = xmlConfig.CompilerServiceFactory ?? new DefaultCompilerServiceFactory();
-            EncodedStringFactory = xmlConfig.EncodedStringFactory ?? new HtmlEncodedStringFactory();
+            Activator = new DefaultActivator();
+            CompilerServiceFactory = new DefaultCompilerServiceFactory();
+            EncodedStringFactory = new HtmlEncodedStringFactory();
+            
 #if !RAZOR4
 #pragma warning disable 0618 // Backwards Compat.
-            CodeInspectors = xmlConfig.CodeInspectors != null ? xmlConfig.CodeInspectors.ToList() : new List<ICodeInspector>();
+            CodeInspectors = new List<ICodeInspector>();
 #pragma warning restore 0618 // Backwards Compat.
 #endif
-            Language = xmlConfig.Language;
-            ReferenceResolver = xmlConfig.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
-            CachingProvider = xmlConfig.CachingProvider ?? new DefaultCachingProvider();
-#pragma warning disable 0618 // Backwards Compat.
-            Resolver = xmlConfig.Resolver;
-#pragma warning restore 0618 // Backwards Compat.
+
+            ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
+            CachingProvider = new DefaultCachingProvider();
             TemplateManager =
-                xmlConfig.TemplateManager ?? 
                 new DelegateTemplateManager(name => {
                     throw new ArgumentException(
                         string.Format(
@@ -66,8 +54,11 @@ namespace RazorEngine.Configuration
                                  "System.Collections.Generic", 
                                  "System.Linq"
                              };
-
-            Namespaces.UnionWith(xmlConfig.Namespaces);
+            
+            var config = RazorEngineConfigurationSection.GetConfiguration();
+            Language = (config == null)
+                           ? Language.CSharp
+                           : config.DefaultLanguage;
         }
         #endregion
 
