@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-
+    using System.Linq;
     using Templating;
 
     /// <summary>
@@ -39,7 +39,7 @@
         /// <param name="name">The name of the template.</param>
         public static void Compile(string razorTemplate, string name)
         {
-            TemplateService.Compile(razorTemplate, name);
+            TemplateService.Compile(razorTemplate, null, name);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         public static ITemplate CreateTemplate(string razorTemplate)
         {
-            return TemplateService.CreateTemplate(razorTemplate);
+            return TemplateService.CreateTemplate(razorTemplate, null, null);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@
         /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
         public static ITemplate CreateTemplate<T>(string razorTemplate, T model)
         {
-            return TemplateService.CreateTemplate(razorTemplate, model);
+            return TemplateService.CreateTemplate(razorTemplate, typeof(T), model);
         }
 
         /// <summary>
@@ -96,7 +96,9 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, bool parallel = false)
         {
-            return TemplateService.CreateTemplates(razorTemplates, parallel);
+            var l = razorTemplates.ToList();
+            return TemplateService.CreateTemplates(
+                l, Enumerable.Repeat<Type>(null, l.Count), Enumerable.Repeat<object>(null, l.Count), parallel);
         }
 
         /// <summary>
@@ -110,7 +112,9 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> CreateTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
         {
-            return TemplateService.CreateTemplates(razorTemplates, models, parallel);
+            var l = razorTemplates.ToList();
+            return TemplateService.CreateTemplates(
+                l, Enumerable.Repeat<Type>(typeof(T), l.Count), Enumerable.Cast<object>(models), parallel);
         }
 
         /// <summary>
@@ -120,7 +124,7 @@
         /// <returns>An instance of <see cref="Type"/>.</returns>
         public static Type CreateTemplateType(string razorTemplate)
         {
-            return TemplateService.CreateTemplateType(razorTemplate);
+            return TemplateService.CreateTemplateType(razorTemplate, null);
         }
 
         /// <summary>
@@ -143,7 +147,7 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, bool parallel = false)
         {
-            return TemplateService.CreateTemplateTypes(razorTemplates, parallel);
+            return TemplateService.CreateTemplateTypes(razorTemplates, null, parallel);
         }
 
         /// <summary>
@@ -156,7 +160,8 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, Type modelType, bool parallel = false)
         {
-            return TemplateService.CreateTemplateTypes(razorTemplates, modelType, parallel);
+            var l = razorTemplates.ToList();
+            return TemplateService.CreateTemplateTypes(l, Enumerable.Repeat(modelType, l.Count), parallel);
         }
 
         /// <summary>
@@ -168,7 +173,7 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         public static ITemplate GetTemplate(string razorTemplate, string name)
         {
-            return TemplateService.GetTemplate(razorTemplate, name);
+            return TemplateService.GetTemplate(razorTemplate, null, name);
         }
 
         /// <summary>
@@ -196,7 +201,7 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel = false)
         {
-            return TemplateService.GetTemplates(razorTemplates, names, parallel);
+            return TemplateService.GetTemplates(razorTemplates, null, names, parallel);
         }
 
         /// <summary>
@@ -212,7 +217,7 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<ITemplate> GetTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false)
         {
-            return TemplateService.GetTemplates(razorTemplates, models, names, parallel);
+            return TemplateService.GetTemplates(razorTemplates, Enumerable.Cast<object>(models), names, parallel);
         }
 
         /// <summary>
@@ -222,7 +227,7 @@
         /// <returns>The string result of the template.</returns>
         public static string Parse(string razorTemplate)
         {
-            return TemplateService.Parse(razorTemplate);
+            return TemplateService.Parse(razorTemplate, null, null, null);
         }
 
         /// <summary>
@@ -234,7 +239,7 @@
         /// <returns>The string result of the template.</returns>
         public static string Parse(string razorTemplate, string name)
         {
-            return TemplateService.Parse(razorTemplate, name);
+            return TemplateService.Parse(razorTemplate, null, null, name);
         }
 
         /// <summary>
@@ -245,7 +250,7 @@
         /// <returns>The string result of the template.</returns>
         public static string Parse(string razorTemplate, object model)
         {
-            return TemplateService.Parse(razorTemplate, model);
+            return TemplateService.Parse(razorTemplate, model, null, null);
         }
 
         /// <summary>
@@ -257,7 +262,7 @@
         /// <returns>The string result of the template.</returns>
         public static string Parse<T>(string razorTemplate, T model)
         {
-            return TemplateService.Parse(razorTemplate, model);
+            return TemplateService.Parse(razorTemplate, model, null, null);
         }
 
         /// <summary>
@@ -270,7 +275,20 @@
         /// <returns>The string result of the template.</returns>
         public static string Parse<T>(string razorTemplate, T model, string name)
         {
-            return TemplateService.Parse(razorTemplate, model, name);
+            return TemplateService.Parse(razorTemplate, model, null, name);
+        }
+        /// <summary>
+        /// Backwards Compat
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="razorTemplate"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string Parse<T>(string razorTemplate, T model, DynamicViewBag viewBag, string name)
+        {
+            return TemplateService.Parse(razorTemplate, model, viewBag, name);
         }
 
         /// <summary>
@@ -282,9 +300,21 @@
         /// <returns>The string result of the template.</returns>
         public static string Parse(string razorTemplate, object model, string name)
         {
-            return TemplateService.Parse(razorTemplate, model, name);
+            return TemplateService.Parse(razorTemplate, model, null, name);
         }
 
+        /// <summary>
+        /// Backwards Compat
+        /// </summary>
+        /// <param name="razorTemplate"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string Parse(string razorTemplate, object model, DynamicViewBag viewBag, string name)
+        {
+            return TemplateService.Parse(razorTemplate, model, viewBag, name);
+        }
         /// <summary>
         /// Parses the specified set of templates.
         /// </summary>
@@ -294,7 +324,7 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, bool parallel = false)
         {
-            return TemplateService.ParseMany(razorTemplates, parallel);
+            return TemplateService.ParseMany(razorTemplates, null, null, null, parallel);
         }
 
         /// <summary>
@@ -337,7 +367,7 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static IEnumerable<string> ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
         {
-            return TemplateService.ParseMany(razorTemplates, models, parallel);
+            return TemplateService.ParseMany(razorTemplates, Enumerable.Cast<object>(models), null, null, parallel);
         }
 
         /// <summary>
@@ -363,7 +393,7 @@
         /// <returns>The resolved template.</returns>
         public static ITemplate Resolve(string name)
         {
-            return TemplateService.Resolve(name);
+            return TemplateService.Resolve(name, null);
         }
 
         /// <summary>
@@ -396,7 +426,7 @@
         /// <returns>The string result of the template.</returns>
         public static string Run(string name)
         {
-            return TemplateService.Run(name);
+            return TemplateService.Run(name, null, null);
         }
 
         /// <summary>
@@ -407,7 +437,7 @@
         /// <returns>The string result of the template.</returns>
         public static string Run(string name, object model)
         {
-            return TemplateService.Run(name, model);
+            return TemplateService.Run(name, model, null);
         }
 
         /// <summary>
@@ -419,7 +449,7 @@
         /// <returns>The string result of the template.</returns>
         public static string Run<T>(string name, T model)
         {
-            return TemplateService.Run(name, model);
+            return TemplateService.Run(name, model, null);
         }
 
         /// <summary>

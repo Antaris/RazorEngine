@@ -39,7 +39,7 @@
 
                 service.Compile(layoutTemplate, type, "Parent");
 
-                string result = service.Parse(childTemplate, model);
+                string result = service.Parse(childTemplate, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -59,9 +59,9 @@
                 const string layoutTemplate = "<h1>@ViewBag.Title</h1>@RenderSection(\"Child\")";
                 const string childTemplate = "@{ Layout =  \"Parent\"; ViewBag.Title = \"Test\"; }@section Child {}";
 
-                service.Compile(layoutTemplate, "Parent");
+                service.Compile(layoutTemplate, null, "Parent");
 
-                string result = service.Parse(childTemplate);
+                string result = service.Parse(childTemplate, null, null, null);
 
                 Assert.That(result.StartsWith("<h1>Test</h1>"));
             }
@@ -138,7 +138,7 @@
             {
                 const string template = "<h1>Hello World</h1>";
 
-                service.Compile(template, "issue11");
+                service.Compile(template, null, "issue11");
             }
         }
 
@@ -157,7 +157,7 @@
                 const string expected = "<h1>Hello </h1>";
 
                 var model = new { Person = new Person { Forename = null } };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -179,7 +179,7 @@
                 object model = new { Name = "Matt" };
                 Type modelType = model.GetType();
 
-                string result = service.Parse(template, modelType, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -200,7 +200,7 @@
                 const string expected = "<h1>Hello </h1>";
 
                 var model = new { Number = (int?)null };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -217,7 +217,7 @@
             using (var service = new TemplateService())
             {
                 const string parent = "@model RazorEngine.Tests.TestTypes.Person\n<h1>@Model.Forename</h1>@RenderSection(\"Child\")";
-                service.Compile(parent, "Parent");
+                service.Compile(parent, null, "Parent");
 
                 const string child = "@{ Layout = \"Parent\"; }\n@section Child { <h2>@Model.Department</h2> }";
                 const string expected = "<h1>Matt</h1> <h2>IT</h2> ";
@@ -230,7 +230,7 @@
                     Surname = "Abbott"
                 };
 
-                string result = service.Parse(child, model);
+                string result = service.Parse(child, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }

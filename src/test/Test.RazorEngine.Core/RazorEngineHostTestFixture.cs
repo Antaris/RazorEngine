@@ -39,7 +39,7 @@ namespace RazorEngine.Tests
                 const string expected = "1";
 
                 var model = new List<Person> { new Person() { Forename = "Matt", Age = 27 } };
-                string result = service.Parse(template, (object)model);
+                string result = service.Parse(template, (object)model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -69,7 +69,7 @@ namespace RazorEngine.Tests
                 const string expected = "1";
 
                 var model = new List<Person> { new Person() { Forename = "Matt", Age = 27 } };
-                string result = service.Parse(template, (object)model);
+                string result = service.Parse(template, (object)model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }

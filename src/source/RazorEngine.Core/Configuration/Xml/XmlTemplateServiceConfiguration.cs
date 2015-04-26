@@ -241,8 +241,10 @@
             // Sets the compiler service factory.
             SetCompilerServiceFactory(config.CompilerServiceFactoryType);
 
+#pragma warning disable 0618 // Backwards Compat.
             // Sets the tempalte resolver.
             SetTemplateResolver(config.TemplateResolverType);
+#pragma warning restore 0618 // Backwards Compat.
         }
 
         /// <summary>

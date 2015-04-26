@@ -66,7 +66,7 @@ namespace RazorEngine.Tests
                 const string template = "<h1>Hello World</h1>";
                 const string expected = template;
 
-                string result = service.Parse(template);
+                string result = service.Parse(template, null, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -84,7 +84,7 @@ namespace RazorEngine.Tests
                 const string expected = "<h1>Hello Matt</h1>";
 
                 var model = new Person { Forename = "Matt" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -102,7 +102,7 @@ namespace RazorEngine.Tests
                 const string expected = "<h1>Hello Matt</h1>";
 
                 var model = new { Forename = "Matt" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -122,7 +122,7 @@ namespace RazorEngine.Tests
                 dynamic model = new ExpandoObject();
                 model.Forename = "Matt";
 
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -140,7 +140,7 @@ namespace RazorEngine.Tests
                 const string expected = "<h1>Hello Matt</h1>";
 
                 dynamic model = new ValueObject(new Dictionary<string, object> { { "Forename", "Matt" } });
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -186,7 +186,7 @@ namespace RazorEngine.Tests
                 const string expected = "<h1>Hello Matt &amp; World</h1>";
 
                 var model = new { String = "Matt & World" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -214,7 +214,7 @@ namespace RazorEngine.Tests
                 const string expected = "<h1>Hello Matt & World</h1>";
 
                 var model = new { String = "Matt & World" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -231,7 +231,7 @@ namespace RazorEngine.Tests
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10);
 
-                var results = service.ParseMany(templates, false);
+                var results = service.ParseMany(templates, null, null, null, false);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected.");
             }
@@ -248,7 +248,7 @@ namespace RazorEngine.Tests
                 const string template = "<h1>Hello World</h1>";
                 var templates = Enumerable.Repeat(template, 10);
 
-                var results = service.ParseMany(templates, true);
+                var results = service.ParseMany(templates, null, null, null, true);
 
                 Assert.That(templates.SequenceEqual(results), "Rendered templates do not match expected."); 
             }
@@ -269,7 +269,7 @@ namespace RazorEngine.Tests
                 var templates = Enumerable.Repeat(template, maxTemplates);
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
 
-                var results = service.ParseMany(templates, models, false);
+                var results = service.ParseMany(templates, models, null, null, false);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -289,7 +289,7 @@ namespace RazorEngine.Tests
                 var templates = Enumerable.Repeat(template, maxTemplates);
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
 
-                var results = service.ParseMany(templates, models, true);
+                var results = service.ParseMany(templates, models, null, null, true);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -309,7 +309,7 @@ namespace RazorEngine.Tests
                 var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
 
-                var results = service.ParseMany(template, models, true /* Parallel */);
+                var results = service.ParseMany(Enumerable.Repeat(template, maxTemplates), Enumerable.Cast<object>(models), null, null, true /* Parallel */);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -329,7 +329,8 @@ namespace RazorEngine.Tests
                 var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
 
-                var results = service.ParseMany(template, models, false /* Sequence */);
+                var results = service.ParseMany(
+                    Enumerable.Repeat(template, maxTemplates), Enumerable.Cast<object>(models), null, null, false /* Sequence */);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }
@@ -356,7 +357,7 @@ namespace RazorEngine.Tests
                 {
                     var model = new Person { Age = index };
                     string expected = "<h1>Hello you are " + index + "</h1>";
-                    string result = service.Parse(template, model);
+                    string result = service.Parse(template, model, null, null);
 
                     Assert.That(result == expected, "Result does not match expected: " + result);
                 });
@@ -396,7 +397,7 @@ namespace RazorEngine.Tests
                 var model = new Person { Age = index };
                 var item = new ThreadPoolItem<Person>(model, resetEvents[index], m =>
                 {
-                    string result = service.Parse(template, model);
+                    string result = service.Parse(template, model, null, null);
 
                     Assert.That(result == expected, "Result does not match expected: " + result);
                 });
@@ -421,9 +422,9 @@ namespace RazorEngine.Tests
                 const string template = "Hello World";
                 const string expected = "Hello World";
 
-                service.Compile(template, "test");
+                service.Compile(template, null, "test");
 
-                string result = service.Run("test");
+                string result = service.Run("test", null, null);
 
                 Assert.That(result == expected, "Result does not match expected.");
             }
@@ -461,9 +462,9 @@ namespace RazorEngine.Tests
 
                 var model = new Person { Forename = "Matt" };
 
-                service.Compile<Person>(template, "test");
+                service.Compile(template, typeof(Person), "test");
 
-                string result = service.Run("test", model);
+                string result = service.Run("test", model, null);
 
                 Assert.That(result == expected, "Result does not match expected.");
             }

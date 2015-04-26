@@ -9,6 +9,7 @@
     using Text;
     using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
+    using RazorEngine.Configuration.Xml;
 
     /// <summary>
     /// Provides a default implementation of a template service configuration.

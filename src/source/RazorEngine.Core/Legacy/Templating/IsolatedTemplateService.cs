@@ -138,32 +138,11 @@
         /// Compiles the specified template.
         /// </summary>
         /// <param name="razorTemplate">The string template.</param>
-        /// <param name="name">The name of the template.</param>
-        public void Compile(string razorTemplate, string name)
-        {
-            _proxy.Compile(razorTemplate, name);
-        }
-
-        /// <summary>
-        /// Compiles the specified template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
         /// <param name="modelType">The model type.</param>
         /// <param name="name">The name of the template.</param>
         public void Compile(string razorTemplate, Type modelType, string name)
         {
             _proxy.Compile(razorTemplate, modelType, name);
-        }
-
-        /// <summary>
-        /// Compiles the specified template.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="name">The name of the template.</param>
-        public void Compile<T>(string razorTemplate, string name)
-        {
-            _proxy.Compile(razorTemplate, name);
         }
 
         /// <summary>
@@ -183,131 +162,6 @@
             return domain;
         }
 
-        /// <summary>
-        /// Creates an instance of <see cref="ITemplate"/> from the specified string template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
-        public ITemplate CreateTemplate(string razorTemplate)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.CreateTemplate(razorTemplate);
-        }
-
-        /// <summary>
-        /// Creates an instance of <see cref="ITemplate{T}"/> from the specified string template.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="model">The model instance.</param>
-        /// <returns>An instance of <see cref="ITemplate{T}"/>.</returns>
-        public ITemplate CreateTemplate<T>(string razorTemplate, T model)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(typeof(T)))
-                    throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.CreateTemplate(razorTemplate, model);
-            }
-
-        /// <summary>
-        /// Creates a set of templates from the specified string templates.
-        /// </summary>
-        /// <param name="razorTemplates">The set of templates to create <see cref="ITemplate"/> instances for.</param>
-        /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
-        /// <returns>The enumerable set of template instances.</returns>
-        public IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.CreateTemplates(razorTemplates, parallel);
-        }
-
-        /// <summary>
-        /// Creates a set of templates from the specified string templates and models.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The set of templates to create <see cref="ITemplate"/> instances for.</param>
-        /// <param name="models">The set of models used to assign to templates.</param>
-        /// <param name="parallel">Flag to determine whether to create templates in parallel.</param>
-        /// <returns>The enumerable set of template instances.</returns>
-        public IEnumerable<ITemplate> CreateTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(typeof(T)))
-                            throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.CreateTemplates(razorTemplates, models, parallel);
-                    }
-
-        /// <summary>
-        /// Creates a <see cref="Type"/> that can be used to instantiate an instance of a template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <returns>An instance of <see cref="Type"/>.</returns>
-        public Type CreateTemplateType(string razorTemplate)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.CreateTemplateType(razorTemplate);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="Type"/> that can be used to instantiate an instance of a template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="modelType">The model type.</param>
-        /// <returns>An instance of <see cref="Type"/>.</returns>
-        public Type CreateTemplateType(string razorTemplate, Type modelType)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(modelType))
-                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.CreateTemplateType(razorTemplate, modelType);
-        }
-
-        /// <summary>
-        /// Crates a set of template types from the specfied string templates.
-        /// </summary>
-        /// <param name="razorTemplates">The set of templates to create <see cref="Type"/> instances for.</param>
-        /// <param name="parallel">Flag to determine whether to create template types in parallel.</param>
-        /// <returns>The set of <see cref="Type"/> instances.</returns>
-        public IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.CreateTemplateTypes(razorTemplates, parallel);
-        }
-
-        /// <summary>
-        /// Creates a set of template types from the specfied string templates.
-        /// </summary>
-        /// <param name="razorTemplates">The set of templates to create <see cref="Type"/> instances for.</param>
-        /// <param name="modelType">The model type.</param>
-        /// <param name="parallel">Flag to determine whether to create template types in parallel.</param>
-        /// <returns>The set of <see cref="Type"/> instances.</returns>
-        public IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, Type modelType, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (modelType != null && CompilerServicesUtility.IsDynamicType(modelType))
-                        throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.CreateTemplateTypes(razorTemplates, modelType, parallel);
-        }
 
         /// <summary>
         /// Releases resources used by this instance.
@@ -336,20 +190,6 @@
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Gets an instance of the template using the cached compiled type, or compiles the template type
-        /// if it does not exist in the cache.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="name">The name of the template type in the cache.</param>
-        /// <returns>An instance of <see cref="ITemplate"/>.</returns>
-        public ITemplate GetTemplate(string razorTemplate, string name)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.GetTemplate(razorTemplate, name);
-        }
 
         /// <summary>
         /// Gets an instance of the template using the cached compiled type, or compiles the template type
@@ -371,42 +211,7 @@
             return _proxy.GetTemplate(razorTemplate, model, name);
         }
 
-        /// <summary>
-        /// Gets the set of template instances for the specified string templates. Cached templates will be considered
-        /// and if they do not exist, new types will be created and instantiated.
-        /// </summary>
-        /// <param name="razorTemplates">The set of templates to create.</param>
-        /// <param name="names">The set of cache names.</param>
-        /// <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
-        /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
-        public IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
 
-            return _proxy.GetTemplates(razorTemplates, names, parallel);
-        }
-
-        /// <summary>
-        /// Gets the set of template instances for the specified string templates. Cached templates will be considered
-        /// and if they do not exist, new types will be created and instantiated.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The set of templates to create.</param>
-        /// <param name="models">The set of models.</param>
-        /// <param name="names">The set of cache names.</param>
-        /// <param name="parallel">Flag to determine whether to get the templates in parallel.</param>
-        /// <returns>The set of <see cref="ITemplate"/> instances.</returns>
-        public IEnumerable<ITemplate> GetTemplates<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel = false)
-                    {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(typeof(T)))
-                            throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.GetTemplates(razorTemplates, models, names, parallel);
-        }
 
         /// <summary>
         /// Returns whether or not a template by the specified name has been created already.
@@ -427,135 +232,6 @@
         {
             return _proxy.RemoveTemplate(cacheName);
         }
-
-        /// <summary>
-        /// Parses and returns the result of the specified string template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Parse(string razorTemplate)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.Parse(razorTemplate);
-        }
-
-        /// <summary>
-        /// Parses and returns the result of the specified string template. 
-        /// This method will provide a cache check to see if the compiled template type already exists and is valid.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="name">The name of the cached template type.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Parse(string razorTemplate, string name)
-            {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.Parse(razorTemplate, name);
-        }
-
-        /// <summary>
-        /// Parses and returns the result of the specified string template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="model">The model instance.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Parse(string razorTemplate, object model)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(model.GetType()))
-                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.Parse(razorTemplate, model);
-            }
-
-        /// <summary>
-        /// Parses and returns the result of the specified string template.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="model">The model instance.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Parse<T>(string razorTemplate, T model)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(typeof(T)))
-                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.Parse(razorTemplate, model);
-        }
-
-        /// <summary>
-        /// Parses and returns the result of the specified string template.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="model">The model instance.</param>
-        /// <param name="name">The name of the template type in the cache.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Parse<T>(string razorTemplate, T model, string name)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(typeof(T)))
-                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.Parse(razorTemplate, model, name);
-        }
-
-        /// <summary>
-        /// Parses and returns the result of the specified string template.
-        /// </summary>
-        /// <param name="razorTemplate">The string template.</param>
-        /// <param name="model">The model instance.</param>
-        /// <param name="name">The name of the template type in the cache.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Parse(string razorTemplate, object model, string name)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(model.GetType()))
-                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.Parse(razorTemplate, model, name);
-        }
-
-        /// <summary>
-        /// Parses the specified set of templates.
-        /// </summary>
-        /// <param name="razorTemplates">The set of string templates to partse.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The set of parsed template results.</returns>
-        IEnumerable<string> ITemplateService.ParseMany(IEnumerable<string> razorTemplates, bool parallel)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.ParseMany(razorTemplates, parallel);
-        }
-
-        /// <summary>
-        /// Parses the specified array of templates.
-        /// </summary>
-        /// <param name="razorTemplates">The array of string templates to partse.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The array of parsed template results.</returns>
-        public string[] ParseMany(string[] razorTemplates, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.ParseMany(razorTemplates, parallel).ToArray();
-        }
-
         /// <summary>
         /// Parses and returns the result of the specified string template.
         /// </summary>
@@ -578,134 +254,6 @@
             return _proxy.Parse<T>(razorTemplate, model, viewBag, cacheName);
         }
 
-        /// <summary>
-        /// Parses the specified set of templates.
-        /// </summary>
-        /// <param name="razorTemplates">The set of string templates to partse.</param>
-        /// <param name="names">The set of cache names.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The set of parsed template results.</returns>
-        IEnumerable<string> ITemplateService.ParseMany(IEnumerable<string> razorTemplates, IEnumerable<string> names, bool parallel)
-        {
-            return ParseMany(razorTemplates.ToArray(), names.ToArray(), parallel);
-        }
-
-        /// <summary>
-        /// Parses the specified array of templates.
-        /// </summary>
-        /// <param name="razorTemplates">The array of string templates to partse.</param>
-        /// <param name="names">The array of cache names.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The array of parsed template results.</returns>
-        public string[] ParseMany(string[] razorTemplates, string[] names, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            return _proxy.ParseMany(razorTemplates, names, parallel).ToArray();
-        }
-
-        /// <summary>
-        /// Parses the template and merges with the many models provided.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplate">The razor template.</param>
-        /// <param name="models">The set of models.</param>
-        /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
-        /// <returns>The set of parsed template results.</returns>
-        IEnumerable<string> ITemplateService.ParseMany<T>(string razorTemplate, IEnumerable<T> models, bool parallel)
-        {
-            return ParseMany(razorTemplate, models.ToArray(), parallel);
-        }
-
-        /// <summary>
-        /// Parses the template and merges with the many models provided.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplate">The razor template.</param>
-        /// <param name="models">The array of models.</param>
-        /// <param name="parallel">Flag to determine whether parsing in parallel.</param>
-        /// <returns>The array of parsed template results.</returns>
-        public string[] ParseMany<T>(string razorTemplate, T[] models, bool parallel = false)
-        {
-            return _proxy.ParseMany(razorTemplate, models, parallel).ToArray();
-        }
-
-        /// <summary>
-        /// Parses the specified set of templates.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The set of string templates to partse.</param>
-        /// <param name="models">The set of models.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The set of parsed template results.</returns>
-        IEnumerable<string> ITemplateService.ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, bool parallel)
-            {
-            return ParseMany(razorTemplates.ToArray(), models.ToArray(), parallel);
-        }
-
-        /// <summary>
-        /// Parses the specified array of templates.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The array of string templates to partse.</param>
-        /// <param name="models">The array of models.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The array of parsed template results.</returns>
-        public string[] ParseMany<T>(string[] razorTemplates, T[] models, bool parallel = false)
-                {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(typeof(T)))
-                        throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.ParseMany(razorTemplates, models, parallel).ToArray();
-                }
-
-        /// <summary>
-        /// Parses the specified set of templates.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The set of string templates to partse.</param>
-        /// <param name="models">The set of models.</param>
-        /// <param name="names">The set of cache names.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The set of parsed template results.</returns>
-        IEnumerable<string> ITemplateService.ParseMany<T>(IEnumerable<string> razorTemplates, IEnumerable<T> models, IEnumerable<string> names, bool parallel)
-        {
-            return ParseMany(razorTemplates.ToArray(), models.ToArray(), names.ToArray(), parallel);
-            }
-
-        /// <summary>
-        /// Parses the specified array of templates.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="razorTemplates">The array of string templates to partse.</param>
-        /// <param name="models">The array of models.</param>
-        /// <param name="names">The array of cache names.</param>
-        /// <param name="parallel">Flag to determine whether parsing in templates.</param>
-        /// <returns>The array of parsed template results.</returns>
-        public string[] ParseMany<T>(string[] razorTemplates, T[] models, string[] names, bool parallel = false)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("IsolatedTemplateService");
-
-            if (CompilerServicesUtility.IsDynamicType(typeof(T)))
-                throw new ArgumentException("IsolatedTemplateService instances do not support anonymous or dynamic types.");
-
-            return _proxy.ParseMany(razorTemplates, models, names, parallel).ToArray(); 
-        }
-
-        /// <summary>
-        /// Resolves the template with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the template.</param>
-        /// <returns>The resolved template.</returns>
-        ITemplate ITemplateService.Resolve(string name)
-        {
-            return _proxy.Resolve(name);
-        }
 
         /// <summary>
         /// Resolves the template with the specified name.
@@ -718,50 +266,149 @@
             return _proxy.Resolve(name, model);
         }
 
-        /// <summary>
-        /// Resolves the template with the specified name.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name">The name of the template.</param>
-        /// <param name="model">The model for the template.</param>
-        /// <returns>The resolved template.</returns>
-        ITemplate ITemplateService.Resolve<T>(string name, T model)
-        {
-            return _proxy.Resolve(name, model);
-        }
-
-        /// <summary>
-        /// Runs the template with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the template.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Run(string name)
-        {
-            return _proxy.Run(name);
-        }
-
-        /// <summary>
-        /// Runs the template with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the template.</param>
-        /// <param name="model">The model.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Run(string name, object model)
-        {
-            return _proxy.Run(name, model);
-        }
-
-        /// <summary>
-        /// Runs the template with the specified name.
-        /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
-        /// <param name="name">The name of the template.</param>
-        /// <param name="model">The model.</param>
-        /// <returns>The string result of the template.</returns>
-        public string Run<T>(string name, T model)
-        {
-            return _proxy.Run(name, model);
-        }
         #endregion
+        private void CheckDisposed()
+        {
+            if (disposed)
+                throw new ObjectDisposedException("IsolatedTemplateService");
+        }
+
+        /// <summary>
+        /// Backwards Compat
+        /// </summary>
+        /// <param name="razorTemplate"></param>
+        /// <param name="templateType"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ITemplate CreateTemplate(string razorTemplate, Type templateType, object model)
+        {
+            CheckDisposed();
+            return _proxy.CreateTemplate(razorTemplate, templateType, model);
+        }
+
+        /// <summary>
+        /// Backwards Compat
+        /// </summary>
+        /// <param name="razorTemplates"></param>
+        /// <param name="templateTypes"></param>
+        /// <param name="models"></param>
+        /// <param name="parallel"></param>
+        /// <returns></returns>
+        public IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, IEnumerable<Type> templateTypes, IEnumerable<object> models, bool parallel = false)
+        {
+            CheckDisposed();
+            return _proxy.CreateTemplates(razorTemplates, templateTypes, models, parallel);
+        }
+
+        /// <summary>
+        /// Backwards Compat
+        /// </summary>
+        /// <param name="razorTemplate"></param>
+        /// <param name="model"></param>
+        /// <param name="cacheName"></param>
+        /// <returns></returns>
+        public ITemplate GetTemplate(string razorTemplate, object model, string cacheName)
+        {
+            CheckDisposed();
+            return _proxy.GetTemplate(razorTemplate, model, cacheName);
+        }
+
+        /// <summary>
+        /// Backwards Compat
+        /// </summary>
+        /// <param name="razorTemplates"></param>
+        /// <param name="models"></param>
+        /// <param name="cacheNames"></param>
+        /// <param name="parallel"></param>
+        /// <returns></returns>
+        public IEnumerable<ITemplate> GetTemplates(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<string> cacheNames, bool parallel = false)
+        {
+            CheckDisposed();
+            return _proxy.GetTemplates(razorTemplates, models, cacheNames, parallel);
+        }
+
+        /// <summary>
+        /// Backwards Compat
+        /// </summary>
+        /// <param name="razorTemplate"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        /// <param name="cacheName"></param>
+        /// <returns></returns>
+        public string Parse(string razorTemplate, object model, DynamicViewBag viewBag, string cacheName)
+        {
+            CheckDisposed();
+            if (model != null && 
+                (CompilerServicesUtility.IsAnonymousType(model.GetType()) || CompilerServicesUtility.IsDynamicType(model.GetType())))
+            {
+                throw new ArgumentException("Anonymous types are not supported (use the new RazorEngineService/IsolatedRazorEngineService API)");
+            }
+            return _proxy.Parse(razorTemplate, model, viewBag, cacheName);
+        }
+
+        /// <summary>
+        /// Backwards compat
+        /// </summary>
+        /// <param name="razorTemplates"></param>
+        /// <param name="models"></param>
+        /// <param name="viewBags"></param>
+        /// <param name="cacheNames"></param>
+        /// <param name="parallel"></param>
+        /// <returns></returns>
+        public IEnumerable<string> ParseMany(IEnumerable<string> razorTemplates, IEnumerable<object> models, IEnumerable<DynamicViewBag> viewBags, IEnumerable<string> cacheNames, bool parallel)
+        {
+            CheckDisposed();
+            return _proxy.ParseMany(razorTemplates, models, viewBags, cacheNames, parallel);
+        }
+
+        /// <summary>
+        /// Backwards compat
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        /// <returns></returns>
+        public string Run(string name, object model, DynamicViewBag viewBag)
+        {
+            CheckDisposed();
+            return _proxy.Run(name, model, viewBag);
+        }
+
+        /// <summary>
+        /// Backwards compat.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="viewBag"></param>
+        /// <returns></returns>
+        public string Run(ITemplate template, DynamicViewBag viewBag)
+        {
+            CheckDisposed();
+            return _proxy.Run(template, viewBag);
+        }
+
+        /// <summary>
+        /// Backwards compat
+        /// </summary>
+        /// <param name="razorTemplate"></param>
+        /// <param name="modelType"></param>
+        /// <returns></returns>
+        public Type CreateTemplateType(string razorTemplate, Type modelType)
+        {
+            CheckDisposed();
+            return _proxy.CreateTemplateType(razorTemplate, modelType);
+        }
+
+        /// <summary>
+        /// Backwards compat.
+        /// </summary>
+        /// <param name="razorTemplates"></param>
+        /// <param name="modelTypes"></param>
+        /// <param name="parallel"></param>
+        /// <returns></returns>
+        public IEnumerable<Type> CreateTemplateTypes(IEnumerable<string> razorTemplates, IEnumerable<Type> modelTypes, bool parallel = false)
+        {
+            CheckDisposed();
+            return _proxy.CreateTemplateTypes(razorTemplates, modelTypes, parallel);
+        }
     }
 }

@@ -35,7 +35,7 @@
                 const string expected = "<h1>Hello <</h1>";
 
                 var model = new { Name = "<" };
-                string result = service.Parse(template, model);
+                string result = service.Parse(template, model, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -55,8 +55,8 @@
 
                 /* GetTemplate is the simplest method for compiling and caching a template without using a 
                  * resolver to locate the layout template at a later time in exection. */
-                service.GetTemplate(parent, "Parent");
-                string result = service.Parse(template);
+                service.GetTemplate(parent, null, "Parent");
+                string result = service.Parse(template, null, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -111,9 +111,9 @@
                 const string template = @"@{Layout = ""Parent"";}@section ChildMessage {<span>Hello from Child</span>}<p>This is child content</p>";
                 const string expected = "<div>Message from Child Template (section): <span>Hello from Child</span></div><div>Message from Parent Template (section): <span>Hello from Parent</span></div><div>Content from Parent Template (body): <p>Child content: <p>This is child content</p></p></div>";
 
-                service.GetTemplate(parent, "Parent");
-                service.GetTemplate(grandparent, "GrandParent");
-                string result = service.Parse(template);
+                service.GetTemplate(parent, null, "Parent");
+                service.GetTemplate(grandparent, null, "GrandParent");
+                string result = service.Parse(template, null, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -131,8 +131,8 @@
                 const string template = "@Include(\"Child\")";
                 const string expected = "<div>Content from child</div>";
 
-                service.GetTemplate(child, "Child");
-                string result = service.Parse(template);
+                service.GetTemplate(child, null, "Child");
+                string result = service.Parse(template, null, null, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
