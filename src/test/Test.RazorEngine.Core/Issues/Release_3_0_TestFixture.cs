@@ -1,7 +1,6 @@
 ﻿namespace RazorEngine.Tests.TestTypes.Issues
 {
     using System;
-    using System.Collections.Generic;
     using Microsoft.CSharp.RuntimeBinder;
 
     using NUnit.Framework;
@@ -178,6 +177,7 @@
                 const string expected = "Matt";
 
                 object model = new { Name = "Matt" };
+                Type modelType = model.GetType();
 
                 string result = service.Parse(template, model, null, null);
 
@@ -231,149 +231,6 @@
                 };
 
                 string result = service.Parse(child, model, null, null);
-
-                Assert.That(result == expected, "Result does not match expected: " + result);
-            }
-        }
-
-        /// <summary>
-        /// Requested functionality to allow deep nulls on dynamic models to fail silently without throwing exceptions.
-        /// 
-        /// Issue 22: https://github.com/Antaris/RazorEngine/issues/22
-        /// </summary>
-        [Test]
-        public void Issue22_MissingDynamicPropertiesCausesException()
-        {
-            using (var service = new TemplateService(new TemplateServiceConfiguration()
-                                                     {
-                                                         AllowMissingPropertiesOnDynamic = true
-                                                     }))
-            {
-                const string template = "Missing property: @Model.Something.SomethingElse";
-                const string expected = "Missing property: ";
-
-                var model = new { Name = "Matt" };
-
-                string result = service.Parse(template, model, null, null);
-
-                Assert.That(result == expected, "Result does not match expected: " + result);
-            }
-        }
-
-        /// <summary>
-        /// ViewBag initialization not possible outside of template.
-        /// 
-        /// Issue 26: https://github.com/Antaris/RazorEngine/issues/26
-        /// </summary>
-        [Test]
-        public void Issue26_ViewBagInitializationOutsideOfTemplate()
-        {
-            using (var service = new TemplateService())
-            {
-                const string template = "@ViewBag.TestValue";
-                const string expected = "This is a test";
-
-                DynamicViewBag viewBag = new DynamicViewBag();
-                viewBag.AddValue("TestValue", "This is a test");
-
-                string result = service.Parse(template, null, viewBag, null);
-
-                Assert.That(result == expected, "Result does not match expected: " + result);
-            }
-        }
-
-        /// <summary>
-        /// StreamLining the ITemplateServiceAPI.
-        /// 
-        /// Issue 27: https://github.com/Antaris/RazorEngine/issues/27
-        /// </summary>
-        /// <remarks>
-        /// Streamlining the interface did not change funcionality - it just consolidated
-        /// overloads into a single methods to simplify Interface implementation.
-        /// <br/><br/>
-        /// There is one exception - the CreateTemplates() method.
-        /// This was enhanced to:<br/>
-        ///     1) Allow a NULL razorTemplates parameter if templateTypes are specified.<br/>
-        ///     2) Allow a NULL templateTypes parameter if razorTemplates are specified.<br/>
-        ///     3) Allow both razorTemplates / templateTypes to be specified and have some templates and some templates dynamically compiled.
-        /// <br/><br/>
-        /// This test case tests for success and exception conditions in features 1-3.
-        /// </remarks>
-        [Test]
-        public void Issue27_StreamLiningTheITemplateServiceApi_CreateTemplates()
-        {
-            string[] razorTemplates;
-            Type[] templateTypes;
-            int index;
-
-            using (var service = new TemplateService())
-            {
-                // Success case
-                razorTemplates = new string[] { "Template1", "Template2", "Template3" };
-                templateTypes = new Type[] { null, null, null };
-                IEnumerable<ITemplate> instances = service.CreateTemplates(razorTemplates, templateTypes, null, false);
-
-                index = 0;
-                foreach (ITemplate instance in instances)
-                {
-                    string expected = razorTemplates[index];
-                    string result = service.Run(instance, null);
-                    Assert.That(result == expected, "Result does not match expected: " + result);
-                    index++;
-                }
-
-                // No razorTemplates or templateTypes provided
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    service.CreateTemplates(null, null, null, false);
-                });
-
-                // Unbalanced razorTemplates/templateTypes (templateTypes to small)
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    razorTemplates = new string[] { "Template1", "Template2", "Template3" };
-                    templateTypes = new Type[] { null, null };
-                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
-                });
-
-                // Unbalanced razorTemplates/templateTypes (templateTypes too large)
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    razorTemplates = new string[] { "Template1", "Template2", "Template3" };
-                    templateTypes = new Type[] { null, null, null, null };
-                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
-                });
-
-                // Unbalanced razorTemplates/templateTypes (razorTemplates and templateTypes are NULL)
-                Assert.Throws<ArgumentException>(() =>
-                {
-                    razorTemplates = new string[] { "Template1", "Template2", null };
-                    templateTypes = new Type[] { null, null, null };
-                    service.CreateTemplates(razorTemplates, templateTypes, null, false);
-                });
-            }
-        }
-
-        /// <summary>
-        /// Dynamic ViewBag properties should be persisted to the viewbag used for include templates.
-        /// 
-        /// Issue 133: https://github.com/Antaris/RazorEngine/issues/133
-        /// </summary>
-        [Test]
-        public void Issue133_ViewBagShouldPersistToIncludes()
-        {
-            using (var service = new TemplateService())
-            {
-                const string child = "<h1>@ViewBag.Name</h1>";
-                const string template = "@Include(\"Child\")";
-                const string expected = "<h1>Matt</h1>";
-
-                dynamic bag = new DynamicViewBag();
-                bag.Name = "Matt";
-
-
-                service.GetTemplate(child, null, "Child");
-                string result = service.Parse(template, null, bag, null);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }

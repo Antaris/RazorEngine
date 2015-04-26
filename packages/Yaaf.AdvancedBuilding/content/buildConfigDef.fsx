@@ -83,6 +83,8 @@ type BuildConfiguration =
     CopyrightNotice : string
     ProjectDescription : string
     ProjectAuthors : string list
+    /// Enable all github integrations (pushing documentation)
+    EnableGithub : bool
     GithubUser : string
     /// Defaults to ProjectName
     GithubProject : string
@@ -140,6 +142,7 @@ type BuildConfiguration =
       CopyrightNotice = ""
       ProjectDescription = ""
       UseNuget = false
+      EnableGithub = true
       EnableProjectFileCreation = false
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]
@@ -192,18 +195,21 @@ type BuildConfiguration =
         else None}
   member x.GithubUrl = sprintf "https://github.com/%s/%s" x.GithubUser x.GithubProject
   member x.FillDefaults () =
+    let x =
+      { x with
+          NugetUrl =
+            if String.IsNullOrEmpty x.NugetUrl then sprintf "https://www.nuget.org/packages/%s/" x.ProjectName else x.NugetUrl
+          GithubProject = if String.IsNullOrEmpty x.GithubProject then x.ProjectName else x.GithubProject
+          GeneratedFileList =
+            if x.GeneratedFileList |> List.isEmpty |> not then x.GeneratedFileList
+            else [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ]
+          LayoutRoots =
+            if not x.LayoutRoots.IsEmpty then x.LayoutRoots
+            else [ x.DocTemplatesDir; x.DocTemplatesDir @@ "reference" ] }
+    // GithubUrl is now available
     { x with
-        NugetUrl =
-          if String.IsNullOrEmpty x.NugetUrl then sprintf "https://www.nuget.org/packages/%s/" x.ProjectName else x.NugetUrl
-        GithubProject = if String.IsNullOrEmpty x.GithubProject then x.ProjectName else x.GithubProject
-        IssuesUrl = if String.IsNullOrEmpty x.IssuesUrl then sprintf "%s/issues" x.GithubUrl else x.IssuesUrl
-        FileNewIssueUrl =
-          if String.IsNullOrEmpty x.FileNewIssueUrl then sprintf "%s/issues/new" x.GithubUrl else x.FileNewIssueUrl
-        SourceReproUrl =
-          if String.IsNullOrEmpty x.SourceReproUrl then x.GithubUrl + "/blob/master/" else x.SourceReproUrl
-        GeneratedFileList =
-          if x.GeneratedFileList |> List.isEmpty |> not then x.GeneratedFileList
-          else [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ]
-        LayoutRoots =
-          if not x.LayoutRoots.IsEmpty then x.LayoutRoots
-          else [ x.DocTemplatesDir; x.DocTemplatesDir @@ "reference" ]}
+          SourceReproUrl =
+            if String.IsNullOrEmpty x.SourceReproUrl then x.GithubUrl + "/blob/master/" else x.SourceReproUrl
+          IssuesUrl = if String.IsNullOrEmpty x.IssuesUrl then sprintf "%s/issues" x.GithubUrl else x.IssuesUrl
+          FileNewIssueUrl =
+            if String.IsNullOrEmpty x.FileNewIssueUrl then sprintf "%s/issues/new" x.GithubUrl else x.FileNewIssueUrl }

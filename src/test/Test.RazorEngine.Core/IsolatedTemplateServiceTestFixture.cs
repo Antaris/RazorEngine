@@ -97,7 +97,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         /// Tests that a simple template with a model can be parsed.
         /// </summary>
         [Test]
-        public void IsolatedTemplateService_CanParseSimpleTemplate_WithComplexSerializableModel()
+        public void IsolatedTemplateService_CanParseSimpleTemplate_WithComplexSerialisableModel()
         {
             using (var service = new IsolatedTemplateService())
             {
@@ -112,10 +112,10 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         }
 
         /// <summary>
-        /// Tests that a simple template with a non-serializable model cannot be parsed.
+        /// Tests that a simple template with a non-serialisable model cannot be parsed.
         /// </summary>
         [Test] 
-        public void IsolatedTemplateService_CannotParseSimpleTemplate_WithComplexNonSerializableModel()
+        public void IsolatedTemplateService_CannotParseSimpleTemplate_WithComplexNonSerialisableModel()
         {
             using (var service = new IsolatedTemplateService())
             {
@@ -357,6 +357,46 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
 
                 var results = service.ParseMany(templates, models, null, null, true);
+                Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
+            }
+        }
+
+        /// <summary>
+        /// Tests that the template service can parse and run multiple templates based off a single source template.
+        /// This is processed in parallel.
+        /// </summary>
+        [Test]
+        public void IsolatedTemplateService_CanParseSingleTemplateInParallel_WithMultipleModels()
+        {
+            const int maxTemplates = 10;
+
+            using (var service = new IsolatedTemplateService())
+            {
+                const string template = "<h1>Age: @Model.Age</h1>";
+                var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
+                var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
+
+                var results = service.ParseMany(Enumerable.Repeat(template, maxTemplates).ToArray(), models, null, null, true /* Parallel */);
+                Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
+            }
+        }
+
+        /// <summary>
+        /// Tests that the template service can parse and run multiple templates based off a single source template.
+        /// This is processed in sequence.
+        /// </summary>
+        [Test]
+        public void IsolatedTemplateService_CanParseSingleTemplateInSequence_WithMultipleModels()
+        {
+            const int maxTemplates = 10;
+
+            using (var service = new IsolatedTemplateService())
+            {
+                const string template = "<h1>Age: @Model.Age</h1>";
+                var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
+                var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i }).ToArray();
+
+                var results = service.ParseMany(Enumerable.Repeat(template, maxTemplates).ToArray(), models, null, null, false /* Sequence */);
                 Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
             }
         }

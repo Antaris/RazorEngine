@@ -12,43 +12,104 @@
     public class DynamicViewBag : DynamicObject
     {
         #region Fields
-        private readonly IDictionary<string, object> _dict;
+        private readonly IDictionary<string, object> _dict = 
+            new System.Collections.Generic.Dictionary<string, object>();
         #endregion
-
         /// <summary>
-        /// Initialises a new instance of <see cref="DynamicViewBag"/>
+        /// Create a new DynamicViewBag.
         /// </summary>
         public DynamicViewBag()
-            : this((IDictionary<string, object>)null)
         {
         }
 
         /// <summary>
-        /// Initialises a new instance of <see cref="DynamicViewBag"/>
+        /// Create a new DynamicViewBag by copying the given dictionary.
         /// </summary>
-        /// <param name="viewbag">The parent view bag.</param>
-        public DynamicViewBag(DynamicViewBag viewbag)
-            : this(viewbag == null ? (IDictionary<string,object>) null : viewbag._dict)
-        {
-        }
-
-        /// <summary>
-        /// Initialises a new instance of <see cref="DynamicViewBag"/>
-        /// </summary>
-        /// <param name="dictionary">A dictionary to copy.</param>
+        /// <param name="dictionary"></param>
         public DynamicViewBag(IDictionary<string, object> dictionary)
+            : this()
         {
-            if (dictionary != null)
+            AddDictionary(dictionary);
+        }
+
+        /// <summary>
+        /// Create a copy of the given DynamicViewBag.
+        /// </summary>
+        /// <param name="viewbag"></param>
+        public DynamicViewBag(DynamicViewBag viewbag)
+            : this(viewbag._dict)
+        {
+        }
+
+
+        #region Methods
+
+        /// <summary>
+        /// Add the given dictionary to the current DynamicViewBag
+        /// </summary>
+        /// <param name="valueDictionary"></param>
+        [Obsolete("Use the generic AddDictionary overload instead")]
+        public void AddDictionaryValues(System.Collections.IDictionary valueDictionary)
+        {
+            foreach (DictionaryEntry item in valueDictionary)
             {
-                _dict = new Dictionary<string, object>(dictionary);
-            }
-            else
-            {
-                _dict = new Dictionary<string, object>();
+                _dict.Add(item.Key.ToString(), item.Value);
             }
         }
 
-        #region DynamicObject Overrides
+        /// <summary>
+        /// Adds the given dictionary to the current DynamicViewBag instance.
+        /// </summary>
+        /// <param name="dictionary"></param>
+        public void AddDictionary(IDictionary<string, object> dictionary)
+        {
+            foreach (var item in dictionary)
+            {
+                _dict.Add(item.Key, item.Value);
+            }
+        }
+
+        /// <summary>
+        /// Add the given dictionary to the current DynamicViewBag
+        /// </summary>
+        /// <param name="valueDictionary"></param>
+        [Obsolete("Use the generic AddDictionary overload instead")]
+        public void AddDictionaryValuesEx(IDictionary<string, object> valueDictionary)
+        {
+            AddDictionary(valueDictionary);
+        }
+
+        /// <summary>
+        /// Adds the given list by evaluating the given property name.
+        /// </summary>
+        /// <param name="valueList"></param>
+        /// <param name="keyPropertyName"></param>
+        [Obsolete("Use the generic AddDictionary or AddValue overload instead")]
+        public void AddListValues(IList valueList, string keyPropertyName)
+        {
+            foreach (var item in valueList)
+            {
+                var t = item.GetType();
+                var prop = t.GetProperty(keyPropertyName);
+                if (prop == null)
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Property {0} was not found in {1}", keyPropertyName, t));
+                }
+                var indx = prop.GetValue(item, null);
+                _dict.Add(indx.ToString(), item);
+            }
+        }
+
+        /// <summary>
+        /// Adds a single value.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        public void AddValue(string propertyName, object value) 
+        {
+            _dict.Add(propertyName, value);
+        }
 
         /// <summary>
         /// Gets the set of dynamic member names.
@@ -90,133 +151,6 @@
 
             return true;
         }
-
-        #endregion
-
-        #region Helper Methods
-
-        /// <summary>
-        /// Set a value in this instance of DynamicViewBag.
-        /// </summary>
-        /// <param name="propertyName">
-        /// The property name through which this value can be get/set.
-        /// </param>
-        /// <param name="value">
-        /// The value that will be assigned to this property name.
-        /// </param>
-        public void SetValue(string propertyName, object value)
-        {
-            if (propertyName == null)
-                throw new ArgumentNullException("The propertyName parameter may not be NULL.");
-
-            _dict[propertyName] = value;
-        }
-        
-        /// <summary>
-        /// Add a value to this instance of DynamicViewBag.
-        /// </summary>
-        /// <param name="propertyName">
-        /// The property name through which this value can be get/set.
-        /// </param>
-        /// <param name="value">
-        /// The value that will be assigned to this property name.
-        /// </param>
-        public void AddValue(string propertyName, object value)
-        {
-            if (propertyName == null)
-                throw new ArgumentNullException("The propertyName parameter may not be NULL.");
-
-            if (_dict.ContainsKey(propertyName) == true)
-                throw new ArgumentException("Attempt to add duplicate value for the '" + propertyName + "' property.");
-
-            _dict.Add(propertyName, value);
-        }
-
-        /// <summary>
-        /// Adds values from the specified valueList to this instance of DynamicViewBag.
-        /// </summary>
-        /// <param name="valueList">
-        /// A list of objects.  Each must have a public property of keyPropertyName.
-        /// </param>
-        /// <param name="keyPropertyName">
-        /// The property name that will be retrieved for each object in the specified valueList
-        /// and used as the key (property name) for the ViewBag.  This property must be of type string.
-        /// </param>
-        public void AddListValues(IList valueList, string keyPropertyName)
-        {
-            foreach (object value in valueList)
-            {
-                if (value == null)
-                    throw new ArgumentNullException("Invalid NULL value in initializer list.");
-
-                Type type = value.GetType();
-                object objKey = type.GetProperty(keyPropertyName);
-
-                if (objKey.GetType() != typeof(string))
-                    throw new ArgumentNullException("The keyPropertyName property must be of type string.");
-
-                string strKey = (string)objKey;
-
-                if (_dict.ContainsKey(strKey) == true)
-                    throw new ArgumentException("Attempt to add duplicate value for the '" + strKey + "' property.");
-
-                _dict.Add(strKey, value);
-            }
-        }
-
-        /// <summary>
-        /// Adds values from the specified valueDictionary to this instance of DynamicViewBag.
-        /// </summary>
-        /// <param name="valueDictionary">
-        /// A dictionary of objects.  The Key of each item in the dictionary will be used
-        /// as the key (property name) for the ViewBag.
-        /// </param>
-        public void AddDictionaryValues(IDictionary valueDictionary)
-        {
-            foreach (object objKey in valueDictionary.Keys)
-            {
-                if (objKey.GetType() != typeof(string))
-                    throw new ArgumentNullException("The Key in valueDictionary must be of type string.");
-
-                string strKey = (string)objKey;
-
-                if (_dict.ContainsKey(strKey) == true)
-                    throw new ArgumentException("Attempt to add duplicate value for the '" + strKey + "' property.");
-
-                object value = valueDictionary[strKey];
-
-                _dict.Add(strKey, value);
-            }
-        }
-
-        /// <summary>
-        /// Adds values from the specified valueDictionary to this instance of DynamicViewBag.
-        /// </summary>
-        /// <param name="valueDictionary">
-        /// A generic dictionary of {string, object} objects.  The Key of each item in the 
-        /// dictionary will be used as the key (property name) for the ViewBag.
-        /// </param>
-        /// <remarks>
-        /// This method was intentionally not overloaded from AddDictionaryValues due to an ambiguous 
-        /// signature when the caller passes in a Dictionary&lt;string, object&gt; as the valueDictionary.
-        /// This is because the Dictionary&lt;TK, TV&gt;() class implements both IDictionary and IDictionary&lt;TK, TV&gt;.
-        /// A Dictionary&lt;string, ???&gt; (any other type than object) will resolve to AddDictionaryValues.
-        /// This is specifically for a generic List&lt;string, object&gt;, which does not resolve to
-        /// an IDictionary interface.
-        /// </remarks>
-        public void AddDictionaryValuesEx(IDictionary<string, object> valueDictionary)
-        {
-            foreach (string strKey in valueDictionary.Keys)
-            {
-                if (_dict.ContainsKey(strKey) == true)
-                    throw new ArgumentException("Attempt to add duplicate value for the '" + strKey + "' property.");
-
-                object value = valueDictionary[strKey];
-
-                _dict.Add(strKey, value);
-            }
-        }
-
         #endregion
     }
 }

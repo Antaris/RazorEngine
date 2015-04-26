@@ -29,10 +29,12 @@ open AssemblyInfoFile
 
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
+
+// Make sure "our" build is used while generating the documentation.
 if File.Exists ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll") then
   File.Delete ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll")
-if File.Exists ("packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll") then
-  File.Delete ("packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll")
+// The .fsx load file of FSharp.Formatting expects a System.Web.Razor.dll in ./lib/net40 and force-loads it.
+File.Copy ("packages/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll", "packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll", true)
 
 
 let projectName_roslyn = "RazorEngine.Roslyn"
@@ -41,7 +43,7 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.1.6-beta1"
+let version_razor4 = "4.2.0-beta1"
 let version_roslyn = "3.5.2-beta1"
 let version_roslyn_razor4 = "4.0.2-beta1"
 

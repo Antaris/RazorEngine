@@ -11,6 +11,8 @@ open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
 
 #load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
+// see https://github.com/tpetricek/FSharp.Formatting/pull/302
+#r "RazorEngine.dll"
 
 open System.Collections.Generic
 open System.IO
@@ -95,7 +97,7 @@ let buildAllDocumentation outDocDir website_root =
     let processDocumentationFiles(outputKind) =
       let indexTemplate, template, outDirName, indexName, extension =
         match outputKind with
-        | OutputKind.Html -> config.DocTemplatesDir @@ "docpage-index.cshtml", config.DocTemplatesDir @@ "docpage.cshtml", "html", "index.html", ".html"
+        | OutputKind.Html -> "docpage-index.cshtml", "docpage.cshtml", "html", "index.html", ".html"
         | OutputKind.Latex -> config.DocTemplatesDir @@ "template-color.tex", config.DocTemplatesDir @@ "template-color.tex", "latex", "Readme.tex", ".tex"
       let outDir = outDocDir @@ outDirName
       let handleDoc template (doc:LiterateDocument) outfile =
@@ -197,8 +199,7 @@ let buildAllDocumentation outDocDir website_root =
     CleanDirs [ outDocDir ]
     copyDocContentFiles()
     processDocumentationFiles OutputKind.Html
-    // enable when working again...
-    //processDocumentationFiles OutputKind.Latex
+    processDocumentationFiles OutputKind.Latex
     buildReference()
     
 let MyTarget name body =

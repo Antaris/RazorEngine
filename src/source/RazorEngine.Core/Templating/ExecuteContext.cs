@@ -18,16 +18,16 @@
     {
         #region Constructors
         /// <summary>
-        /// Creates a new instance of ExecuteContext 
+        /// Creates a new instance of ExecuteContext.
         /// </summary>
         public ExecuteContext()
         {
             _currentSectionStack.Push(new HashSet<string>());
         }
         /// <summary>
-        /// Creates a new instance of ExecuteContext.
+        /// DO NOT USE, throws NotSupportedException.
         /// </summary>
-        /// <param name="viewbag">The initial view bag data or NULL for an empty ViewBag.</param>
+        /// <param name="viewbag">DO NOT USE, throws NotSupportedException.</param>
         [Obsolete("RUNTIME FAILURE: This kind of usage is no longer supported.")]
         public ExecuteContext(DynamicViewBag viewbag)
         {

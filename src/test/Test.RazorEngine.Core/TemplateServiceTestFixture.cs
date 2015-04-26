@@ -295,6 +295,47 @@ namespace RazorEngine.Tests
         }
 
         /// <summary>
+        /// Tests that the template service can parse and run multiple templates based off a single source template.
+        /// This is processed in parallel.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanParseSingleTemplateInParallel_WithMultipleModels()
+        {
+            const int maxTemplates = 10;
+
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>Age: @Model.Age</h1>";
+                var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
+                var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
+
+                var results = service.ParseMany(Enumerable.Repeat(template, maxTemplates), Enumerable.Cast<object>(models), null, null, true /* Parallel */);
+                Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
+            }
+        }
+
+        /// <summary>
+        /// Tests that the template service can parse and run multiple templates based off a single source template.
+        /// This is processed in sequence.
+        /// </summary>
+        [Test]
+        public void TemplateService_CanParseSingleTemplateInSequence_WithMultipleModels()
+        {
+            const int maxTemplates = 10;
+
+            using (var service = new TemplateService())
+            {
+                const string template = "<h1>Age: @Model.Age</h1>";
+                var expected = Enumerable.Range(1, maxTemplates).Select(i => string.Format("<h1>Age: {0}</h1>", i));
+                var models = Enumerable.Range(1, maxTemplates).Select(i => new Person { Age = i });
+
+                var results = service.ParseMany(
+                    Enumerable.Repeat(template, maxTemplates), Enumerable.Cast<object>(models), null, null, false /* Sequence */);
+                Assert.That(expected.SequenceEqual(results), "Parsed templates do not match expected results.");
+            }
+        }
+
+        /// <summary>
         /// Tests that the template service can parse templates when using a manual threading model (i.e. manually creating <see cref="Thread"/>
         /// instances and maintaining their lifetime.
         /// </summary>
