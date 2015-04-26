@@ -209,12 +209,10 @@ namespace RazorEngine.Templating
         public virtual IEnumerable<ITemplate> CreateTemplates(IEnumerable<string> razorTemplates, IEnumerable<Type> types,  IEnumerable<object> models, bool parallel = false)
         {
             Contract.Requires(razorTemplates != null);
-            Contract.Requires(models != null);
-            Contract.Requires(razorTemplates.Count() == models.Count(),
-                              "Expected the same number of model instances as the number of templates to be processed.");
-            
-            var typeList = types.ToList();
-            var modelList = models.ToList();
+
+            var l = razorTemplates.ToList();
+            var typeList = (types ?? Enumerable.Repeat<Type>(null, l.Count)).ToList();
+            var modelList = (models ?? Enumerable.Repeat<object>(null, l.Count)).ToList();
 
             if (parallel)
                 return GetParallelQueryPlan<string>()
