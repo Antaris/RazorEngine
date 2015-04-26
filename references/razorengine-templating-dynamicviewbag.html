@@ -55,45 +55,47 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '649', 649)" onmouseover="showTip(event, '649', 649)">
+          <code onmouseout="hideTip(event, '641', 641)" onmouseover="showTip(event, '641', 641)">
             new()
           </code>
-          <div class="tip" id="649">
+          <div class="tip" id="641">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Initialises a new instance of <a href="razorengine-templating-dynamicviewbag.html">DynamicViewBag</a></br>
+            Create a new DynamicViewBag.
+            </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '650', 650)" onmouseover="showTip(event, '650', 650)">
-            new(viewbag)
-          </code>
-          <div class="tip" id="650">
-            <strong>Signature:</strong> viewbag:DynamicViewBag -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Initialises a new instance of <a href="razorengine-templating-dynamicviewbag.html">DynamicViewBag</a></br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '651', 651)" onmouseover="showTip(event, '651', 651)">
+          <code onmouseout="hideTip(event, '642', 642)" onmouseover="showTip(event, '642', 642)">
             new(dictionary)
           </code>
-          <div class="tip" id="651">
+          <div class="tip" id="642">
             <strong>Signature:</strong> dictionary:IDictionary&lt;string,obj&gt; -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '643', 643)" onmouseover="showTip(event, '643', 643)">
+            new(viewbag)
+          </code>
+          <div class="tip" id="643">
+            <strong>Signature:</strong> viewbag:DynamicViewBag -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Create a copy of the given DynamicViewBag.
+            </br>
         </td>
       </tr>
     </tbody>
@@ -107,26 +109,40 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '652', 652)" onmouseover="showTip(event, '652', 652)">
+          <code onmouseout="hideTip(event, '644', 644)" onmouseover="showTip(event, '644', 644)">
+            AddDictionary(dictionary)
+          </code>
+          <div class="tip" id="644">
+            <strong>Signature:</strong> dictionary:IDictionary&lt;string,obj&gt; -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '645', 645)" onmouseover="showTip(event, '645', 645)">
             AddDictionaryValues(valueDictionary)
           </code>
-          <div class="tip" id="652">
+          <div class="tip" id="645">
             <strong>Signature:</strong> valueDictionary:IDictionary -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Adds values from the specified valueDictionary to this instance of DynamicViewBag.
+            Add the given dictionary to the current DynamicViewBag
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '653', 653)" onmouseover="showTip(event, '653', 653)">
+          <code onmouseout="hideTip(event, '646', 646)" onmouseover="showTip(event, '646', 646)">
             AddDictionaryValuesEx(valueDictionary)
           </code>
-          <div class="tip" id="653">
+          <div class="tip" id="646">
             <strong>Signature:</strong> valueDictionary:IDictionary&lt;string,obj&gt; -&gt; unit<br />
                       </div>
         </td>
@@ -137,42 +153,42 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '654', 654)" onmouseover="showTip(event, '654', 654)">
+          <code onmouseout="hideTip(event, '647', 647)" onmouseover="showTip(event, '647', 647)">
             AddListValues(...)
           </code>
-          <div class="tip" id="654">
+          <div class="tip" id="647">
             <strong>Signature:</strong> (valueList:IList * keyPropertyName:string) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Adds values from the specified valueList to this instance of DynamicViewBag.
+            Adds the given list by evaluating the given property name.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '655', 655)" onmouseover="showTip(event, '655', 655)">
+          <code onmouseout="hideTip(event, '648', 648)" onmouseover="showTip(event, '648', 648)">
             AddValue(propertyName, value)
           </code>
-          <div class="tip" id="655">
+          <div class="tip" id="648">
             <strong>Signature:</strong> (propertyName:string * value:obj) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Add a value to this instance of DynamicViewBag.
+            Adds a single value.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '656', 656)" onmouseover="showTip(event, '656', 656)">
+          <code onmouseout="hideTip(event, '649', 649)" onmouseover="showTip(event, '649', 649)">
             GetDynamicMemberNames()
           </code>
-          <div class="tip" id="656">
+          <div class="tip" id="649">
             <strong>Signature:</strong> unit -&gt; IEnumerable&lt;string&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -186,26 +202,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '657', 657)" onmouseover="showTip(event, '657', 657)">
-            SetValue(propertyName, value)
-          </code>
-          <div class="tip" id="657">
-            <strong>Signature:</strong> (propertyName:string * value:obj) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Set a value in this instance of DynamicViewBag.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '658', 658)" onmouseover="showTip(event, '658', 658)">
+          <code onmouseout="hideTip(event, '650', 650)" onmouseover="showTip(event, '650', 650)">
             TryGetMember(binder, result)
           </code>
-          <div class="tip" id="658">
+          <div class="tip" id="650">
             <strong>Signature:</strong> (binder:GetMemberBinder * result:byref&lt;obj&gt;) -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -217,10 +217,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '659', 659)" onmouseover="showTip(event, '659', 659)">
+          <code onmouseout="hideTip(event, '651', 651)" onmouseover="showTip(event, '651', 651)">
             TrySetMember(binder, value)
           </code>
-          <div class="tip" id="659">
+          <div class="tip" id="651">
             <strong>Signature:</strong> (binder:SetMemberBinder * value:obj) -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -247,8 +247,8 @@
             <li class="divider"></li>
             <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
-            <li><a href="https://github.com/Antaris//issues">Open bugs and feature requests</a></li>
-            <li><a href="https://github.com/Antaris//issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/blob/develop/doc/LICENSE.md">License (MS-PL)</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
             

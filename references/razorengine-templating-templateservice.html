@@ -55,10 +55,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '859', 859)" onmouseover="showTip(event, '859', 859)">
+          <code onmouseout="hideTip(event, '851', 851)" onmouseover="showTip(event, '851', 851)">
             new(config)
           </code>
-          <div class="tip" id="859">
+          <div class="tip" id="851">
             <strong>Signature:</strong> config:ITemplateServiceConfiguration -&gt; unit<br />
                       </div>
         </td>
@@ -70,10 +70,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '860', 860)" onmouseover="showTip(event, '860', 860)">
+          <code onmouseout="hideTip(event, '852', 852)" onmouseover="showTip(event, '852', 852)">
             new()
           </code>
-          <div class="tip" id="860">
+          <div class="tip" id="852">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
@@ -94,10 +94,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '861', 861)" onmouseover="showTip(event, '861', 861)">
+          <code onmouseout="hideTip(event, '853', 853)" onmouseover="showTip(event, '853', 853)">
             AddNamespace(ns)
           </code>
-          <div class="tip" id="861">
+          <div class="tip" id="853">
             <strong>Signature:</strong> ns:string -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -111,11 +111,11 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '862', 862)" onmouseover="showTip(event, '862', 862)">
-            Compile(...)
+          <code onmouseout="hideTip(event, '854', 854)" onmouseover="showTip(event, '854', 854)">
+            Compile(razorTemplate, modelType, name)
           </code>
-          <div class="tip" id="862">
-            <strong>Signature:</strong> (razorTemplate:string * modelType:Type * cacheName:string) -&gt; unit<br />
+          <div class="tip" id="854">
+            <strong>Signature:</strong> (razorTemplate:string * modelType:Type * name:string) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -128,10 +128,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '863', 863)" onmouseover="showTip(event, '863', 863)">
+          <code onmouseout="hideTip(event, '855', 855)" onmouseover="showTip(event, '855', 855)">
             Configuration
           </code>
-          <div class="tip" id="863">
+          <div class="tip" id="855">
             <strong>Signature:</strong> ITemplateServiceConfiguration<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -145,28 +145,28 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '864', 864)" onmouseover="showTip(event, '864', 864)">
+          <code onmouseout="hideTip(event, '856', 856)" onmouseover="showTip(event, '856', 856)">
             CreateExecuteContext(viewBag)
           </code>
-          <div class="tip" id="864">
+          <div class="tip" id="856">
             <strong>Signature:</strong> viewBag:DynamicViewBag -&gt; ExecuteContext<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Creates a new <a href="razorengine-templating-executecontext.html">ExecuteContext</a> for tracking templates.
+            Creates a ExecuteContext
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '865', 865)" onmouseover="showTip(event, '865', 865)">
+          <code onmouseout="hideTip(event, '857', 857)" onmouseover="showTip(event, '857', 857)">
             CreateTemplate(...)
           </code>
-          <div class="tip" id="865">
-            <strong>Signature:</strong> (razorTemplate:string * templateType:Type * model:obj) -&gt; ITemplate<br />
+          <div class="tip" id="857">
+            <strong>Signature:</strong> (razorTemplate:string * staticType:Type * model:obj) -&gt; ITemplate<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -179,11 +179,11 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '866', 866)" onmouseover="showTip(event, '866', 866)">
+          <code onmouseout="hideTip(event, '858', 858)" onmouseover="showTip(event, '858', 858)">
             CreateTemplates(...)
           </code>
-          <div class="tip" id="866">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * templateTypes:IEnumerable&lt;Type&gt; * models:IEnumerable&lt;obj&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
+          <div class="tip" id="858">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * types:IEnumerable&lt;Type&gt; * models:IEnumerable&lt;obj&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -194,10 +194,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '867', 867)" onmouseover="showTip(event, '867', 867)">
+          <code onmouseout="hideTip(event, '859', 859)" onmouseover="showTip(event, '859', 859)">
             CreateTemplateType(...)
           </code>
-          <div class="tip" id="867">
+          <div class="tip" id="859">
             <strong>Signature:</strong> (razorTemplate:string * modelType:Type) -&gt; Type<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -211,11 +211,11 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '868', 868)" onmouseover="showTip(event, '868', 868)">
+          <code onmouseout="hideTip(event, '860', 860)" onmouseover="showTip(event, '860', 860)">
             CreateTemplateTypes(...)
           </code>
-          <div class="tip" id="868">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * modelTypes:IEnumerable&lt;Type&gt; * parallel:bool) -&gt; IEnumerable&lt;Type&gt;<br />
+          <div class="tip" id="860">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * types:IEnumerable&lt;Type&gt; * parallel:bool) -&gt; IEnumerable&lt;Type&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -226,10 +226,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '869', 869)" onmouseover="showTip(event, '869', 869)">
+          <code onmouseout="hideTip(event, '861', 861)" onmouseover="showTip(event, '861', 861)">
             EncodedStringFactory
           </code>
-          <div class="tip" id="869">
+          <div class="tip" id="861">
             <strong>Signature:</strong> IEncodedStringFactory<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -243,11 +243,11 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '870', 870)" onmouseover="showTip(event, '870', 870)">
-            GetTemplate(...)
+          <code onmouseout="hideTip(event, '862', 862)" onmouseover="showTip(event, '862', 862)">
+            GetTemplate(razorTemplate, model, name)
           </code>
-          <div class="tip" id="870">
-            <strong>Signature:</strong> (razorTemplate:string * model:obj * cacheName:string) -&gt; ITemplate<br />
+          <div class="tip" id="862">
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * name:string) -&gt; ITemplate<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -261,11 +261,29 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '871', 871)" onmouseover="showTip(event, '871', 871)">
+          <code onmouseout="hideTip(event, '863', 863)" onmouseover="showTip(event, '863', 863)">
+            GetTemplate(razorTemplate, model, name)
+          </code>
+          <div class="tip" id="863">
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * name:string) -&gt; ITemplate<br />
+              <strong>Modifiers:</strong> abstract<br />
+                          <strong>Type parameters:</strong> 'T          </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets an instance of the template using the cached compiled type, or compiles the template type
+            if it does not exist in the cache.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '864', 864)" onmouseover="showTip(event, '864', 864)">
             GetTemplates(...)
           </code>
-          <div class="tip" id="871">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * cacheNames:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
+          <div class="tip" id="864">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * names:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -276,11 +294,11 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '872', 872)" onmouseover="showTip(event, '872', 872)">
-            HasTemplate(cacheName)
+          <code onmouseout="hideTip(event, '865', 865)" onmouseover="showTip(event, '865', 865)">
+            HasTemplate(name)
           </code>
-          <div class="tip" id="872">
-            <strong>Signature:</strong> cacheName:string -&gt; bool<br />
+          <div class="tip" id="865">
+            <strong>Signature:</strong> name:string -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -293,10 +311,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '873', 873)" onmouseover="showTip(event, '873', 873)">
+          <code onmouseout="hideTip(event, '866', 866)" onmouseover="showTip(event, '866', 866)">
             Parse(...)
           </code>
-          <div class="tip" id="873">
+          <div class="tip" id="866">
             <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -310,10 +328,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '874', 874)" onmouseover="showTip(event, '874', 874)">
+          <code onmouseout="hideTip(event, '867', 867)" onmouseover="showTip(event, '867', 867)">
             Parse(...)
           </code>
-          <div class="tip" id="874">
+          <div class="tip" id="867">
             <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                           <strong>Type parameters:</strong> 'T          </div>
@@ -327,11 +345,11 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '875', 875)" onmouseover="showTip(event, '875', 875)">
+          <code onmouseout="hideTip(event, '868', 868)" onmouseover="showTip(event, '868', 868)">
             ParseMany(...)
           </code>
-          <div class="tip" id="875">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * viewBags:IEnumerable&lt;DynamicViewBag&gt; * cacheNames:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;string&gt;<br />
+          <div class="tip" id="868">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * viewBags:IEnumerable&lt;DynamicViewBag&gt; * names:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;string&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -342,28 +360,28 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '876', 876)" onmouseover="showTip(event, '876', 876)">
-            RemoveTemplate(cacheName)
+          <code onmouseout="hideTip(event, '869', 869)" onmouseover="showTip(event, '869', 869)">
+            RemoveTemplate(name)
           </code>
-          <div class="tip" id="876">
-            <strong>Signature:</strong> cacheName:string -&gt; bool<br />
+          <div class="tip" id="869">
+            <strong>Signature:</strong> name:string -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Remove a template by the specified name from the cache.
+            NOT SUPPORTED.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '877', 877)" onmouseover="showTip(event, '877', 877)">
-            Resolve(cacheName, model)
+          <code onmouseout="hideTip(event, '870', 870)" onmouseover="showTip(event, '870', 870)">
+            Resolve(name, model)
           </code>
-          <div class="tip" id="877">
-            <strong>Signature:</strong> (cacheName:string * model:obj) -&gt; ITemplate<br />
+          <div class="tip" id="870">
+            <strong>Signature:</strong> (name:string * model:obj) -&gt; ITemplate<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -376,34 +394,34 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '878', 878)" onmouseover="showTip(event, '878', 878)">
-            Run(cacheName, model, viewBag)
+          <code onmouseout="hideTip(event, '871', 871)" onmouseover="showTip(event, '871', 871)">
+            Run(name, model, viewBag)
           </code>
-          <div class="tip" id="878">
-            <strong>Signature:</strong> (cacheName:string * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+          <div class="tip" id="871">
+            <strong>Signature:</strong> (name:string * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Runs the template with the specified cacheName.
+            Runs the template with the specified name.
             </br>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '879', 879)" onmouseover="showTip(event, '879', 879)">
+          <code onmouseout="hideTip(event, '872', 872)" onmouseover="showTip(event, '872', 872)">
             Run(template, viewBag)
           </code>
-          <div class="tip" id="879">
+          <div class="tip" id="872">
             <strong>Signature:</strong> (template:ITemplate * viewBag:DynamicViewBag) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Runs the specified template and returns the result.
+            Runs the template with the specified name.
             </br>
         </td>
       </tr>
@@ -423,8 +441,8 @@
             <li class="divider"></li>
             <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
-            <li><a href="https://github.com/Antaris//issues">Open bugs and feature requests</a></li>
-            <li><a href="https://github.com/Antaris//issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
             <li><a href="https://github.com/Antaris/RazorEngine/blob/develop/doc/LICENSE.md">License (MS-PL)</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
             
