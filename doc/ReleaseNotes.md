@@ -1,4 +1,4 @@
-﻿### 3.7.0
+﻿### 3.7.0-beta1 / 4.2.0-beta1
 
  * Switched to Apache 2: https://github.com/Antaris/RazorEngine/issues/190
  * Missing feature (compared to 3.6): Configuration fallback to XML.
