@@ -25,6 +25,11 @@ namespace RazorEngine.Templating
         private readonly List<FileSystemWatcher> watchers;
         private readonly CancellationTokenSource cancelToken = new CancellationTokenSource();
         //private readonly Task queueListenerTask;
+        /// <summary>
+        /// Creates a new WatchingResolvePathTemplateManager.
+        /// </summary>
+        /// <param name="layoutRoot">the folders to watch and look for templates.</param>
+        /// <param name="cache">the cache to invalidate</param>
         public WatchingResolvePathTemplateManager(IEnumerable<string> layoutRoot, InvalidatingCachingProvider cache)
         {
             this.cache = cache;
@@ -81,23 +86,43 @@ namespace RazorEngine.Templating
             watcher_Changed(sender, new FileSystemEventArgs(WatcherChangeTypes.Created, e.FullPath, e.Name));
         }
 
-
+        /// <summary>
+        /// Resolve a template.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public ITemplateSource Resolve(ITemplateKey key)
         {
             return inner.Resolve(key);
         }
 
+        /// <summary>
+        /// Gets a key for the given template.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="resolveType"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public ITemplateKey GetKey(string name, ResolveType resolveType, ITemplateKey context)
         {
             return inner.GetKey(name, resolveType, context);
         }
 
+        /// <summary>
+        /// Add a dynamic template (throws an exception)
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="source"></param>
         public void AddDynamic(ITemplateKey key, ITemplateSource source)
         {
             inner.AddDynamic(key, source);
         }
 
         private bool isDisposed = false;
+
+        /// <summary>
+        /// Dispose the current manager.
+        /// </summary>
         public void Dispose()
         {
             if (!isDisposed)
