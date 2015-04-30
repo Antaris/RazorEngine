@@ -817,5 +817,134 @@ else {
             });
         }
 
+        /// <summary>
+        /// Tests InvalidatingCachingProvider.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestInvalidatingCachingProvider()
+        {
+            var cache = new InvalidatingCachingProvider();
+            var mgr = new DelegateTemplateManager();
+            var template =
+@"@helper Display(int price) {
+    if (price == 0) {
+        <text>free</text>
+    } else {
+        <text>@price</text>
+    }
+}
+@Display(Model.MyPrice)"; 
+            var template2 =
+@"@helper Display(int price) {
+    if (price == 0) {
+        <text>totally free</text>
+    } else {
+        <text>@price</text>
+    }
+}
+@Display(Model.MyPrice)";
+            RunTestHelper(service =>
+            {
+                var model = new { MyPrice = 0 };
+                string result = service.RunCompile(template, "key", null, model);
+                Assert.AreEqual("free", result.Trim());
+                cache.InvalidateCache(service.GetKey("key"));
+                mgr.RemoveDynamic(service.GetKey("key"));
+                string result2 = service.RunCompile(template2, "key", null, model);
+                Assert.AreEqual("totally free", result2.Trim());
+            }, config => {
+                config.CachingProvider = cache;
+                config.TemplateManager = mgr;
+            });
+        }
+
+        /// <summary>
+        /// Tests that ResolvePathTemplateManager.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestResolvePathTemplateManager()
+        {
+            var cache = new InvalidatingCachingProvider();
+            var temp = Path.GetTempFileName();
+            var template2File = Path.GetTempFileName();
+            File.Delete(temp);
+            try
+            {
+                Directory.CreateDirectory(temp);
+                var mgr = new ResolvePathTemplateManager(new[] { temp });
+                var template = @"free";
+                var template2 = @"template2";
+                File.WriteAllText(template2File, template2);
+
+                var templateFileName = Path.ChangeExtension(Path.GetRandomFileName(), ".cshtml");
+                var templateName = Path.GetFileNameWithoutExtension(templateFileName);
+                var templateFile = Path.Combine(temp, templateFileName);
+                File.WriteAllText(templateFile, template);
+
+                RunTestHelper(service =>
+                {
+                    var model = new { MyPrice = 0 };
+                    string result = service.RunCompile(templateName, null, model);
+                    Assert.AreEqual("free", result.Trim());
+                    string result2 = service.RunCompile(template2File, null, model);
+                    Assert.AreEqual("template2", result2.Trim());
+                }, config =>
+                {
+                    config.CachingProvider = cache;
+                    config.TemplateManager = mgr;
+                });
+            }
+            finally
+            {
+                Directory.Delete(temp, true);
+                if (File.Exists(template2File)) { File.Delete(template2File); }
+            }
+        }
+
+        /// <summary>
+        /// Tests ResolvePathTemplateManager.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_TestWatchingResolvePathTemplateManager()
+        {
+            var temp = Path.GetTempFileName();
+            var template2File = Path.GetTempFileName();
+            File.Delete(temp);
+            try
+            {
+                Directory.CreateDirectory(temp);
+                var cache = new InvalidatingCachingProvider();
+                var mgr = new WatchingResolvePathTemplateManager(new [] { temp }, cache);
+                var template = @"initial";
+                var templateChanged = @"next";
+
+
+                var templateFileName = Path.ChangeExtension(Path.GetRandomFileName(), ".cshtml");
+                var templateName = Path.GetFileNameWithoutExtension(templateFileName);
+                var templateFile = Path.Combine(temp, templateFileName);
+                File.WriteAllText(templateFile, template);
+
+                RunTestHelper(service =>
+                {
+                    var model = new { MyPrice = 0 };
+                    string result = service.RunCompile(templateFileName, null, model);
+                    Assert.AreEqual("initial", result.Trim());
+
+                    File.WriteAllText(templateFile, templateChanged);
+
+                    string result2 = service.RunCompile(templateFileName, null, model);
+                    Assert.AreEqual("next", result2.Trim());
+                }, config =>
+                {
+                    config.CachingProvider = cache;
+                    config.TemplateManager = mgr;
+                });
+            }
+            finally
+            {
+                Directory.Delete(temp, true);
+                if (File.Exists(template2File)) { File.Delete(template2File); }
+            }
+        }
     }
 }

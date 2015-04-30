@@ -41,12 +41,7 @@
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
             CachingProvider = new DefaultCachingProvider();
             TemplateManager =
-                new DelegateTemplateManager(name => {
-                    throw new ArgumentException(
-                        string.Format(
-                            "Please either set a template manager to resolve templates or add the template '{0}'!",
-                            name));
-                });
+                new DelegateTemplateManager();
 
             Namespaces = new HashSet<string>
                              {

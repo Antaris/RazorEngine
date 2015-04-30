@@ -17,14 +17,23 @@
 
         #region Constructor
         /// <summary>
+        /// Creates a new DelegateTemplateManager which throws an exception when 
+        /// we try to resolve something (supports dynamically adding templates).
+        /// </summary>
+        public DelegateTemplateManager() : this(null) { }
+        /// <summary>
         /// Initialises a new instance of <see cref="DelegateTemplateResolver"/>.
         /// </summary>
         /// <param name="resolver">The resolver delegate.</param>
         public DelegateTemplateManager(Func<string, string> resolver)
         {
-            Contract.Requires(resolver != null);
-
-            _resolver = resolver;
+            _resolver = resolver ?? new Func<string, string>(name =>
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Please either set a template manager to resolve templates or add the template '{0}'!",
+                        name));
+            });
         }
         #endregion
 
@@ -60,6 +69,19 @@
                 }
                 return source;
             });
+        }
+
+        /// <summary>
+        /// Use this API to remove a dynamic template.
+        /// WARNING: using this API doesn't really help you if the 
+        /// template is already cached. 
+        /// So will need to invalidate the cache as well.
+        /// </summary>
+        /// <param name="key"></param>
+        public void RemoveDynamic(ITemplateKey key)
+        {
+            ITemplateSource source;
+            _dynamicTemplates.TryRemove(key, out source);
         }
 
         /// <summary>
