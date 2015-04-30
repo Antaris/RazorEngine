@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,17 @@ namespace RazorEngine.Templating
     /// </summary>
     public class ResolvePathTemplateManager : ITemplateManager
     {
-        private readonly IReadOnlyCollection<string> layoutRoots;
+        private readonly ReadOnlyCollection<string> layoutRoots;
         /// <summary>
         /// Initializes a new TemplateManager.
         /// </summary>
         /// <param name="layoutRoots">the list of folders to look for templates.</param>
         public ResolvePathTemplateManager(IEnumerable<string> layoutRoots)
         {
-            this.layoutRoots = new List<string>(layoutRoots).AsReadOnly();
+            this.layoutRoots = new ReadOnlyCollection<string>(new List<string>(layoutRoots));
         }
 
-        internal ResolvePathTemplateManager(IReadOnlyCollection<string> list)
+        internal ResolvePathTemplateManager(ReadOnlyCollection<string> list)
         {
             this.layoutRoots = list;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace RazorEngine.Templating
         public WatchingResolvePathTemplateManager(IEnumerable<string> layoutRoot, InvalidatingCachingProvider cache)
         {
             this.cache = cache;
-            var list = new List<string>(layoutRoot).AsReadOnly();
+            var list = new ReadOnlyCollection<string>(new List<string>(layoutRoot));
             inner = new ResolvePathTemplateManager(list);
             watchers = list.Select(path =>
             {
