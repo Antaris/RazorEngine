@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>ThisAction<'T1, 'T2> - RazorEngine</title>
+    <title>InvalidatingCachingProvider - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,19 @@
 
 
 
-<h1>ThisAction<'T1, 'T2> </h1>
+<h1>InvalidatingCachingProvider </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Special Delegate used to make impromptu object methods first parameter is this.
+            An memory leaking invalidating caching provider (See <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>).
+            This implementation does a very simple in-memory caching and allows you to release templates
+            by trading with memory.
+            WARNING: 
+            Use this caching provider only on AppDomains you recycle regulary, or to 
+            improve the debugging experience. 
+            Never use this in production without any recycle strategy.
             </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
@@ -55,11 +61,27 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '335', 335)" onmouseover="showTip(event, '335', 335)">
-            new(object, method)
+          <code onmouseout="hideTip(event, '728', 728)" onmouseover="showTip(event, '728', 728)">
+            new()
           </code>
-          <div class="tip" id="335">
-            <strong>Signature:</strong> (object:obj * method:nativeint) -&gt; unit<br />
+          <div class="tip" id="728">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initializes a new instance of the <a href="razorengine-templating-defaultcachingprovider.html">DefaultCachingProvider</a> class.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '729', 729)" onmouseover="showTip(event, '729', 729)">
+            new(registerForCleanup)
+          </code>
+          <div class="tip" id="729">
+            <strong>Signature:</strong> registerForCleanup:Action&lt;string&gt; -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -77,11 +99,96 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '336', 336)" onmouseover="showTip(event, '336', 336)">
-            BeginInvoke(...)
+          <code onmouseout="hideTip(event, '730', 730)" onmouseover="showTip(event, '730', 730)">
+            CacheTemplate(template, templateKey)
           </code>
-          <div class="tip" id="336">
-            <strong>Signature:</strong> (this:obj * arg1:&#39;T1 * arg2:&#39;T2 * callback:AsyncCallback * object:obj) -&gt; IAsyncResult<br />
+          <div class="tip" id="730">
+            <strong>Signature:</strong> (template:ICompiledTemplate * templateKey:ITemplateKey) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Caches a template. See <a href="razorengine-templating-icachingprovider.html">ICachingProvider.CacheTemplate</a>.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '731', 731)" onmouseover="showTip(event, '731', 731)">
+            Dispose()
+          </code>
+          <div class="tip" id="731">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Dispose the instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '732', 732)" onmouseover="showTip(event, '732', 732)">
+            InvalidateAll()
+          </code>
+          <div class="tip" id="732">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Invalidates all compilations.
+            WARNING: leads to memory leaks
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '733', 733)" onmouseover="showTip(event, '733', 733)">
+            InvalidateCache(templateKey)
+          </code>
+          <div class="tip" id="733">
+            <strong>Signature:</strong> templateKey:ITemplateKey -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Invalidates all compilations of the given template.
+            WARNING: leads to memory leaks
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '734', 734)" onmouseover="showTip(event, '734', 734)">
+            InvalidateCacheOfType(...)
+          </code>
+          <div class="tip" id="734">
+            <strong>Signature:</strong> (templateKey:ITemplateKey * modelType:Type) -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Invalidates the compilation of the given template with the given model-type.
+            WARNING: leads to memory leaks
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '735', 735)" onmouseover="showTip(event, '735', 735)">
+            TryRetrieveTemplate(...)
+          </code>
+          <div class="tip" id="735">
+            <strong>Signature:</strong> (templateKey:ITemplateKey * modelType:Type * compiledTemplate:byref&lt;ICompiledTemplate&gt;) -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
@@ -92,31 +199,41 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '337', 337)" onmouseover="showTip(event, '337', 337)">
-            EndInvoke(result)
+          <code onmouseout="hideTip(event, '736', 736)" onmouseover="showTip(event, '736', 736)">
+            TypeLoader
           </code>
-          <div class="tip" id="337">
-            <strong>Signature:</strong> result:IAsyncResult -&gt; unit<br />
+          <div class="tip" id="736">
+            <strong>Signature:</strong> TypeLoader<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+            The manages <a href="razorengine-templating-invalidatingcachingprovider.html">InvalidatingCachingProvider.TypeLoader</a>. See <a href="razorengine-templating-icachingprovider.html">ICachingProvider.TypeLoader</a></br>
         </td>
       </tr>
+    </tbody>
+  </table>
+  <h3>Static members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Static member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '338', 338)" onmouseover="showTip(event, '338', 338)">
-            Invoke(this, arg1, arg2)
+          <code onmouseout="hideTip(event, '737', 737)" onmouseover="showTip(event, '737', 737)">
+            GetModelTypeKey(modelType)
           </code>
-          <div class="tip" id="338">
-            <strong>Signature:</strong> (this:obj * arg1:&#39;T1 * arg2:&#39;T2) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
+          <div class="tip" id="737">
+            <strong>Signature:</strong> modelType:Type -&gt; Type<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+            Get the key used within a dictionary for a modelType.
+            </br>
         </td>
       </tr>
     </tbody>

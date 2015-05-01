@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 734883495aa34197856e4e10b0a40f2d77a14d1d -->
+<!-- GENERATED FROM COMMIT: efa7bfd400d26ca78e79f9fc40280cf6db51b246 -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
 
 <p><a href="https://gitter.im/Antaris/RazorEngine?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/Antaris/RazorEngine" /></a></p>
@@ -156,39 +156,11 @@ var result =
 
 <h3><a name="Set-a-template-manager" class="anchor" href="#Set-a-template-manager">Set a template manager</a></h3>
 
-<p>The API is designed around the idea that you do not have the templates sitting around in the source code (while you can do that as seen above).
-The main interface to provide RazorEngine with templates is the <code>ITemplateManager</code> interface.</p>
-
-<pre class="line-numbers language-csharp"><code class="language-csharp">config.TemplateManager = new MyTemplateManager(); 
-
-public class MyTemplateManager : ITemplateManager
-{
-    public ITemplateSource Resolve(ITemplateKey key)
-    {
-        // Resolve your template here (ie read from disk)
-        // if the same templates are often read from disk you propably want to do some caching here.
-        string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
-        // Provide a non-null file to improve debugging
-        return new LoadedTemplateSource(template, null);
-    }
-
-    public ITemplateKey GetKey(string name, ResolveType resolveType, ITemplateKey context)
-    {
-        // If you can have different templates with the same name depending on the 
-        // context or the resolveType you need your own implementation here!
-        // Otherwise you can just use NameOnlyTemplateKey.
-        return new NameOnlyTemplateKey(name, resolveType, context);
-    }
-
-    public void AddDynamic(ITemplateKey key, ITemplateSource source)
-    {
-        // You can disable dynamic templates completely, but 
-        // then all convenience methods (Compile and RunCompile) with
-        // a TemplateSource will no longer work (they are not really needed anyway).
-        throw new NotImplementedException(&quot;dynamic templates are not supported!&quot;);
-    }
-}
-</code></pre>
+<p>The API is designed around the idea that you do not have the templates sitting around in the source code 
+(while you can do that as seen above).
+The main interface to provide RazorEngine with templates is the <code>ITemplateManager</code> interface. <br />
+You should either pick one of the available implementations or write your own.
+See <a href="http://antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager and Caching documentation</a> for details.</p>
 
 <h2><a name="Temporary-files" class="anchor" href="#Temporary-files">Temporary files</a></h2>
 
@@ -271,7 +243,7 @@ You should definitely read "About Razor" and "Template basics".</p>
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager and Caching</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Upgrading.html">Upgrading Guide (3.5.0)</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>

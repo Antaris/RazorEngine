@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ITemplateManager and ICachingProvider
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple templating using Razor syntax.">
+    <meta name="author" content="Matthew Abbott">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/style.css" />
+    <link type="text/css" rel="stylesheet" href="https://Antaris.github.io/RazorEngine/content/prism.css" />
+    <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/tips.js"></script>
+    <script type="text/javascript" src="https://Antaris.github.io/RazorEngine/content/prism.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="https://matthid.github.io/Yaaf.AdvancedBuilding/content/img/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://Antaris.github.io/RazorEngine/index.html">RazorEngine</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="ITemplateManager-and-ICachingProvider" class="anchor" href="#ITemplateManager-and-ICachingProvider">ITemplateManager and ICachingProvider</a></h1>
+
+<p>This section explains how <code>ITemplateManager</code> and <code>ICachingProvider</code> work and play together, 
+which implementations are available by default and how to write your own.</p>
+
+<h2><a name="Template-resolving" class="anchor" href="#Template-resolving">Template resolving</a></h2>
+
+<p>There are 3 situations where RazorEngine needs to resolve templates:</p>
+
+<ul>
+<li>Layouts</li>
+<li>Includes</li>
+<li><code>RunCompile</code>/<code>Compile</code> (for <code>Run</code> it needs to be cached already)</li>
+</ul>
+
+<p>RazorEngine unifies this process with the <code>ITemplateManager</code> interface and does the following:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+                               
+<span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="f">string</span> <span class="k">-&gt;</span> <span class="i">ITemplateManager</span><span class="o">.</span><span class="i">GetKey</span> <span class="k">-&gt;</span> <span class="i">ICachingProvider</span><span class="o">.</span><span class="i">TryRetrieveTemplate</span>
+       <span class="c">// When not cached continue with</span>
+       <span class="k">-&gt;</span> <span class="i">ITemplateManager</span><span class="o">.</span><span class="i">Resolve</span> <span class="k">-&gt;</span> <span class="i">ITemplateSource</span>
+       <span class="k">-&gt;</span> <span class="i">compile</span> <span class="i">ITemplateSource</span> <span class="k">to</span> <span class="i">ICompiledTemplate</span>
+       <span class="k">-&gt;</span> <span class="i">ICachingProvider</span><span class="o">.</span><span class="i">CacheTemplate</span>
+</pre>
+</td>
+</tr>
+</table>
+
+<p>The <code>GetKey</code> step enables a <code>TemplateManager</code> to add customized data to the key for the caching layer to take into account.</p>
+
+<h2><a name="Available-TemplateManagers" class="anchor" href="#Available-TemplateManagers">Available TemplateManagers</a></h2>
+
+<ul>
+<li><code>DelegateTemplateManager</code>: (default) Used as the default for historical reasons, easy solution when using dynamic template razor strings.</li>
+<li><code>ResolvePathTemplateManager</code>: Used to resolve templates from a given list of directory paths. 
+Doesn't support adding templates dynamically via string. You can use a full path instead of a template name.</li>
+<li><code>WatchingResolvePathTemplateManager</code>: Same as ResolvePathTemplateManager but watches the filesystem and invalidates the cache.
+Note that this introduces a memory leak to your application, so only use this is you have an AppDomain recycle strategy in place
+or for debugging purposes.</li>
+</ul>
+
+<blockquote>
+  <p>Mono doesn't always detect changes, if you have problems report a bug to mono and try to use 
+ <code>Environment.SetEnvironmentVariable("MONO_MANAGED_WATCHER", "enabled");</code><br />
+ Related:<br />
+ <a href="http://stackoverflow.com/questions/16859372/why-doesnt-the-servicestack-razor-filesystemwatcher-work-on-mono-mac-os-x">http://stackoverflow.com/questions/16859372/why-doesnt-the-servicestack-razor-filesystemwatcher-work-on-mono-mac-os-x</a><br />
+ <a href="http://stackoverflow.com/questions/16519000/filesystemwatcher-under-mono-watching-subdirs">http://stackoverflow.com/questions/16519000/filesystemwatcher-under-mono-watching-subdirs</a><br />
+ <code>&lt;Insert your bug report here&gt;</code></p>
+</blockquote>
+
+<h2><a name="Available-CachingProviders" class="anchor" href="#Available-CachingProviders">Available CachingProviders</a></h2>
+
+<ul>
+<li><code>DefaultCachingProvider</code>: (default) Simple in-memory caching strategy.</li>
+<li><code>InvalidatingCachingProvider</code>: Same as <code>DefaultCachingProvider</code> but with additional methods to invalidate cached templates.
+Note that invalidating cached templates doesn't actually free the memory (loaded assemblies), so only use this
+for debugging purposes or if you have an <code>AppDomain</code> recycle strategy in place.</li>
+</ul>
+
+<h2><a name="Writing-your-own" class="anchor" href="#Writing-your-own">Writing your own <code>ITemplateManager</code></a></h2>
+
+<p>If the above implementations don't fit your needs you can roll your own:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">config.TemplateManager = new MyTemplateManager(); 
+
+public class MyTemplateManager : ITemplateManager
+{
+    public ITemplateSource Resolve(ITemplateKey key)
+    {
+        // Resolve your template here (ie read from disk)
+        // if the same templates are often read from disk you propably want to do some caching here.
+        string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
+        // Provide a non-null file to improve debugging
+        return new LoadedTemplateSource(template, null);
+    }
+
+    public ITemplateKey GetKey(string name, ResolveType resolveType, ITemplateKey context)
+    {
+        // If you can have different templates with the same name depending on the 
+        // context or the resolveType you need your own implementation here!
+        // Otherwise you can just use NameOnlyTemplateKey.
+        return new NameOnlyTemplateKey(name, resolveType, context);
+        // template is specified by full path
+        //return new FullPathTemplateKey(name, fullPath, resolveType, context);
+    }
+
+    public void AddDynamic(ITemplateKey key, ITemplateSource source)
+    {
+        // You can disable dynamic templates completely. 
+        // This just means all convenience methods (Compile and RunCompile) with
+        // a TemplateSource will no longer work (they are not really needed anyway).
+        throw new NotImplementedException(&quot;dynamic templates are not supported!&quot;);
+    }
+}
+</code></pre>
+
+<p>Contributing your implementation back to RazorEngine is highly appreciated.</p>
+
+<h2><a name="Writing-your-own-1" class="anchor" href="#Writing-your-own-1">Writing your own <code>ICachingProvider</code></a></h2>
+
+<p>RazorEngine provides a robust caching layer out of the box which should suite most use-cases.
+If you use "Compile" on application startup and "Run" on every use of the application you can be 
+sure that caching works (as "Run" would throw if there is no cached template).
+If you want "lazy"-compilation of the templates you would just use "RunCompile".</p>
+
+<p>However if you need some custom features (like caching across multiple runs of the application)
+you want to run your own caching implementation.
+All you need to do is implement the <code>ICachingProvider</code> interface and set an instance of your implementation in the configuration.
+As starting point you can use the DefaultCachingProvider (latest code is in the repository):</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">config.CachingProvider = new DefaultCachingProvider();
+
+/// &lt;summary&gt;
+/// The default caching provider (See &lt;see cref=&quot;ICachingProvider&quot;/&gt;).
+/// This implementation does a very simple in-memory caching.
+/// It can handle when the same template is used with multiple model-types.
+/// &lt;/summary&gt;
+public class DefaultCachingProvider : ICachingProvider
+{
+    private readonly ConcurrentDictionary&lt;string, ConcurrentDictionary&lt;Type, ICompiledTemplate&gt;&gt; _cache =
+        new ConcurrentDictionary&lt;string, ConcurrentDictionary&lt;Type, ICompiledTemplate&gt;&gt;();
+
+    private readonly TypeLoader _loader;
+    private readonly ConcurrentBag&lt;Assembly&gt; _assemblies = new ConcurrentBag&lt;Assembly&gt;();
+
+    /// &lt;summary&gt;
+    /// Initializes a new instance of the &lt;see cref=&quot;DefaultCachingProvider&quot;/&gt; class.
+    /// &lt;/summary&gt;
+    public DefaultCachingProvider()
+    {
+        _loader = new TypeLoader(AppDomain.CurrentDomain, _assemblies);
+    }
+
+    /// &lt;summary&gt;
+    /// The manages &lt;see cref=&quot;TypeLoader&quot;/&gt;. See &lt;see cref=&quot;ICachingProvider.TypeLoader&quot;/&gt;
+    /// &lt;/summary&gt;
+    public TypeLoader TypeLoader
+    {
+        get
+        {
+            return _loader;
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Get the key used within a dictionary for a modelType.
+    /// &lt;/summary&gt;
+    public static Type GetModelTypeKey(Type modelType)
+    {
+        if (modelType == null || 
+            typeof(System.Dynamic.IDynamicMetaObjectProvider).IsAssignableFrom(modelType))
+        {
+            return typeof(System.Dynamic.DynamicObject);
+        }
+        return modelType;
+    }
+
+    private void CacheTemplateHelper(ICompiledTemplate template, ITemplateKey templateKey, Type modelTypeKey)
+    {
+        var uniqueKey = templateKey.GetUniqueKeyString();
+        _cache.AddOrUpdate(uniqueKey, key =&gt;
+        {
+            // new item added
+            _assemblies.Add(template.TemplateAssembly);
+            var dict = new ConcurrentDictionary&lt;Type, ICompiledTemplate&gt;();
+            dict.AddOrUpdate(modelTypeKey, template, (t, old) =&gt; template);
+            return dict;
+        }, (key, dict) =&gt;
+        {
+            dict.AddOrUpdate(modelTypeKey, t =&gt;
+            {
+                // new item added (template was not compiled with the given type).
+                _assemblies.Add(template.TemplateAssembly);
+                return template;
+            }, (t, old) =&gt;
+            {
+                // item was already added before
+                return template;
+            });
+            return dict;
+        });
+    }
+
+    /// &lt;summary&gt;
+    /// Caches a template. See &lt;see cref=&quot;ICachingProvider.CacheTemplate&quot;/&gt;.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;template&quot;&gt;&lt;/param&gt;
+    /// &lt;param name=&quot;templateKey&quot;&gt;&lt;/param&gt;
+    public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
+    {
+        var modelTypeKey = GetModelTypeKey(template.ModelType);
+        CacheTemplateHelper(template, templateKey, modelTypeKey);
+        var typeArgs = template.TemplateType.BaseType.GetGenericArguments();
+        if (typeArgs.Length &gt; 0)
+        {
+            var alternativeKey = GetModelTypeKey(typeArgs[0]);
+            if (alternativeKey != modelTypeKey)
+            {
+                // could be a template with an @model directive.
+                CacheTemplateHelper(template, templateKey, typeArgs[0]);
+            }
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Try to retrieve a template from the cache. See &lt;see cref=&quot;ICachingProvider.TryRetrieveTemplate&quot;/&gt;.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;templateKey&quot;&gt;&lt;/param&gt;
+    /// &lt;param name=&quot;modelType&quot;&gt;&lt;/param&gt;
+    /// &lt;param name=&quot;compiledTemplate&quot;&gt;&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    public bool TryRetrieveTemplate(ITemplateKey templateKey, Type modelType, out ICompiledTemplate compiledTemplate)
+    {
+        compiledTemplate = null;
+        var uniqueKey = templateKey.GetUniqueKeyString();
+        var modelTypeKey = GetModelTypeKey(modelType);
+        ConcurrentDictionary&lt;Type, ICompiledTemplate&gt; dict;
+        if (!_cache.TryGetValue(uniqueKey, out dict))
+        {
+            return false;
+        }
+        return dict.TryGetValue(modelTypeKey, out compiledTemplate);
+    }
+
+    /// &lt;summary&gt;
+    /// Dispose the instance.
+    /// &lt;/summary&gt;
+    public void Dispose()
+    {
+        _loader.Dispose();
+    }
+}
+</code></pre>
+
+<p>Contributing your implementation back to RazorEngine is highly appreciated.</p>
+
+<div class="tip" id="fs1">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+
+        </div>
+        <div class="span3">
+          <a href="https://Antaris.github.io/RazorEngine/index.html">
+            <img src="https://Antaris.github.io/RazorEngine/images/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">RazorEngine</li>
+
+            <li class="divider"></li>
+            <li><a href="https://www.nuget.org/packages/RazorEngine/">Get RazorEngine package via NuGet</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine">Source Code</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/Antaris/RazorEngine/blob/develop/doc/LICENSE.md">License (MS-PL)</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/index.html">Quick Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/AboutRazor.html">About Razor and its Syntax</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateBasics.html">Templating basics</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager and Caching</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Upgrading.html">Upgrading Guide (3.5.0)</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/IntellisenseAndResharper.html">Intellisense and ReSharper</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/Roslyn.html">Roslyn Support</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://Antaris.github.io/RazorEngine/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/Antaris/RazorEngine"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

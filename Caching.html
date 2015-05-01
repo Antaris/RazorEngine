@@ -38,139 +38,7 @@
           
 <h1><a name="RazorEngine-Caching-API" class="anchor" href="#RazorEngine-Caching-API">RazorEngine Caching API</a></h1>
 
-<p>RazorEngine provides a robust caching layer out of the box which should suite most use-cases.
-If you use "Compile" on application startup and "Run" on every use of the application you can be 
-sure that caching works (as "Run" would throw if there is no cached template).
-If you want "lazy"-compilation of the templates you would just use "RunCompile".</p>
-
-<p>However if you need some custom features (like caching across multiple runs of the application, or cleanup of compiled templates)
-you want to run your own caching implementation.
-All you need to do is implement the ICachingProvider and set an instance of your implementation in the configuration.
-As starting point you can use the DefaultCachingProvider (latest code is in the repository):</p>
-
-<pre class="line-numbers language-csharp"><code class="language-csharp">config.CachingProvider = new DefaultCachingProvider();
-
-/// &lt;summary&gt;
-/// The default caching provider (See &lt;see cref=&quot;ICachingProvider&quot;/&gt;).
-/// This implementation does a very simple in-memory caching.
-/// It can handle when the same template is used with multiple model-types.
-/// &lt;/summary&gt;
-public class DefaultCachingProvider : ICachingProvider
-{
-    private readonly ConcurrentDictionary&lt;string, ConcurrentDictionary&lt;Type, ICompiledTemplate&gt;&gt; _cache =
-        new ConcurrentDictionary&lt;string, ConcurrentDictionary&lt;Type, ICompiledTemplate&gt;&gt;();
-
-    private readonly TypeLoader _loader;
-    private readonly ConcurrentBag&lt;Assembly&gt; _assemblies = new ConcurrentBag&lt;Assembly&gt;();
-
-    /// &lt;summary&gt;
-    /// Initializes a new instance of the &lt;see cref=&quot;DefaultCachingProvider&quot;/&gt; class.
-    /// &lt;/summary&gt;
-    public DefaultCachingProvider()
-    {
-        _loader = new TypeLoader(AppDomain.CurrentDomain, _assemblies);
-    }
-
-    /// &lt;summary&gt;
-    /// The manages &lt;see cref=&quot;TypeLoader&quot;/&gt;. See &lt;see cref=&quot;ICachingProvider.TypeLoader&quot;/&gt;
-    /// &lt;/summary&gt;
-    public TypeLoader TypeLoader
-    {
-        get
-        {
-            return _loader;
-        }
-    }
-
-    /// &lt;summary&gt;
-    /// Get the key used within a dictionary for a modelType.
-    /// &lt;/summary&gt;
-    public static Type GetModelTypeKey(Type modelType)
-    {
-        if (modelType == null || 
-            typeof(System.Dynamic.IDynamicMetaObjectProvider).IsAssignableFrom(modelType))
-        {
-            return typeof(System.Dynamic.DynamicObject);
-        }
-        return modelType;
-    }
-
-    private void CacheTemplateHelper(ICompiledTemplate template, ITemplateKey templateKey, Type modelTypeKey)
-    {
-        var uniqueKey = templateKey.GetUniqueKeyString();
-        _cache.AddOrUpdate(uniqueKey, key =&gt;
-        {
-            // new item added
-            _assemblies.Add(template.TemplateAssembly);
-            var dict = new ConcurrentDictionary&lt;Type, ICompiledTemplate&gt;();
-            dict.AddOrUpdate(modelTypeKey, template, (t, old) =&gt; template);
-            return dict;
-        }, (key, dict) =&gt;
-        {
-            dict.AddOrUpdate(modelTypeKey, t =&gt;
-            {
-                // new item added (template was not compiled with the given type).
-                _assemblies.Add(template.TemplateAssembly);
-                return template;
-            }, (t, old) =&gt;
-            {
-                // item was already added before
-                return template;
-            });
-            return dict;
-        });
-    }
-
-    /// &lt;summary&gt;
-    /// Caches a template. See &lt;see cref=&quot;ICachingProvider.CacheTemplate&quot;/&gt;.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;template&quot;&gt;&lt;/param&gt;
-    /// &lt;param name=&quot;templateKey&quot;&gt;&lt;/param&gt;
-    public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
-    {
-        var modelTypeKey = GetModelTypeKey(template.ModelType);
-        CacheTemplateHelper(template, templateKey, modelTypeKey);
-        var typeArgs = template.TemplateType.BaseType.GetGenericArguments();
-        if (typeArgs.Length &gt; 0)
-        {
-            var alternativeKey = GetModelTypeKey(typeArgs[0]);
-            if (alternativeKey != modelTypeKey)
-            {
-                // could be a template with an @model directive.
-                CacheTemplateHelper(template, templateKey, typeArgs[0]);
-            }
-        }
-    }
-
-    /// &lt;summary&gt;
-    /// Try to retrieve a template from the cache. See &lt;see cref=&quot;ICachingProvider.TryRetrieveTemplate&quot;/&gt;.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;templateKey&quot;&gt;&lt;/param&gt;
-    /// &lt;param name=&quot;modelType&quot;&gt;&lt;/param&gt;
-    /// &lt;param name=&quot;compiledTemplate&quot;&gt;&lt;/param&gt;
-    /// &lt;returns&gt;&lt;/returns&gt;
-    public bool TryRetrieveTemplate(ITemplateKey templateKey, Type modelType, out ICompiledTemplate compiledTemplate)
-    {
-        compiledTemplate = null;
-        var uniqueKey = templateKey.GetUniqueKeyString();
-        var modelTypeKey = GetModelTypeKey(modelType);
-        ConcurrentDictionary&lt;Type, ICompiledTemplate&gt; dict;
-        if (!_cache.TryGetValue(uniqueKey, out dict))
-        {
-            return false;
-        }
-        return dict.TryGetValue(modelTypeKey, out compiledTemplate);
-    }
-
-    /// &lt;summary&gt;
-    /// Dispose the instance.
-    /// &lt;/summary&gt;
-    public void Dispose()
-    {
-        _loader.Dispose();
-    }
-}
-</code></pre>
+<p>Moved to <a href="http://antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager.html</a></p>
 
 
         </div>
@@ -199,7 +67,7 @@ public class DefaultCachingProvider : ICachingProvider
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager and Caching</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Upgrading.html">Upgrading Guide (3.5.0)</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>

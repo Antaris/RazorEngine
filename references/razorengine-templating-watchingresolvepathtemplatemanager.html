@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>NonRecursiveInterfaceAttribute - RazorEngine</title>
+    <title>WatchingResolvePathTemplateManager - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,14 +38,18 @@
 
 
 
-<h1>NonRecursiveInterfaceAttribute </h1>
+<h1>WatchingResolvePathTemplateManager </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Attribute on Inteface to stop proxy from recursively
-            proxying other interfaces
+            A ResolvePathTemplateManager which watches for changes in the 
+            filesytem and invalides the corresponding cache entries.
+            WARNING: 
+            Use this only on AppDomains you recycle regulary, or to 
+            improve the debugging experience. 
+            Never use this in production without any recycle strategy.
             </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
@@ -56,15 +60,91 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '217', 217)" onmouseover="showTip(event, '217', 217)">
-            new()
+          <code onmouseout="hideTip(event, '900', 900)" onmouseover="showTip(event, '900', 900)">
+            new(layoutRoot, cache)
           </code>
-          <div class="tip" id="217">
-            <strong>Signature:</strong> unit -&gt; unit<br />
+          <div class="tip" id="900">
+            <strong>Signature:</strong> (layoutRoot:IEnumerable&lt;string&gt; * cache:InvalidatingCachingProvider) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '901', 901)" onmouseover="showTip(event, '901', 901)">
+            AddDynamic(key, source)
+          </code>
+          <div class="tip" id="901">
+            <strong>Signature:</strong> (key:ITemplateKey * source:ITemplateSource) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Add a dynamic template (throws an exception)
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '902', 902)" onmouseover="showTip(event, '902', 902)">
+            Dispose()
+          </code>
+          <div class="tip" id="902">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Dispose the current manager.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '903', 903)" onmouseover="showTip(event, '903', 903)">
+            GetKey(name, resolveType, context)
+          </code>
+          <div class="tip" id="903">
+            <strong>Signature:</strong> (name:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Gets a key for the given template.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '904', 904)" onmouseover="showTip(event, '904', 904)">
+            Resolve(key)
+          </code>
+          <div class="tip" id="904">
+            <strong>Signature:</strong> key:ITemplateKey -&gt; ITemplateSource<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Resolve a template.
+            </br>
         </td>
       </tr>
     </tbody>

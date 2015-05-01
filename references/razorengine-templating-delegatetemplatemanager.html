@@ -56,9 +56,26 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '635', 635)" onmouseover="showTip(event, '635', 635)">
-            new(resolver)
+            new()
           </code>
           <div class="tip" id="635">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Creates a new DelegateTemplateManager which throws an exception when 
+            we try to resolve something (supports dynamically adding templates).
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '636', 636)" onmouseover="showTip(event, '636', 636)">
+            new(resolver)
+          </code>
+          <div class="tip" id="636">
             <strong>Signature:</strong> resolver:Func&lt;string,string&gt; -&gt; unit<br />
                       </div>
         </td>
@@ -77,10 +94,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '636', 636)" onmouseover="showTip(event, '636', 636)">
+          <code onmouseout="hideTip(event, '637', 637)" onmouseover="showTip(event, '637', 637)">
             AddDynamic(key, source)
           </code>
-          <div class="tip" id="636">
+          <div class="tip" id="637">
             <strong>Signature:</strong> (key:ITemplateKey * source:ITemplateSource) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -94,10 +111,10 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '637', 637)" onmouseover="showTip(event, '637', 637)">
+          <code onmouseout="hideTip(event, '638', 638)" onmouseover="showTip(event, '638', 638)">
             GetKey(name, templateType, context)
           </code>
-          <div class="tip" id="637">
+          <div class="tip" id="638">
             <strong>Signature:</strong> (name:string * templateType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -111,10 +128,29 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '638', 638)" onmouseover="showTip(event, '638', 638)">
+          <code onmouseout="hideTip(event, '639', 639)" onmouseover="showTip(event, '639', 639)">
+            RemoveDynamic(key)
+          </code>
+          <div class="tip" id="639">
+            <strong>Signature:</strong> key:ITemplateKey -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Use this API to remove a dynamic template.
+            WARNING: using this API doesn't really help you if the 
+            template is already cached. 
+            So will need to invalidate the cache as well.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '640', 640)" onmouseover="showTip(event, '640', 640)">
             Resolve(key)
           </code>
-          <div class="tip" id="638">
+          <div class="tip" id="640">
             <strong>Signature:</strong> key:ITemplateKey -&gt; ITemplateSource<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
@@ -154,7 +190,7 @@
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager and Caching</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Upgrading.html">Upgrading Guide (3.5.0)</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>

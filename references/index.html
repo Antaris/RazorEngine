@@ -1180,6 +1180,16 @@
         </tr>
         <tr>
           <td class="type-name">
+            <a href="razorengine-templating-fullpathtemplatekey.html">FullPathTemplateKey</a>
+          </td>
+          <td class="xmldoc">
+            A simple <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a> implementation inheriting from <a href="razorengine-templating-basetemplatekey.html">BaseTemplateKey</a>.
+            This implementation assumes that the template-names are unique and returns the name as unique key.
+            (So this implementation is used by <a href="razorengine-templating-delegatetemplatemanager.html">DelegateTemplateManager</a> and <a href="razorengine-configuration-xml-wrappertemplatemanager.html">WrapperTemplateManager</a>.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="razorengine-templating-htmltemplatebase-1.html">HtmlTemplateBase<'T></a>
           </td>
           <td class="xmldoc">
@@ -1303,6 +1313,20 @@
         </tr>
         <tr>
           <td class="type-name">
+            <a href="razorengine-templating-invalidatingcachingprovider.html">InvalidatingCachingProvider</a>
+          </td>
+          <td class="xmldoc">
+            An memory leaking invalidating caching provider (See <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>).
+            This implementation does a very simple in-memory caching and allows you to release templates
+            by trading with memory.
+            WARNING: 
+            Use this caching provider only on AppDomains you recycle regulary, or to 
+            improve the debugging experience. 
+            Never use this in production without any recycle strategy.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="razorengine-templating-isolatedrazorengineservice.html">IsolatedRazorEngineService</a>
           </td>
           <td class="xmldoc">
@@ -1367,6 +1391,14 @@
           <td class="xmldoc">
             Allows base templates to define require template imports when
             generating templates.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-resolvepathtemplatemanager.html">ResolvePathTemplateManager</a>
+          </td>
+          <td class="xmldoc">
+            A TemplateManager resolving remplates by path, given a list of folders to look into.
             </br></td>
         </tr>
         <tr>
@@ -1443,6 +1475,19 @@
           </td>
           <td class="xmldoc">
             Defines a type loader.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-watchingresolvepathtemplatemanager.html">WatchingResolvePathTemplateManager</a>
+          </td>
+          <td class="xmldoc">
+            A ResolvePathTemplateManager which watches for changes in the 
+            filesytem and invalides the corresponding cache entries.
+            WARNING: 
+            Use this only on AppDomains you recycle regulary, or to 
+            improve the debugging experience. 
+            Never use this in production without any recycle strategy.
             </br></td>
         </tr>
     </tbody>
@@ -1562,7 +1607,7 @@
             <li><a href="https://Antaris.github.io/RazorEngine/Encoding.html">Encoding Values in Razor</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReferenceResolver.html">Reference Resolver</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Isolation.html">Isolation and Sandboxing</a></li>
-            <li><a href="https://Antaris.github.io/RazorEngine/Caching.html">Caching API</a></li>
+            <li><a href="https://Antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager and Caching</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/DevelopReadme.html">Development Intro</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/Upgrading.html">Upgrading Guide (3.5.0)</a></li>
             <li><a href="https://Antaris.github.io/RazorEngine/ReleaseNotes.html">Release Notes</a></li>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>NonRecursiveInterfaceAttribute - RazorEngine</title>
+    <title>FullPathTemplateKey - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,14 +38,15 @@
 
 
 
-<h1>NonRecursiveInterfaceAttribute </h1>
+<h1>FullPathTemplateKey </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Attribute on Inteface to stop proxy from recursively
-            proxying other interfaces
+            A simple <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a> implementation inheriting from <a href="razorengine-templating-basetemplatekey.html">BaseTemplateKey</a>.
+            This implementation assumes that the template-names are unique and returns the name as unique key.
+            (So this implementation is used by <a href="razorengine-templating-delegatetemplatemanager.html">DelegateTemplateManager</a> and <a href="razorengine-configuration-xml-wrappertemplatemanager.html">WrapperTemplateManager</a>.
             </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
@@ -56,15 +57,90 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '217', 217)" onmouseover="showTip(event, '217', 217)">
-            new()
+          <code onmouseout="hideTip(event, '658', 658)" onmouseover="showTip(event, '658', 658)">
+            new(...)
           </code>
-          <div class="tip" id="217">
-            <strong>Signature:</strong> unit -&gt; unit<br />
+          <div class="tip" id="658">
+            <strong>Signature:</strong> (name:string * fullPath:string * resolveType:ResolveType * context:ITemplateKey) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+            Initializes a new instance of the <a href="razorengine-templating-nameonlytemplatekey.html">NameOnlyTemplateKey</a> class.
+            </br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '659', 659)" onmouseover="showTip(event, '659', 659)">
+            Equals(obj)
+          </code>
+          <div class="tip" id="659">
+            <strong>Signature:</strong> obj:obj -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Checks if the names are equal.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '660', 660)" onmouseover="showTip(event, '660', 660)">
+            FullPath
+          </code>
+          <div class="tip" id="660">
+            <strong>Signature:</strong> string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '661', 661)" onmouseover="showTip(event, '661', 661)">
+            GetHashCode()
+          </code>
+          <div class="tip" id="661">
+            <strong>Signature:</strong> unit -&gt; int<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns a hashcode for the current instance.
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '662', 662)" onmouseover="showTip(event, '662', 662)">
+            GetUniqueKeyString()
+          </code>
+          <div class="tip" id="662">
+            <strong>Signature:</strong> unit -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Returns the name.
+            </br>
         </td>
       </tr>
     </tbody>
