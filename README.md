@@ -115,41 +115,12 @@ var result =
 This time when debugging the template you will jump right into the template file.
 
 ### Set a template manager
-	
-The API is designed around the idea that you do not have the templates sitting around in the source code (while you can do that as seen above).
-The main interface to provide RazorEngine with templates is the `ITemplateManager` interface.
 
-```csharp
-config.TemplateManager = new MyTemplateManager(); 
-
-public class MyTemplateManager : ITemplateManager
-{
-    public ITemplateSource Resolve(ITemplateKey key)
-    {
-        // Resolve your template here (ie read from disk)
-		// if the same templates are often read from disk you propably want to do some caching here.
-        string template = "Hello @Model.Name, welcome to RazorEngine!";
-        // Provide a non-null file to improve debugging
-        return new LoadedTemplateSource(template, null);
-    }
-
-    public ITemplateKey GetKey(string name, ResolveType resolveType, ITemplateKey context)
-    {
-        // If you can have different templates with the same name depending on the 
-        // context or the resolveType you need your own implementation here!
-        // Otherwise you can just use NameOnlyTemplateKey.
-        return new NameOnlyTemplateKey(name, resolveType, context);
-    }
-
-    public void AddDynamic(ITemplateKey key, ITemplateSource source)
-    {
-        // You can disable dynamic templates completely, but 
-        // then all convenience methods (Compile and RunCompile) with
-        // a TemplateSource will no longer work (they are not really needed anyway).
-        throw new NotImplementedException("dynamic templates are not supported!");
-    }
-}
-```
+The API is designed around the idea that you do not have the templates sitting around in the source code 
+(while you can do that as seen above).
+The main interface to provide RazorEngine with templates is the `ITemplateManager` interface.	
+You should either pick one of the available implementations or write your own.
+See [TemplateManager and Caching documentation](http://antaris.github.io/RazorEngine/TemplateManager.html) for details.
 
 ## Temporary files
 

@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{A9A2DC20-74A
 		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
 		..\doc\Roslyn.md = ..\doc\Roslyn.md
 		..\doc\TemplateBasics.md = ..\doc\TemplateBasics.md
+		..\doc\TemplateManager.md = ..\doc\TemplateManager.md
 		..\doc\Upgrading.md = ..\doc\Upgrading.md
 	EndProjectSection
 EndProject

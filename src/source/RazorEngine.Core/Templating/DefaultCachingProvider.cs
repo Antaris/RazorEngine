@@ -16,18 +16,17 @@ namespace RazorEngine.Templating
     /// </summary>
     public class DefaultCachingProvider : ICachingProvider
     {
-        private readonly ConcurrentDictionary<string, ConcurrentDictionary<Type, ICompiledTemplate>> _cache =
-            new ConcurrentDictionary<string, ConcurrentDictionary<Type, ICompiledTemplate>>();
-
-        private readonly TypeLoader _loader;
-        private readonly Action<string> _registerForCleanup;
-        private readonly ConcurrentBag<Assembly> _assemblies = new ConcurrentBag<Assembly>();
+        /// <summary>
+        /// We wrap it without calling any memory leaking API.
+        /// </summary>
+        private InvalidatingCachingProvider inner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCachingProvider"/> class.
         /// </summary>
         public DefaultCachingProvider() : this(null)
         {
+            inner = new InvalidatingCachingProvider();
         }
 
         /// <summary>
@@ -36,10 +35,7 @@ namespace RazorEngine.Templating
         /// <param name="registerForCleanup">callback for files which need to be cleaned up.</param>
         public DefaultCachingProvider(Action<string> registerForCleanup)
         {
-            _registerForCleanup = 
-                registerForCleanup ?? 
-                (item => RazorEngine.Compilation.CrossAppDomainCleanUp.RegisterCleanup(item, false));
-            _loader = new TypeLoader(AppDomain.CurrentDomain, _assemblies);
+            inner = new InvalidatingCachingProvider(registerForCleanup);
         }
 
         /// <summary>
@@ -49,7 +45,7 @@ namespace RazorEngine.Templating
         {
             get
             {
-                return _loader;
+                return inner.TypeLoader;
             }
         }
 
@@ -58,39 +54,7 @@ namespace RazorEngine.Templating
         /// </summary>
         public static Type GetModelTypeKey(Type modelType)
         {
-            if (modelType == null || 
-                typeof(System.Dynamic.IDynamicMetaObjectProvider).IsAssignableFrom(modelType))
-            {
-                return typeof(System.Dynamic.DynamicObject);
-            }
-            return modelType;
-        }
-
-        private void CacheTemplateHelper(ICompiledTemplate template, ITemplateKey templateKey, Type modelTypeKey)
-        {
-            var uniqueKey = templateKey.GetUniqueKeyString();
-            _cache.AddOrUpdate(uniqueKey, key =>
-            {
-                // new item added
-                _assemblies.Add(template.TemplateAssembly);
-                var dict = new ConcurrentDictionary<Type, ICompiledTemplate>();
-                dict.AddOrUpdate(modelTypeKey, template, (t, old) => {
-                    throw new Exception("Expected the dictionary to be empty."); });
-                return dict;
-            }, (key, dict) =>
-            {
-                dict.AddOrUpdate(modelTypeKey, t =>
-                {
-                    // new item added (template was not compiled with the given type).
-                    _assemblies.Add(template.TemplateAssembly);
-                    return template;
-                }, (t, old) =>
-                {
-                    // item was already added before
-                    return template;
-                });
-                return dict;
-            });
+            return InvalidatingCachingProvider.GetModelTypeKey(modelType);
         }
 
         /// <summary>
@@ -100,19 +64,7 @@ namespace RazorEngine.Templating
         /// <param name="templateKey"></param>
         public void CacheTemplate(ICompiledTemplate template, ITemplateKey templateKey)
         {
-            var modelTypeKey = GetModelTypeKey(template.ModelType);
-            _registerForCleanup(template.CompilationData.TmpFolder); 
-            CacheTemplateHelper(template, templateKey, modelTypeKey);
-            var typeArgs = template.TemplateType.BaseType.GetGenericArguments();
-            if (typeArgs.Length > 0)
-            {
-                var alternativeKey = GetModelTypeKey(typeArgs[0]);
-                if (alternativeKey != modelTypeKey)
-                {
-                    // could be a template with an @model directive.
-                    CacheTemplateHelper(template, templateKey, typeArgs[0]);
-                }
-            }
+            inner.CacheTemplate(template, templateKey);
         }
 
         /// <summary>
@@ -124,15 +76,7 @@ namespace RazorEngine.Templating
         /// <returns></returns>
         public bool TryRetrieveTemplate(ITemplateKey templateKey, Type modelType, out ICompiledTemplate compiledTemplate)
         {
-            compiledTemplate = null;
-            var uniqueKey = templateKey.GetUniqueKeyString();
-            var modelTypeKey = GetModelTypeKey(modelType);
-            ConcurrentDictionary<Type, ICompiledTemplate> dict;
-            if (!_cache.TryGetValue(uniqueKey, out dict))
-            {
-                return false;
-            }
-            return dict.TryGetValue(modelTypeKey, out compiledTemplate);
+            return inner.TryRetrieveTemplate(templateKey, modelType, out compiledTemplate);
         }
 
         /// <summary>
@@ -140,7 +84,7 @@ namespace RazorEngine.Templating
         /// </summary>
         public void Dispose()
         {
-            _loader.Dispose();
+            inner.Dispose();
         }
     }
 }
