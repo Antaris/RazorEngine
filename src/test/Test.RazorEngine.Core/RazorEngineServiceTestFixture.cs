@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Test.RazorEngine.TestTypes.BaseTypes;
 using System.Runtime.Remoting;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Test.RazorEngine
 {
@@ -931,6 +932,7 @@ else {
                     Assert.AreEqual("initial", result.Trim());
 
                     File.WriteAllText(templateFile, templateChanged);
+                    Thread.Sleep(100); // wait for the events to kick in.
 
                     string result2 = service.RunCompile(templateFileName, null, model);
                     Assert.AreEqual("next", result2.Trim());
