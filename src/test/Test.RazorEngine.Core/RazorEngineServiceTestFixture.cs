@@ -932,7 +932,7 @@ else {
                     Assert.AreEqual("initial", result.Trim());
 
                     File.WriteAllText(templateFile, templateChanged);
-                    Thread.Sleep(100); // wait for the events to kick in.
+                    Thread.Sleep(1000); // wait for the events to kick in.
 
                     string result2 = service.RunCompile(templateFileName, null, model);
                     Assert.AreEqual("next", result2.Trim());
