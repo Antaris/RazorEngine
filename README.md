@@ -120,7 +120,7 @@ The API is designed around the idea that you do not have the templates sitting a
 (while you can do that as seen above).
 The main interface to provide RazorEngine with templates is the `ITemplateManager` interface.	
 You should either pick one of the available implementations or write your own.
-See [the documentation](http://antaris.github.io/RazorEngine/TemplateManager.html) for details
+See [TemplateManager and Caching documentation](http://antaris.github.io/RazorEngine/TemplateManager.html) for details.
 
 ## Temporary files
 
