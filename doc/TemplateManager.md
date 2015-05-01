@@ -33,6 +33,13 @@ The `GetKey` step enables a `TemplateManager` to add customized data to the key 
   Note that this introduces a memory leak to your application, so only use this is you have an AppDomain recycle strategy in place
   or for debugging purposes.
 
+  > Mono doesn't always detect changes, if you have problems report a bug to mono and try to use 
+    `Environment.SetEnvironmentVariable("MONO_MANAGED_WATCHER", "enabled");`
+    Related:
+    http://stackoverflow.com/questions/16859372/why-doesnt-the-servicestack-razor-filesystemwatcher-work-on-mono-mac-os-x
+    http://stackoverflow.com/questions/16519000/filesystemwatcher-under-mono-watching-subdirs
+    `<Insert your bug report here>`
+
 ## Available CachingProviders
 
 * `DefaultCachingProvider`: (default) Simple in-memory caching strategy.
