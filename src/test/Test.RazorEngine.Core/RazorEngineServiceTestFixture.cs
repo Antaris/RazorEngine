@@ -911,8 +911,13 @@ else {
             var temp = Path.GetTempFileName();
             var template2File = Path.GetTempFileName();
             File.Delete(temp);
+            var prev = Environment.GetEnvironmentVariable("MONO_MANAGED_WATCHER");
             try
             {
+                if (IsolatedRazorEngineServiceTestFixture.IsRunningOnMono())
+                {
+                    Environment.SetEnvironmentVariable("MONO_MANAGED_WATCHER", "enabled");
+                }
                 Directory.CreateDirectory(temp);
                 var cache = new InvalidatingCachingProvider();
                 var mgr = new WatchingResolvePathTemplateManager(new [] { temp }, cache);
@@ -932,7 +937,7 @@ else {
                     Assert.AreEqual("initial", result.Trim());
 
                     File.WriteAllText(templateFile, templateChanged);
-                    Thread.Sleep(1000); // wait for the events to kick in.
+                    Thread.Sleep(2000); // wait for the events to kick in.
 
                     string result2 = service.RunCompile(templateFileName, null, model);
                     Assert.AreEqual("next", result2.Trim());
@@ -944,6 +949,7 @@ else {
             }
             finally
             {
+                Environment.SetEnvironmentVariable("MONO_MANAGED_WATCHER", prev);
                 Directory.Delete(temp, true);
                 if (File.Exists(template2File)) { File.Delete(template2File); }
             }
