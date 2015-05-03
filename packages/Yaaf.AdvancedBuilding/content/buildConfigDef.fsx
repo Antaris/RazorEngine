@@ -11,13 +11,10 @@
 //#r "Yaaf.AdvancedBuilding.dll"
 
 
-open System.Collections.Generic
 open System.IO
 open System
 
 open Fake
-open Fake.Git
-open Fake.FSharpFormatting
 open AssemblyInfoFile
 
 (**
@@ -55,15 +52,15 @@ type BuildParams =
       DisableProjectFileCreation = false
       UseProjectOutDir = false
       FindSolutionFiles = fun _ -> Seq.empty
-      FindProjectFiles = fun (buildParams:BuildParams) ->
+      FindProjectFiles = fun (_:BuildParams) ->
         !! (sprintf "src/source/**/*.fsproj")
         ++ (sprintf "src/source/**/*.csproj")
         :> _
-      FindTestFiles = fun (buildParams:BuildParams) ->
+      FindTestFiles = fun (_:BuildParams) ->
         !! (sprintf "src/test/**/Test.*.fsproj")
         ++ (sprintf "src/test/**/Test.*.csproj")
         :> _
-      FindUnitTestDlls = fun (testDir, (buildParams:BuildParams)) ->
+      FindUnitTestDlls = fun (testDir, (_:BuildParams)) ->
         !! (testDir + "/Test.*.dll")
         :> _ }
   static member WithSolution =
@@ -108,7 +105,15 @@ type BuildConfiguration =
     Version : string
     /// Defaults to setting up a "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs"
     SetAssemblyFileVersions : BuildConfiguration -> unit
-    EnableProjectFileCreation : bool
+    /// Enables to convert pdb to mdb or mdb to pdb after paket restore.
+    /// This improves cross platform development and creates pdb files 
+    /// on unix (to create nuget packages on linux with integrated pdb files)
+    EnableDebugSymbolConversion : bool
+
+    /// Makes "./build.sh Release" fail when not executed on a windows machine
+    /// Use this if you want to include .pdb in your nuget packge 
+    /// (to ensure your release contains debug symbols)
+    RestrictReleaseToWindows : bool
 
     // Build configuration
     /// Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ]
@@ -143,7 +148,8 @@ type BuildConfiguration =
       ProjectDescription = ""
       UseNuget = false
       EnableGithub = true
-      EnableProjectFileCreation = false
+      EnableDebugSymbolConversion = false
+      RestrictReleaseToWindows = true
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]
       NugetUrl = ""

@@ -16,17 +16,16 @@ open System.IO
 open Fake
 // Force load of System.Web.Razor.dll
 let someType = typeof<System.Web.Razor.RazorEngineHost>
-printfn "starting documentation generation. Loaded Assemblies:"
-System.AppDomain.CurrentDomain.GetAssemblies()
-|> Seq.choose (fun a -> try Some (a.GetName().FullName, a.Location) with _ -> None)
-//|> Seq.filter (fun l -> l.Contains ("Razor"))
-|> Seq.iter (fun (n, l) -> printfn "\t- %s: %s" n l)
+let printAssemblies msg =
+  printfn "%s. Loaded Assemblies:" msg
+  System.AppDomain.CurrentDomain.GetAssemblies()
+    |> Seq.choose (fun a -> try Some (a.GetName().FullName, a.Location) with _ -> None)
+  //|> Seq.filter (fun l -> l.Contains ("Razor"))
+    |> Seq.iter (fun (n, l) -> printfn "\t- %s: %s" n l)
+  
+printAssemblies "starting documentation generation"
 try RunTargetOrDefault "LocalDoc"
 finally
-  printfn "Documentation generation finished. Loaded Assemblies:"
-  System.AppDomain.CurrentDomain.GetAssemblies()
-  |> Seq.choose (fun a -> try Some (a.GetName().FullName, a.Location) with _ -> None)
-  //|> Seq.filter (fun l -> l.Contains ("Razor"))
-  |> Seq.iter (fun (n, l) -> printfn "\t- %s: %s" n l)
+  printAssemblies "Documentation generation finished"
 
 printfn "THE END"
