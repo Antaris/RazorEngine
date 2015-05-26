@@ -41,7 +41,7 @@ NUGET
       System.Collections.Immutable (>= 1.1.33-beta)
     Unity (3.5.1404.0)
       CommonServiceLocator (>= 1.2.0) - framework: monoandroid, winv4.5
-    Yaaf.AdvancedBuilding (0.6.3)
+    Yaaf.AdvancedBuilding (0.6.4)
       FAKE (3.30.3)
       FSharp.Formatting (2.9.4)
       FSharpVSPowerTools.Core (1.8.0)
