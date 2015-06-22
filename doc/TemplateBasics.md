@@ -75,7 +75,7 @@ You can access several things when you use the default `TemplateBase<>` implemen
   }
   ```
 	
-- `@Include("templateName", model = null, modeType = null)` to include another template.
+- `@Include("templateName", model = null, modelType = null)` to include another template.
 
 - Accessing the ViewBag:
 	
