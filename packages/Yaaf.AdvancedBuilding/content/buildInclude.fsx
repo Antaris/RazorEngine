@@ -388,6 +388,7 @@ Target "Release" (fun _ ->
 )
 
 Target "ReadyForBuild" ignore
+Target "AfterBuild" ignore
 
 // Clean all
 "Clean" 
@@ -408,12 +409,12 @@ config.BuildTargets
           ==> buildName
           |> ignore
         buildName
-          ==> "All"
+          ==> "AfterBuild"
           |> ignore
     )
 
 // Dependencies
-"Clean" 
+"AfterBuild" 
   ==> "CopyToRelease"
   =?> ("CreateReleaseSymbolFiles", config.EnableDebugSymbolConversion)
   ==> "NuGetPack"

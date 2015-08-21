@@ -3,7 +3,7 @@
     using System.Security;
 #if RAZOR4
     using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.Generator;
+    using Microsoft.AspNet.Razor.Chunks.Generators;
     using OriginalCSharpRazorCodeLanguage = Microsoft.AspNet.Razor.CSharpRazorCodeLanguage;
 #else
     using System.Web.Razor;
@@ -45,11 +45,14 @@
         /// <param name="rootNamespaceName">Name of the root namespace.</param>
         /// <param name="sourceFileName">Name of the source file.</param>
         /// <param name="host">The host.</param>
-        /// <returns>An instance of <see cref="RazorCodeGenerator"/>.</returns>
 #if NET45 // Razor 2 has [assembly: SecurityTransparent]
         [SecurityCritical]
 #endif
+#if RAZOR4
+        public override RazorChunkGenerator CreateChunkGenerator(string className, string rootNamespaceName, string sourceFileName, RazorEngineHost host)
+#else
         public override RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespaceName, string sourceFileName, RazorEngineHost host)
+#endif
         {
             return new CSharpRazorCodeGenerator(className, rootNamespaceName, sourceFileName, host, StrictMode);
         }

@@ -470,6 +470,7 @@ namespace RazorEngine.Tests
             }
         }
 
+#if !RAZOR4 // @helper was removed from Razor 4
         /// <summary>
         /// Tests that a simple helper template with html-encoding can be parsed.
         /// </summary>
@@ -510,6 +511,7 @@ namespace RazorEngine.Tests
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
+#endif
 
         /// <summary>
         /// Check that we can cast the template to its interface type 

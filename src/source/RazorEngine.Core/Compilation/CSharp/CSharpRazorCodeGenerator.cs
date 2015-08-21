@@ -7,8 +7,9 @@ namespace RazorEngine.Compilation.CSharp
     using System.Security;
 #if RAZOR4
     using Microsoft.AspNet.Razor;
+    using Microsoft.AspNet.Razor.CodeGenerators;
     using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-    using OriginalCSharpRazorCodeGenerator = Microsoft.AspNet.Razor.Generator.CSharpRazorCodeGenerator;
+    using OriginalCSharpRazorCodeGenerator = Microsoft.AspNet.Razor.Chunks.Generators.RazorChunkGenerator;
 #else
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
