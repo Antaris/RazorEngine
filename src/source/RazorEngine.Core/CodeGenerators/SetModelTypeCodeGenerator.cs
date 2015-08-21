@@ -15,7 +15,11 @@
 #if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
 #endif
+#if RAZOR4
     internal class SetModelTypeCodeGenerator : SetBaseTypeChunkGenerator
+#else
+    internal class SetModelTypeCodeGenerator : SetBaseTypeCodeGenerator
+#endif
     {
         private readonly Func<Type, string, string> _builtBaseTypeName;
 
