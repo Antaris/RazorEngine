@@ -1,4 +1,8 @@
-﻿### 3.7.0 / 4.2.0-beta2
+﻿### 3.7.0-beta2 / 4.2.0-beta3
+
+ * Build version 4 against Mircrosoft.AspNet.Razor 4.
+
+### 3.7.0 / 4.2.0-beta2
 
  * add InvalidatingCachingProvider, ResolvePathTemplateManager and WatchingResolvePathTemplateManager, fixes https://github.com/Antaris/RazorEngine/issues/250.
  * Switched to Apache 2: https://github.com/Antaris/RazorEngine/issues/190

@@ -1,7 +1,8 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
 #if RAZOR4
-    using Microsoft.AspNet.Razor.Generator;
+    using Microsoft.AspNet.Razor;
+    using Microsoft.AspNet.Razor.Chunks.Generators;
     using Microsoft.AspNet.Razor.Text;
     using Microsoft.AspNet.Razor.Parser;
     using RazorCSharpCodeParser = Microsoft.AspNet.Razor.Parser.CSharpCodeParser;
@@ -92,7 +93,11 @@
 #if NET45 // Razor 2 has [assembly: SecurityTransparent]
         [SecurityCritical]
 #endif
+#if RAZOR4
+        private SpanChunkGenerator CreateModelCodeGenerator(string model)
+#else
         private SpanCodeGenerator CreateModelCodeGenerator(string model)
+#endif
         {
             return new SetModelTypeCodeGenerator(model, (templateType, modelTypeName) => {
                 return CompilerServicesUtility.CSharpCreateGenericType(templateType, modelTypeName, true);    

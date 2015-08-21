@@ -14,6 +14,7 @@
     using System.Text;
 #if RAZOR4
     using Microsoft.AspNet.Razor;
+    using Microsoft.AspNet.Razor.CodeGenerators;
     using Microsoft.AspNet.Razor.Parser;
 #else
     using System.Web.Razor;

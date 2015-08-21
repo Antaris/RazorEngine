@@ -3,7 +3,7 @@
     using System;
     using System.Globalization;
 #if RAZOR4
-    using Microsoft.AspNet.Razor.Generator;
+    using Microsoft.AspNet.Razor.Chunks.Generators;
     using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 #else
     using System.Web.Razor.Generator;
@@ -15,7 +15,7 @@
 #if NET45 // Razor 2 has [assembly: SecurityTransparent]
     [SecurityCritical]
 #endif
-    internal class SetModelTypeCodeGenerator : SetBaseTypeCodeGenerator
+    internal class SetModelTypeCodeGenerator : SetBaseTypeChunkGenerator
     {
         private readonly Func<Type, string, string> _builtBaseTypeName;
 
@@ -28,7 +28,11 @@
             _builtBaseTypeName = builtBaseTypeName;
         }
 
+#if RAZOR4
+        private string GetBaseType(ChunkGeneratorContext context, string baseType)
+#else
         private string GetBaseType(CodeGeneratorContext context, string baseType)
+#endif
         {
             var host = (RazorEngineHost)context.Host;
             return _builtBaseTypeName(host.DefaultBaseTemplateType, baseType);
@@ -37,9 +41,9 @@
         [SecurityCritical]
 #endif
 #if RAZOR4
-        public override void GenerateCode(Span target, CodeGeneratorContext context)
+        public override void GenerateChunk(Span target, ChunkGeneratorContext context)
         {
-            context.CodeTreeBuilder.AddSetBaseTypeChunk(GetBaseType(context, BaseType), target);
+            context.ChunkTreeBuilder.AddSetBaseTypeChunk(GetBaseType(context, BaseType), target);
         }
 #else
         protected override string ResolveType(CodeGeneratorContext context, string baseType)
