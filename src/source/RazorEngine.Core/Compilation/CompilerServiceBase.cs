@@ -26,10 +26,12 @@
     using System.Globalization;
     using System.Text;
     using System.Security.Permissions;
+    using CodeGeneration;
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
     /// </summary>
+    [Obsolete("Use the RazorEngine.CodeCompilation and RazorEngine.CodeGeneration API instead.")]
     public abstract class CompilerServiceBase : ICompilerService
     {
         /// <summary>
@@ -44,6 +46,7 @@
         /// <summary>
         /// This class only exists because we cannot use Func&lt;ParserBase&gt; in non security-critical class.
         /// </summary>
+        [Obsolete("Use the RazorCodeGenerator API instead.")]
         [SecurityCritical]
         public class ParserBaseCreator
         {
@@ -79,9 +82,10 @@
         protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory)
         {
             Contract.Requires(codeLanguage != null);
-
+            
             CodeLanguage = codeLanguage;
             MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
+            _codeGenerator = new BaseCodeGenerator(CodeLanguage, new BaseCodeGenerator.ParserBaseCreator(MarkupParserFactory.Create));
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -132,7 +136,8 @@
         /// All references we used until now.
         /// </summary>
         private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
-        
+        private BaseCodeGenerator _codeGenerator;
+
         #endregion
 
         #region Methods
@@ -237,26 +242,7 @@
         [SecurityCritical]
         private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
         {
-            var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory.Create)
-                           {
-                               DefaultBaseTemplateType = templateType,
-                               DefaultModelType = modelType,
-                               DefaultBaseClass = BuildTypeName(templateType, modelType),
-                               DefaultClassName = className,
-                               DefaultNamespace = DynamicTemplateNamespace,
-                               GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
-                                                                                 "WriteTo", "WriteLiteralTo",
-                                                                                 "RazorEngine.Templating.TemplateWriter",
-                                                                                 "DefineSection"
-#if RAZOR4
-                                                                                 , new GeneratedTagHelperContext()
-#endif
-                                                                                 ) {
-                                                                                     ResolveUrlMethodName = "ResolveUrl"
-                                                                                 }
-                           };
-
-            return host;
+            return _codeGenerator.CreateHost(templateType, modelType, className);
         }
 
         

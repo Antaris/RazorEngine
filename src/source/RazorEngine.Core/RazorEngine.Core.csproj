@@ -194,16 +194,18 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AttributeValue.cs" />
-    <Compile Include="CodeGenerators\SetModelTypeCodeGenerator.cs" />
+    <Compile Include="CodeCompilation\CodeCompiler.cs" />
+    <Compile Include="CodeGeneration\CodeGenerator.cs" />
+    <Compile Include="CodeGeneration\SetModelTypeCodeGenerator.cs" />
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
-    <Compile Include="Compilation\CompilerServicesUtility.cs" />
+    <Compile Include="CodeCompilation\CompilerServicesUtility.cs" />
     <Compile Include="Common\CrossAppDomainObject.cs" />
     <Compile Include="Compilation\CrossAppDomainCleanUp.cs" />
-    <Compile Include="Compilation\CSharp\CSharpCodeParser.cs" />
+    <Compile Include="CodeGeneration\CSharp\CSharpCodeParser.cs" />
     <Compile Include="Compilation\CSharp\CSharpDirectCompilerService.cs" />
-    <Compile Include="Compilation\CSharp\CSharpRazorCodeGenerator.cs" />
-    <Compile Include="Compilation\CSharp\CSharpRazorCodeLanguage.cs" />
+    <Compile Include="CodeGeneration\CSharp\CSharpRazorCodeGenerator.cs" />
+    <Compile Include="CodeGeneration\CSharp\CSharpRazorCodeLanguage.cs" />
     <Compile Include="Compilation\DefaultCompilerServiceFactory.cs" />
     <Compile Include="Compilation\DirectCompilerServiceBase.cs" />
     <Compile Include="Compilation\DynamicObject\Impromtu\ActLikeCaster.cs" />
@@ -242,16 +244,16 @@
     <Compile Include="Compilation\ICompilerService.cs" />
     <Compile Include="Compilation\ICompilerServiceFactory.cs" />
     <Compile Include="Compilation\RazorDynamicObject.cs" />
-    <Compile Include="Compilation\RazorEngineHost.cs" />
+    <Compile Include="CodeGeneration\RazorEngineHost.cs" />
     <Compile Include="Compilation\ReferenceResolver\CompilerReference.cs" />
     <Compile Include="Compilation\ReferenceResolver\IReferenceResolver.cs" />
     <Compile Include="Compilation\CompilationData.cs" />
     <Compile Include="Compilation\ReferenceResolver\UseCurrentAssembliesReferenceResolver.cs" />
     <Compile Include="Compilation\TypeContext.cs" />
-    <Compile Include="Compilation\VisualBasic\VBCodeParser.cs" />
+    <Compile Include="CodeGeneration\VisualBasic\VBCodeParser.cs" />
     <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />
-    <Compile Include="Compilation\VisualBasic\VBRazorCodeGenerator.cs" />
-    <Compile Include="Compilation\VisualBasic\VBRazorCodeLanguage.cs" />
+    <Compile Include="CodeGeneration\VisualBasic\VBRazorCodeGenerator.cs" />
+    <Compile Include="CodeGeneration\VisualBasic\VBRazorCodeLanguage.cs" />
     <Compile Include="Configuration\TemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationBuilder.cs" />
     <Compile Include="Configuration\Fluent\FluentTemplateServiceConfiguration.cs" />
@@ -339,6 +341,7 @@
     <None Include="paket.references" />
     <None Include="RazorEngine.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition=" '$(Platform)' == 'Razor4' ">
       <ItemGroup>
