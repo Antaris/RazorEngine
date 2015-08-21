@@ -6,13 +6,17 @@
 (*
     This file handles the generation of the docs (it is called by the build automatically). 
 *)
+#if FAKE
+#else
+// Support when file is opened in Visual Studio
+#load "buildConfigDef.fsx"
+#load "../../../buildConfig.fsx"
+#endif
 
 open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
 
 #load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
-// see https://github.com/tpetricek/FSharp.Formatting/pull/302
-#r "RazorEngine.dll"
 
 open System.Collections.Generic
 open System.IO
@@ -67,7 +71,13 @@ let rec replaceCodeBlocks ctx = function
         let nested = List.map (List.choose (replaceCodeBlocks ctx)) nested
         Some(Matching.ParagraphNested(pn, nested))
     | par -> Some par
-    
+
+let editLiterateDocument ctx (doc:LiterateDocument) =
+  doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
+
+let evalutator = lazy (Some <| (FsiEvaluator() :> IFsiEvaluator))
+//let evalutator = lazy None
+
 let buildAllDocumentation outDocDir website_root =
     let references = config.DocRazorReferences
     
@@ -98,53 +108,37 @@ let buildAllDocumentation outDocDir website_root =
       let indexTemplate, template, outDirName, indexName, extension =
         match outputKind with
         | OutputKind.Html -> "docpage-index.cshtml", "docpage.cshtml", "html", "index.html", ".html"
-        | OutputKind.Latex -> config.DocTemplatesDir @@ "template-color.tex", config.DocTemplatesDir @@ "template-color.tex", "latex", "Readme.tex", ".tex"
+        | OutputKind.Latex -> 
+          config.DocTemplatesDir @@ "template-color.tex", config.DocTemplatesDir @@ "template-color.tex", 
+          "latex", "Readme.tex", ".tex"
       let outDir = outDocDir @@ outDirName
       let handleDoc template (doc:LiterateDocument) outfile =
         // prismjs support
         let ctx = formattingContext (Some template) (Some outputKind) (Some true) (Some projInfo) (Some config.LayoutRoots)
-        let newParagraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs
-        Templating.processFile references (doc.With(paragraphs = newParagraphs)) outfile ctx 
-        
+        Templating.processFile references (editLiterateDocument ctx doc) outfile ctx 
+
       let processMarkdown template infile outfile =
-        let doc = Literate.ParseMarkdownFile( infile )
+        let doc = Literate.ParseMarkdownFile( infile, ?fsiEvaluator = evalutator.Value )
         handleDoc template doc outfile
       let processScriptFile template infile outfile =
-        let doc = Literate.ParseScriptFile( infile )
+        let doc = Literate.ParseScriptFile( infile, ?fsiEvaluator = evalutator.Value )
         handleDoc template doc outfile
         
       let rec processDirectory template indir outdir = 
-        // Create output directory if it does not exist
-        if Directory.Exists(outdir) |> not then
-          try Directory.CreateDirectory(outdir) |> ignore 
-          with _ -> failwithf "Cannot create directory '%s'" outdir
+        Literate.ProcessDirectory(
+          indir, template, outdir, outputKind, generateAnchors = true, replacements = projInfo, 
+          layoutRoots = config.LayoutRoots, customizeDocument = editLiterateDocument,
+          processRecursive = true, includeSource = true, ?fsiEvaluator = evalutator.Value,
+          ?assemblyReferences = references)
 
-        let fsx = [ for f in Directory.GetFiles(indir, "*.fsx") -> processScriptFile template, f ]
-        let mds = [ for f in Directory.GetFiles(indir, "*.md") -> processMarkdown template, f ]
-        for func, file in fsx @ mds do
-          let dir = Path.GetDirectoryName(file)
-          let name = Path.GetFileNameWithoutExtension(file)
-          let ext = (match outputKind with OutputKind.Latex -> "tex" | _ -> "html")
-          let output = Path.Combine(outdir, sprintf "%s.%s" name ext)
-
-          // Update only when needed
-          let changeTime = File.GetLastWriteTime(file)
-          let generateTime = File.GetLastWriteTime(output)
-          if changeTime > generateTime then
-            printfn "Generating '%s/%s.%s'" dir name ext
-            func file output
-
-        for d in Directory.EnumerateDirectories(indir) do
-          let name = Path.GetFileName(d)
-          processDirectory template (Path.Combine(indir, name)) (Path.Combine(outdir, name))
-
-      processDirectory template "./doc" outDir
+      processDirectory template (Path.GetFullPath "./doc") outDir
       let processFile template inFile outFile =
         if File.Exists inFile then
           processMarkdown template inFile outFile
         else
           trace (sprintf "File %s was not found so %s was not created!" inFile outFile)
-
+      
+      // Handle some special files.
       processFile indexTemplate "./README.md" (outDir @@ indexName)
       processFile template "./CONTRIBUTING.md" (outDir @@ "Contributing" + extension)
       processFile template "./LICENSE.md" (outDir @@ "License" + extension)
@@ -170,26 +164,12 @@ let buildAllDocumentation outDocDir website_root =
         let libDir = config.BuildDir @@ (config.BuildTargets |> Seq.last).SimpleBuildName
         let binaries =
             referenceBinaries
-            |> List.map (fun lib -> Path.GetFullPath( libDir @@ lib ))
-        let blacklist = [ "FSharp.Core.dll"; "mscorlib.dll" ]
-        let libraries =
-            Directory.EnumerateFiles(libDir, "*.dll")
-            |> Seq.map Path.GetFullPath
-            |> Seq.filter (fun file -> binaries |> List.exists (fun binary -> binary = file) |> not)
-            |> Seq.append [ "System";"System.Core";"System.Xml";"System.Xml.Linq" ]
-            |> Seq.filter (fun file ->
-                let name = Path.GetFileName file
-                let isBlacklisted = blacklist |> List.exists (fun b -> b = name)
-                if isBlacklisted then
-                  trace (sprintf "WARNING: Reference to \"%s\" is ignored because it is blacklisted!" file)
-                not isBlacklisted)
-            |> Seq.map (sprintf "-r:%s")
-            |> Seq.toList
+            |> List.map (fun lib -> libDir @@ lib)
         MetadataFormat.Generate
            (binaries, Path.GetFullPath outDir, config.LayoutRoots,
             parameters = projInfo,
-            libDirs = [ ],
-            otherFlags = libraries,
+            libDirs = [ libDir ],
+            otherFlags = [],
             sourceRepo = config.SourceReproUrl,
             sourceFolder = "./",
             publicOnly = true, 
@@ -214,11 +194,66 @@ let doLocal () =
     buildAllDocumentation (config.OutDocDir @@ "local") ("file://" + Path.GetFullPath (config.OutDocDir @@ "local" @@ "html"))
     trace (sprintf "Local documentation has been finished, you can view it by opening %s in your browser!" (Path.GetFullPath (config.OutDocDir @@ "local" @@ "html" @@ "index.html")))
 
+let watch () =
+  printfn "Starting watching by initial building..."
+  let rebuildDocs () =
+    CleanDir (config.OutDocDir @@ "local") // Just in case the template changed (buildDocumentation is caching internally, maybe we should remove that)
+    doLocal()
+  rebuildDocs()
+  printfn "Watching for changes..."
+
+  let full s = Path.GetFullPath s
+  let queue = new System.Collections.Concurrent.ConcurrentQueue<_>()
+  let processTask () =
+    async {
+      let! tok = Async.CancellationToken
+      while not tok.IsCancellationRequested do
+        try
+          if queue.IsEmpty then
+            do! Async.Sleep 1000
+          else
+            let data = ref []
+            let hasData = ref true
+            while !hasData do
+              match queue.TryDequeue() with
+              | true, d ->
+                data := d :: !data
+              | _ ->
+                hasData := false
+
+            printfn "Detected changes (%A). Invalidate cache and rebuild." !data
+            //global.FSharp.MetadataFormat.RazorEngineCache.InvalidateCache (!data |> Seq.map (fun change -> change.FullPath))
+            //global.FSharp.Literate.RazorEngineCache.InvalidateCache (!data |> Seq.map (fun change -> change.FullPath))
+            rebuildDocs()
+            printfn "Documentation generation finished."
+        with e ->
+          printfn "Documentation generation failed: %O" e
+    }
+  use watcher =
+    !! (full "." + "/**/*.*")
+    |> WatchChanges (fun changes ->
+      changes
+      |> Seq.filter (fun change ->
+        change.Name.StartsWith("doc" @@ "") || 
+        change.Name = "README.md" ||
+        change.Name = "CONTRIBUTING.md" ||
+        change.Name = "LICENSE.md")
+      |> Seq.iter queue.Enqueue
+    )
+  use source = new System.Threading.CancellationTokenSource()
+  Async.Start(processTask (), source.Token)
+  printfn "Press enter to exit watching..."
+  System.Console.ReadLine() |> ignore
+  watcher.Dispose()
+  source.Cancel()
+
 MyTarget "GithubDoc" (fun _ -> doGithub())
 
 MyTarget "LocalDoc" (fun _ -> doLocal())
 
+MyTarget "WatchDocs" (fun _ -> watch())
+
 MyTarget "AllDocs" (fun _ ->
-    doGithub()
+    if config.EnableGithub then doGithub()
     doLocal()
 )

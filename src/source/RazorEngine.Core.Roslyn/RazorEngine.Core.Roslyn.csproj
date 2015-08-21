@@ -125,7 +125,7 @@
     <When Condition=" '$(Platform)' == 'Razor4' ">
       <ItemGroup>
         <Reference Include="Microsoft.AspNet.Razor">
-          <HintPath>..\..\..\packages\.nuget\Microsoft.AspNet.Razor.4.0.0-beta1\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
+          <HintPath>..\..\..\packages\.nuget\Microsoft.AspNet.Razor.4.0.0-beta6\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
           <Private>True</Private>
           <Paket>False</Paket>
         </Reference>

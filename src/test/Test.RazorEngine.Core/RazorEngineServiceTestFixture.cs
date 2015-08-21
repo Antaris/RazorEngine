@@ -670,6 +670,7 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
             });
         }
 
+#if !RAZOR4 // @helper was removed from Razor 4
         /// <summary>
         /// Tests that debugging works with @helper syntax.
         /// </summary>
@@ -729,6 +730,7 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
             // #line hidden should be removed, so make debugging work, see https://github.com/Antaris/RazorEngine/issues/253.
             Assert.IsFalse(compiledTemplate.CompilationData.SourceCode.Contains("#line hidden"));
         }
+#endif
 
 
         /// <summary>
@@ -827,23 +829,17 @@ else {
             var cache = new InvalidatingCachingProvider();
             var mgr = new DelegateTemplateManager();
             var template =
-@"@helper Display(int price) {
-    if (price == 0) {
-        <text>free</text>
-    } else {
-        <text>@price</text>
-    }
-}
-@Display(Model.MyPrice)"; 
+@"@if (Model.MyPrice == 0) {
+    <text>free</text>
+} else {
+    <text>@Model.MyPrice</text>
+}";
             var template2 =
-@"@helper Display(int price) {
-    if (price == 0) {
-        <text>totally free</text>
-    } else {
-        <text>@price</text>
-    }
-}
-@Display(Model.MyPrice)";
+@"@if (Model.MyPrice == 0) {
+    <text>totally free</text>
+} else {
+    <text>@Model.MyPrice</text>
+}";
             RunTestHelper(service =>
             {
                 var model = new { MyPrice = 0 };

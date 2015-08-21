@@ -30,12 +30,16 @@ open AssemblyInfoFile
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
 
-// Make sure "our" build is used while generating the documentation.
-if File.Exists ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll") then
-  File.Delete ("packages/FSharp.Formatting/lib/net40/RazorEngine.dll")
-// The .fsx load file of FSharp.Formatting expects a System.Web.Razor.dll in ./lib/net40 and force-loads it.
-File.Copy ("packages/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll", "packages/FSharp.Formatting/lib/net40/System.Web.Razor.dll", true)
-
+// make the FSF load script happy
+[ "build/net45/RazorEngine.dll"; "packages/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll" ]
+|> Seq.iter (fun source ->
+  let dest = sprintf "packages/FSharp.Formatting/lib/net40/%s" (Path.GetFileName source)
+  try
+    if File.Exists dest then File.Delete dest
+    File.Copy (source, dest)
+  with e ->
+    trace (sprintf "Couldn't copy %s to %s, because: %O" source dest e)
+)
 
 let projectName_roslyn = "RazorEngine.Roslyn"
 let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
@@ -43,9 +47,9 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.2.0-beta2"
-let version_roslyn = "3.5.2-beta1"
-let version_roslyn_razor4 = "4.0.2-beta1"
+let version_razor4 = "4.2.0-beta3"
+let version_roslyn = "3.5.2-beta2"
+let version_roslyn_razor4 = "4.0.2-beta2"
 
 // This is set to true when we want to update the roslyn packages via CI as well
 // (otherwise this value doesn't matter). You can always push manually!
@@ -85,7 +89,7 @@ let buildConfig =
           { p with
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
-              Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta1" ] })
+              Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta6" ] })
         "RazorEngine.Roslyn.nuspec", (fun config p ->
           { p with
               Project = projectName_roslyn
@@ -154,7 +158,6 @@ let buildConfig =
           Attribute.InformationalVersion version_roslyn_razor4 ]
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn-Razor4.cs" info_roslyn_razor4
      )
-    EnableProjectFileCreation = false
     DocRazorReferences = None
     BuildTargets =
      [ { BuildParams.WithSolution with
