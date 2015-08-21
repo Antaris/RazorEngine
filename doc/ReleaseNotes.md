@@ -1,4 +1,4 @@
-﻿### 3.7.0-beta2 / 4.2.0-beta3
+﻿### 3.7.1-beta2 / 4.2.0-beta3
 
  * Build version 4 against Mircrosoft.AspNet.Razor 4.
 
