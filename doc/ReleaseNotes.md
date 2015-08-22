@@ -1,4 +1,8 @@
-﻿### 3.7.1 / 4.2.1-beta1
+﻿### 3.7.2 / 4.2.2-beta1
+
+ * Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.
+
+### 3.7.1 / 4.2.1-beta1
 
  * Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.
 
