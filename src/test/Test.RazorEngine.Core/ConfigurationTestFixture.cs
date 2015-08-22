@@ -10,6 +10,7 @@
     using Configuration;
     using Templating;
     using Text;
+    using Configuration.Xml;
 
     /// <summary>
     /// Defines a test fixture that provides tests for the <see cref="ITemplateServiceConfiguration"/> type.
