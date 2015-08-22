@@ -18,8 +18,7 @@
     using System.Web.Razor.Parser;
     using System.CodeDom.Compiler;
 #endif
-
-    using Inspectors;
+    
     using Templating;
     using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
@@ -31,22 +30,21 @@
     /// <summary>
     /// Provides a base implementation of a compiler service.
     /// </summary>
-    [Obsolete("Use the RazorEngine.CodeCompilation and RazorEngine.CodeGeneration API instead.")]
     public abstract class CompilerServiceBase : ICompilerService
     {
         /// <summary>
         /// The namespace for dynamic templates.
         /// </summary>
-        protected internal const string DynamicTemplateNamespace = "CompiledRazorTemplates.Dynamic";
+        protected internal const string DynamicTemplateNamespace = CodeGeneration.BaseCodeGenerator.DynamicTemplateNamespace;
+
         /// <summary>
         /// A prefix for all dynamically created classes.
         /// </summary>
-        protected internal const string ClassNamePrefix = "RazorEngine_";
+        protected internal const string ClassNamePrefix = CodeGeneration.BaseCodeGenerator.ClassNamePrefix;
 
         /// <summary>
         /// This class only exists because we cannot use Func&lt;ParserBase&gt; in non security-critical class.
         /// </summary>
-        [Obsolete("Use the RazorCodeGenerator API instead.")]
         [SecurityCritical]
         public class ParserBaseCreator
         {
@@ -82,10 +80,35 @@
         protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory)
         {
             Contract.Requires(codeLanguage != null);
+
+            switch (codeLanguage.LanguageName)
+            {
+                case "csharp":
+                    _generator = new CodeGeneration.CSharp.CSharpCodeGenerator(true, markupParserFactory.Create);
+                    break;
+                case "vb":
+                    _generator = new CodeGeneration.VisualBasic.VisualBasicCodeGenerator(true, markupParserFactory.Create);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("codeLanguage", "Unknown codeLanguage: " + codeLanguage.LanguageName);
+            }
+
+            CodeLanguage = _generator.CodeLanguage;
+            MarkupParserFactory = new ParserBaseCreator(_generator.MarkupParserFactory);
+
+
+            ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+
+        [SecurityCritical]
+        protected CompilerServiceBase(BaseCodeGenerator generator)
+        {
+            _generator = generator;
+            CodeLanguage = _generator.CodeLanguage;
+            MarkupParserFactory = new ParserBaseCreator(_generator.MarkupParserFactory);
             
-            CodeLanguage = codeLanguage;
-            MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
-            _codeGenerator = new BaseCodeGenerator(CodeLanguage, new BaseCodeGenerator.ParserBaseCreator(MarkupParserFactory.Create));
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -93,13 +116,6 @@
         #endregion
 
         #region Properties
-#if !RAZOR4
-        /// <summary>
-        /// Gets or sets the set of code inspectors.
-        /// </summary>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        public IEnumerable<ICodeInspector> CodeInspectors { get; set; }
-#endif
 
         /// <summary>
         /// Gets or sets the assembly resolver.
@@ -136,7 +152,11 @@
         /// All references we used until now.
         /// </summary>
         private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
-        private BaseCodeGenerator _codeGenerator;
+
+        /// <summary>
+        /// The Razor code generator.
+        /// </summary>
+        private BaseCodeGenerator _generator;
 
         #endregion
 
@@ -230,22 +250,7 @@
         /// <returns>The compiled type.</returns>
         [SecurityCritical]
         public abstract Tuple<Type, CompilationData> CompileType(TypeContext context);
-
-        /// <summary>
-        /// Creates a <see cref="RazorEngineHost"/> used for class generation.
-        /// </summary>
-        /// <param name="templateType">The template base type.</param>
-        /// <param name="modelType">The model type.</param>
-        /// <param name="className">The class name.</param>
-        /// <returns>An instance of <see cref="RazorEngineHost"/>.</returns>
-
-        [SecurityCritical]
-        private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
-        {
-            return _codeGenerator.CreateHost(templateType, modelType, className);
-        }
-
-        
+                
         /// <summary>
         /// Gets the source code from Razor for the given template.
         /// </summary>
@@ -308,24 +313,9 @@
             Type templateType = context.TemplateType;
             Type modelType = context.ModelType;
 
-            if (string.IsNullOrEmpty(className))
-                throw new ArgumentException("Class name is required.");
-
-            if (template == null)
-                throw new ArgumentException("Template is required.");
-            
-            namespaceImports = namespaceImports ?? new HashSet<string>();
-            templateType = templateType ?? ((modelType == null) ? typeof(TemplateBase) : typeof(TemplateBase<>));
-
-            // Create the RazorEngineHost
-            var host = CreateHost(templateType, modelType, className);
-
-            // Add any required namespace imports
-            foreach (string ns in GetNamespaces(templateType, namespaceImports))
-                host.NamespaceImports.Add(ns);
-
-            // Gets the generator result.
-            return GetGeneratorResult(host, context);
+            var source = _generator.GenerateCode(
+                className, BaseCodeGenerator.DynamicTemplateNamespace, template, namespaceImports, templateType, modelType);
+            return source.SourceCode;
         }
 
         /// <summary>
@@ -343,24 +333,7 @@
                 result = engine.GenerateCode(reader, null, null, context.TemplateContent.TemplateFile);
             return InspectSource(result, context);
         }
-
-        /// <summary>
-        /// Gets any required namespace imports.
-        /// </summary>
-        /// <param name="templateType">The template type.</param>
-        /// <param name="otherNamespaces">The requested set of namespace imports.</param>
-        /// <returns>A set of namespace imports.</returns>
-        private static IEnumerable<string> GetNamespaces(Type templateType, IEnumerable<string> otherNamespaces)
-        {
-            var templateNamespaces = templateType.GetCustomAttributes(typeof(RequireNamespacesAttribute), true)
-                .Cast<RequireNamespacesAttribute>()
-                .SelectMany(a => a.Namespaces)
-                .Concat(otherNamespaces)
-                .Distinct();
-
-            return templateNamespaces;
-        }
-
+        
         /// <summary>
         /// Returns a set of assemblies that must be referenced by the compiled template.
         /// </summary>
@@ -401,25 +374,6 @@
                 yield return reference;
             }
         }
-
-#if !RAZOR4
-        /// <summary>
-        /// Inspects the generated code compile unit.
-        /// </summary>
-        /// <param name="unit">The code compile unit.</param>
-        [Obsolete("Will be removed in 4.x")]
-        protected virtual void Inspect(CodeCompileUnit unit)
-        {
-            Contract.Requires(unit != null);
-
-            var ns = unit.Namespaces[0];
-            var type = ns.Types[0];
-            var executeMethod = type.Members.OfType<CodeMemberMethod>().Where(m => m.Name.Equals("Execute")).Single();
-
-            foreach (var inspector in CodeInspectors)
-                inspector.Inspect(unit, ns, type, executeMethod);
-        }
-#endif
         #endregion
     }
 }

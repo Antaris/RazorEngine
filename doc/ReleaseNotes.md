@@ -1,4 +1,13 @@
-﻿### 3.7.2 / 4.2.2-beta1
+﻿### 3.8.0 / 4.3.0-beta1
+
+ * Remove CodeInspectors, if you need this feature use the new Roslyn API
+ * Split up the monolithic CompilerService API (which is now obsoleted by TemplateRuntime):
+   * Add 'CodeGeneration' as a lightweight API to get C# code from a Razor template.
+   * Add 'CodeCompilation' as a lightweight API to compile C# code to assemblies.
+   * Add 'AssemblyLoader' as a lightweight API to load the compiled assemblies
+ * Completely removed the Inspectors API (the same is now possible by using the Roslyn and the new APIS from above)
+
+### 3.7.2 / 4.2.2-beta1
 
  * Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.
 

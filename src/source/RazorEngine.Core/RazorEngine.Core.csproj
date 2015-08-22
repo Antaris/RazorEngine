@@ -196,7 +196,9 @@
     <Compile Include="AttributeValue.cs" />
     <Compile Include="CodeCompilation\CodeCompiler.cs" />
     <Compile Include="CodeGeneration\CodeGenerator.cs" />
+    <Compile Include="CodeGeneration\CSharp\CSharpCodeGenerator.cs" />
     <Compile Include="CodeGeneration\SetModelTypeCodeGenerator.cs" />
+    <Compile Include="CodeGeneration\VisualBasic\VisualBasicCodeGenerator.cs" />
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
     <Compile Include="CodeCompilation\CompilerServicesUtility.cs" />
@@ -240,7 +242,6 @@
     <Compile Include="Compilation\DynamicObject\Impromtu\Util.cs" />
     <Compile Include="Compilation\ExecutionContextLessThread.cs" />
     <Compile Include="Compilation\HasDynamicModelAttribute.cs" />
-    <Compile Include="Compilation\Inspectors\ICodeInspector.cs" />
     <Compile Include="Compilation\ICompilerService.cs" />
     <Compile Include="Compilation\ICompilerServiceFactory.cs" />
     <Compile Include="Compilation\RazorDynamicObject.cs" />
@@ -254,8 +255,6 @@
     <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />
     <Compile Include="CodeGeneration\VisualBasic\VBRazorCodeGenerator.cs" />
     <Compile Include="CodeGeneration\VisualBasic\VBRazorCodeLanguage.cs" />
-    <Compile Include="Compilation\VisualBasic\VBRazorCodeGenerator.cs" />
-    <Compile Include="Compilation\VisualBasic\VBRazorCodeLanguage.cs" />
     <Compile Include="Configuration\ReadOnlyTemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\TemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationBuilder.cs" />
@@ -344,7 +343,9 @@
     <None Include="paket.references" />
     <None Include="RazorEngine.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CodeCompilation\CSharp\" />
+  </ItemGroup>
   <Choose>
     <When Condition=" '$(Platform)' == 'Razor4' ">
       <ItemGroup>

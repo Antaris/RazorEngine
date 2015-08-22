@@ -10,7 +10,6 @@ namespace RazorEngine.Templating
     using System.Reflection;
 
     using Compilation;
-    using Compilation.Inspectors;
     using Configuration;
     using Parallel;
     using Text;

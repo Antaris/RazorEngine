@@ -131,7 +131,7 @@ namespace RazorEngine.Roslyn.CSharp
         public override IEnumerable<CompilerReference> IncludeReferences()
         {
             // Ensure the Microsoft.CSharp assembly is referenced to support dynamic typing.
-            return new[] { CompilerReference.From(typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly) };
+            return new[] { CompilerReference.From(typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly.Location) };
         }
     }
 }

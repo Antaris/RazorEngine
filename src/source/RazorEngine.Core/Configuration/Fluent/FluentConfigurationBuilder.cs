@@ -4,7 +4,6 @@
     using System.Diagnostics.Contracts;
 
     using Compilation;
-    using Compilation.Inspectors;
     using Templating;
     using Text;
 
@@ -69,34 +68,6 @@
             return this;
         }
         
-#if !RAZOR4
-        /// <summary>
-        /// Adds the specified code inspector.
-        /// </summary>
-        /// <typeparam name="TInspector">The code inspector type.</typeparam>
-        /// <returns>The current configuration builder.</returns>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        public IConfigurationBuilder AddInspector<TInspector>() where TInspector : ICodeInspector, new()
-        {
-            return AddInspector(new TInspector());
-        }
-
-        /// <summary>
-        /// Adds the specified code inspector.
-        /// </summary>
-        /// <param name="inspector">The code inspector.</param>
-        /// <returns>The current configuration builder.</returns>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        public IConfigurationBuilder AddInspector(ICodeInspector inspector)
-        {
-            if (inspector == null)
-                throw new ArgumentNullException("inspector");
-
-            _config.CodeInspectors.Add(inspector);
-            return this;
-        }
-#endif
-
         /// <summary>
         /// Sets that dynamic models should be fault tollerant in accepting missing properties.
         /// </summary>

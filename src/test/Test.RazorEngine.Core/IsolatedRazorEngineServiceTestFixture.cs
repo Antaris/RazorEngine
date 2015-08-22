@@ -177,7 +177,9 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
             /// <summary>
             /// The assemblies are called "@(namespace).@(class).dll"
             /// </summary>
-            const string CompiledAssemblyPrefix = CompilerServiceBase.DynamicTemplateNamespace + "." + CompilerServiceBase.ClassNamePrefix;
+            const string CompiledAssemblyPrefix = 
+                global::RazorEngine.CodeGeneration.BaseCodeGenerator.DynamicTemplateNamespace + "." +
+                global::RazorEngine.CodeGeneration.BaseCodeGenerator.ClassNamePrefix;
             
             /// <summary>
             /// Check if a compiled assembly exists.

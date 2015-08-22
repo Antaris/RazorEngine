@@ -26,6 +26,7 @@
     /// <summary>
     /// Provides a base implementation of a direct compiler service.
     /// </summary>
+    [Obsolete("use the new APIs CodeGeneration, CodeCompilation and AssemblyLoading instead")]
     public abstract class DirectCompilerServiceBase : CompilerServiceBase, IDisposable
     {
         #region Fields
@@ -46,6 +47,20 @@
         {
             _codeDomProvider = codeDomProvider;
         }
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="DirectCompilerServiceBase"/>.
+        /// </summary>
+        /// <param name="generator">The Razor code generator.</param>
+        /// <param name="codeDomProvider">The code dom provider used to generate code.</param>
+        [SecurityCritical]
+        protected DirectCompilerServiceBase(CodeGeneration.BaseCodeGenerator generator, CodeDomProvider codeDomProvider)
+            : base(generator)
+        {
+            _codeDomProvider = codeDomProvider;
+        }
+
+
         #endregion
 
         #region Properties
@@ -178,12 +193,7 @@
 
             // Generate any constructors required by the base template type.
             GenerateConstructors(CompilerServicesUtility.GetConstructors(context.TemplateType), generatedType);
-
-#pragma warning disable 0618 // Backwards Compat.
-            // Despatch any inspectors
-            Inspect(results.GeneratedCode);
-#pragma warning restore 0618 // Backwards Compat.
-            
+                        
             string generatedCode;
             var builder = new StringBuilder();
             using (var writer = new StringWriter(builder, CultureInfo.InvariantCulture))

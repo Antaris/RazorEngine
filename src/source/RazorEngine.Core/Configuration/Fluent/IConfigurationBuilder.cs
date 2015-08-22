@@ -3,7 +3,6 @@
     using System;
 
     using Compilation;
-    using Compilation.Inspectors;
     using Templating;
     using Text;
 
@@ -33,24 +32,6 @@
         /// <param name="activator">The activator delegate.</param>
         /// <returns>The current configuration builder.</returns>
         IConfigurationBuilder ActivateUsing(Func<InstanceContext, ITemplate> activator);
-        
-#if !RAZOR4
-        /// <summary>
-        /// Adds the specified code inspector.
-        /// </summary>
-        /// <typeparam name="TInspector">The code inspector type.</typeparam>
-        /// <returns>The current configuration builder.</returns>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        IConfigurationBuilder AddInspector<TInspector>() where TInspector : ICodeInspector, new();
-
-        /// <summary>
-        /// Adds the specified code inspector.
-        /// </summary>
-        /// <param name="inspector">The code inspector.</param>
-        /// <returns>The current configuration builder.</returns>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        IConfigurationBuilder AddInspector(ICodeInspector inspector);
-#endif
 
         /// <summary>
         /// Sets the compiler service factory.

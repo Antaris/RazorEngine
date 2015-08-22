@@ -4,7 +4,6 @@
     using System.Collections.Generic;
 
     using Compilation;
-    using Compilation.Inspectors;
     using Templating;
     using Text;
     using RazorEngine.Compilation.ReferenceResolver;
@@ -32,12 +31,6 @@
             CompilerServiceFactory = new DefaultCompilerServiceFactory();
             EncodedStringFactory = new HtmlEncodedStringFactory();
             
-#if !RAZOR4
-#pragma warning disable 0618 // Backwards Compat.
-            CodeInspectors = new List<ICodeInspector>();
-#pragma warning restore 0618 // Backwards Compat.
-#endif
-
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
             CachingProvider = new DefaultCachingProvider();
             TemplateManager =
@@ -84,23 +77,7 @@
         /// Gets or sets the base template type.
         /// </summary>
         public Type BaseTemplateType { get; set; }
-
-#if !RAZOR4
-#pragma warning disable 0618 // Backwards Compat.
-        /// <summary>
-        /// Gets the set of code inspectors.
-        /// </summary>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        IEnumerable<ICodeInspector> ITemplateServiceConfiguration.CodeInspectors { get { return CodeInspectors; } }
-        
-        /// <summary>
-        /// Gets the set of code inspectors.
-        /// </summary>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        public IList<ICodeInspector> CodeInspectors { get; private set; }
-#pragma warning restore 0618 // Backwards Compat.
-#endif
-        
+                
         /// <summary>
         /// Gets or sets the reference resolver
         /// </summary>

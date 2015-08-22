@@ -6,7 +6,6 @@
     using System.Linq;
 
     using Compilation;
-    using Compilation.Inspectors;
     using Templating;
     using Text;
     using RazorEngine.Compilation.ReferenceResolver;
@@ -59,15 +58,7 @@
         /// Gets the base template type.
         /// </summary>
         public Type BaseTemplateType { get; private set; }
-
-#if !RAZOR4
-        /// <summary>
-        /// Gets the code inspectors.
-        /// </summary>
-        [Obsolete("This API is obsolete and will be removed in the next version (Razor4 doesn't use CodeDom for code-generation)!")]
-        public IEnumerable<ICodeInspector> CodeInspectors { get; private set; }
-#endif
-
+        
         /// <summary>
         /// Gets the reference resolver.
         /// </summary>

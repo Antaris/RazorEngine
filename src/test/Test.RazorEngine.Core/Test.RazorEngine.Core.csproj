@@ -131,7 +131,6 @@
     <Compile Include="TestTypes\BaseTypes\AddLanguageInfo.cs" />
     <Compile Include="TestTypes\BaseTypes\NestedBaseClass.cs" />
     <Compile Include="VariousTestsFixture.cs" />
-    <Compile Include="CodeInspectorTestFixture.cs" />
     <Compile Include="ConfigurationTestFixture.cs" />
     <Compile Include="IsolatedRazorEngineServiceTestFixture.cs" />
     <Compile Include="IsolatedTemplateServiceTestFixture.cs" />
@@ -150,7 +149,6 @@
     <Compile Include="TestTypes\BaseTypes\NonGenericTemplateBase.cs" />
     <Compile Include="TestTypes\Employee.cs" />
     <Compile Include="TestTypes\InlineTemplateModel.cs" />
-    <Compile Include="TestTypes\Inspectors\ThrowExceptionCodeInspector.cs" />
     <Compile Include="Issues\Release_3_0_TestFixture.cs" />
     <Compile Include="TestTypes\ThreadPoolItem.cs" />
     <Compile Include="TestTypes\ValueObject.cs" />
@@ -203,19 +201,19 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v5.0')">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>
-        <Reference Include="Moq.Silverlight">
-          <HintPath>..\..\..\packages\Moq\lib\sl4\Moq.Silverlight.dll</HintPath>
+        <Reference Include="Moq">
+          <HintPath>..\..\..\packages\Moq\lib\net40\Moq.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
+    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(TargetFrameworkVersion) == 'v5.0'">
       <ItemGroup>
-        <Reference Include="Moq">
-          <HintPath>..\..\..\packages\Moq\lib\net40\Moq.dll</HintPath>
+        <Reference Include="Moq.Silverlight">
+          <HintPath>..\..\..\packages\Moq\lib\sl5\Moq.Silverlight.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -244,21 +242,7 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhone' And ($(TargetFrameworkVersion) == 'v8.0' Or $(TargetFrameworkVersion) == 'v8.1')">
-      <ItemGroup>
-        <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-          <HintPath>..\..\..\packages\Unity\lib\wp80\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="Microsoft.Practices.Unity">
-          <HintPath>..\..\..\packages\Unity\lib\wp80\Microsoft.Practices.Unity.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>
         <Reference Include="Microsoft.Practices.Unity.Configuration">
           <HintPath>..\..\..\packages\Unity\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
@@ -277,7 +261,21 @@
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="($(TargetFrameworkProfile) == 'Profile7') Or ($(TargetFrameworkProfile) == 'Profile31') Or ($(TargetFrameworkProfile) == 'Profile44') Or ($(TargetFrameworkProfile) == 'Profile49') Or ($(TargetFrameworkProfile) == 'Profile78')">
+    <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhone' And ($(TargetFrameworkVersion) == 'v8.0' Or $(TargetFrameworkVersion) == 'v8.1')">
+      <ItemGroup>
+        <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+          <HintPath>..\..\..\packages\Unity\lib\wp80\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Microsoft.Practices.Unity">
+          <HintPath>..\..\..\packages\Unity\lib\wp80\Microsoft.Practices.Unity.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch') Or ($(TargetFrameworkIdentifier) == 'Xamarin.iOS') Or ($(TargetFrameworkIdentifier) == 'Xamarin.Mac') Or ($(TargetFrameworkProfile) == 'Profile7') Or ($(TargetFrameworkProfile) == 'Profile31') Or ($(TargetFrameworkProfile) == 'Profile44') Or ($(TargetFrameworkProfile) == 'Profile49') Or ($(TargetFrameworkProfile) == 'Profile78')">
       <ItemGroup>
         <Reference Include="Microsoft.Practices.Unity">
           <HintPath>..\..\..\packages\Unity\lib\portable-net45+wp80+win8+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>

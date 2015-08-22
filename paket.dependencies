@@ -1,3 +1,4 @@
+redirects: on
 source https://nuget.org/api/v2
 
 nuget Nuget.CommandLine

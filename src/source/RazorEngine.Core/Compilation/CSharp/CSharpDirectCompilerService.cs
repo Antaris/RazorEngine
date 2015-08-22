@@ -30,10 +30,7 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed"), SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed in base class: DirectCompilerServiceBase")]
         [SecurityCritical]
         public CSharpDirectCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
-            : base(
-                new CSharpRazorCodeLanguage(strictMode),
-                new CSharpCodeProvider(),
-                markupParserFactory) { }
+            : base(new CodeGeneration.CSharp.CSharpCodeGenerator(strictMode, markupParserFactory), new CSharpCodeProvider()) { }
         #endregion
 
         /// <summary>

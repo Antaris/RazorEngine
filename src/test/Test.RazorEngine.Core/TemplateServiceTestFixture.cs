@@ -38,7 +38,7 @@ namespace RazorEngine.Tests
             {
                 var config = new TemplateServiceConfiguration();
                 withConfig(config);
-#pragma warning disable 0618 // Fine because we still want to test if
+#pragma warning disable 0618 // Fine because we still want to test it
                 using (var service = new TemplateService(config))
 #pragma warning restore 0618
                 {
