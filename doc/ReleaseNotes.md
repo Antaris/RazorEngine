@@ -1,10 +1,18 @@
-﻿### 3.7.0-beta2 / 4.2.0-beta3
+﻿### 3.7.2 / 4.2.2-beta1
+
+ * Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.
+
+### 3.7.1 / 4.2.1-beta1
+
+ * Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.
+
+### 3.7.1-beta1 / 4.2.0-beta3
 
  * Build version 4 against Mircrosoft.AspNet.Razor 4.
 
 ### 3.7.0 / 4.2.0-beta2
 
- * add InvalidatingCachingProvider, ResolvePathTemplateManager and WatchingResolvePathTemplateManager, fixes https://github.com/Antaris/RazorEngine/issues/250.
+ * add InvalidatingCachingProvider, ResolvePathTemplateManager and WatchingResolvePathTemplateManager, fixes https://github.com/Antaris/RazorEngine/issues/250
  * Switched to Apache 2: https://github.com/Antaris/RazorEngine/issues/190
  * Missing feature (compared to 3.6): Configuration fallback to XML.
 
@@ -26,11 +34,11 @@
 * Cleanup temporary files when RazorEngine is not used in the default AppDomain
 * Write to stderr when cleanup is not successful.
 * Add an API to change the temporary directory (by subclassing CompilerService)
-* Fix https://github.com/Antaris/RazorEngine/issues/253.
+* Fix https://github.com/Antaris/RazorEngine/issues/253
 
 ### 3.6.3-beta2
 * Fix some race conditions in cleanup.
-* Fix https://github.com/Antaris/RazorEngine/issues/253.
+* Fix https://github.com/Antaris/RazorEngine/issues/253
 
 ### 3.6.3-beta1 / 4.1.3-beta1
 * Cleanup temporary files when RazorEngine is not used in the default AppDomain

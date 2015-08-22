@@ -254,6 +254,9 @@
     <Compile Include="Compilation\VisualBasic\VBDirectCompilerService.cs" />
     <Compile Include="CodeGeneration\VisualBasic\VBRazorCodeGenerator.cs" />
     <Compile Include="CodeGeneration\VisualBasic\VBRazorCodeLanguage.cs" />
+    <Compile Include="Compilation\VisualBasic\VBRazorCodeGenerator.cs" />
+    <Compile Include="Compilation\VisualBasic\VBRazorCodeLanguage.cs" />
+    <Compile Include="Configuration\ReadOnlyTemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\TemplateServiceConfiguration.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationBuilder.cs" />
     <Compile Include="Configuration\Fluent\FluentTemplateServiceConfiguration.cs" />

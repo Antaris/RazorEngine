@@ -116,6 +116,18 @@ namespace Test.RazorEngine
         }
 
         /// <summary>
+        /// Check that xml configuration has a template manager.
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RazorEngineService_CheckConfiguration()
+        {
+            var config = new TemplateServiceConfiguration();
+            config.TemplateManager = null;
+            RazorEngineService.Create(config);
+        }
+
+        /// <summary>
         /// Tests that the fluent configuration can configure a template service with a specific encoding.
         /// </summary>
         [Test]
