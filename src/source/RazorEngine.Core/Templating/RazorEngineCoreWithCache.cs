@@ -9,7 +9,7 @@ namespace RazorEngine.Templating
 {
     internal class RazorEngineCoreWithCache : RazorEngineCore
     {
-        internal RazorEngineCoreWithCache(ITemplateServiceConfiguration config, RazorEngineService cached)
+        internal RazorEngineCoreWithCache(ReadOnlyTemplateServiceConfiguration config, RazorEngineService cached)
             : base(config, cached)
         {
         }

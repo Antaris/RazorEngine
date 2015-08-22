@@ -20,16 +20,18 @@ namespace RazorEngine.Templating
     using RazorEngine.Compilation.ReferenceResolver;
     internal class RazorEngineCore
     {
-        private readonly ITemplateServiceConfiguration _config;
+        private readonly ReadOnlyTemplateServiceConfiguration _config;
         /// <summary>
         /// We need this for creating the templates.
         /// </summary>
         private readonly RazorEngineService _cached;
 
-        internal RazorEngineCore(ITemplateServiceConfiguration config, RazorEngineService cached)
+        internal RazorEngineCore(ReadOnlyTemplateServiceConfiguration config, RazorEngineService cached)
         {
-            Contract.Requires(config != null);
-            Contract.Requires(config.TemplateManager != null);
+            if (config == null)
+            {
+                throw new ArgumentNullException("config");
+            }
             
             _config = config;
             _cached = cached;
