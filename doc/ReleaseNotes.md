@@ -1,4 +1,8 @@
-﻿### 3.7.1-beta1 / 4.2.0-beta3
+﻿### 3.7.1 / 4.2.1-beta1
+
+ * Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.
+
+### 3.7.1-beta1 / 4.2.0-beta3
 
  * Build version 4 against Mircrosoft.AspNet.Razor 4.
 
