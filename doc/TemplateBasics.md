@@ -58,7 +58,7 @@ string result = Engine.Razor.RunCompile(template, "key", null, (object)model);
 
 > Note: You can run into problems when not casting the model to object.
 
-## Supported synax.
+## Supported syntax.
 
 You can access several things when you use the default `TemplateBase<>` implementation:
 
