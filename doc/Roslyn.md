@@ -16,7 +16,6 @@ config.CompilerServiceFactory = new RazorEngine.Roslyn.RoslynCompilerServiceFact
 
 ## Known Limitation/Bugs
 
-- Debugging symbols do not work currently (If you know how Roslyn works please send a pull request!).
 - Debug symbols cannot be created on mono/unix:
 
          error: (0, 0) Unexpected error writing debug information -- 'The requested feature is not implemented.'
