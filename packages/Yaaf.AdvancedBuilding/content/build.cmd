@@ -9,7 +9,7 @@ set fake_path=FAKE/tools/FAKE.exe
 REM resore paket build dependencies
 if exist ".paket/paket.bootstrapper.exe" (
   echo Bootstrap paket
-  .paket\paket.bootstrapper.exe
+  .paket\paket.bootstrapper.exe %PAKET_VERSION%
   if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
 
   echo restore paket packages

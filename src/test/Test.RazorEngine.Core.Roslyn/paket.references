@@ -1,3 +1,13 @@
-Microsoft.AspNet.Razor
-Microsoft.CodeAnalysis
-NUnit
+group Net45
+  Microsoft.AspNet.Razor
+  Microsoft.CodeAnalysis
+
+group Net40
+  Microsoft.AspNet.Razor
+
+group Razor4
+  Microsoft.AspNet.Razor
+  Microsoft.CodeAnalysis
+
+group Test
+  NUnit

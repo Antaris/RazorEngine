@@ -250,7 +250,43 @@
         /// <returns>The compiled type.</returns>
         [SecurityCritical]
         public abstract Tuple<Type, CompilationData> CompileType(TypeContext context);
-                
+
+        /// <summary>
+        /// Creates a <see cref="RazorEngineHost"/> used for class generation.
+        /// </summary>
+        /// <param name="templateType">The template base type.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <param name="className">The class name.</param>
+        /// <returns>An instance of <see cref="RazorEngineHost"/>.</returns>
+        [SecurityCritical]
+        private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
+        {
+            var host =
+                new RazorEngineHost(CodeLanguage, MarkupParserFactory.Create)
+                {
+                    DefaultBaseTemplateType = templateType,
+                    DefaultModelType = modelType,
+                    DefaultBaseClass = BuildTypeName(templateType, modelType),
+                    DefaultClassName = className,
+                    DefaultNamespace = DynamicTemplateNamespace,
+                    GeneratedClassContext =
+                        new GeneratedClassContext(
+                            "Execute", "Write", "WriteLiteral", "WriteTo", "WriteLiteralTo",
+                            "RazorEngine.Templating.TemplateWriter", "DefineSection"
+#if RAZOR4
+                            , new GeneratedTagHelperContext()
+#endif
+                        )
+#if !RAZOR4
+                        {
+                            ResolveUrlMethodName = "ResolveUrl"
+                        }
+#endif
+            };
+
+            return host;
+        }
+
         /// <summary>
         /// Gets the source code from Razor for the given template.
         /// </summary>
