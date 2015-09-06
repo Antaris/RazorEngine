@@ -1,13 +1,33 @@
 source https://nuget.org/api/v2
 
 nuget Nuget.CommandLine
-nuget Yaaf.AdvancedBuilding
+nuget Yaaf.AdvancedBuilding !>= 0
 
-nuget Microsoft.AspNet.Razor ~> 3.0
-nuget Microsoft.CodeAnalysis
+group Net45
+  condition: NET45
+  source https://nuget.org/api/v2
 
-nuget NUnit
-nuget NUnit.Runners
-nuget Moq
-nuget NUnit
-nuget Unity
+  nuget Microsoft.AspNet.Razor ~> 3.0
+  nuget Microsoft.CodeAnalysis != 1.0.0-rc2
+
+group Net40
+  condition: NET40
+  source https://nuget.org/api/v2
+  framework: net40
+
+  nuget Microsoft.AspNet.Razor ~> 2.0
+
+group Razor4
+  condition: RAZOR4
+  source https://nuget.org/api/v2
+  nuget Microsoft.AspNet.Razor !~> 4.0.0-beta1
+  nuget Microsoft.CodeAnalysis != 1.0.0-rc2
+
+group Test
+  source https://nuget.org/api/v2
+
+  nuget NUnit
+  nuget NUnit.Runners
+  nuget Moq
+  nuget NUnit
+  nuget Unity

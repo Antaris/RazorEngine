@@ -7,6 +7,16 @@ While Razor 4 is still beta we do not recommend upgrading to 4.x on production s
 4.x releases will have the same features/API of 3.x releases but will use Razor-4 instead of Razor-2 and Razor-3.
 Some obsolete APIs will be removed so see the `Upgrading to 3.5.0` guide.
 
+Razor 4 changed quite a bit of its internals,
+see https://github.com/aspnet/Razor/releases for a complete list of changes.
+
+Some important changes hitting RazorEngine users:
+
+ - `@helper` is no longer available (https://github.com/aspnet/Razor/issues/281)
+ - Urls like `~/index.html` are no longer resolved.
+   See https://github.com/aspnet/Razor/issues/427 and https://github.com/aspnet/Mvc/issues/2807
+
+
 ## Upgrading to 3.5.0.
 
 First of all 3.5.0 should be fully (binary) backwards compatible with 3.4.x releases. 

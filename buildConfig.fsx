@@ -31,7 +31,7 @@ if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
 
 // make the FSF load script happy
-[ "build/net45/RazorEngine.dll"; "packages/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll" ]
+[ "build/net45/RazorEngine.dll"; "packages/net45/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll" ]
 |> Seq.iter (fun source ->
   let dest = sprintf "packages/FSharp.Formatting/lib/net40/%s" (Path.GetFileName source)
   try
@@ -103,7 +103,7 @@ let buildConfig =
                   [ config.ProjectName, config.Version
                     "Microsoft.AspNet.Razor", "3.0.0" ]
                 [ "Microsoft.CodeAnalysis" ]
-                |> List.map (fun name -> name, (GetPackageVersion "packages" name))
+                |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "net45") name))
                 |> List.append exact })
         "RazorEngine.Roslyn-razor4.nuspec", (fun config p ->
           { p with
@@ -118,9 +118,9 @@ let buildConfig =
                   [ config.ProjectName, version_razor4
                     "Microsoft.AspNet.Razor", "4.0.0-beta1" ]
                 [ "Microsoft.CodeAnalysis" ]
-                |> List.map (fun name -> name, (GetPackageVersion "packages" name))
+                |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "razor4") name))
                 |> List.append exact }) ]
-    UseNuget = true
+    UseNuget = false
     GeneratedFileList =
       [ "RazorEngine.dll"; "RazorEngine.xml"
         "RazorEngine.Roslyn.dll"; "RazorEngine.Roslyn.xml" ]

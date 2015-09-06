@@ -21,6 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+    <NET40>True</NET40>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">DEBUG;TRACE;NET40</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">DEBUG;TRACE;NET40;MONO</DefineConstants>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -32,6 +33,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Net40' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <NET40>True</NET40>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">TRACE;NET40</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">TRACE;NET40;MONO</DefineConstants>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -44,6 +46,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+    <NET45>True</NET45>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">DEBUG;TRACE;NET45</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">DEBUG;TRACE;NET45;MONO</DefineConstants>
     <OutputPath>bin\Debug\</OutputPath>
@@ -54,6 +57,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Net45' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <NET45>True</NET45>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">TRACE;NET45</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">TRACE;NET45;MONO</DefineConstants>
     <OutputPath>$(SolutionDir)/../build/test/net45</OutputPath>
@@ -65,6 +69,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+    <RAZOR4>True</RAZOR4>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">DEBUG;TRACE;NET45;RAZOR4</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">DEBUG;TRACE;NET45;RAZOR4;MONO</DefineConstants>
     <OutputPath>bin\Debug\</OutputPath>
@@ -75,6 +80,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Razor4' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <RAZOR4>True</RAZOR4>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">TRACE;NET45;RAZOR4</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">TRACE;NET45;RAZOR4;MONO</DefineConstants>
     <OutputPath>$(SolutionDir)/../build/test/razor4</OutputPath>
@@ -95,35 +101,6 @@
     <Reference Include="System.Web" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  <Choose>
-    <When Condition=" '$(Platform)' == 'Razor4' ">
-      <ItemGroup>
-        <Reference Include="Microsoft.AspNet.Razor">
-          <HintPath>..\..\..\packages\.nuget\Microsoft.AspNet.Razor.4.0.0-beta6\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
-          <Private>True</Private>
-          <Paket>False</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0')">
-      <ItemGroup>
-        <Reference Include="System.Web.Razor">
-          <HintPath>..\..\..\packages\.nuget\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
-          <Private>True</Private>
-          <Paket>False</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
-      <ItemGroup>
-        <Reference Include="System.Web.Razor">
-          <HintPath>..\..\..\packages\Microsoft.AspNet.Razor\lib\net45\System.Web.Razor.dll</HintPath>
-          <Private>True</Private>
-          <Paket>False</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <ItemGroup>
     <Compile Include="ActivatorTestFixture.cs" />
     <Compile Include="CompilerServicesUtilityTestFixture.cs" />
@@ -183,10 +160,88 @@
   </Target>
   -->
   <Choose>
+    <When Condition="'$(NET40)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="System.Web.Razor">
+          <HintPath>..\..\..\packages\net40\Microsoft.AspNet.Razor\lib\net40\System.Web.Razor.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(NET45)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
+      <ItemGroup>
+        <Reference Include="System.Web.Razor">
+          <HintPath>..\..\..\packages\net45\Microsoft.AspNet.Razor\lib\net45\System.Web.Razor.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
+      <ItemGroup>
+        <Reference Include="Microsoft.AspNet.Razor">
+          <HintPath>..\..\..\packages\razor4\Microsoft.AspNet.Razor\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
+      <ItemGroup>
+        <Reference Include="System.IO.FileSystem.Primitives">
+          <HintPath>..\..\..\packages\razor4\System.IO.FileSystem.Primitives\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
+      <ItemGroup>
+        <Reference Include="System.Security.Cryptography.Csp">
+          <HintPath>..\..\..\packages\razor4\System.Security.Cryptography.Csp\lib\net46\System.Security.Cryptography.Csp.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
+      <ItemGroup>
+        <Reference Include="System.Security.Cryptography.Primitives">
+          <HintPath>..\..\..\packages\razor4\System.Security.Cryptography.Primitives\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
     <When Condition="($(TargetFrameworkIdentifier) == '.NETCore' And $(TargetFrameworkVersion) == 'v4.5') Or ($(TargetFrameworkIdentifier) == 'MonoAndroid')">
       <ItemGroup>
         <Reference Include="Microsoft.Practices.ServiceLocation">
-          <HintPath>..\..\..\packages\CommonServiceLocator\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+          <HintPath>..\..\..\packages\test\CommonServiceLocator\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -197,25 +252,25 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v3.5'">
       <ItemGroup>
         <Reference Include="Moq">
-          <HintPath>..\..\..\packages\Moq\lib\net35\Moq.dll</HintPath>
+          <HintPath>..\..\..\packages\test\Moq\lib\net35\Moq.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v5.0')">
-      <ItemGroup>
-        <Reference Include="Moq.Silverlight">
-          <HintPath>..\..\..\packages\Moq\lib\sl4\Moq.Silverlight.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>
         <Reference Include="Moq">
-          <HintPath>..\..\..\packages\Moq\lib\net40\Moq.dll</HintPath>
+          <HintPath>..\..\..\packages\test\Moq\lib\net40\Moq.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == 'Silverlight' And $(TargetFrameworkVersion) == 'v5.0'">
+      <ItemGroup>
+        <Reference Include="Moq.Silverlight">
+          <HintPath>..\..\..\packages\test\Moq\lib\sl5\Moq.Silverlight.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -224,7 +279,7 @@
   </Choose>
   <ItemGroup>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\..\packages\NUnit\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\packages\test\NUnit\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
       <Paket>True</Paket>
     </Reference>
@@ -233,12 +288,31 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETCore'">
       <ItemGroup>
         <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-          <HintPath>..\..\..\packages\Unity\lib\win8\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+          <HintPath>..\..\..\packages\test\Unity\lib\win8\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="Microsoft.Practices.Unity">
-          <HintPath>..\..\..\packages\Unity\lib\win8\Microsoft.Practices.Unity.dll</HintPath>
+          <HintPath>..\..\..\packages\test\Unity\lib\win8\Microsoft.Practices.Unity.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
+      <ItemGroup>
+        <Reference Include="Microsoft.Practices.Unity.Configuration">
+          <HintPath>..\..\..\packages\test\Unity\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+          <HintPath>..\..\..\packages\test\Unity\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Microsoft.Practices.Unity">
+          <HintPath>..\..\..\packages\test\Unity\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -247,40 +321,21 @@
     <When Condition="$(TargetFrameworkIdentifier) == 'WindowsPhone' And ($(TargetFrameworkVersion) == 'v8.0' Or $(TargetFrameworkVersion) == 'v8.1')">
       <ItemGroup>
         <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-          <HintPath>..\..\..\packages\Unity\lib\wp80\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+          <HintPath>..\..\..\packages\test\Unity\lib\wp80\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="Microsoft.Practices.Unity">
-          <HintPath>..\..\..\packages\Unity\lib\wp80\Microsoft.Practices.Unity.dll</HintPath>
+          <HintPath>..\..\..\packages\test\Unity\lib\wp80\Microsoft.Practices.Unity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
-      <ItemGroup>
-        <Reference Include="Microsoft.Practices.Unity.Configuration">
-          <HintPath>..\..\..\packages\Unity\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-          <HintPath>..\..\..\packages\Unity\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="Microsoft.Practices.Unity">
-          <HintPath>..\..\..\packages\Unity\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="($(TargetFrameworkProfile) == 'Profile7') Or ($(TargetFrameworkProfile) == 'Profile31') Or ($(TargetFrameworkProfile) == 'Profile44') Or ($(TargetFrameworkProfile) == 'Profile49') Or ($(TargetFrameworkProfile) == 'Profile78')">
+    <When Condition="($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch') Or ($(TargetFrameworkIdentifier) == 'Xamarin.iOS') Or ($(TargetFrameworkIdentifier) == 'Xamarin.Mac') Or ($(TargetFrameworkProfile) == 'Profile7') Or ($(TargetFrameworkProfile) == 'Profile31') Or ($(TargetFrameworkProfile) == 'Profile44') Or ($(TargetFrameworkProfile) == 'Profile49') Or ($(TargetFrameworkProfile) == 'Profile78')">
       <ItemGroup>
         <Reference Include="Microsoft.Practices.Unity">
-          <HintPath>..\..\..\packages\Unity\lib\portable-net45+wp80+win8+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
+          <HintPath>..\..\..\packages\test\Unity\lib\portable-net45+wp80+win8+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

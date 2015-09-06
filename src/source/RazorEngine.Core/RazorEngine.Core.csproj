@@ -21,6 +21,7 @@
     <Platform>Net40</Platform>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
+    <NET40>True</NET40>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">DEBUG;TRACE;NET40</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">DEBUG;TRACE;NET40;MONO</DefineConstants>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -59,6 +60,7 @@
     <Platform>Net40</Platform>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <NET40>True</NET40>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">TRACE;NET40</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">TRACE;NET40;MONO</DefineConstants>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -72,6 +74,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+    <NET45>True</NET45>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">DEBUG;TRACE;NET45</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">DEBUG;TRACE;NET45;MONO</DefineConstants>
     <OutputPath>bin\Debug\</OutputPath>
@@ -108,6 +111,7 @@
     <Platform>Net45</Platform>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <NET45>True</NET45>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">TRACE;NET45</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">TRACE;NET45;MONO</DefineConstants>
     <OutputPath>$(SolutionDir)/../build/net45</OutputPath>
@@ -120,6 +124,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+    <RAZOR4>True</RAZOR4>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">DEBUG;TRACE;NET45;RAZOR4</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">DEBUG;TRACE;NET45;RAZOR4;MONO</DefineConstants>
     <OutputPath>bin\Debug\</OutputPath>
@@ -156,6 +161,7 @@
     <Platform>Razor4</Platform>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <RAZOR4>True</RAZOR4>
     <DefineConstants Condition=" '$(OS)' != 'Unix' ">TRACE;NET45;RAZOR4</DefineConstants>
     <DefineConstants Condition=" '$(OS)' == 'Unix' ">TRACE;NET45;RAZOR4;MONO</DefineConstants>
     <OutputPath>$(SolutionDir)/../build/razor4</OutputPath>
@@ -340,35 +346,6 @@
     <None Include="paket.references" />
     <None Include="RazorEngine.snk" />
   </ItemGroup>
-  <Choose>
-    <When Condition=" '$(Platform)' == 'Razor4' ">
-      <ItemGroup>
-        <Reference Include="Microsoft.AspNet.Razor">
-          <HintPath>..\..\..\packages\.nuget\Microsoft.AspNet.Razor.4.0.0-beta6\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
-          <Private>True</Private>
-          <Paket>False</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0')">
-      <ItemGroup>
-        <Reference Include="System.Web.Razor">
-          <HintPath>..\..\..\packages\.nuget\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
-          <Private>True</Private>
-          <Paket>False</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3')) Or ($(TargetFrameworkIdentifier) == 'MonoAndroid') Or ($(TargetFrameworkIdentifier) == 'MonoTouch')">
-      <ItemGroup>
-        <Reference Include="System.Web.Razor">
-          <HintPath>..\..\..\packages\Microsoft.AspNet.Razor\lib\net45\System.Web.Razor.dll</HintPath>
-          <Private>True</Private>
-          <Paket>False</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <Import Project="$(CSharpTargetsPath)" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -377,4 +354,82 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Choose>
+    <When Condition="'$(NET40)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.0'">
+      <ItemGroup>
+        <Reference Include="System.Web.Razor">
+          <HintPath>..\..\..\packages\net40\Microsoft.AspNet.Razor\lib\net40\System.Web.Razor.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(NET45)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
+      <ItemGroup>
+        <Reference Include="System.Web.Razor">
+          <HintPath>..\..\..\packages\net45\Microsoft.AspNet.Razor\lib\net45\System.Web.Razor.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
+      <ItemGroup>
+        <Reference Include="Microsoft.AspNet.Razor">
+          <HintPath>..\..\..\packages\razor4\Microsoft.AspNet.Razor\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
+      <ItemGroup>
+        <Reference Include="System.IO.FileSystem.Primitives">
+          <HintPath>..\..\..\packages\razor4\System.IO.FileSystem.Primitives\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
+      <ItemGroup>
+        <Reference Include="System.Security.Cryptography.Csp">
+          <HintPath>..\..\..\packages\razor4\System.Security.Cryptography.Csp\lib\net46\System.Security.Cryptography.Csp.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(RAZOR4)' == 'True' And $(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
+      <ItemGroup>
+        <Reference Include="System.Security.Cryptography.Primitives">
+          <HintPath>..\..\..\packages\razor4\System.Security.Cryptography.Primitives\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
 </Project>
