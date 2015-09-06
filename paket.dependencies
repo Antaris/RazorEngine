@@ -1,4 +1,3 @@
-redirects: on
 source https://nuget.org/api/v2
 
 nuget Nuget.CommandLine
@@ -7,6 +6,7 @@ nuget Yaaf.AdvancedBuilding !>= 0
 group Net45
   condition: NET45
   source https://nuget.org/api/v2
+  redirects: on
 
   nuget Microsoft.AspNet.Razor ~> 3.0
   nuget Microsoft.CodeAnalysis != 1.0.0-rc2
@@ -15,12 +15,15 @@ group Net40
   condition: NET40
   source https://nuget.org/api/v2
   framework: net40
+  redirects: on
 
   nuget Microsoft.AspNet.Razor ~> 2.0
 
 group Razor4
   condition: RAZOR4
   source https://nuget.org/api/v2
+  redirects: on
+
   nuget Microsoft.AspNet.Razor !~> 4.0.0-beta1
   nuget Microsoft.CodeAnalysis != 1.0.0-rc2
 

@@ -287,7 +287,6 @@ namespace RazorEngine.CodeGeneration
         /// <param name="className">The class name.</param>
         /// <param name="classNamespace">the namespace of the class</param>
         /// <returns>An instance of <see cref="RazorEngineHost"/>.</returns>
-
         [SecurityCritical]
         protected internal Compilation.RazorEngineHost CreateHost(Type templateType, Type modelType, string className, string classNamespace)
         {
@@ -306,9 +305,11 @@ namespace RazorEngine.CodeGeneration
                          , new GeneratedTagHelperContext()
 #endif
                    )
+#if !RAZOR4
                 {
                     ResolveUrlMethodName = "ResolveUrl"
                 }
+#endif
             };
 
             return host;

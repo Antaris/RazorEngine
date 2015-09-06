@@ -21,6 +21,7 @@ using System.Web.Razor.Parser;
 
 namespace RazorEngine.CodeGeneration.VisualBasic
 {
+#if !RAZOR4 // No more VB support in Razor4
     public class VisualBasicCodeGenerator : BaseCodeGenerator
     {
         private readonly VBCodeProvider _codeDomProvider;
@@ -40,7 +41,7 @@ namespace RazorEngine.CodeGeneration.VisualBasic
             }
         }
 
-        protected override string BuildTypeName(Type templateType, Type modelType)
+    protected override string BuildTypeName(Type templateType, Type modelType)
         {
             if (templateType == null)
                 throw new ArgumentNullException("templateType");
@@ -49,4 +50,5 @@ namespace RazorEngine.CodeGeneration.VisualBasic
             return CompilerServicesUtility.VBCreateGenericType(templateType, modelTypeName, false);
         }
     }
+#endif
 }

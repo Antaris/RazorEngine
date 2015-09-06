@@ -31,7 +31,7 @@ namespace RazorEngine.CodeGeneration.CSharp
             _codeDomProvider = new CSharpCodeProvider();
         }
 
-
+#if !RAZOR4
         protected override CodeDomProvider CodeDomProvider
         {
             get
@@ -39,6 +39,7 @@ namespace RazorEngine.CodeGeneration.CSharp
                 return _codeDomProvider;
             }
         }
+#endif
 
         protected override string BuildTypeName(Type templateType, Type modelType)
         {

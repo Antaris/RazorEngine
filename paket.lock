@@ -1,4 +1,3 @@
-REDIRECTS: ON
 NUGET
   remote: https://nuget.org/api/v2
   specs:
@@ -16,6 +15,7 @@ NUGET
       FSharpVSPowerTools.Core (1.8.0)
 
 GROUP Net40
+REDIRECTS: ON
 CONDITION: NET40
 FRAMEWORK: NET40
 NUGET
@@ -24,6 +24,7 @@ NUGET
     Microsoft.AspNet.Razor (2.0.30506)
 
 GROUP Net45
+REDIRECTS: ON
 CONDITION: NET45
 NUGET
   remote: https://nuget.org/api/v2
@@ -56,6 +57,7 @@ NUGET
       System.Collections.Immutable (>= 1.1.33-beta)
 
 GROUP Razor4
+REDIRECTS: ON
 CONDITION: RAZOR4
 NUGET
   remote: https://nuget.org/api/v2
