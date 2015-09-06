@@ -30,17 +30,6 @@ open AssemblyInfoFile
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
 
-// make the FSF load script happy
-[ "build/net45/RazorEngine.dll"; "packages/net45/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll" ]
-|> Seq.iter (fun source ->
-  let dest = sprintf "packages/FSharp.Formatting/lib/net40/%s" (Path.GetFileName source)
-  try
-    if File.Exists dest then File.Delete dest
-    File.Copy (source, dest)
-  with e ->
-    trace (sprintf "Couldn't copy %s to %s, because: %O" source dest e)
-)
-
 let projectName_roslyn = "RazorEngine.Roslyn"
 let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
 let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEngine."
