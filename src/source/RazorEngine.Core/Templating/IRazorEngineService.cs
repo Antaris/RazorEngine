@@ -67,6 +67,17 @@
         /// <param name="model"></param>
         /// <param name="viewBag"></param>
         void Run(ITemplateKey key, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null);
+
+        /// <summary>
+        /// Parses the template source
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="source"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        void Parse(ITemplateKey key, ITemplateSource source, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null);
     }
 
 }

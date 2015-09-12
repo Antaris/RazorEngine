@@ -253,6 +253,32 @@ namespace RazorEngine.Templating
         }
 
         /// <summary>
+        /// Parse the tempalte source
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="source"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public void Parse(ITemplateKey key, ITemplateSource source, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            var template = _core_with_cache.Compile(key, source, modelType);
+#if RAZOR4
+            try
+            {
+                _core_with_cache.RunTemplate(template, writer, model, viewBag).Wait();
+            }
+            catch (AggregateException ex)
+            {
+                ExceptionDispatchInfo.Capture(ex.Flatten().InnerExceptions.First()).Throw();
+            }
+#else
+            _core_with_cache.RunTemplate(template, writer, model, viewBag);
+#endif
+        }
+
+        /// <summary>
         /// Helper method for the legacy <see cref="TemplateService"/> class.
         /// </summary>
         /// <param name="key"></param>

@@ -108,6 +108,12 @@ However you can just use 'dynamic' (modelType == null) and we try to make it wor
             _origin.Run(key, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
         }
 
+        public void Parse(ITemplateKey key, ITemplateSource source, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            CheckModelType(modelType);
+            _origin.Parse(key, source, writer, modelType, GetDynamicModel(modelType, model, _allowMissingPropertiesOnDynamic), viewBag);
+        }
+
         public void Dispose()
         {
             _origin.Dispose();

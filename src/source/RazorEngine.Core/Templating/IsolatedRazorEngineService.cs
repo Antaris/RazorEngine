@@ -334,6 +334,19 @@
             _proxy.Run(key, writer, modelType, model, viewBag);
         }
 
+        /// <summary>
+        /// Parse the specified template source
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="source"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public void Parse(ITemplateKey key, ITemplateSource source, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            _proxy.Parse(key, source, writer, modelType, model, viewBag);
+        }
         #endregion
     }
 }
