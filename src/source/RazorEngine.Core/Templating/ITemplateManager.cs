@@ -23,7 +23,7 @@
         /// Another template manager can read from different folders depending whether we include a layout or including a template.
         /// In that situation the <see cref="ITemplateKey.GetUniqueKeyString"/> has to take that into account so that templates with the same name can not be confused.
         /// </remarks>
-        /// <param name="name">The name of the tempalte</param>
+        /// <param name="name">The name of the template</param>
         /// <param name="resolveType">how the template is resolved</param>
         /// <param name="context">gets the context for the current resolve operation. 
         /// Which template is resolving another template? (null = we search a global template)
