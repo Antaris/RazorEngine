@@ -44,6 +44,17 @@
 4.x releases will have the same features/API of 3.x releases but will use Razor-4 instead of Razor-2 and Razor-3.
 Some obsolete APIs will be removed so see the <code>Upgrading to 3.5.0</code> guide.</p>
 
+<p>Razor 4 changed quite a bit of its internals,
+see <a href="https://github.com/aspnet/Razor/releases">https://github.com/aspnet/Razor/releases</a> for a complete list of changes.</p>
+
+<p>Some important changes hitting RazorEngine users:</p>
+
+<ul>
+<li><code>@helper</code> is no longer available (<a href="https://github.com/aspnet/Razor/issues/281)">https://github.com/aspnet/Razor/issues/281)</a></li>
+<li>Urls like <code>~/index.html</code> are no longer resolved.
+See <a href="https://github.com/aspnet/Razor/issues/427">https://github.com/aspnet/Razor/issues/427</a> and <a href="https://github.com/aspnet/Mvc/issues/2807">https://github.com/aspnet/Mvc/issues/2807</a></li>
+</ul>
+
 <h2><a name="Upgrading-to-3-5-0" class="anchor" href="#Upgrading-to-3-5-0">Upgrading to 3.5.0.</a></h2>
 
 <p>First of all 3.5.0 should be fully (binary) backwards compatible with 3.4.x releases. 

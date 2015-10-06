@@ -53,24 +53,20 @@ which implementations are available by default and how to write your own.</p>
 
 <p>RazorEngine unifies this process with the <code>ITemplateManager</code> interface and does the following:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l">1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
 <span class="l">4: </span>
 <span class="l">5: </span>
 <span class="l">6: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-                               
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">                               
 <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="f">string</span> <span class="k">-&gt;</span> <span class="i">ITemplateManager</span><span class="o">.</span><span class="i">GetKey</span> <span class="k">-&gt;</span> <span class="i">ICachingProvider</span><span class="o">.</span><span class="i">TryRetrieveTemplate</span>
        <span class="c">// When not cached continue with</span>
        <span class="k">-&gt;</span> <span class="i">ITemplateManager</span><span class="o">.</span><span class="i">Resolve</span> <span class="k">-&gt;</span> <span class="i">ITemplateSource</span>
        <span class="k">-&gt;</span> <span class="i">compile</span> <span class="i">ITemplateSource</span> <span class="k">to</span> <span class="i">ICompiledTemplate</span>
        <span class="k">-&gt;</span> <span class="i">ICachingProvider</span><span class="o">.</span><span class="i">CacheTemplate</span>
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
