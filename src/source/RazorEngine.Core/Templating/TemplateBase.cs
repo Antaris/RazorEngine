@@ -476,6 +476,7 @@ namespace RazorEngine.Templating
             helper.WriteTo(writer);
         }
 
+#if !RAZOR4
         /// <summary>
         /// Resolves the specified path
         /// </summary>
@@ -490,6 +491,7 @@ namespace RazorEngine.Templating
             }
             return path;
         }
+#endif
         #endregion
     }
 }

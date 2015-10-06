@@ -30,17 +30,6 @@ open AssemblyInfoFile
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
 
-// make the FSF load script happy
-[ "build/net45/RazorEngine.dll"; "packages/Microsoft.AspNet.Razor/lib/net45/System.Web.Razor.dll" ]
-|> Seq.iter (fun source ->
-  let dest = sprintf "packages/FSharp.Formatting/lib/net40/%s" (Path.GetFileName source)
-  try
-    if File.Exists dest then File.Delete dest
-    File.Copy (source, dest)
-  with e ->
-    trace (sprintf "Couldn't copy %s to %s, because: %O" source dest e)
-)
-
 let projectName_roslyn = "RazorEngine.Roslyn"
 let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
 let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEngine."
@@ -103,7 +92,7 @@ let buildConfig =
                   [ config.ProjectName, config.Version
                     "Microsoft.AspNet.Razor", "3.0.0" ]
                 [ "Microsoft.CodeAnalysis" ]
-                |> List.map (fun name -> name, (GetPackageVersion "packages" name))
+                |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "net45") name))
                 |> List.append exact })
         "RazorEngine.Roslyn-razor4.nuspec", (fun config p ->
           { p with
@@ -118,9 +107,9 @@ let buildConfig =
                   [ config.ProjectName, version_razor4
                     "Microsoft.AspNet.Razor", "4.0.0-beta1" ]
                 [ "Microsoft.CodeAnalysis" ]
-                |> List.map (fun name -> name, (GetPackageVersion "packages" name))
+                |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "razor4") name))
                 |> List.append exact }) ]
-    UseNuget = true
+    UseNuget = false
     GeneratedFileList =
       [ "RazorEngine.dll"; "RazorEngine.xml"
         "RazorEngine.Roslyn.dll"; "RazorEngine.Roslyn.xml" ]

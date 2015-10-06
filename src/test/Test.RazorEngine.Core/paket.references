@@ -1,4 +1,13 @@
-Microsoft.AspNet.Razor
-Moq
-NUnit
-Unity
+group Net45
+  Microsoft.AspNet.Razor
+
+group Net40
+  Microsoft.AspNet.Razor
+
+group Razor4
+  Microsoft.AspNet.Razor
+
+group Test
+  Moq
+  NUnit
+  Unity

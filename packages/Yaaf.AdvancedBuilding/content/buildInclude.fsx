@@ -36,6 +36,7 @@ open System
 
 open Fake
 open Fake.Git
+open Fake.MSTest
 open Fake.FSharpFormatting
 open AssemblyInfoFile
 
@@ -124,6 +125,13 @@ let runTests (buildParams:BuildParams) =
                 DisableShadowCopy = true;
                 OutputFile = "logs/TestResults.xml" } |> config.SetupNUnit)
 
+      if not isLinux then
+        files
+          |> MSTest (fun p ->
+              {p with
+                  WorkingDir = testDir
+                  ResultsDir = "logs" } |> config.SetupMSTest)
+
 let buildAll (buildParams:BuildParams) =
     buildParams.BeforeBuild ()
     buildSolution buildParams
@@ -133,11 +141,25 @@ let buildAll (buildParams:BuildParams) =
     runTests buildParams
     buildParams.AfterTest ()
 
-/// Run the given buildscript with fsi.exe
-let executeFSIWithOutput workingDirectory script args =
+let fakePath = "packages" @@ "FAKE" @@ "tools" @@ "FAKE.exe"
+let fakeStartInfo script workingDirectory args environmentVars =
+    (fun (info: System.Diagnostics.ProcessStartInfo) ->
+        info.FileName <- fakePath
+        info.Arguments <- sprintf "%s --fsiargs -d:FAKE \"%s\"" args script
+        info.WorkingDirectory <- workingDirectory
+        let setVar k v =
+            info.EnvironmentVariables.[k] <- v
+        for (k, v) in environmentVars do
+            setVar k v
+        setVar "MSBuild" msBuildExe
+        setVar "GIT" Git.CommandHelper.gitPath
+        setVar "FSI" fsiPath)
+
+/// Run the given buildscript with FAKE.exe
+let executeFAKEWithOutput workingDirectory script envArgs =
     let exitCode =
         ExecProcessWithLambdas
-            (fsiStartInfo script workingDirectory args)
+            (fakeStartInfo script workingDirectory "" envArgs)
             TimeSpan.MaxValue false ignore ignore
     System.Threading.Thread.Sleep 1000
     exitCode
@@ -145,10 +167,19 @@ let executeFSIWithOutput workingDirectory script args =
 // Documentation
 let buildDocumentationTarget target =
     trace (sprintf "Building documentation (%s), this could take some time, please wait..." target)
-    let exit = executeFSIWithOutput "." "generateDocs.fsx" ["target", target]
+    let exit = executeFAKEWithOutput "." "generateDocs.fsx" ["target", target]
     if exit <> 0 then
         failwith "documentation failed"
     ()
+
+let tryDelete dir =
+    try
+        CleanDirs [ dir ]
+    with
+    | :? System.IO.IOException as e ->
+        traceImportant (sprintf "Cannot access: %s\nTry closing Visual Studio!" e.Message)
+    | :? System.UnauthorizedAccessException as e ->
+        traceImportant (sprintf "Cannot access: %s\nTry closing Visual Studio!" e.Message)
 
 let MyTarget name body =
     Target name (fun _ -> body false)
@@ -157,6 +188,9 @@ let MyTarget name body =
 
 // Targets
 MyTarget "Clean" (fun _ ->
+    tryDelete config.BuildDir
+    tryDelete config.TestDir
+
     CleanDirs [ config.BuildDir; config.TestDir; config.OutLibDir; config.OutDocDir; config.OutNugetDir ]
 )
 
@@ -342,45 +376,61 @@ Target "CheckWindows" (fun _ ->
 )
 
 MyTarget "VersionBump" (fun _ ->
+    let repositoryHelperDir =  "__repository"
+    let workingDir =
+      if not isLocalBuild && buildServer = BuildServer.TeamFoundation then
+        let workingDir = repositoryHelperDir
+        // We are not in a git repository, because the .git folder is missing.
+        let repro = (sprintf "git@github.com:%s/%s.git" config.GithubUser config.GithubProject)
+        CleanDir workingDir
+        clone "" repro workingDir
+        checkoutBranch workingDir (Information.getCurrentSHA1("."))
+        fullclean (workingDir @@ "src")
+        CopyRecursive "src" (workingDir @@ "src") true |> printfn "%A"
+        workingDir
+      else ""
+      
     let doBranchUpdates = not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true"
     if doBranchUpdates then
       // Make sure we are on develop (commit will fail otherwise)
-      Stash.push "" ""
-      try Branches.deleteBranch "" true "develop"
+      Stash.push workingDir ""
+      try Branches.deleteBranch workingDir true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
-      Branches.checkout "" true "develop"
-      try Stash.pop ""
+      Branches.checkout workingDir true "develop"
+      try Stash.pop workingDir
       with e -> trace (sprintf "stash pop failed %O" e)
 
     // Commit updates the SharedAssemblyInfo.cs files.
-    let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
+    let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy workingDir "HEAD" |> Seq.toList
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
             printfn "File %s changed (%A)" file status
 
         let line = readLine "version bump commit? (y,n): " "y"
         if line = "y" then
-            StageAll ""
-            Commit "" (sprintf "Bump version to %s" config.Version)
+            StageAll workingDir
+            Commit workingDir (sprintf "Bump version to %s" config.Version)
 
     if doBranchUpdates then
-      try Branches.deleteBranch "" true "master"
+      try Branches.deleteBranch workingDir true "master"
       with e -> trace (sprintf "deletion of master branch failed %O" e)
-      Branches.checkout "" false "origin/master"
-      Branches.checkout "" true "master"
-      Merge.merge "" NoFastForwardFlag "develop"
+      Branches.checkout workingDir false "origin/master"
+      Branches.checkout workingDir true "master"
+      Merge.merge workingDir NoFastForwardFlag "develop"
 
-      Branches.pushBranch "" "origin" "master"
+      Branches.pushBranch workingDir "origin" "master"
       //try Branches.deleteTag "" config.Version
       //with e -> trace (sprintf "deletion of tag %s failed %O" config.Version e)
-      Branches.tag "" config.Version
-      Branches.pushTag "" "origin" config.Version
-      try Branches.deleteBranch "" true "develop"
+      Branches.tag workingDir config.Version
+      Branches.pushTag workingDir "origin" config.Version
+      try Branches.deleteBranch workingDir true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
-      Branches.checkout "" false "origin/develop"
-      Branches.checkout "" true "develop"
-      Merge.merge "" NoFastForwardFlag "master"
-      Branches.pushBranch "" "origin" "develop"
+      Branches.checkout workingDir false "origin/develop"
+      Branches.checkout workingDir true "develop"
+      Merge.merge workingDir NoFastForwardFlag "master"
+      Branches.pushBranch workingDir "origin" "develop"
+    CleanDir repositoryHelperDir
+    DeleteDir repositoryHelperDir
 )
 
 Target "Release" (fun _ ->

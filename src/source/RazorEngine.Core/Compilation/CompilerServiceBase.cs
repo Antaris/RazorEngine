@@ -237,24 +237,28 @@
         [SecurityCritical]
         private RazorEngineHost CreateHost(Type templateType, Type modelType, string className)
         {
-            var host = new RazorEngineHost(CodeLanguage, MarkupParserFactory.Create)
-                           {
-                               DefaultBaseTemplateType = templateType,
-                               DefaultModelType = modelType,
-                               DefaultBaseClass = BuildTypeName(templateType, modelType),
-                               DefaultClassName = className,
-                               DefaultNamespace = DynamicTemplateNamespace,
-                               GeneratedClassContext = new GeneratedClassContext("Execute", "Write", "WriteLiteral",
-                                                                                 "WriteTo", "WriteLiteralTo",
-                                                                                 "RazorEngine.Templating.TemplateWriter",
-                                                                                 "DefineSection"
+            var host =
+                new RazorEngineHost(CodeLanguage, MarkupParserFactory.Create)
+                {
+                    DefaultBaseTemplateType = templateType,
+                    DefaultModelType = modelType,
+                    DefaultBaseClass = BuildTypeName(templateType, modelType),
+                    DefaultClassName = className,
+                    DefaultNamespace = DynamicTemplateNamespace,
+                    GeneratedClassContext =
+                        new GeneratedClassContext(
+                            "Execute", "Write", "WriteLiteral", "WriteTo", "WriteLiteralTo",
+                            "RazorEngine.Templating.TemplateWriter", "DefineSection"
 #if RAZOR4
-                                                                                 , new GeneratedTagHelperContext()
+                            , new GeneratedTagHelperContext()
 #endif
-                                                                                 ) {
-                                                                                     ResolveUrlMethodName = "ResolveUrl"
-                                                                                 }
-                           };
+                        )
+#if !RAZOR4
+                        {
+                            ResolveUrlMethodName = "ResolveUrl"
+                        }
+#endif
+            };
 
             return host;
         }

@@ -593,6 +593,7 @@ namespace RazorEngine.Tests
         /// </summary>
         [Test]
         public void TemplateService_CanParseTildeInTemplate_UsingHtmlEncoding() {
+            Assert.Inconclusive("Add a TagHelper to replace this functionality?");
             using (var service = new TemplateService()) {
                 const string template = "<a href=\"~/index.html\">@Model.String</a>";
                 const string expected = "<a href=\"/index.html\">Matt</a>";
@@ -608,7 +609,9 @@ namespace RazorEngine.Tests
         /// Tests that a tilde is expanded with no-encoding.
         /// </summary>
         [Test]
-        public void TemplateService_CanParseTildeInTemplate_UsingRawEncoding() {
+        public void TemplateService_CanParseTildeInTemplate_UsingRawEncoding()
+        {
+            Assert.Inconclusive("Add a TagHelper to replace this functionality?");
             var config = new TemplateServiceConfiguration() {
                 EncodedStringFactory = new RawStringFactory()
             };

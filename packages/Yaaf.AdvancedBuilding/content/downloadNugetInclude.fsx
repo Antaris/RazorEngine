@@ -3,7 +3,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 // ----------------------------------------------------------------------------
 // Get any working NuGet.exe
-// It's sad that this does'nt work on mono as the don't have a "System.IO.Compression.FileSystem.dll"
+// It's sad that this does'nt work on mono as they don't have a working "System.IO.Compression.FileSystem.dll"
 
 open System.Net
 open System.IO
