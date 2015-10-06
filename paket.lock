@@ -1,18 +1,18 @@
 NUGET
   remote: https://nuget.org/api/v2
   specs:
-    FAKE (4.3.4)
-    FSharp.Compiler.Service (0.0.87)
-    FSharp.Formatting (2.10.0)
-      FSharp.Compiler.Service (>= 0.0.87)
-      FSharpVSPowerTools.Core (1.8.0)
-    FSharpVSPowerTools.Core (1.8.0)
-      FSharp.Compiler.Service (>= 0.0.87)
+    FAKE (4.4.4)
+    FSharp.Compiler.Service (0.0.90)
+    FSharp.Formatting (2.11.0)
+      FSharp.Compiler.Service (>= 0.0.90 <= 1.3)
+      FSharpVSPowerTools.Core (1.9.0)
+    FSharpVSPowerTools.Core (1.9.0)
+      FSharp.Compiler.Service (>= 0.0.90)
     NuGet.CommandLine (2.8.6)
-    Yaaf.AdvancedBuilding (0.9.1)
-      FAKE (4.3.4)
-      FSharp.Formatting (2.10.0)
-      FSharpVSPowerTools.Core (1.8.0)
+    Yaaf.AdvancedBuilding (0.9.3)
+      FAKE (4.4.4)
+      FSharp.Formatting (2.11.0)
+      FSharpVSPowerTools.Core (1.9.0)
 
 GROUP Net40
 CONDITION: NET40
@@ -137,7 +137,7 @@ NUGET
       System.Threading.Overlapped (>= 4.0.0) - framework: dnxcore50
       System.Threading.Tasks (>= 4.0.0)
       System.Threading.Tasks (>= 4.0.10) - framework: dnxcore50
-    System.IO.FileSystem.Primitives (4.0.0)
+    System.IO.FileSystem.Primitives (4.0.0) - framework: dnxcore50
       System.Runtime (>= 4.0.20)
     System.Linq (4.0.1-beta-23225) - framework: dnxcore50
       System.Collections (>= 4.0.10)
@@ -152,7 +152,7 @@ NUGET
       System.Runtime (>= 4.0.20)
     System.Reflection.Metadata (1.0.18-beta)
       System.Collections.Immutable (>= 1.1.33-beta)
-    System.Reflection.Primitives (4.0.0)
+    System.Reflection.Primitives (4.0.0) - framework: dnxcore50
       System.Runtime (>= 4.0.0)
       System.Threading (>= 4.0.0) - framework: dnxcore50
     System.Resources.ResourceManager (4.0.1-beta-23225) - framework: dnxcore50
@@ -161,11 +161,11 @@ NUGET
       System.Reflection (>= 4.0.10) - framework: dnxcore50
       System.Runtime (>= 4.0.0)
       System.Runtime (>= 4.0.20) - framework: dnxcore50
-    System.Runtime (4.0.20)
+    System.Runtime (4.0.20) - framework: dnxcore50
       System.Private.Uri (>= 4.0.0) - framework: dnxcore50
     System.Runtime.Extensions (4.0.11-beta-23225) - framework: dnxcore50
       System.Runtime (>= 4.0.20)
-    System.Runtime.Handles (4.0.0)
+    System.Runtime.Handles (4.0.0) - framework: dnxcore50
       System.Runtime (>= 4.0.0)
     System.Runtime.InteropServices (4.0.20) - framework: dnxcore50
       System.Reflection (>= 4.0.0)
@@ -188,7 +188,7 @@ NUGET
       System.Security.Cryptography.Primitives (>= 4.0.0-beta-23225)
       System.Text.Encoding (>= 4.0.0) - framework: dnxcore50
       System.Text.Encoding.Extensions (>= 4.0.0) - framework: dnxcore50
-    System.Security.Cryptography.Csp (4.0.0-beta-23225)
+    System.Security.Cryptography.Csp (4.0.0-beta-23225) - framework: dnxcore50
       System.IO (>= 4.0.0)
       System.IO (>= 4.0.10) - framework: dnxcore50
       System.Reflection (>= 4.0.0) - framework: dnxcore50
@@ -211,14 +211,14 @@ NUGET
       System.Runtime.Handles (>= 4.0.0) - framework: dnxcore50
       System.Runtime.InteropServices (>= 4.0.20) - framework: dnxcore50
       System.Security.Cryptography.Primitives (>= 4.0.0-beta-23225) - framework: dnxcore50
-    System.Security.Cryptography.OpenSsl (4.0.0-beta-23225)
+    System.Security.Cryptography.OpenSsl (4.0.0-beta-23225) - framework: dnxcore50
       System.IO (>= 4.0.10) - framework: dnxcore50
       System.Resources.ResourceManager (>= 4.0.0) - framework: dnxcore50
       System.Runtime (>= 4.0.20) - framework: dnxcore50
       System.Runtime.Handles (>= 4.0.0) - framework: dnxcore50
       System.Security.Cryptography.Algorithms (>= 4.0.0-beta-23225) - framework: dnxcore50
       System.Security.Cryptography.Primitives (>= 4.0.0-beta-23225) - framework: dnxcore50
-    System.Security.Cryptography.Primitives (4.0.0-beta-23225)
+    System.Security.Cryptography.Primitives (4.0.0-beta-23225) - framework: dnxcore50
       System.Globalization (>= 4.0.0) - framework: dnxcore50
       System.IO (>= 4.0.0)
       System.IO (>= 4.0.10) - framework: dnxcore50
@@ -251,9 +251,9 @@ GROUP Test
 NUGET
   remote: https://nuget.org/api/v2
   specs:
-    CommonServiceLocator (1.3.0) - framework: monoandroid, winv4.5
+    CommonServiceLocator (1.3.0)
     Moq (4.2.1507.118)
     NUnit (2.6.4)
     NUnit.Runners (2.6.4)
-    Unity (3.5.1404)
-      CommonServiceLocator (>= 1.2.0) - framework: monoandroid, winv4.5
+    Unity (4.0.1)
+      CommonServiceLocator (>= 1.3.0)
