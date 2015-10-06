@@ -25,15 +25,15 @@
         /// </summary>
         protected TemplateBase()
         {
-            var hasDynamicAttribute = GetType().IsDefined(typeof (HasDynamicModelAttribute), true);
-            if (hasDynamicAttribute && typeof(T) == typeof(object))
-	        {
+            if (typeof(T) == typeof(object) &&
+                GetType().IsDefined(typeof (HasDynamicModelAttribute), true))
+            {
                 // It is possible that we think that we have a dynamic model 
                 // (because null was given and the attribute is in place), 
                 // but the template contains the @model directive and
                 // therefore we have a static typed template.
                 HasDynamicModel = true;
-	        }
+            }
         }
 
         #endregion
