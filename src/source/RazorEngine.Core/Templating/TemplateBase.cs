@@ -219,48 +219,43 @@ namespace RazorEngine.Templating
         {
             _context = context;
 
-            using (var memory = new MemoryStream())
+            StringBuilder builder = new StringBuilder();
+            using (var writer = new StringWriter(builder))
             {
-                using (var writer = new StreamWriter(memory))
+                _context.CurrentWriter = writer;
+#if RAZOR4
+                await Execute();
+#else
+                Execute();
+#endif
+                writer.Flush();
+                _context.CurrentWriter = null;
+
+
+                if (Layout != null)
                 {
-                    _context.CurrentWriter = writer;
-#if RAZOR4
-                    await Execute();
-#else
-                    Execute();
-#endif
-                    writer.Flush();
-                    _context.CurrentWriter = null;
+                    // Get the layout template.
+                    var layout = ResolveLayout(Layout);
 
-
-                    if (Layout != null)
+                    if (layout == null)
                     {
-                        // Get the layout template.
-                        var layout = ResolveLayout(Layout);
-
-                        if (layout == null)
-                        {
-                            throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
-                        }
-
-                        // Push the current body instance onto the stack for later execution.
-                        var body = new TemplateWriter(tw =>
-                        {
-                            StreamToTextWriter(memory, tw);
-                        });
-                        context.PushBody(body);
-                        context.PushSections();
-
-#if RAZOR4
-                        await layout.Run(context, reader);
-#else
-                        layout.Run(context, reader);
-#endif
-                    return;
+                        throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
                     }
 
-                    StreamToTextWriter(memory, reader);
+                    // Push the current body instance onto the stack for later execution.
+                    var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
+                    context.PushBody(body);
+                    context.PushSections();
+
+#if RAZOR4
+                    await layout.Run(context, reader);
+#else
+                    layout.Run(context, reader);
+#endif
+                    return;
                 }
+
+                reader.Write(builder.ToString());
             }
         }
 
@@ -458,14 +453,13 @@ namespace RazorEngine.Templating
 
             if (value == null) return;
 
-            var encodedString = value as IEncodedString;
-            if (encodedString != null)
+            if (value is IEncodedString)
             {
-                writer.Write(encodedString);
+                writer.Write(value);
             }
             else
             {
-                encodedString = InternalTemplateService.EncodedStringFactory.CreateEncodedString(value);
+                var encodedString = InternalTemplateService.EncodedStringFactory.CreateEncodedString(value);
                 writer.Write(encodedString);
             }
         }
