@@ -1,4 +1,9 @@
-﻿### 3.7.2 / 4.2.2-beta1
+﻿### 3.7.3 / 4.2.3-beta1
+
+ * Template Run performance optimizations (https://github.com/Antaris/RazorEngine/pull/328)
+ * Update to Razor4-beta7 (https://github.com/Antaris/RazorEngine/pull/319)
+
+### 3.7.2 / 4.2.2-beta1
 
  * Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.
 

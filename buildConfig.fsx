@@ -36,9 +36,9 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL!
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.2.2-beta1"
-let version_roslyn = "3.5.4-beta1"
-let version_roslyn_razor4 = "4.0.4-beta1"
+let version_razor4 = "4.2.3-beta1"
+let version_roslyn = "3.5.5-beta1"
+let version_roslyn_razor4 = "4.0.5-beta1"
 
 // This is set to true when we want to update the roslyn packages via CI as well
 // (otherwise this value doesn't matter). You can always push manually!
@@ -78,7 +78,7 @@ let buildConfig =
           { p with
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
-              Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta6" ] })
+              Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta7" |> RequireExactly ] })
         "RazorEngine.Roslyn.nuspec", (fun config p ->
           { p with
               Project = projectName_roslyn
