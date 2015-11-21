@@ -2,9 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>BuildProxy - RazorEngine</title>
+    <title>Layout and Partial templates
+</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="description" content="Simple templating using Razor syntax.">
     <meta name="author" content="Matthew Abbott">
 
     <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
@@ -35,131 +36,99 @@
       <div class="row">
         <div class="span9" id="main">
           
+<h1><a name="Layout-and-Partial-templates" class="anchor" href="#Layout-and-Partial-templates">Layout and Partial templates</a></h1>
 
+<p>This section explains how you can use Layout templates and embed templates one in another.</p>
 
+<h2><a name="Layout-template" class="anchor" href="#Layout-template">Layout template</a></h2>
 
-<h1>BuildProxy </h1>
-<div class="xmldoc">
-    Defined in RazorEngine.dll.
-</div>
-<div class="xmldoc">
+<p>Defining a layout is quite simple.
+First make sure to set the <code>Layout</code> property in the template using the layout template name.
+Note that using <code>Layout</code> within a layout template is supported.
+Second make sure the <code>string</code> you set for the Layout property can actually resolved by the template manager.
+For the default manager this means you added the template (with <code>AddTemplate</code>):</p>
 
-             Does most of the work buiding and caching proxies
-            </br></div>
-  <h3>Static members</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Static member</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
+<pre class="line-numbers language-csharp"><code class="language-csharp">using RazorEngine;
+using RazorEngine.Templating;
+using System;
 
-          <code onmouseout="hideTip(event, '237', 237)" onmouseover="showTip(event, '237', 237)">
-            BuildType(...)
-          </code>
-          <div class="tip" id="237">
-            <strong>Signature:</strong> (contextType:Type * mainInterface:Type * otherInterfaces:Type []) -&gt; Type<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+namespace TestRunnerHelper
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var service = Engine.Razor;
+            // In this example I&#39;m using the default configuration, but you should choose a different template manager: http://antaris.github.io/RazorEngine/TemplateManager.html
+            service.AddTemplate(&quot;layout&quot;, &quot;&lt;h1&gt;@RenderBody()&lt;/h1&gt;&quot;);
+            service.AddTemplate(&quot;template&quot;, @&quot;@{Layout = &quot;&quot;layout&quot;&quot;;}my template&quot;);
+            service.Compile(&quot;template&quot;);
+            var result = service.Run(&quot;template&quot;);
+            Console.WriteLine(&quot;Result is: {0}&quot;, result);
+        }
+    }
+}
+</code></pre>
 
-          <code onmouseout="hideTip(event, '238', 238)" onmouseover="showTip(event, '238', 238)">
-            BuildType(...)
-          </code>
-          <div class="tip" id="238">
-            <strong>Signature:</strong> (contextType:Type * informalInterface:IDictionary&lt;string,Type&gt;) -&gt; Type<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+<blockquote>
+  <p>The code will print <code>&lt;h1&gt;my template&lt;/h1&gt;</code>.</p>
+</blockquote>
 
-          <code onmouseout="hideTip(event, '239', 239)" onmouseover="showTip(event, '239', 239)">
-            EmitCallSiteFuncType(...)
-          </code>
-          <div class="tip" id="239">
-            <strong>Signature:</strong> (argTypes:IEnumerable&lt;Type&gt; * returnType:Type) -&gt; Type<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+<p>but other managers resolve template differently, please read <a href="http://antaris.github.io/RazorEngine/TemplateManager.html">http://antaris.github.io/RazorEngine/TemplateManager.html</a> for details!
+As you can see, all you need to do in the layout template is call <code>@RenderBody()</code> on the place you want your child template to appear.</p>
 
-          <code onmouseout="hideTip(event, '240', 240)" onmouseover="showTip(event, '240', 240)">
-            PreLoadProxiesFromAssembly(assembly)
-          </code>
-          <div class="tip" id="240">
-            <strong>Signature:</strong> assembly:Assembly -&gt; bool<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Preloads proxies that ActLike uses from assembly.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+<h2><a name="Partial-templates" class="anchor" href="#Partial-templates">Partial templates</a></h2>
 
-          <code onmouseout="hideTip(event, '241', 241)" onmouseover="showTip(event, '241', 241)">
-            PreLoadProxy(proxyType, attribute)
-          </code>
-          <div class="tip" id="241">
-            <strong>Signature:</strong> (proxyType:Type * attribute:ActLikeProxyAttribute) -&gt; bool<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Preloads a proxy for ActLike to use.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+<p>All there is to do is to make a <code>@Include</code> call from within the template:</p>
 
-          <code onmouseout="hideTip(event, '242', 242)" onmouseover="showTip(event, '242', 242)">
-            RecursiveActLike(target)
-          </code>
-          <div class="tip" id="242">
-            <strong>Signature:</strong> target:obj -&gt; &#39;TInterface<br />
-                          <strong>Type parameters:</strong> 'TInterface          </div>
-        </td>
-        <td class="xmldoc">
-          
-            Calls ActLike on the given object.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+<p><code>Include(string cacheName, object model = null, Type modelType = null)</code></p>
 
-          <code onmouseout="hideTip(event, '243', 243)" onmouseover="showTip(event, '243', 243)">
-            WriteOutDll(name)
-          </code>
-          <div class="tip" id="243">
-            <strong>Signature:</strong> name:string -&gt; IDisposable<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Writes the out DLL of types created between this call and being closed used for debugging of emitted IL code
-            </br>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<p>As for layouts you need to ensure that the first string parameter can be resolved to a template:</p>
+
+<pre class="line-numbers language-csharp"><code class="language-csharp">using RazorEngine;
+using RazorEngine.Templating;
+using System;
+
+namespace TestRunnerHelper
+{
+    public class SubModel
+    {
+        public string SubModelProperty { get; set; }
+    }
+
+    public class MyModel
+    {
+        public string ModelProperty { get; set; }
+        public SubModel SubModel { get; set; }
+    }
+
+    class Program
+    {
+        
+        static void Main(string[] args)
+        {
+            var service = Engine.Razor;
+            // In this example I&#39;m using the default configuration, but you should choose a different template manager: http://antaris.github.io/RazorEngine/TemplateManager.html
+            service.AddTemplate(&quot;part&quot;, @&quot;my template&quot;);
+            // If you leave the second and third parameters out the current model will be used.
+            // If you leave the third we assume the template can be used for multiple types and use &quot;dynamic&quot;.
+            // If the second parameter is null (which is default) the third parameter is ignored.
+            // To workaround in the case you want to specify type &quot;dynamic&quot; without specifying a model use Include(&quot;p&quot;, new object(), null)
+            service.AddTemplate(&quot;template&quot;, @&quot;&lt;h1&gt;@Include(&quot;&quot;part&quot;&quot;, @Model.SubModel, typeof(TestRunnerHelper.SubModel))&lt;/h1&gt;&quot;);
+            service.Compile(&quot;template&quot;, typeof(MyModel));
+            service.Compile(&quot;part&quot;, typeof(SubModel));
+            var result = service.Run(&quot;template&quot;, typeof(MyModel), new MyModel { ModelProperty = &quot;model&quot;, SubModel = new SubModel { SubModelProperty = &quot;submodel&quot;} });
+            Console.WriteLine(&quot;Result is: {0}&quot;, result);
+        }
+    }
+}
+</code></pre>
+
+<h2><a name="General-considerations" class="anchor" href="#General-considerations">General considerations</a></h2>
+
+<p>As the above code showed a way to fully type all the templates you should consider adding <code>@inherits</code>
+directives to the templates as explained in <a href="https://antaris.github.io/RazorEngine/IntellisenseAndResharper.html">https://antaris.github.io/RazorEngine/IntellisenseAndResharper.html</a></p>
+
 
         </div>
         <div class="span3">
