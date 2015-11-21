@@ -25,10 +25,7 @@ namespace RazorEngine.Compilation.ImpromptuInterface.Build
         /// Intefaces
         /// </summary>
         public Type[] Interfaces;
-        /// <summary>
-        /// Interfaces by name for Mono workaround
-        /// </summary>
-        public string[] MonoInterfaces;
+
         /// <summary>
         /// Type Context
         /// </summary>
@@ -45,7 +42,12 @@ namespace RazorEngine.Compilation.ImpromptuInterface.Build
         [SecurityCritical]
         public object GetRealObject(StreamingContext context)
         {
-            var tInterfaces = Interfaces ?? MonoInterfaces.Select(it => Type.GetType(it)).ToArray();
+            var tInterfaces = Interfaces;
+            if (tInterfaces == null)
+            {
+                throw new InvalidOperationException("Expected SerializationData to contain a non-null Interfaces field. Please consider upgrading mono!");
+            }
+
             var tType = BuildProxy.BuildType(Context, tInterfaces.First(), tInterfaces.Skip(1).ToArray());
             return Impromptu.InitializeProxy(tType, Original, tInterfaces);
         }
