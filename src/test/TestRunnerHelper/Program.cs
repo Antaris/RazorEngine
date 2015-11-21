@@ -1,29 +1,28 @@
 ﻿using RazorEngine;
-using RazorEngine.Configuration;
-using RazorEngine.Configuration.Xml;
 using RazorEngine.Templating;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Dynamic;
+using RazorEngine.Compilation;
 
 namespace TestRunnerHelper
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
-            var config = new TemplateServiceConfiguration();
-            var xml = new XmlTemplateServiceConfiguration("myapp");
-            foreach (var ns in xml.Namespaces)
+            using (var service = IsolatedRazorEngineService.Create())
             {
-                config.Namespaces.Add(ns);
-            }
-            Engine.Razor = RazorEngineService.Create(config);
-            if (!Engine.Razor.IsTemplateCached("test", null))
-            {
+                const string template = "<h1>Animal Type: @Model.Type</h1>";
+                const string expected = "<h1>Animal Type: Cat</h1>";
 
+                dynamic model = new ExpandoObject();
+                model.Type = "Cat";
+                var result = service.RunCompile(template, "test", null, (object)RazorDynamicObject.Create(model));
+                if (!Equals(expected, result))
+                {
+                    throw new Exception(string.Format("{0} expected but got {1}", expected, result));
+                }
             }
         }
     }
