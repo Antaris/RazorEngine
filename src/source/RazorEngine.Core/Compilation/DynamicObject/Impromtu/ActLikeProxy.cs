@@ -177,21 +177,10 @@ namespace RazorEngine.Compilation.ImpromptuInterface.Build
                           : tCustomAttr.Context, typeof(Type));
 
 
-            if (Util.IsMono)
-            {
-                info.AddValue("MonoInterfaces",
-                          tCustomAttr == null
-                          ? null
-                          : tCustomAttr.Interfaces.Select(it => it.AssemblyQualifiedName).ToArray(), typeof(string[]));
-            }
-            else
-            {
-                info.AddValue("Interfaces",
-                          tCustomAttr == null
-                          ? null
-                          : tCustomAttr.Interfaces, typeof(Type[]));
-            }
-
+            info.AddValue("Interfaces",
+                      tCustomAttr == null
+                      ? null
+                      : tCustomAttr.Interfaces, typeof(Type[]));
 
             info.AddValue("Original", (object)ActLikeProxyOriginal);
 

@@ -1,4 +1,10 @@
-﻿### 3.7.3 / 4.2.3-beta1
+﻿### 3.7.4 / 4.2.4-beta1
+
+ * make implementation thread-safe, fixes #325 and #331. https://github.com/Antaris/RazorEngine/pull/339
+ * add documentation for partial templates and layouts (https://github.com/Antaris/RazorEngine/issues/338)
+ * fix a serialization bug when using the isolation API on mono for current versions (NOTE: this version is no longer compatible with older mono versions in isolation scenarios, because an older workaround was removed).
+
+### 3.7.3 / 4.2.3-beta1
 
  * Template Run performance optimizations (https://github.com/Antaris/RazorEngine/pull/328)
  * Update to Razor4-beta7 (https://github.com/Antaris/RazorEngine/pull/319)

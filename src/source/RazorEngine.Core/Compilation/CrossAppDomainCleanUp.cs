@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -199,7 +200,7 @@ namespace RazorEngine.Compilation
                 }
             }
 
-            private readonly List<string> _toCleanup = new List<string>();
+            private readonly ConcurrentQueue<string> _toCleanup = new ConcurrentQueue<string>();
             private AppDomain _domain;
             private IPrinter _printer;
 
@@ -260,7 +261,8 @@ namespace RazorEngine.Compilation
             private bool DoCleanUp()
             {
                 bool success = true;
-                foreach (var item in _toCleanup)
+                string item;
+                while (_toCleanup.TryDequeue(out item))
                 {
                     if (File.Exists(item))
                     {
@@ -366,7 +368,7 @@ namespace RazorEngine.Compilation
             {
                 _printer.Print("Register cleanup path {0} ...", path);
                 CheckInit();
-                _toCleanup.Add(path);
+                _toCleanup.Enqueue(path);
             }
 
             /// <summary>
