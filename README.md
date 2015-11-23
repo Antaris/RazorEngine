@@ -31,7 +31,7 @@ All you need to do is use the static `Engine` class (the `Engine.Razor` instance
 // using RazorEngine.Templating; // Dont forget to include this.
 string template = "Hello @Model.Name, welcome to RazorEngine!";
 var result =
-	Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
+	RazorEngine.Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
 ```
 
 > The `RunCompile` method used here is an extension method and you need to open the `RazorEngine.Templating` namespace.
