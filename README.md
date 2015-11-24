@@ -25,10 +25,12 @@ First install the nuget package (>=3.5.0).
 
 A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
 You can find an introduction [here](http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-%28c%29).
-All you need to do is use the static `Engine` class (the `Engine.Razor` instance):
+All you need to do is use the static `Engine` class (the `Engine.Razor` instance) in the 'RazorEngine' namespace:
 
 ```csharp
-// using RazorEngine.Templating; // Dont forget to include this.
+using RazorEngine;
+using RazorEngine.Templating; // For extension methods.
+
 string template = "Hello @Model.Name, welcome to RazorEngine!";
 var result =
 	Engine.Razor.RunCompile(template, "templateKey", null, new { Name = "World" });
