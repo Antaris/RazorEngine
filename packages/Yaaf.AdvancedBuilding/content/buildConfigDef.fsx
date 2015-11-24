@@ -140,8 +140,12 @@ type BuildConfiguration =
     // Test
     /// Defaults to "./test/"
     TestDir : string
+
+    DisableNUnit : bool
     SetupNUnit : (NUnitParams -> NUnitParams)
-    SetupMSTest : (MSTestParams -> MSTestParams )
+
+    DisableMSTest : bool
+    SetupMSTest : (MSTestParams -> MSTestParams)
 
     // Documentation generation
     /// Defaults to "./release/documentation/"
@@ -183,7 +187,9 @@ type BuildConfiguration =
       FileNewIssueUrl = ""
       SourceReproUrl = ""
       NugetPackages = []
+      DisableNUnit = false
       SetupNUnit = id
+      DisableMSTest = isLinux
       SetupMSTest = id
       GeneratedFileList = []
       BuildDir = "./build/"

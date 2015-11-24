@@ -32,6 +32,15 @@ function do_build {
       exit $exit_code
     fi
 
+    if [ "$PAKET_UPDATE" == "y" ] || [ "$PAKET_UPDATE" == "true" ]; then
+      echo "run paket update (as requested by PAKET_UPDATE=y)"
+      $MONO .paket/paket.exe update
+      exit_code=$?
+      if [ $exit_code -ne 0 ]; then
+        exit $exit_code
+      fi
+    fi
+    
     echo "restore paket packages"
     $MONO .paket/paket.exe restore
     exit_code=$?

@@ -75,6 +75,7 @@ let rec replaceCodeBlocks ctx = function
 let editLiterateDocument ctx (doc:LiterateDocument) =
   doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
 
+// ITS VERY IMPORTANT TO CREATE THE EVALUATOR LAZY (see https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5)
 let evalutator = lazy (Some <| (FsiEvaluator() :> IFsiEvaluator))
 //let evalutator = lazy None
 
@@ -165,6 +166,7 @@ let buildAllDocumentation outDocDir website_root =
         let binaries =
             referenceBinaries
             |> List.map (fun lib -> libDir @@ lib)
+
         MetadataFormat.Generate
            (binaries, Path.GetFullPath outDir, config.LayoutRoots,
             parameters = projInfo,
@@ -178,9 +180,11 @@ let buildAllDocumentation outDocDir website_root =
 
     CleanDirs [ outDocDir ]
     copyDocContentFiles()
+
+    // FIRST build the reference documentation, see https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5
+    buildReference()
     processDocumentationFiles OutputKind.Html
     processDocumentationFiles OutputKind.Latex
-    buildReference()
     
 let MyTarget name body =
     Target name (fun _ -> body false)

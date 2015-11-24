@@ -20,14 +20,17 @@ group Net40
 group Razor4
   condition: RAZOR4
   source https://nuget.org/api/v2
-  nuget Microsoft.AspNet.Razor !~> 4.0.0-beta1
+
+// We should update to rc1, however they always break a lot... If you come here and have some time please update me
+  nuget Microsoft.AspNet.Razor = 4.0.0-beta7
   nuget Microsoft.CodeAnalysis != 1.0.0-rc2
 
 group Test
   source https://nuget.org/api/v2
 
-  nuget NUnit
-  nuget NUnit.Runners
+  nuget NUnit ~> 2
+  nuget NUnit.Runners ~> 2
   nuget Moq
-  nuget NUnit
-  nuget Unity
+
+// Locked, because 4.0.2 has breaking changes. If you have some time you can try to fix it.
+  nuget Unity 4.0.1

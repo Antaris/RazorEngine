@@ -110,6 +110,7 @@ let buildConfig =
                 |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "razor4") name))
                 |> List.append exact }) ]
     UseNuget = false
+    DisableMSTest = true
     GeneratedFileList =
       [ "RazorEngine.dll"; "RazorEngine.xml"
         "RazorEngine.Roslyn.dll"; "RazorEngine.Roslyn.xml" ]

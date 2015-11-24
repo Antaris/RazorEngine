@@ -110,22 +110,23 @@ let runTests (buildParams:BuildParams) =
     if files |> Seq.isEmpty then
       traceError (sprintf "NO test found in %s" testDir)
     else
-      files
-        |> NUnit (fun p ->
-            {p with
-                //NUnitParams.WorkingDir = working
-                //ExcludeCategory = if isMono then "VBNET" else ""
-                ProcessModel =
-                    // Because the default nunit-console.exe.config doesn't use .net 4...
-                    if isMono then NUnitProcessModel.SingleProcessModel else NUnitProcessModel.DefaultProcessModel
-                WorkingDir = testDir
-                StopOnError = true
-                TimeOut = System.TimeSpan.FromMinutes 30.0
-                Framework = "4.0"
-                DisableShadowCopy = true;
-                OutputFile = "logs/TestResults.xml" } |> config.SetupNUnit)
+      if not config.DisableNUnit then
+        files
+          |> NUnit (fun p ->
+              {p with
+                  //NUnitParams.WorkingDir = working
+                  //ExcludeCategory = if isMono then "VBNET" else ""
+                  ProcessModel =
+                      // Because the default nunit-console.exe.config doesn't use .net 4...
+                      if isMono then NUnitProcessModel.SingleProcessModel else NUnitProcessModel.DefaultProcessModel
+                  WorkingDir = testDir
+                  StopOnError = true
+                  TimeOut = System.TimeSpan.FromMinutes 30.0
+                  Framework = "4.0"
+                  DisableShadowCopy = true;
+                  OutputFile = "logs/TestResults.xml" } |> config.SetupNUnit)
 
-      if not isLinux then
+      if not config.DisableMSTest then
         files
           |> MSTest (fun p ->
               {p with

@@ -12,6 +12,21 @@ if exist ".paket/paket.bootstrapper.exe" (
   .paket\paket.bootstrapper.exe %PAKET_VERSION%
   if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
 
+  REM Batch is just a useless shit
+  if "%PAKET_UPDATE%" == "y" (
+    echo Running paket update - as requested by PAKET_UPDATE=y
+    .paket\paket.exe update
+    if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
+  )
+  
+  if "%PAKET_UPDATE%" == "true" (
+    echo Running paket update - as requested by PAKET_UPDATE=y
+    .paket\paket.exe update
+    if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
+  )
+  
+
+
   echo restore paket packages
   .paket\paket.exe restore
   if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
