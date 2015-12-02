@@ -1,6 +1,7 @@
-﻿### 3.7.5-beta1 / 4.2.5-alpha1
+﻿### 3.7.5-beta2 / 4.2.5-alpha2
 
  * Attempt to fix https://github.com/Antaris/RazorEngine/issues/275
+ * Fix https://github.com/Antaris/RazorEngine/issues/343
 
 ### 3.7.4 / 4.2.4-beta1
 
