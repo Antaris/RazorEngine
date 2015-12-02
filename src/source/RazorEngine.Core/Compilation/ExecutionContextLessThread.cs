@@ -68,6 +68,7 @@ namespace RazorEngine.Compilation
             (new PermissionSet(PermissionState.Unrestricted)).Assert();
             try
             {
+                Thread.CurrentPrincipal = null;
                 Tuple<TaskCompletionSource<bool>, Action> currentWork;
                 while (true)
                 {
@@ -106,20 +107,29 @@ namespace RazorEngine.Compilation
 
         private ExecutionContextLessThread()
         {
-            if (System.Threading.ExecutionContext.IsFlowSuppressed())
+            var saved = Thread.CurrentPrincipal;
+            try
             {
-                t = new Thread(new ThreadStart(MessagePumpWithoutExecutionContext));
-                t.IsBackground = true;
-                t.Start();
-            }
-            else
-            {
-                using (var flow = System.Threading.ExecutionContext.SuppressFlow())
+                Thread.CurrentPrincipal = null;
+                if (System.Threading.ExecutionContext.IsFlowSuppressed())
                 {
                     t = new Thread(new ThreadStart(MessagePumpWithoutExecutionContext));
                     t.IsBackground = true;
                     t.Start();
                 }
+                else
+                {
+                    using (var flow = System.Threading.ExecutionContext.SuppressFlow())
+                    {
+                        t = new Thread(new ThreadStart(MessagePumpWithoutExecutionContext));
+                        t.IsBackground = true;
+                        t.Start();
+                    }
+                }
+            }
+            finally
+            {
+                Thread.CurrentPrincipal = saved;
             }
         }
         [SecurityCritical]
