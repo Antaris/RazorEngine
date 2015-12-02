@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 8642c6987fb01657fdf9c09b3c7c1ca037332b78 -->
+<!-- GENERATED FROM COMMIT: ae95a840714b935646f5f1d1fb29b1c493592c00 -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
 
 <p><a href="https://gitter.im/Antaris/RazorEngine?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/Antaris/RazorEngine" /></a></p>
@@ -68,9 +68,11 @@
 
 <p>A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
 You can find an introduction <a href="http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-%28c%29">here</a>.
-All you need to do is use the static <code>Engine</code> class (the <code>Engine.Razor</code> instance):</p>
+All you need to do is use the static <code>Engine</code> class (the <code>Engine.Razor</code> instance) in the 'RazorEngine' namespace:</p>
 
-<pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
+<pre class="line-numbers language-csharp"><code class="language-csharp">using RazorEngine;
+using RazorEngine.Templating; // For extension methods.
+
 string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
 var result =
     Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
