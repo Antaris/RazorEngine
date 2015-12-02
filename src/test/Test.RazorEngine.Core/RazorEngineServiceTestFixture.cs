@@ -962,5 +962,63 @@ else {
                 if (File.Exists(template2File)) { File.Delete(template2File); }
             }
         }
+
+        /// <summary>
+        /// Model that has properties that are classes vice simple types
+        /// </summary>
+        public class ComplexModel
+        {
+            /// <summary>
+            /// Person who is the subject for this model
+            /// </summary>
+            public Person Subject { get; set; }
+        }
+
+        /// <summary>
+        /// Test that we can use Include with null
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(NullReferenceException))] // Access to @Model.Forename when @Model is null
+        public void RazorEngineService_CanRenderWithInclude_WithCustomModel_WithNull()
+        {
+            RunTestHelper(service =>
+            {
+                const string child =
+                    "@inherits RazorEngine.Templating.TemplateBase<RazorEngine.Tests.TestTypes.Person>\n<div>Content from child for @Model.Forename)</div>";
+                const string template = "@Include(\"Child\", Model.Subject, typeof(RazorEngine.Tests.TestTypes.Person))";
+                const string expected = "<div>Content from child for </div>";
+
+                var model = new ComplexModel();
+                //model.Subject = new Person() { Forename = "" };
+
+                service.Compile(child, "Child", typeof(Person));
+                string result = service.RunCompile(template, "parent", typeof(ComplexModel), model);
+
+                Assert.AreEqual(expected, result);
+            });
+        }
+
+        /// <summary>
+        /// Test that we can use Include with null
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CanRenderWithInclude_WithCustomModel_WithNullAndDynamic()
+        {
+            RunTestHelper(service =>
+            {
+                const string child =
+                    "<div>Content from child for @(Model == null ? \"\" : Model.Forename)</div>";
+                const string template = "@Include(\"Child\", @Model.Subject)";
+                const string expected = "<div>Content from child for </div>";
+
+                var model = new ComplexModel();
+                //model.Subject = new Person() { Forename = "" };
+
+                service.Compile(child, "Child", null);
+                string result = service.RunCompile(template, "parent", typeof(ComplexModel), model);
+
+                Assert.AreEqual(expected, result);
+            }, config => config.AllowMissingPropertiesOnDynamic = true);
+        }
     }
 }

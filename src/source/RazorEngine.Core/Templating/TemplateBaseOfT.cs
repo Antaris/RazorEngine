@@ -15,6 +15,7 @@
         #region Fields
 
         private object currentModel;
+        private bool _needReplaceNullModel = false;
 
         #endregion
 
@@ -45,7 +46,7 @@
         /// </summary>
         protected bool HasDynamicModel { get; private set; }
 
-        internal override Type ModeType
+        internal override Type ModelType
         {
             get
             {
@@ -77,15 +78,49 @@
         /// <summary>
         /// Includes the template with the specified name.
         /// </summary>
-        /// <param name="cacheName">The name of the template type in cache.</param>
+        /// <param name="name">The name of the template type in cache.</param>
         /// <param name="model">The model or NULL if there is no model for the template.</param>
-        /// <param name="modelType"></param>
         /// <returns>The template writer helper.</returns>
-        public override TemplateWriter Include(string cacheName, object model = null, Type modelType = null)
+#pragma warning disable 1573
+        // ReSharper disable OptionalParameterHierarchyMismatch
+        public override TemplateWriter Include(string name, object model, Type modelType)
+            // ReSharper restore OptionalParameterHierarchyMismatch
+#pragma warning restore 1573
         {
-            // When model == null we use our current model => we should use the same modelType as well.
-            return base.Include(cacheName, model ?? Model, model == null ? ModeType: modelType);
+            model = _needReplaceNullModel && model == null ? Model : model;
+            modelType = _needReplaceNullModel && model == null ? ModelType : modelType;
+            return base.Include(name, model, modelType);
         }
+
+        /// <summary>
+        /// Includes the template with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the template type in cache.</param>
+        /// <param name="model">The model or NULL if there is no model for the template.</param>
+        /// <returns>The template writer helper.</returns>
+        public virtual TemplateWriter Include(string name, object model)
+        {
+            return Include(name, model, null);
+        }
+
+        /// <summary>
+        /// Includes the template with the specified name, uses the current model and model-type.
+        /// </summary>
+        /// <param name="name">The name of the template type in cache.</param>
+        /// <returns>The template writer helper.</returns>
+        public virtual TemplateWriter Include(string name)
+        {
+            _needReplaceNullModel = true;
+            try
+            {
+                return Include(name, null, null);
+            }
+            finally
+            {
+                _needReplaceNullModel = false;
+            }
+        }
+
 
         /// <summary>
         /// Resolves the layout template.
@@ -94,7 +129,7 @@
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         protected override ITemplate ResolveLayout(string name)
         {
-            return InternalTemplateService.Resolve(name, (T)currentModel, ModeType, (DynamicViewBag)ViewBag, ResolveType.Layout);
+            return InternalTemplateService.Resolve(name, (T)currentModel, ModelType, (DynamicViewBag)ViewBag, ResolveType.Layout);
         }
         #endregion
     }

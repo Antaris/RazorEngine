@@ -84,7 +84,7 @@ namespace Test.RazorEngine.TestTypes.BaseTypes
         /// Test Type.
         /// </summary>
         public new T Model { get { return (T)base.Model.Model; } }
-        internal override Type ModeType
+        internal override Type ModelType
         {
             get
             {

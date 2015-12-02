@@ -32,6 +32,7 @@ namespace RazorEngine.Templating
         /// </summary>
         private bool modelInit = false;
         private dynamic viewBag = null;
+
         /// <summary>
         /// The current context, filled when we are currently writing a template instance.
         /// </summary>
@@ -51,12 +52,9 @@ namespace RazorEngine.Templating
         /// </summary>
         public string Layout { get; set; }
 
-        internal virtual Type ModeType
+        internal virtual Type ModelType
         {
-            get
-            {
-                return null;
-            }
+            get { return null; }
         }
 
         /// <summary>
@@ -137,7 +135,7 @@ namespace RazorEngine.Templating
         /// <returns>The template writer helper.</returns>
         public virtual TemplateWriter Include(string name, object model = null, Type modelType = null)
         {
-            var instance = InternalTemplateService.Resolve(name, model, modelType, (DynamicViewBag)ViewBag, ResolveType.Include);
+            var instance = InternalTemplateService.Resolve(name, model, modelType, (DynamicViewBag) ViewBag, ResolveType.Include);
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + name + "'");
 
