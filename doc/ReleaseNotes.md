@@ -1,4 +1,8 @@
-﻿### 3.7.4 / 4.2.4-beta1
+﻿### 3.7.5-beta1 / 4.2.5-alpha1
+
+ * Attempt to fix https://github.com/Antaris/RazorEngine/issues/275
+
+### 3.7.4 / 4.2.4-beta1
 
  * make implementation thread-safe, fixes #325 and #331. https://github.com/Antaris/RazorEngine/pull/339
  * add documentation for partial templates and layouts (https://github.com/Antaris/RazorEngine/issues/338)

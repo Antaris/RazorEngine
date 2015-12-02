@@ -156,11 +156,14 @@ let fakeStartInfo script workingDirectory args environmentVars =
         setVar "GIT" Git.CommandHelper.gitPath
         setVar "FSI" fsiPath)
 
+/// Undocumentated way to disable cache (-nc) for documentation generation
+let mutable documentationFAKEArgs = ""
+
 /// Run the given buildscript with FAKE.exe
 let executeFAKEWithOutput workingDirectory script envArgs =
     let exitCode =
         ExecProcessWithLambdas
-            (fakeStartInfo script workingDirectory "" envArgs)
+            (fakeStartInfo script workingDirectory documentationFAKEArgs envArgs)
             TimeSpan.MaxValue false ignore ignore
     System.Threading.Thread.Sleep 1000
     exitCode

@@ -13,6 +13,8 @@ let config = BuildInclude.config
 
 let MyTarget = BuildInclude.MyTarget
 
+BuildInclude.documentationFAKEArgs <- "-nc"
+
 // This step ensures our current build is still compatible with FSharp.Formatting.
 MyTarget "CopyToFSharpFormatting" (fun _ ->
     // make the FSF load script happy
