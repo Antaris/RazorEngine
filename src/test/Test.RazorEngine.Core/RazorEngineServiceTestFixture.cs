@@ -1083,7 +1083,8 @@ else {
                 var holder = new CustomDataHolder();
                 dynamic viewbag = new DynamicViewBag();
                 viewbag.DataHolder = holder;
-                var body = service.RunCompile(template, "templateKey", null, null, (DynamicViewBag)viewbag);
+                // Mono CSC seems to be confused and needs the casts.
+                var body = service.RunCompile(template, "templateKey", (Type)null, (object)null, (DynamicViewBag)viewbag);
 
                 Assert.IsTrue(holder.Section1.Contains("sample content"), "Expected section content");
 
