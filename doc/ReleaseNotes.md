@@ -1,4 +1,8 @@
-﻿### 3.7.5 / 4.2.5-beta1
+﻿### 3.7.6 / 4.2.6-beta1
+
+ * Fix https://github.com/Antaris/RazorEngine/pull/348
+
+### 3.7.5 / 4.2.5-beta1
 
  * Fix https://github.com/Antaris/RazorEngine/issues/275
  * Fix https://github.com/Antaris/RazorEngine/issues/343
