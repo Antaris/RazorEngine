@@ -1020,5 +1020,74 @@ else {
                 Assert.AreEqual(expected, result);
             }, config => config.AllowMissingPropertiesOnDynamic = true);
         }
+
+
+        /// <summary>
+        /// Belongs to RazorEngineService_CanExtractSectionToOutsideWorld
+        /// </summary>
+        public class TemplateContext<T> : TemplateBase<T>
+        {
+            /// <summary>
+            /// Belongs to RazorEngineService_CanExtractSectionToOutsideWorld
+            /// </summary>
+            public string Section1
+            {
+                set
+                {
+                    ((CustomDataHolder)ViewBag.DataHolder).Section1 = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Belongs to RazorEngineService_CanExtractSectionToOutsideWorld
+        /// </summary>
+        public class CustomDataHolder
+        {
+            /// <summary>
+            /// Belongs to RazorEngineService_CanExtractSectionToOutsideWorld
+            /// </summary>
+            public string Section1 { get; set; }
+        }
+
+        /// <summary>
+        /// Test that we can extract a section's content via template code.
+        /// </summary>
+        [Test]
+        public void RazorEngineService_CanExtractSectionToOutsideWorld()
+        {
+            RunTestHelper(service =>
+            {
+                const string template = @"
+@{ Layout = ""extractLayouts""; }
+@section section1{
+<text>sample content</text>
+}
+            ";
+                const string sectionExtracting = @"
+@inherits Test.RazorEngine.RazorEngineServiceTestFixture.TemplateContext<dynamic>
+@{
+    string result;
+    using (var mem = new System.IO.StringWriter())
+    {
+        var section1 = RenderSection(""section1"");
+        section1.WriteTo(mem);
+        mem.Flush();
+        Section1 = mem.ToString();
+    }
+}
+
+@RenderSection(""section1"")";
+                service.Compile(sectionExtracting, "extractLayouts", null);
+
+                var holder = new CustomDataHolder();
+                dynamic viewbag = new DynamicViewBag();
+                viewbag.DataHolder = holder;
+                var body = service.RunCompile(template, "templateKey", null, null, (DynamicViewBag)viewbag);
+
+                Assert.IsTrue(holder.Section1.Contains("sample content"), "Expected section content");
+
+            }, config => config.AllowMissingPropertiesOnDynamic = true);
+        }
     }
 }

@@ -3,25 +3,64 @@ using RazorEngine.Templating;
 using System;
 using System.Dynamic;
 using RazorEngine.Compilation;
+using RazorEngine.Configuration;
 
 namespace TestRunnerHelper
 {
-    class Program
+    public class Program
     {
-        
+        public class TemplateContext<T> : TemplateBase<T>
+        {
+            public string Section1
+            {
+                set {
+                    ((CustomDataHolder)ViewBag.DataHolder).Section1 = value;
+                }
+            }
+        }
+
+        public class CustomDataHolder
+        {
+            public string Section1 { get; set; }
+        }
+
         static void Main(string[] args)
         {
-            using (var service = IsolatedRazorEngineService.Create())
+            using (var service = RazorEngineService.Create
+                (new TemplateServiceConfiguration() { Debug = true }))
             {
-                const string template = "<h1>Animal Type: @Model.Type</h1>";
-                const string expected = "<h1>Animal Type: Cat</h1>";
+                const string template = @"
+@{ Layout = ""extractLayouts""; }
+@section section1{
+<text>sample content</text>
+}
+            ";
+                const string sectionExtracting = @"
+@inherits TestRunnerHelper.Program.TemplateContext<dynamic>
+@{
+    string result;
+    using (var mem = new System.IO.StringWriter())
+    {
+        System.Diagnostics.Debugger.Break();
+        var section1 = RenderSection(""section1"");
+        section1.WriteTo(mem);
+        mem.Flush();
+        Section1 = mem.ToString();
+    }
+}
 
-                dynamic model = new ExpandoObject();
-                model.Type = "Cat";
-                var result = service.RunCompile(template, "test", null, (object)RazorDynamicObject.Create(model));
-                if (!Equals(expected, result))
+@RenderSection(""section1"")";
+                service.Compile(sectionExtracting, "extractLayouts", null);
+
+                var holder = new CustomDataHolder();
+                dynamic viewbag = new DynamicViewBag();
+                viewbag.DataHolder = holder;
+                var body = service.RunCompile(template, "templateKey", null, null, (DynamicViewBag)viewbag);
+
+
+                if (!holder.Section1.Contains("sample content"))
                 {
-                    throw new Exception(string.Format("{0} expected but got {1}", expected, result));
+                    throw new Exception("Expected section content");
                 }
             }
         }
