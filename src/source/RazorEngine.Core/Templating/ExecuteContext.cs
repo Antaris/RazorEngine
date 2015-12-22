@@ -106,7 +106,16 @@
 #if RAZOR4
             inner(innerArg);
 #else
-            inner();
+            var oldWriter = CurrentWriter;
+            try
+            {
+                CurrentWriter = innerArg;
+                inner();
+            }
+            finally
+            {
+                CurrentWriter = oldWriter;
+            }
 #endif
             foreach (var item in poppedSections)
 	        {
