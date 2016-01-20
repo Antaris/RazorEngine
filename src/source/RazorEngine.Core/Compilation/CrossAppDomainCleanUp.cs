@@ -262,8 +262,10 @@ namespace RazorEngine.Compilation
             {
                 bool success = true;
                 string item;
+                var failedFiles = new Queue<string>();
                 while (_toCleanup.TryDequeue(out item))
                 {
+                    Exception error = null;
                     if (File.Exists(item))
                     {
                         try
@@ -272,13 +274,11 @@ namespace RazorEngine.Compilation
                         }
                         catch (IOException exn)
                         {
-                            success = false;
-                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                            error = exn;
                         }
                         catch (UnauthorizedAccessException exn)
                         {
-                            success = false;
-                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                            error = exn;
                         }
                     }
                     if (Directory.Exists(item))
@@ -289,16 +289,27 @@ namespace RazorEngine.Compilation
                         }
                         catch (IOException exn)
                         {
-                            success = false;
-                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                            error = exn;
                         }
                         catch (UnauthorizedAccessException exn)
                         {
-                            success = false;
-                            _printer.PrintError("Could not delete {0}: {1}", item, exn.ToString());
+                            error = exn;
                         }
                     }
+
+                    if (error != null)
+                    {
+                        success = false;
+                        failedFiles.Enqueue(item);
+                        _printer.PrintError("Could not delete {0}: {1}", item, error.ToString());
+                    }
                 }
+
+                while (failedFiles.Count > 0)
+                {
+                    _toCleanup.Enqueue(failedFiles.Dequeue());
+                }
+
                 return success;
             }
 

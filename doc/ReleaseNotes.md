@@ -1,4 +1,8 @@
-﻿### 3.7.6 / 4.2.6-beta1
+﻿### 3.7.7 / 4.2.7-beta1
+
+ * Fixed bug, thanks @Greooo (https://github.com/Antaris/RazorEngine/issues/244#issuecomment-173322177)
+
+### 3.7.6 / 4.2.6-beta1
 
  * Fix https://github.com/Antaris/RazorEngine/pull/348
 
