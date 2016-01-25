@@ -271,10 +271,13 @@
     <Compile Include="Configuration\Xml\TemplateServiceConfigurationElementCollection.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="TaskRunner.cs" />
+    <Compile Include="Templating\FullPathWithModifiedTimeTemplateKey.cs" />
+    <Compile Include="Templating\InvalidatingByModifiedTimeCachingProvider.cs" />
     <Compile Include="Templating\InvalidatingCachingProvider.cs" />
     <Compile Include="Templating\DynamicWrapperService.cs" />
     <Compile Include="Templating\IsolatedRazorEngineService.cs" />
     <Compile Include="Templating\FullPathTemplateKey.cs" />
+    <Compile Include="Templating\ResolvePathCheckModifiedTimeTemplateManager.cs" />
     <Compile Include="Templating\ResolvePathTemplateManager.cs" />
     <Compile Include="Templating\TemplateLoadingException.cs" />
     <Compile Include="Templating\WatchingResolvePathTemplateManager.cs" />
