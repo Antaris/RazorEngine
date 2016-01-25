@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RazorEngine.Templating
 {
     /// <summary>
-    /// A TemplateManager resolving remplates by path, given a list of folders to look into.
+    /// A TemplateManager resolving templates by path, given a list of folders to look into.
     /// </summary>
     public class ResolvePathTemplateManager : ITemplateManager
     {
@@ -57,7 +57,7 @@ namespace RazorEngine.Templating
         }
 
         /// <summary>
-        /// Resovle full file path using layout roots.
+        /// Resolve full file path using layout roots.
         /// </summary>
         /// <param name="name">file name</param>
         /// <returns>full file path</returns>

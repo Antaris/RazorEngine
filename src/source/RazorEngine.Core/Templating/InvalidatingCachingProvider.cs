@@ -14,7 +14,7 @@ namespace RazorEngine.Templating
     /// This implementation does a very simple in-memory caching and allows you to release templates
     /// by trading with memory.
     /// WARNING: 
-    /// Use this caching provider only on AppDomains you recycle regulary, or to 
+    /// Use this caching provider only on AppDomains you recycle regularly, or to
     /// improve the debugging experience. 
     /// Never use this in production without any recycle strategy.
     /// </summary>

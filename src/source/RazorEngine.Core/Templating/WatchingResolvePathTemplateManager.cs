@@ -13,9 +13,9 @@ namespace RazorEngine.Templating
     /// <summary>
     /// A ResolvePathTemplateManager which watches for changes in the 
     /// filesytem and invalides the corresponding cache entries.
-    /// WARNING: 
-    /// Use this only on AppDomains you recycle regulary, or to 
-    /// improve the debugging experience. 
+    /// WARNING:
+    /// Use this only on AppDomains you recycle regularly, or to
+    /// improve the debugging experience.
     /// Never use this in production without any recycle strategy.
     /// </summary>
     public sealed class WatchingResolvePathTemplateManager : ITemplateManager, IDisposable
