@@ -13,7 +13,7 @@ To get full intellisense you should use the `@inherits` directive like this:
 ```markup
 @using RazorEngine
 @using MyProject.Models
-@inherits TemplateBase<MyModel>
+@inherits Templating.TemplateBase<MyModel>
 <h1>Your Invoice @Model.InvoiceNumber</h1>
 <p>The great stuff you bought was:</p>
 <ul>
