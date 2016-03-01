@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RazorEngine.Templating
 {
     /// <summary>
-    /// A TemplateManager resolving remplates by path, given a list of folders to look into.
+    /// A TemplateManager resolving templates by path, given a list of folders to look into.
     /// </summary>
     public class ResolvePathTemplateManager : ITemplateManager
     {
@@ -53,37 +53,39 @@ namespace RazorEngine.Templating
         /// <returns></returns>
         public ITemplateKey GetKey(string name, ResolveType resolveType, ITemplateKey context)
         {
-            if (File.Exists (name))
+            return new FullPathTemplateKey(name, ResolveFilePath(name), resolveType, context);
+        }
+
+        /// <summary>
+        /// Resolve full file path using layout roots.
+        /// </summary>
+        /// <param name="name">file name</param>
+        /// <returns>full file path</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        protected string ResolveFilePath(string name)
+        {
+            if (File.Exists(name))
             {
-                return new FullPathTemplateKey(name, name, resolveType, context);
+                return name;
             }
-            else
+
+            foreach (var root in layoutRoots)
             {
-                var resolved = layoutRoots.Select(l =>
-                    {
-                        var p = Path.Combine(l, name);
-                        if (File.Exists(p))
-                        {
-                            return p;
-                        }
-                        else if (File.Exists(p + ".cshtml"))
-                        {
-                            return p + ".cshtml"; 
-                        } 
-                        else
-                        {
-                            return null;
-                        }
-                    }).Where(l => l != null).FirstOrDefault();
-                if (resolved == null)
+                var path = Path.Combine(root, name);
+
+                if (File.Exists(path))
                 {
-                    throw new InvalidOperationException(string.Format("Could not resolve template {0}", name));
+                    return path;
                 }
-                else
+
+                path += ".cshtml";
+                if (File.Exists(path))
                 {
-                    return new FullPathTemplateKey(name, resolved, resolveType, context);
+                    return path;
                 }
             }
+
+            throw new InvalidOperationException(string.Format("Could not resolve template {0}", name));
         }
 
         /// <summary>
