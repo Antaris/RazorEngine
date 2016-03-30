@@ -278,6 +278,7 @@
     <Compile Include="Templating\IsolatedRazorEngineService.cs" />
     <Compile Include="Templating\FullPathTemplateKey.cs" />
     <Compile Include="Templating\ResolvePathCheckModifiedTimeTemplateManager.cs" />
+    <Compile Include="Templating\EmbeddedResourceTemplateManager.cs" />
     <Compile Include="Templating\ResolvePathTemplateManager.cs" />
     <Compile Include="Templating\TemplateLoadingException.cs" />
     <Compile Include="Templating\WatchingResolvePathTemplateManager.cs" />
