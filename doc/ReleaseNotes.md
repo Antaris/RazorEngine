@@ -1,4 +1,9 @@
-﻿### 3.7.7 / 4.2.7-beta1
+﻿### 3.8.0 / 4.3.0-beta1
+
+ * Added EmbeddedResource Template Manager (https://github.com/Antaris/RazorEngine/pull/371)
+ * (breaking) Renamed optional isRequired parameter of RenderSection method to required (https://github.com/Antaris/RazorEngine/pull/372)
+
+### 3.7.7 / 4.2.7-beta1
 
  * Fixed bug, thanks @Greooo (https://github.com/Antaris/RazorEngine/issues/244#issuecomment-173322177)
 
