@@ -261,15 +261,15 @@ namespace RazorEngine.Templating
         /// Renders the section with the specified name.
         /// </summary>
         /// <param name="name">The name of the section.</param>
-        /// <param name="isRequired">Flag to specify whether the section is required.</param>
+        /// <param name="required">Flag to specify whether the section is required.</param>
         /// <returns>The template writer helper.</returns>
-        public virtual TemplateWriter RenderSection(string name, bool isRequired = true)
+        public virtual TemplateWriter RenderSection(string name, bool required = true)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("The name of the section to render must be specified.");
 
             var action = _context.GetSectionDelegate(name);
-            if (action == null && isRequired)
+            if (action == null && required)
                 throw new ArgumentException("No section has been defined with name '" + name + "'");
 
             if (action == null) 
