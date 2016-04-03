@@ -5,7 +5,7 @@
  * Use file modification time to check if cached template is valid (https://github.com/Antaris/RazorEngine/pull/353)
    Contains InvalidatingByModifiedTimeCachingProvider and ResolvePathCheckModifiedTimeTemplateManager.
 
-### 3.8.0 / 4.3.1-beta1
+### 3.8.0 / 4.3.0-beta1
 
  * See 3.8.1. Rereleased as a change was missing in the release notes.
 
