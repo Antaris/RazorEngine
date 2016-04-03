@@ -105,6 +105,8 @@
     <Compile Include="ActivatorTestFixture.cs" />
     <Compile Include="CompilerServicesUtilityTestFixture.cs" />
     <Compile Include="RazorEngineCleanupTests.cs" />
+    <Compile Include="Templating\EmbeddedResourceTemplateManagerTestFixture.cs" />
+    <Compile Include="Templating\Templates\Model.cs" />
     <Compile Include="TestTypes\BaseTypes\AddLanguageInfo.cs" />
     <Compile Include="TestTypes\BaseTypes\NestedBaseClass.cs" />
     <Compile Include="VariousTestsFixture.cs" />
@@ -147,6 +149,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Templating\Templates\Layout.cshtml" />
+    <EmbeddedResource Include="Templating\Templates\NoModel.cshtml" />
+    <EmbeddedResource Include="Templating\Templates\Partial.cshtml" />
+    <EmbeddedResource Include="Templating\Templates\WithLayout.cshtml" />
+    <EmbeddedResource Include="Templating\Templates\WithModel.cshtml" />
+    <EmbeddedResource Include="Templating\Templates\WithPartial.cshtml" />
     <None Include="test\TestHelper.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
