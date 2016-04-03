@@ -1180,6 +1180,14 @@
         </tr>
         <tr>
           <td class="type-name">
+            <a href="razorengine-templating-embeddedresourcetemplatemanager.html">EmbeddedResourceTemplateManager</a>
+          </td>
+          <td class="xmldoc">
+            A TemplateManager loading templates from embedded resources.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="razorengine-templating-executecontext.html">ExecuteContext</a>
           </td>
           <td class="xmldoc">
@@ -1195,6 +1203,13 @@
             This implementation assumes that the template-names are unique and returns the name as unique key.
             (So this implementation is used by <a href="razorengine-templating-delegatetemplatemanager.html">DelegateTemplateManager</a> and <a href="razorengine-configuration-xml-wrappertemplatemanager.html">WrapperTemplateManager</a>.
             </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-fullpathwithmodifiedtimetemplatekey.html">FullPathWithModifiedTimeTemplateKey</a>
+          </td>
+          <td class="xmldoc">
+            This implementation adds ModifiedTime property to <a href="razorengine-templating-fullpathtemplatekey.html">FullPathTemplateKey</a></br></td>
         </tr>
         <tr>
           <td class="type-name">
@@ -1321,6 +1336,20 @@
         </tr>
         <tr>
           <td class="type-name">
+            <a href="razorengine-templating-invalidatingbymodifiedtimecachingprovider.html">InvalidatingByModifiedTimeCachingProvider</a>
+          </td>
+          <td class="xmldoc">
+            An memory leaking invalidating caching provider (See <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>).
+            This implementation does a very simple in-memory caching and allows you to release templates
+            by trading with memory. File modification time is used to check if cached template is valid.
+            WARNING:
+            Use this caching provider only on AppDomains you recycle regularly, or to
+            improve the debugging experience.
+            Never use this in production without any recycle strategy.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
             <a href="razorengine-templating-invalidatingcachingprovider.html">InvalidatingCachingProvider</a>
           </td>
           <td class="xmldoc">
@@ -1328,7 +1357,7 @@
             This implementation does a very simple in-memory caching and allows you to release templates
             by trading with memory.
             WARNING: 
-            Use this caching provider only on AppDomains you recycle regulary, or to 
+            Use this caching provider only on AppDomains you recycle regularly, or to
             improve the debugging experience. 
             Never use this in production without any recycle strategy.
             </br></td>
@@ -1403,10 +1432,19 @@
         </tr>
         <tr>
           <td class="type-name">
-            <a href="razorengine-templating-resolvepathtemplatemanager.html">ResolvePathTemplateManager</a>
+            <a href="razorengine-templating-resolvepathcheckmodifiedtimetemplatemanager.html">ResolvePathCheckModifiedTimeTemplateManager</a>
           </td>
           <td class="xmldoc">
             A TemplateManager resolving remplates by path, given a list of folders to look into.
+            Uses <a href="razorengine-templating-fullpathwithmodifiedtimetemplatekey.html">FullPathWithModifiedTimeTemplateKey</a> to save template modification time.
+            </br></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="razorengine-templating-resolvepathtemplatemanager.html">ResolvePathTemplateManager</a>
+          </td>
+          <td class="xmldoc">
+            A TemplateManager resolving templates by path, given a list of folders to look into.
             </br></td>
         </tr>
         <tr>
@@ -1492,9 +1530,9 @@
           <td class="xmldoc">
             A ResolvePathTemplateManager which watches for changes in the 
             filesytem and invalides the corresponding cache entries.
-            WARNING: 
-            Use this only on AppDomains you recycle regulary, or to 
-            improve the debugging experience. 
+            WARNING:
+            Use this only on AppDomains you recycle regularly, or to
+            improve the debugging experience.
             Never use this in production without any recycle strategy.
             </br></td>
         </tr>

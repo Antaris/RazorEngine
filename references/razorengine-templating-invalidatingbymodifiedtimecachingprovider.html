@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>DefaultParallelQueryPlan<'T> - RazorEngine</title>
+    <title>InvalidatingByModifiedTimeCachingProvider - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,19 @@
 
 
 
-<h1>DefaultParallelQueryPlan<'T> </h1>
+<h1>InvalidatingByModifiedTimeCachingProvider </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Represents a default parallel query plan.
+            An memory leaking invalidating caching provider (See <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>).
+            This implementation does a very simple in-memory caching and allows you to release templates
+            by trading with memory. File modification time is used to check if cached template is valid.
+            WARNING:
+            Use this caching provider only on AppDomains you recycle regularly, or to
+            improve the debugging experience.
+            Never use this in production without any recycle strategy.
             </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
@@ -55,15 +61,33 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '934', 934)" onmouseover="showTip(event, '934', 934)">
+          <code onmouseout="hideTip(event, '750', 750)" onmouseover="showTip(event, '750', 750)">
             new()
           </code>
-          <div class="tip" id="934">
+          <div class="tip" id="750">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+            Initializes a new instance
+            </br>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '751', 751)" onmouseover="showTip(event, '751', 751)">
+            new(registerForCleanup)
+          </code>
+          <div class="tip" id="751">
+            <strong>Signature:</strong> registerForCleanup:Action&lt;string&gt; -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+            Initializes a new instance
+            </br>
         </td>
       </tr>
     </tbody>
@@ -77,17 +101,18 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '935', 935)" onmouseover="showTip(event, '935', 935)">
-            CreateQuery(source)
+          <code onmouseout="hideTip(event, '752', 752)" onmouseover="showTip(event, '752', 752)">
+            TryRetrieveTemplate(...)
           </code>
-          <div class="tip" id="935">
-            <strong>Signature:</strong> source:IEnumerable&lt;&#39;T&gt; -&gt; ParallelQuery&lt;&#39;T&gt;<br />
+          <div class="tip" id="752">
+            <strong>Signature:</strong> (templateKey:ITemplateKey * modelType:Type * compiledTemplate:byref&lt;ICompiledTemplate&gt;) -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Creates a parallel query for the specified source.
+            Try to retrieve a template from the cache. See <a href="razorengine-templating-icachingprovider.html">ICachingProvider.TryRetrieveTemplate</a>.
+            If cached template has different modification time, then the cache is invalidated.
             </br>
         </td>
       </tr>

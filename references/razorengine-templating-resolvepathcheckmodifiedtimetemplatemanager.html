@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>DefaultParallelQueryPlan<'T> - RazorEngine</title>
+    <title>ResolvePathCheckModifiedTimeTemplateManager - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,13 +38,14 @@
 
 
 
-<h1>DefaultParallelQueryPlan<'T> </h1>
+<h1>ResolvePathCheckModifiedTimeTemplateManager </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 
-            Represents a default parallel query plan.
+            A TemplateManager resolving remplates by path, given a list of folders to look into.
+            Uses <a href="razorengine-templating-fullpathwithmodifiedtimetemplatekey.html">FullPathWithModifiedTimeTemplateKey</a> to save template modification time.
             </br></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
@@ -55,15 +56,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '934', 934)" onmouseover="showTip(event, '934', 934)">
-            new()
+          <code onmouseout="hideTip(event, '850', 850)" onmouseover="showTip(event, '850', 850)">
+            new(layoutRoots)
           </code>
-          <div class="tip" id="934">
-            <strong>Signature:</strong> unit -&gt; unit<br />
+          <div class="tip" id="850">
+            <strong>Signature:</strong> layoutRoots:IEnumerable&lt;string&gt; -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
           
+            Initializes a new TemplateManager
+            </br>
         </td>
       </tr>
     </tbody>
@@ -77,17 +80,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '935', 935)" onmouseover="showTip(event, '935', 935)">
-            CreateQuery(source)
+          <code onmouseout="hideTip(event, '851', 851)" onmouseover="showTip(event, '851', 851)">
+            GetKey(name, resolveType, context)
           </code>
-          <div class="tip" id="935">
-            <strong>Signature:</strong> source:IEnumerable&lt;&#39;T&gt; -&gt; ParallelQuery&lt;&#39;T&gt;<br />
+          <div class="tip" id="851">
+            <strong>Signature:</strong> (name:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
           
-            Creates a parallel query for the specified source.
+            Get the given key.
             </br>
         </td>
       </tr>
