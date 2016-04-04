@@ -30,6 +30,8 @@ The `GetKey` step enables a `TemplateManager` to add customized data to the key 
 * `DelegateTemplateManager`: (default) Used as the default for historical reasons, easy solution when using dynamic template razor strings.
 * `ResolvePathTemplateManager`: Used to resolve templates from a given list of directory paths. 
   Doesn't support adding templates dynamically via string. You can use a full path instead of a template name.
+* `EmbeddedResourceTemplateManager`: Used to resolve templates from assembly embedded resources.
+  Uses [`Assembly.GetManifestResourceStream(Type, string)`](https://msdn.microsoft.com/en-us/library/5kx66y1a(v=vs.110).aspx) to load the template based on the type provided.
 * `WatchingResolvePathTemplateManager`: Same as ResolvePathTemplateManager but watches the filesystem and invalidates the cache.
   Note that this introduces a memory leak to your application, so only use this is you have an AppDomain recycle strategy in place
   or for debugging purposes.
