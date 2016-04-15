@@ -34,9 +34,9 @@ let projectName_roslyn = "RazorEngine.Roslyn"
 let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
 let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEngine."
 // !!!!!!!!!!!!!!!!!!!
-// UPDATE RELEASE NOTES AS WELL!
+// UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.3.1-beta1"
+let version_razor4 = "4.3.2-beta1"
 let version_roslyn = "3.5.5-beta1"
 let version_roslyn_razor4 = "4.0.5-beta1"
 

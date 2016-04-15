@@ -1,4 +1,10 @@
-﻿### 3.8.1 / 4.3.1-beta1
+﻿### 3.8.2 / 4.3.2-beta1
+
+ * support models which implement ISerializable with IsolatedRazorEngineService (https://github.com/Antaris/RazorEngine/pull/376)
+ * fix vb.net generic type parameter list (https://github.com/Antaris/RazorEngine/pull/375)
+ * Added documentation for EmbeddedResourceTemplateManager (https://github.com/Antaris/RazorEngine/pull/374)
+
+### 3.8.1 / 4.3.1-beta1
 
  * Added EmbeddedResource Template Manager (https://github.com/Antaris/RazorEngine/pull/371)
  * (breaking) Renamed optional isRequired parameter of RenderSection method to required (https://github.com/Antaris/RazorEngine/pull/372)
