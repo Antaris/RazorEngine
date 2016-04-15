@@ -155,7 +155,7 @@ namespace RazorEngine.Compilation
                 return rawFullName;
 
             return rawFullName
-                  + "(Of"
+                  + "(Of "
                   + string.Join(", ", type.GetGenericArguments().Select(ResolveVBTypeName))
                   + ")";
         }
