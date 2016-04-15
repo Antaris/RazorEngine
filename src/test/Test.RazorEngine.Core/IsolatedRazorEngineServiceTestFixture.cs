@@ -531,6 +531,23 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         }
 
         /// <summary>
+        /// Tests that a simple template with an ISerializable model can be parsed within a sandbox.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_Sandbox_WithISerializableModel()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Uri Host: @Model.Host</h1>";
+                const string expected = "<h1>Uri Host: example.com</h1>";
+
+                var model = new Uri("http://example.com");
+                var result = service.RunCompile(template, "test", null, (object)RazorDynamicObject.Create(model));
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
         /// Tests that an isolated template service cannot use the same application domain as the 
         /// main application domain.
         /// </summary>

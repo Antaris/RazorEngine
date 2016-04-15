@@ -336,7 +336,8 @@
             var wrapper = new RazorDynamicObject(wrapped, allowMissingMembers);
             var interfaces =
                 wrapped.GetType().GetInterfaces()
-                .Where(t => t.IsPublic && t != typeof(IDynamicMetaObjectProvider))
+                // remove IDynamicMetaObjectProvider and ISerializable interfaces because ActLikeProxy does already implement them
+                .Where(t => t.IsPublic && t != typeof(IDynamicMetaObjectProvider) && t != typeof(ISerializable))
                 .Select(MapInterface).ToArray();
             if (interfaces.Length > 0)
             {
