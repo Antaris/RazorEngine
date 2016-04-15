@@ -78,6 +78,8 @@ which implementations are available by default and how to write your own.</p>
 <li><code>DelegateTemplateManager</code>: (default) Used as the default for historical reasons, easy solution when using dynamic template razor strings.</li>
 <li><code>ResolvePathTemplateManager</code>: Used to resolve templates from a given list of directory paths. 
 Doesn't support adding templates dynamically via string. You can use a full path instead of a template name.</li>
+<li><code>EmbeddedResourceTemplateManager</code>: Used to resolve templates from assembly embedded resources.
+Uses <a href="https://msdn.microsoft.com/en-us/library/5kx66y1a(v=vs.110).aspx"><code>Assembly.GetManifestResourceStream(Type, string)</code></a> to load the template based on the type provided.</li>
 <li><code>WatchingResolvePathTemplateManager</code>: Same as ResolvePathTemplateManager but watches the filesystem and invalidates the cache.
 Note that this introduces a memory leak to your application, so only use this is you have an AppDomain recycle strategy in place
 or for debugging purposes.</li>
