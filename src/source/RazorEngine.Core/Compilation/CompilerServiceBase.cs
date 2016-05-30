@@ -83,8 +83,6 @@
             CodeLanguage = codeLanguage;
             MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
-
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
         #endregion
 
@@ -138,32 +136,6 @@
         #endregion
 
         #region Methods
-
-        [SecurityCritical]
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            (new PermissionSet(PermissionState.Unrestricted)).Assert();
-            var assemblyName = args.Name;
-            // First try the loaded ones
-            foreach (var reference in references)
-            {
-                var assemblyReference = reference as RazorEngine.Compilation.ReferenceResolver.CompilerReference.DirectAssemblyReference;
-                if (assemblyReference != null && assemblyReference.Assembly.GetName().FullName == assemblyName)
-                {
-                    return assemblyReference.Assembly;
-                }
-            }
-            // Then try the files
-            foreach (var reference in references)
-            {
-                var fileReference = reference as RazorEngine.Compilation.ReferenceResolver.CompilerReference.FileReference;
-                if (fileReference != null && AssemblyName.GetAssemblyName(fileReference.File).FullName == assemblyName)
-                {
-                    return Assembly.LoadFrom(fileReference.File);
-                }
-            }
-            return null;
-        }
 
         /// <summary>
         /// Tries to create and return a unique temporary directory.
@@ -465,20 +437,7 @@
         /// <param name="disposing">true when Dispose() was called manually.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
-                return;
 
-            if (disposing)
-            {
-                Unregister();
-            }
-            _disposed = true;
-        }
-
-        [SecuritySafeCritical]
-        private void Unregister()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
         }
 
         #endregion

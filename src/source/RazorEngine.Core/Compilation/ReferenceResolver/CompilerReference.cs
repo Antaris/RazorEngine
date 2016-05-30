@@ -130,6 +130,35 @@ namespace RazorEngine.Compilation.ReferenceResolver
         }
 
         /// <summary>
+        /// Default implementation for resolving an assembly name.
+        /// </summary>
+        /// <param name="assemblyName">name of the assembly to resolve</param>
+        /// <param name="references">references to check</param>
+        /// <returns>the resolved assembly or null</returns>
+        public static Assembly Resolve(string assemblyName, IEnumerable<CompilerReference> references)
+        {
+            // First try the loaded ones
+            foreach (var reference in references)
+            {
+                var assemblyReference = reference as DirectAssemblyReference;
+                if (assemblyReference != null && assemblyReference.Assembly.GetName().FullName == assemblyName)
+                {
+                    return assemblyReference.Assembly;
+                }
+            }
+            // Then try the files
+            foreach (var reference in references)
+            {
+                var fileReference = reference as FileReference;
+                if (fileReference != null && AssemblyName.GetAssemblyName(fileReference.File).FullName == assemblyName)
+                {
+                    return Assembly.LoadFrom(fileReference.File);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Try to resolve the reference to a file (throws when this is not possible).
         /// </summary>
         /// <param name="exceptionCreator"></param>

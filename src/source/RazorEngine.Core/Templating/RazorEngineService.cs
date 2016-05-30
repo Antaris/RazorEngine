@@ -1,9 +1,11 @@
-﻿using RazorEngine.Configuration;
+﻿using RazorEngine.Compilation.ReferenceResolver;
+using RazorEngine.Configuration;
 using RazorEngine.Text;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 #if RAZOR4
 using System.Runtime.ExceptionServices;
 #endif
@@ -34,6 +36,7 @@ namespace RazorEngine.Templating
         /// Initialises a new instance of <see cref="TemplateService"/>
         /// </summary>
         /// <param name="config">The template service configuration.</param>
+        [SecuritySafeCritical]
         internal RazorEngineService(ITemplateServiceConfiguration config)
         {
             if (config == null)
@@ -48,6 +51,12 @@ namespace RazorEngine.Templating
             _config = config;
             //_core = new RazorEngineCore(config, this);
             _core_with_cache = new RazorEngineCoreWithCache(new ReadOnlyTemplateServiceConfiguration(config), this);
+            AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
+        }
+
+        private Assembly AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return CompilerReference.Resolve(args.Name, _config.ReferenceResolver.GetReferences(null));
         }
 
         /// <summary>
@@ -130,10 +139,12 @@ namespace RazorEngine.Templating
         /// Releases managed resources used by this instance.
         /// </summary>
         /// <param name="disposing">Are we explicitly disposing of this instance?</param>
+        [SecuritySafeCritical]
         protected override void Dispose(bool disposing)
         {
             if (!disposed && disposing)
             {
+                AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
                 _config.CachingProvider.Dispose();
                 disposed = true;
             }
