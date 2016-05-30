@@ -11,7 +11,7 @@
     /// <summary>
     /// Defines the required contract for implementing a compiler service.
     /// </summary>
-    public interface ICompilerService
+    public interface ICompilerService : IDisposable
     {
         #region Properties
 #if !RAZOR4

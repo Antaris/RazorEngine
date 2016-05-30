@@ -132,7 +132,9 @@
         /// All references we used until now.
         /// </summary>
         private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
-        
+
+        private bool _disposed;
+
         #endregion
 
         #region Methods
@@ -438,6 +440,47 @@
                 inspector.Inspect(unit, ns, type, executeMethod);
         }
 #endif
+
+
+        /// <summary>
+        /// Cleans up the <see cref="CompilerServiceBase"/> instance.
+        /// </summary>
+        ~CompilerServiceBase()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Disposes the current instance.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Disposes the current instance via the disposable pattern.
+        /// </summary>
+        /// <param name="disposing">true when Dispose() was called manually.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                Unregister();
+            }
+            _disposed = true;
+        }
+
+        [SecuritySafeCritical]
+        private void Unregister()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+        }
+
         #endregion
     }
 }

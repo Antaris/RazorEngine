@@ -106,21 +106,21 @@ namespace RazorEngine.Templating
             foreach (string ns in _config.Namespaces)
                 context.Namespaces.Add(ns);
 
-            var service = _config
-                .CompilerServiceFactory
-                .CreateCompilerService(_config.Language);
-            service.Debug = _config.Debug;
-            service.DisableTempFileLocking = _config.DisableTempFileLocking;
+            using (var service = _config.CompilerServiceFactory.CreateCompilerService(_config.Language))
+            {
+                service.Debug = _config.Debug;
+                service.DisableTempFileLocking = _config.DisableTempFileLocking;
 #if !RAZOR4
 #pragma warning disable 0618 // Backwards Compat.
-            service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
+                service.CodeInspectors = _config.CodeInspectors ?? Enumerable.Empty<ICodeInspector>();
 #pragma warning restore 0618 // Backwards Compat.
 #endif
-            service.ReferenceResolver = _config.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
+                service.ReferenceResolver = _config.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
 
-            var result = service.CompileType(context);
+                var result = service.CompileType(context);
 
-            return result;
+                return result;
+            }
         }
 
 
