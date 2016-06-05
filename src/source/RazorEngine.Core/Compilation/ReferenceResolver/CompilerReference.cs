@@ -135,7 +135,7 @@ namespace RazorEngine.Compilation.ReferenceResolver
         /// <param name="assemblyName">name of the assembly to resolve</param>
         /// <param name="references">references to check</param>
         /// <returns>the resolved assembly or null</returns>
-        public static Assembly Resolve(string assemblyName, IEnumerable<CompilerReference> references)
+        internal static Assembly Resolve(string assemblyName, IEnumerable<CompilerReference> references)
         {
             // First try the loaded ones
             foreach (var reference in references)

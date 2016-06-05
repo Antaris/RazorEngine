@@ -126,11 +126,6 @@
         /// </summary>
         public abstract string SourceFileExtension { get; }
 
-        /// <summary>
-        /// All references we used until now.
-        /// </summary>
-        private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
-
         private bool _disposed;
 
         #endregion
@@ -389,7 +384,6 @@
 #pragma warning restore 0618 // Backwards Compat.
             foreach (var reference in references)
             {
-                this.references.Add(reference);
                 yield return reference;
             }
         }
@@ -412,15 +406,6 @@
                 inspector.Inspect(unit, ns, type, executeMethod);
         }
 #endif
-
-
-        /// <summary>
-        /// Cleans up the <see cref="CompilerServiceBase"/> instance.
-        /// </summary>
-        ~CompilerServiceBase()
-        {
-            Dispose(false);
-        }
 
         /// <summary>
         /// Disposes the current instance.
