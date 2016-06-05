@@ -15,6 +15,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using RazorEngine.Configuration;
+using RazorEngine.Compilation.ReferenceResolver;
 #if RAZOR4
 using Microsoft.AspNet.Razor;
 #else
@@ -58,6 +59,16 @@ namespace Test.RazorEngine
         /// <returns></returns>
         public static AppDomain SandboxCreator()
         {
+            return SandboxCreator(null);
+        }
+
+        /// <summary>
+        /// Creates a sandbox for testing.
+        /// </summary>
+        /// <param name="permissions">Additional permissions</param>
+        /// <returns></returns>
+        public static AppDomain SandboxCreator(IEnumerable<IPermission> permissions)
+        {
             CheckMono();
 #if RAZOR4
             Assert.Ignore("IsolatedRazorEngineServiceTestFixture is not tested with razor 4 as it is not signed!");
@@ -71,6 +82,13 @@ namespace Test.RazorEngine
             Evidence ev = new Evidence();
             ev.AddHostEvidence(new Zone(SecurityZone.Internet));
             PermissionSet permSet = SecurityManager.GetStandardSandbox(ev);
+            if (permissions != null)
+            {
+                foreach (IPermission permission in permissions)
+                {
+                    permSet.AddPermission(permission);
+                }
+            }
             // We have to load ourself with full trust
             StrongName razorEngineAssembly = typeof(RazorEngineService).Assembly.Evidence.GetHostEvidence<StrongName>();
             // We have to load Razor with full trust (so all methods are SecurityCritical)
@@ -154,7 +172,7 @@ namespace Test.RazorEngine
             using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
             {
                 string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
-                
+
                 string template = @"
 @using System.IO
 @{
@@ -178,15 +196,16 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
             /// The assemblies are called "@(namespace).@(class).dll"
             /// </summary>
             const string CompiledAssemblyPrefix = CompilerServiceBase.DynamicTemplateNamespace + "." + CompilerServiceBase.ClassNamePrefix;
-            
+
             /// <summary>
             /// Check if a compiled assembly exists.
             /// </summary>
             /// <returns></returns>
-            public bool ExistsCompiledAssembly() {
+            public bool ExistsCompiledAssembly()
+            {
                 (new PermissionSet(PermissionState.Unrestricted)).Assert();
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                var razorEngine = 
+                var razorEngine =
                     assemblies
                     .Where(a => a.FullName.StartsWith(CompiledAssemblyPrefix))
                     .FirstOrDefault();
@@ -296,7 +315,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
                 var test = service.RunCompile(template, "test");
-                
+
                 Assert.IsTrue(File.Exists(file));
                 File.Delete(file);
             });
@@ -373,7 +392,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 
                 string result = service.RunCompile(template, "test", null, new RazorDynamicObject(model));
                 Assert.AreEqual(expected, result);
-                
+
             }
         }
 
@@ -408,7 +427,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 var model = new NameOnlyTemplateKey("Matt", ResolveType.Global, null);
                 string result = service.RunCompile(template, "test", null, model);
                 Assert.AreEqual(expected, result);
-                
+
             }
         }
 
@@ -620,6 +639,58 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                         Assert.That(result == expected, "Result does not match expected: " + result);
                     }
                 });
+        }
+
+        /// <summary>
+        /// Test Type.
+        /// </summary>
+        [Serializable]
+        class ReferenceResolverConfigCreator : IsolatedRazorEngineService.IConfigCreator, IReferenceResolver
+        {
+            /// <summary>
+            /// Test Type.
+            /// </summary>
+            public ITemplateServiceConfiguration CreateConfiguration()
+            {
+                var config = new TemplateServiceConfiguration();
+                config.ReferenceResolver = this;
+                return config;
+            }
+
+            public IEnumerable<CompilerReference> GetReferences(TypeContext context, IEnumerable<CompilerReference> includeAssemblies = null)
+            {
+                // We need to return this standard set or even simple views blow up on
+                // a missing reference to System.Linq.
+                var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null);
+                foreach (var reference in loadedAssemblies)
+                    yield return reference;
+                yield return CompilerReference.From("test/TestHelper.dll");
+            }
+        }
+
+        /// <summary>
+        /// Tests that we can use types from other assemblies in templates.
+        /// Even when the type can be loaded.
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_CheckThatWeCanUseUnknownTypesAtExecuteTime()
+        {
+            using (var service = IsolatedRazorEngineService.Create(new ReferenceResolverConfigCreator(), () => SandboxCreator(new IPermission[] {
+                new FileIOPermission(PermissionState.Unrestricted),
+                new ReflectionPermission(PermissionState.Unrestricted)
+            })))
+            {
+                var template = @"
+@{
+    var t = new TestHelper.TestClass();
+}
+@t.TestProperty";
+                const string expected = "\n\nTestPropert";
+
+                string result = service.RunCompile(template, "test");
+
+                Assert.That(result == expected, "Result does not match expected: " + result);
+            }
         }
 
     }
