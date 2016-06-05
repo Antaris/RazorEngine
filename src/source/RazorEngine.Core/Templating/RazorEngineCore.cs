@@ -18,7 +18,7 @@ namespace RazorEngine.Templating
     using System.Security.Permissions;
     using System.Threading.Tasks;
     using RazorEngine.Compilation.ReferenceResolver;
-    internal class RazorEngineCore
+    internal class RazorEngineCore : IDisposable
     {
         private readonly ReadOnlyTemplateServiceConfiguration _config;
         /// <summary>
@@ -26,6 +26,14 @@ namespace RazorEngine.Templating
         /// </summary>
         private readonly RazorEngineService _cached;
 
+        private bool disposed;
+
+        /// <summary>
+        /// All references we used until now.
+        /// </summary>
+        private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
+
+        [SecuritySafeCritical]
         internal RazorEngineCore(ReadOnlyTemplateServiceConfiguration config, RazorEngineService cached)
         {
             if (config == null)
@@ -35,6 +43,12 @@ namespace RazorEngine.Templating
             
             _config = config;
             _cached = cached;
+            AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
+        }
+
+        private Assembly AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return CompilerReference.Resolve(args.Name, references);
         }
 
         /// <summary>
@@ -100,7 +114,8 @@ namespace RazorEngine.Templating
             {
                 ModelType = modelType ?? typeof(System.Dynamic.DynamicObject),
                 TemplateContent = razorTemplate,
-                TemplateType = (_config.BaseTemplateType) ?? typeof(TemplateBase<>)
+                TemplateType = (_config.BaseTemplateType) ?? typeof(TemplateBase<>),
+                References = references
             };
 
             foreach (string ns in _config.Namespaces)
@@ -116,7 +131,7 @@ namespace RazorEngine.Templating
 #pragma warning restore 0618 // Backwards Compat.
 #endif
                 service.ReferenceResolver = _config.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
-
+                
                 var result = service.CompileType(context);
 
                 return result;
@@ -176,6 +191,25 @@ namespace RazorEngine.Templating
         internal ITemplateSource Resolve(ITemplateKey key)
         {
             return Configuration.TemplateManager.Resolve(key);
+        }
+
+        /// <summary>
+        /// Disposes the current instance.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(true);
+        }
+
+        [SecuritySafeCritical]
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed && disposing)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
+                disposed = true;
+            }
         }
     }
 

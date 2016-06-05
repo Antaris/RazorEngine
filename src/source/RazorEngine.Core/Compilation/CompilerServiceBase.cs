@@ -384,6 +384,7 @@
 #pragma warning restore 0618 // Backwards Compat.
             foreach (var reference in references)
             {
+                context.References.Add(reference);
                 yield return reference;
             }
         }

@@ -1,6 +1,7 @@
 ﻿namespace RazorEngine.Compilation
 {
     using RazorEngine.Templating;
+    using ReferenceResolver;
     using System;
     using System.Collections.Generic;
 
@@ -56,6 +57,11 @@
         /// Gets or sets the base template type.
         /// </summary>
         public Type TemplateType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the compiler references
+        /// </summary>
+        public ISet<CompilerReference> References { get; set; }
         #endregion
     }
 }
