@@ -135,6 +135,7 @@ namespace RazorEngine.Templating
             if (!disposed && disposing)
             {
                 _config.CachingProvider.Dispose();
+                _core_with_cache.Dispose();
                 disposed = true;
             }
             base.Dispose(disposing);

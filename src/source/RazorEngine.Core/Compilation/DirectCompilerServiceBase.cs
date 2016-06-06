@@ -26,7 +26,7 @@
     /// <summary>
     /// Provides a base implementation of a direct compiler service.
     /// </summary>
-    public abstract class DirectCompilerServiceBase : CompilerServiceBase, IDisposable
+    public abstract class DirectCompilerServiceBase : CompilerServiceBase
     {
         #region Fields
         private readonly CodeDomProvider _codeDomProvider;
@@ -333,26 +333,20 @@
         }
 
         /// <summary>
-        /// Releases managed resourced used by this instance.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Releases managed resources used by this instance.
         /// </summary>
-        /// <param name="disposing">Are we explicily disposing of this instance?</param>
-        protected virtual void Dispose(bool disposing)
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
         {
             if (disposing && !_disposed)
             {
                 _codeDomProvider.Dispose();
                 _disposed = true;
             }
+
+            base.Dispose(disposing);
         }
+
         #endregion
     }
 }

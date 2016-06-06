@@ -83,8 +83,6 @@
             CodeLanguage = codeLanguage;
             MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
-
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
         #endregion
 
@@ -128,40 +126,11 @@
         /// </summary>
         public abstract string SourceFileExtension { get; }
 
-        /// <summary>
-        /// All references we used until now.
-        /// </summary>
-        private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
-        
+        private bool _disposed;
+
         #endregion
 
         #region Methods
-
-        [SecurityCritical]
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            (new PermissionSet(PermissionState.Unrestricted)).Assert();
-            var assemblyName = args.Name;
-            // First try the loaded ones
-            foreach (var reference in references)
-            {
-                var assemblyReference = reference as RazorEngine.Compilation.ReferenceResolver.CompilerReference.DirectAssemblyReference;
-                if (assemblyReference != null && assemblyReference.Assembly.GetName().FullName == assemblyName)
-                {
-                    return assemblyReference.Assembly;
-                }
-            }
-            // Then try the files
-            foreach (var reference in references)
-            {
-                var fileReference = reference as RazorEngine.Compilation.ReferenceResolver.CompilerReference.FileReference;
-                if (fileReference != null && AssemblyName.GetAssemblyName(fileReference.File).FullName == assemblyName)
-                {
-                    return Assembly.LoadFrom(fileReference.File);
-                }
-            }
-            return null;
-        }
 
         /// <summary>
         /// Tries to create and return a unique temporary directory.
@@ -415,7 +384,7 @@
 #pragma warning restore 0618 // Backwards Compat.
             foreach (var reference in references)
             {
-                this.references.Add(reference);
+                context.References.Add(reference);
                 yield return reference;
             }
         }
@@ -438,6 +407,25 @@
                 inspector.Inspect(unit, ns, type, executeMethod);
         }
 #endif
+
+        /// <summary>
+        /// Disposes the current instance.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Disposes the current instance via the disposable pattern.
+        /// </summary>
+        /// <param name="disposing">true when Dispose() was called manually.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+
+        }
+
         #endregion
     }
 }
