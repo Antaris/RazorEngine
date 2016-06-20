@@ -216,6 +216,21 @@ namespace RazorEngine.Templating
 #endif
         {
             _context = context;
+			
+			// If there's no layout defined, then write directly to the output writer.
+            if (Layout == null)
+            {
+                _context.CurrentWriter = outputWriter;
+#if RAZOR4
+                await Execute();
+#else
+                Execute();
+#endif
+                outputWriter.Flush();
+                _context.CurrentWriter = null;
+
+                return;
+            }
 
             StringBuilder builder = new StringBuilder();
             using (var writer = new StringWriter(builder))
