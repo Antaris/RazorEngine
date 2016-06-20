@@ -210,9 +210,9 @@ namespace RazorEngine.Templating
         /// <param name="reader"></param>
         /// <returns>The merged result of the template.</returns>
 #if RAZOR4
-        public async Task Run(ExecuteContext context, TextWriter reader)
+        public async Task Run(ExecuteContext context, TextWriter outputWriter)
 #else
-        void ITemplate.Run(ExecuteContext context, TextWriter reader)
+        void ITemplate.Run(ExecuteContext context, TextWriter outputWriter)
 #endif
         {
             _context = context;
@@ -261,14 +261,14 @@ namespace RazorEngine.Templating
                     context.PushSections();
 
 #if RAZOR4
-                    await layout.Run(context, reader);
+                    await layout.Run(context, outputWriter);
 #else
-                    layout.Run(context, reader);
+                    layout.Run(context, outputWriter);
 #endif
                     return;
                 }
 
-                reader.Write(builder.ToString());
+                outputWriter.Write(builder.ToString());
             }
         }
 
