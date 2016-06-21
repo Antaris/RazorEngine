@@ -231,41 +231,41 @@ namespace RazorEngine.Templating
 #endif
                     writer.Flush();
                     _context.CurrentWriter = null;
+                }
 
+                if (Layout != null)
+                {
+                    // Get the layout template.
+                    var layout = ResolveLayout(Layout);
 
-                    if (Layout != null)
+                    if (layout == null)
                     {
-                        // Get the layout template.
-                        var layout = ResolveLayout(Layout);
-
-                        if (layout == null)
-                        {
-                            throw new ArgumentException(
-                                "Template you are trying to run uses layout, but no layout found in cache or by resolver.");
-                        }
-
-                        using (var reader = new StreamReader(tempFilePath))
-                        {
-                            // Push the current body instance onto the stack for later execution.
-                            var body = new TemplateWriter(tw => tw.Write(reader));
-                            context.PushBody(body);
-                        }
-
-                        context.PushSections();
-
-#if RAZOR4
-                    await layout.Run(context, outputWriter);
-#else
-                        layout.Run(context, outputWriter);
-#endif
-                        return;
+                        throw new ArgumentException(
+                            "Template you are trying to run uses layout, but no layout found in cache or by resolver.");
                     }
 
                     using (var reader = new StreamReader(tempFilePath))
                     {
-                        outputWriter.Write(reader);
+                        // Push the current body instance onto the stack for later execution.
+                        var body = new TemplateWriter(tw => tw.Write(reader));
+                        context.PushBody(body);
                     }
+
+                    context.PushSections();
+
+#if RAZOR4
+                    await layout.Run(context, outputWriter);
+#else
+                    layout.Run(context, outputWriter);
+#endif
+                    return;
                 }
+
+                using (var reader = new StreamReader(tempFilePath))
+                {
+                    outputWriter.Write(reader);
+                }
+
             }
             finally
             {
