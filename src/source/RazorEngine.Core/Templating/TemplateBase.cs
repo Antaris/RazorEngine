@@ -217,7 +217,7 @@ namespace RazorEngine.Templating
         {
             _context = context;
 
-            string tempFilePath = Path.GetTempPath();
+            string tempFilePath = Path.GetTempFileName();
 
             try
             {
