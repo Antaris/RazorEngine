@@ -207,7 +207,7 @@ namespace RazorEngine.Templating
         /// Runs the template and returns the result.
         /// </summary>
         /// <param name="context">The current execution context.</param>
-        /// <param name="reader"></param>
+        /// <param name="outputWriter"></param>
         /// <returns>The merged result of the template.</returns>
 #if RAZOR4
         public async Task Run(ExecuteContext context, TextWriter outputWriter)
