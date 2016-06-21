@@ -244,13 +244,21 @@ namespace RazorEngine.Templating
                             "Template you are trying to run uses layout, but no layout found in cache or by resolver.");
                     }
 
-                    using (var reader = new StreamReader(tempFilePath))
-                    {
-                        // Push the current body instance onto the stack for later execution.
-                        var body = new TemplateWriter(tw => tw.Write(reader));
+                    var body = new TemplateWriter(
+                        tw =>
+                            {
+                                using (var reader = new StreamReader(tempFilePath))
+                                {
+                                    // Push the current body instance onto the stack for later execution.
+                                    while ( !reader.EndOfStream)
+                                    {
+                                        tw.Write(reader.ReadLine());
+                                    }
+                                }
+                            });
+                        
                         context.PushBody(body);
-                    }
-
+                    
                     context.PushSections();
 
 #if RAZOR4
@@ -263,7 +271,11 @@ namespace RazorEngine.Templating
 
                 using (var reader = new StreamReader(tempFilePath))
                 {
-                    outputWriter.Write(reader);
+                    // Push the current body instance onto the stack for later execution.
+                    while (!reader.EndOfStream)
+                    {
+                        outputWriter.Write(reader.ReadLine());
+                    }
                 }
 
             }
