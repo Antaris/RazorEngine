@@ -216,59 +216,60 @@ namespace RazorEngine.Templating
 #endif
         {
             _context = context;
-			
-			// If there's no layout defined, then write directly to the output writer.
-            if (Layout == null)
+
+            string tempFilePath = Path.GetTempPath();
+
+            try
             {
-                _context.CurrentWriter = outputWriter;
-#if RAZOR4
-                await Execute();
-#else
-                Execute();
-#endif
-                outputWriter.Flush();
-                _context.CurrentWriter = null;
-
-                return;
-            }
-
-            StringBuilder builder = new StringBuilder();
-            using (var writer = new StringWriter(builder))
-            {
-                _context.CurrentWriter = writer;
-#if RAZOR4
-                await Execute();
-#else
-                Execute();
-#endif
-                writer.Flush();
-                _context.CurrentWriter = null;
-
-
-                if (Layout != null)
+                using (var writer = new StreamWriter(tempFilePath))
                 {
-                    // Get the layout template.
-                    var layout = ResolveLayout(Layout);
+                    _context.CurrentWriter = writer;
+#if RAZOR4
+                await Execute();
+#else
+                    Execute();
+#endif
+                    writer.Flush();
+                    _context.CurrentWriter = null;
 
-                    if (layout == null)
+
+                    if (Layout != null)
                     {
-                        throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
-                    }
+                        // Get the layout template.
+                        var layout = ResolveLayout(Layout);
 
-                    // Push the current body instance onto the stack for later execution.
-                    var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
-                    context.PushBody(body);
-                    context.PushSections();
+                        if (layout == null)
+                        {
+                            throw new ArgumentException(
+                                "Template you are trying to run uses layout, but no layout found in cache or by resolver.");
+                        }
+
+                        using (var reader = new StreamReader(tempFilePath))
+                        {
+                            // Push the current body instance onto the stack for later execution.
+                            var body = new TemplateWriter(tw => tw.Write(reader));
+                            context.PushBody(body);
+                        }
+
+                        context.PushSections();
 
 #if RAZOR4
                     await layout.Run(context, outputWriter);
 #else
-                    layout.Run(context, outputWriter);
+                        layout.Run(context, outputWriter);
 #endif
-                    return;
-                }
+                        return;
+                    }
 
-                outputWriter.Write(builder.ToString());
+                    using (var reader = new StreamReader(tempFilePath))
+                    {
+                        outputWriter.Write(reader);
+                    }
+                }
+            }
+            finally
+            {
+                File.Delete(tempFilePath);
             }
         }
 
