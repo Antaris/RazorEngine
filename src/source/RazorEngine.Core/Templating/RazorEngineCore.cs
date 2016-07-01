@@ -121,7 +121,7 @@ namespace RazorEngine.Templating
             foreach (string ns in _config.Namespaces)
                 context.Namespaces.Add(ns);
 
-            using (var service = _config.CompilerServiceFactory.CreateCompilerService(_config.Language))
+            using (var service = _config.CompilerServiceFactory.CreateCompilerService(_config.Language, _config))
             {
                 service.Debug = _config.Debug;
                 service.DisableTempFileLocking = _config.DisableTempFileLocking;

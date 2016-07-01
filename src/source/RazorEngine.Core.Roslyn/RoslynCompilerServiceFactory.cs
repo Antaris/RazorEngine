@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using RazorEngine.Configuration;
 
 namespace RazorEngine.Roslyn
 {
@@ -24,18 +25,18 @@ namespace RazorEngine.Roslyn
         /// <returns>An instance of <see cref="ICompilerService"/>.</returns>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         [SecuritySafeCritical]
-        public ICompilerService CreateCompilerService(Language language)
+        public ICompilerService CreateCompilerService(Language language, ITemplateServiceConfiguration config)
         {
             switch (language)
             {
                 case Language.CSharp:
-                    return new CSharpRoslynCompilerService();
+                    return new CSharpRoslynCompilerService(config: config);
 
                 case Language.VisualBasic:
 //#if RAZOR4
                     throw new NotSupportedException("Razor4 doesn't support VB.net apparently.");
 //#else
-//                    return new VBRoslynCompilerService();
+//                    return new VBRoslynCompilerService(config: config);
 //#endif
 
                 default:

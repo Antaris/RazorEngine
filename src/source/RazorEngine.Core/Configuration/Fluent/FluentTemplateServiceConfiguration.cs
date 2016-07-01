@@ -156,6 +156,12 @@
         {
             get { return _innerConfig.TemplateManager; }
         }
+
+        /// <summary>
+        /// Gets the Temporary Directory.
+        /// </summary>
+        public string TemporaryDirectory { get { return _innerConfig.TemporaryDirectory; } }
+
         #endregion
     }
 }

@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using Microsoft.CodeAnalysis.Emit;
+using RazorEngine.Configuration;
 
 
 namespace RazorEngine.Roslyn.CSharp
@@ -139,8 +140,8 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="codeLanguage"></param>
         /// <param name="markupParserFactory"></param>
-        public RoslynCompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory)
-            : base(codeLanguage, new ParserBaseCreator(markupParserFactory))
+        public RoslynCompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory, ITemplateServiceConfiguration config)
+            : base(codeLanguage, new ParserBaseCreator(markupParserFactory), config)
         {
 
         }
@@ -187,7 +188,7 @@ namespace RazorEngine.Roslyn.CSharp
             var assemblyName = GetAssemblyName(context);
 
             (new PermissionSet(PermissionState.Unrestricted)).Assert();
-            var tempDir = GetTemporaryDirectory();
+            var tempDir = GetTemporaryDirectory(_config);
 
             var sourceCodeFile = Path.Combine(tempDir, String.Format("{0}.{1}", assemblyName, SourceFileExtension));
             File.WriteAllText(sourceCodeFile, sourceCode);

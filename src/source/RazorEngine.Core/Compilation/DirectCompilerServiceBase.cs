@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Compilation
+﻿using RazorEngine.Configuration;
+
+namespace RazorEngine.Compilation
 {
     using System;
     using System.CodeDom;
@@ -41,8 +43,8 @@
         /// <param name="codeDomProvider">The code dom provider used to generate code.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
         [SecurityCritical]
-        protected DirectCompilerServiceBase(RazorCodeLanguage codeLanguage, CodeDomProvider codeDomProvider, Func<ParserBase> markupParserFactory)
-            : base(codeLanguage, new ParserBaseCreator(markupParserFactory))
+        protected DirectCompilerServiceBase(RazorCodeLanguage codeLanguage, CodeDomProvider codeDomProvider, Func<ParserBase> markupParserFactory, ITemplateServiceConfiguration config)
+            : base(codeLanguage, new ParserBaseCreator(markupParserFactory), config)
         {
             _codeDomProvider = codeDomProvider;
         }
@@ -91,7 +93,7 @@
                 GenerateExecutable = false,
                 IncludeDebugInformation = Debug,
                 TreatWarningsAsErrors = false,
-                TempFiles = new TempFileCollection(GetTemporaryDirectory(), true),
+                TempFiles = new TempFileCollection(GetTemporaryDirectory(_config), true),
                 CompilerOptions =
                     string.Format("/target:library /optimize /define:RAZORENGINE {0}",
                         haveMscorlib ? "/nostdlib" : "")

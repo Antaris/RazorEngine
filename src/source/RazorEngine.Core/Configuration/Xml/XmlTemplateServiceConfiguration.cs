@@ -113,6 +113,9 @@
         /// Gets the template resolver.
         /// </summary>
         public ITemplateManager TemplateManager { get; private set; }
+
+        public string TemporaryDirectory { get; private set; }
+
         #endregion
 
         #region Methods
@@ -195,6 +198,9 @@
 
             // Set whether we load templates with Assembly.Load(byte[]).
             DisableTempFileLocking = config.DisableTempFileLocking;
+
+            // Sets the tempoaryDirectory
+            TemporaryDirectory = config.TemporaryDirectory;
 
             // Add the global namespaces.
             AddNamespaces(config.Namespaces);

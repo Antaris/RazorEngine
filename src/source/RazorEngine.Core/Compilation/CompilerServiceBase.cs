@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Compilation
+﻿using RazorEngine.Configuration;
+
+namespace RazorEngine.Compilation
 {
     using System;
     using System.CodeDom;
@@ -41,6 +43,8 @@
         /// </summary>
         protected internal const string ClassNamePrefix = "RazorEngine_";
 
+        protected internal ITemplateServiceConfiguration _config;
+
         /// <summary>
         /// This class only exists because we cannot use Func&lt;ParserBase&gt; in non security-critical class.
         /// </summary>
@@ -76,10 +80,10 @@
         /// <param name="codeLanguage">The code language.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
         [SecurityCritical]
-        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory)
+        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory, ITemplateServiceConfiguration config)
         {
             Contract.Requires(codeLanguage != null);
-
+            _config = config;
             CodeLanguage = codeLanguage;
             MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
@@ -136,7 +140,7 @@
         /// Tries to create and return a unique temporary directory.
         /// </summary>
         /// <returns>the (already created) temporary directory</returns>
-        protected static string GetDefaultTemporaryDirectory()
+        protected static string GetDefaultTemporaryDirectory(ITemplateServiceConfiguration config)
         {
             var created = false;
             var tried = 0;
@@ -146,7 +150,14 @@
                 tried++;
                 try
                 {
-                    tempDirectory = Path.Combine(Path.GetTempPath(), "RazorEngine_" + Path.GetRandomFileName());
+                    string tempDirectoryPath = Path.GetTempPath();
+
+                    if (!string.IsNullOrEmpty(config?.TemporaryDirectory))
+                    {
+                        tempDirectoryPath = config.TemporaryDirectory;
+                    }
+
+                    tempDirectory = Path.Combine(tempDirectoryPath, "RazorEngine_" + Path.GetRandomFileName());
                     if (!Directory.Exists(tempDirectory))
                     {
                         Directory.CreateDirectory(tempDirectory);
@@ -173,9 +184,9 @@
         /// This can be overwritten in subclases to change the created directories.
         /// </summary>
         /// <returns></returns>
-        protected virtual string GetTemporaryDirectory()
+        protected virtual string GetTemporaryDirectory(ITemplateServiceConfiguration config)
         {
-            return GetDefaultTemporaryDirectory();
+            return GetDefaultTemporaryDirectory(config);
         }
 
         /// <summary>

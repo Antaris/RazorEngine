@@ -20,6 +20,7 @@ using System.Globalization;
 using RazorEngine.Compilation.CSharp;
 using RazorEngine.Compilation.ReferenceResolver;
 using Microsoft.CodeAnalysis;
+using RazorEngine.Configuration;
 
 namespace RazorEngine.Roslyn.CSharp
 {
@@ -40,10 +41,10 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="strictMode"></param>
         /// <param name="markupParserFactory"></param>
-        public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
+        public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null, ITemplateServiceConfiguration config = null)
             : base(
                 new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode),
-                markupParserFactory) {
+                markupParserFactory, config) {
 #if !RAZOR4
             _codeDomProvider = new Microsoft.CSharp.CSharpCodeProvider(); 
 #endif

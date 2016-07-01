@@ -22,6 +22,7 @@
         private const string CachingProviderAttribute = "cachingProviderType";
         private const string ReferenceResolverAttribute = "referenceResolverType";
         private const string TemplateServicesElement = "templateServices";
+        private const string TemporaryDirectoryAttribute = "temporaryDirectory";
         #endregion
 
         #region Properties
@@ -114,6 +115,14 @@
         public TemplateServiceConfigurationElementCollection TemplateServices
         {
             get { return (TemplateServiceConfigurationElementCollection)this[TemplateServicesElement]; }
+        }
+        /// <summary>
+        /// Sets the location of the temporary directory where temp files will be written.
+        /// </summary>
+        [ConfigurationProperty(TemporaryDirectoryAttribute, IsRequired = false)]
+        public string TemporaryDirectory
+        {
+            get { return (string) this[TemporaryDirectoryAttribute]; }
         }
         #endregion
 

@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Compilation.CSharp
+﻿using RazorEngine.Configuration;
+
+namespace RazorEngine.Compilation.CSharp
 {
     using System;
     using System.Collections.Generic;
@@ -29,11 +31,11 @@
         /// <param name="markupParserFactory">The markup parser factory to use.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed"), SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed in base class: DirectCompilerServiceBase")]
         [SecurityCritical]
-        public CSharpDirectCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
+        public CSharpDirectCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null, ITemplateServiceConfiguration config = null)
             : base(
                 new CSharpRazorCodeLanguage(strictMode),
                 new CSharpCodeProvider(),
-                markupParserFactory) { }
+                markupParserFactory, config) { }
         #endregion
 
         /// <summary>

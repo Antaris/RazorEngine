@@ -1,4 +1,6 @@
 ﻿using System.Security;
+using RazorEngine.Configuration;
+
 namespace RazorEngine.Compilation
 {
     /// <summary>
@@ -12,7 +14,7 @@ namespace RazorEngine.Compilation
         /// </summary>
         /// <param name="language">The <see cref="Language"/>.</param>
         /// <returns>An instance of <see cref="ICompilerService"/>.</returns>
-        ICompilerService CreateCompilerService(Language language);
+        ICompilerService CreateCompilerService(Language language, ITemplateServiceConfiguration config);
         #endregion
     }
 }
