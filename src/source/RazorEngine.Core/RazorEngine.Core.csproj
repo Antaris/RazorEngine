@@ -120,6 +120,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Razor4' ">
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <Platform>Razor4</Platform>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -158,6 +159,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Razor4' ">
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <Platform>Razor4</Platform>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -383,8 +385,8 @@
   <Choose>
     <When Condition="'$(RAZOR4)' == 'True' And ($(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1'))">
       <ItemGroup>
-        <Reference Include="Microsoft.AspNet.Razor">
-          <HintPath>..\..\..\packages\razor4\Microsoft.AspNet.Razor\lib\net45\Microsoft.AspNet.Razor.dll</HintPath>
+        <Reference Include="Microsoft.AspNetCore.Razor">
+          <HintPath>..\..\..\packages\razor4\Microsoft.AspNetCore.Razor\lib\net451\Microsoft.AspNetCore.Razor.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

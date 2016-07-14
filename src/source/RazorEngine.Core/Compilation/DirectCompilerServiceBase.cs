@@ -13,9 +13,9 @@
     using System.Security.Permissions;
     using System.Text;
 #if RAZOR4
-    using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.CodeGenerators;
-    using Microsoft.AspNet.Razor.Parser;
+    using Microsoft.AspNetCore.Razor;
+    using Microsoft.AspNetCore.Razor.CodeGenerators;
+    using Microsoft.AspNetCore.Razor.Parser;
 #else
     using System.Web.Razor;
     using System.Web.Razor.Parser;
@@ -118,14 +118,14 @@
                 if (!written)
                 {
                     foreach (string item in results.TempFiles)
-	                {
+                    {
                         if (item.EndsWith("." + this.SourceFileExtension))
                         {
                             File.Copy(item, targetFile, true);
                             written = true;
                             break;
                         }
-	                } 
+                    } 
                 }
             }
             return Tuple.Create(results, sourceCode);

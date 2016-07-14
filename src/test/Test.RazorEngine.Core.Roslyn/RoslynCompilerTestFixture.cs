@@ -181,7 +181,6 @@ namespace Test.RazorEngine.Core.Roslyn
         [Test]
         public void Roslyn_GetInformativeRuntimeErrorMessage()
         {
-            Assert.Ignore("Fixme: Include debug info in roslyn build");
             RunTestHelper(service =>
             {
                 const string template = "@foreach (var i in Model.Unknown) { @i }";

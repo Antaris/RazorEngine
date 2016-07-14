@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using RazorEngine.Configuration;
 using RazorEngine.Compilation.ReferenceResolver;
 #if RAZOR4
-using Microsoft.AspNet.Razor;
+using Microsoft.AspNetCore.Razor;
 #else
 using System.Web.Razor;
 #endif

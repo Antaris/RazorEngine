@@ -8,10 +8,10 @@
     using System.Linq;
     using System.Reflection;
 #if RAZOR4
-    using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.CodeGenerators;
-    using Microsoft.AspNet.Razor.Chunks.Generators;
-    using Microsoft.AspNet.Razor.Parser;
+    using Microsoft.AspNetCore.Razor;
+    using Microsoft.AspNetCore.Razor.CodeGenerators;
+    using Microsoft.AspNetCore.Razor.Parser;
+    using Microsoft.AspNetCore.Razor.Parser.Internal;
 #else
     using System.Web.Razor;
     using System.Web.Razor.Generator;
@@ -227,12 +227,12 @@
                             ResolveUrlMethodName = "ResolveUrl"
                         }
 #endif
-            };
+                };
 
             return host;
         }
 
-        
+
         /// <summary>
         /// Gets the source code from Razor for the given template.
         /// </summary>
@@ -300,7 +300,7 @@
 
             if (template == null)
                 throw new ArgumentException("Template is required.");
-            
+
             namespaceImports = namespaceImports ?? new HashSet<string>();
             templateType = templateType ?? ((modelType == null) ? typeof(TemplateBase) : typeof(TemplateBase<>));
 

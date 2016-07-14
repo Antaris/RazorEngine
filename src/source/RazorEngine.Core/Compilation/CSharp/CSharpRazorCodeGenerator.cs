@@ -6,10 +6,10 @@ namespace RazorEngine.Compilation.CSharp
     using System.CodeDom;
     using System.Security;
 #if RAZOR4
-    using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.CodeGenerators;
-    using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-    using OriginalCSharpRazorCodeGenerator = Microsoft.AspNet.Razor.Chunks.Generators.RazorChunkGenerator;
+    using Microsoft.AspNetCore.Razor;
+    using Microsoft.AspNetCore.Razor.CodeGenerators;
+    using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
+    using OriginalCSharpRazorCodeGenerator = Microsoft.AspNetCore.Razor.Chunks.Generators.RazorChunkGenerator;
 #else
     using System.Web.Razor;
     using System.Web.Razor.Parser.SyntaxTree;
