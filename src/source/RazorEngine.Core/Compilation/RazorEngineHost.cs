@@ -3,9 +3,9 @@
     using System;
     using System.Security;
 #if RAZOR4
-    using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.Parser;
-    using OriginalRazorEngineHost = Microsoft.AspNet.Razor.RazorEngineHost;
+    using Microsoft.AspNetCore.Razor;
+    using Microsoft.AspNetCore.Razor.Parser;
+    using OriginalRazorEngineHost = Microsoft.AspNetCore.Razor.RazorEngineHost;
 #else
     using System.Web.Razor;
     using System.Web.Razor.Parser;
