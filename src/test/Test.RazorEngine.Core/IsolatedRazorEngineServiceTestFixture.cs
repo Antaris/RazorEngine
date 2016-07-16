@@ -70,9 +70,6 @@ namespace Test.RazorEngine
         public static AppDomain SandboxCreator(IEnumerable<IPermission> permissions)
         {
             CheckMono();
-#if RAZOR4
-            Assert.Ignore("IsolatedRazorEngineServiceTestFixture is not tested with razor 4 as it is not signed!");
-#endif
 
 #if MONO
             // Mono has no AddHostEvidence or GetHostEvidence.
@@ -685,7 +682,11 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
     var t = new TestHelper.TestClass();
 }
 @t.TestProperty";
+#if RAZOR4
+                const string expected = "\nTestPropert";
+#else
                 const string expected = "\n\nTestPropert";
+#endif
 
                 string result = service.RunCompile(template, "test");
 
