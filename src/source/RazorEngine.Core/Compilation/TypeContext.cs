@@ -10,12 +10,17 @@
     /// </summary>
     public class TypeContext
     {
+        private readonly Action<IEnumerable<CompilerReference>> _addReferences;
+
         #region Constructor
         /// <summary>
         /// Initialises a new instance of <see cref="TypeContext"/>.
         /// </summary>
-        internal TypeContext()
+        /// <param name="addReferences"></param>
+        internal TypeContext(Action<IEnumerable<CompilerReference>> addReferences)
         {
+            if (addReferences == null) throw new ArgumentNullException(nameof(addReferences));
+            _addReferences = addReferences;
             ClassName = CompilerServicesUtility.GenerateClassName();
             Namespaces = new HashSet<string>();
         }
@@ -27,6 +32,7 @@
         /// <param name="namespaces"></param>
         internal TypeContext(string className, ISet<string> namespaces)
         {
+            _addReferences = refs => { };
             ClassName = className;
             Namespaces = namespaces;
         }
@@ -61,7 +67,10 @@
         /// <summary>
         /// Gets or sets the compiler references
         /// </summary>
-        public ISet<CompilerReference> References { get; set; }
+        public void AddReferences(IEnumerable<CompilerReference> references)
+        {
+            _addReferences(references);
+        }
         #endregion
     }
 }

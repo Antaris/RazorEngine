@@ -1,4 +1,9 @@
-﻿### 3.8.2 / 4.3.2-beta1
+﻿### 3.9.0 / 4.4.0
+
+ * Fix memory leak in CompilerServiceBase by removing event handler in dispose, thanks campersau (https://github.com/Antaris/RazorEngine/pull/388)
+ * support AspNetCore.Razor 1.0.0, thanks campersau (https://github.com/Antaris/RazorEngine/pull/402)
+ 
+### 3.8.2 / 4.3.2-beta1
 
  * support models which implement ISerializable with IsolatedRazorEngineService (https://github.com/Antaris/RazorEngine/pull/376)
  * fix vb.net generic type parameter list (https://github.com/Antaris/RazorEngine/pull/375)

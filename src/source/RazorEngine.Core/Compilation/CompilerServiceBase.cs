@@ -380,13 +380,11 @@
                     context,
                     IncludeAssemblies()
                         .Select(RazorEngine.Compilation.ReferenceResolver.CompilerReference.From)
-                        .Concat(IncludeReferences()));
+                        .Concat(IncludeReferences()))
 #pragma warning restore 0618 // Backwards Compat.
-            foreach (var reference in references)
-            {
-                context.References.Add(reference);
-                yield return reference;
-            }
+                .ToList();
+            context.AddReferences(references);
+            return references;
         }
 
 #if !RAZOR4
