@@ -78,7 +78,8 @@ let buildConfig =
           { p with
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
-              Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta7" |> RequireExactly ] })
+              Dependencies =
+                [ "Microsoft.AspNetCore.Razor", "1.0" |> RequireExactly ] })
         "RazorEngine.Roslyn.nuspec", (fun config p ->
           { p with
               Project = projectName_roslyn
@@ -105,7 +106,7 @@ let buildConfig =
               Dependencies =
                 let exact =
                   [ config.ProjectName, version_razor4
-                    "Microsoft.AspNet.Razor", "4.0.0-beta1" ]
+                    "Microsoft.AspNetCore.Razor", "1.0"  ]
                 [ "Microsoft.CodeAnalysis" ]
                 |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "razor4") name))
                 |> List.append exact }) ]
