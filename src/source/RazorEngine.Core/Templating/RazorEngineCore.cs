@@ -1,9 +1,6 @@
-﻿using System.Runtime.Remoting.Contexts;
-
-namespace RazorEngine.Templating
+﻿namespace RazorEngine.Templating
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
@@ -11,10 +8,7 @@ namespace RazorEngine.Templating
     using Compilation;
     using Compilation.Inspectors;
     using Configuration;
-    using Parallel;
-    using Text;
     using System.Security;
-    using System.Security.Permissions;
     using System.Threading.Tasks;
     using RazorEngine.Compilation.ReferenceResolver;
 

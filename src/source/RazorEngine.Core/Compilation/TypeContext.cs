@@ -65,8 +65,9 @@
         public Type TemplateType { get; set; }
 
         /// <summary>
-        /// Gets or sets the compiler references
+        /// Adds compiler references to the current dynamic assembly resolve list.
         /// </summary>
+        /// <param name="references">the references to add to the dynamic resolve list.</param>
         public void AddReferences(IEnumerable<CompilerReference> references)
         {
             _addReferences(references);

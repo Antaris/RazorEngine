@@ -6,7 +6,6 @@
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
 #if RAZOR4
     using Microsoft.AspNetCore.Razor;
     using Microsoft.AspNetCore.Razor.CodeGenerators;
@@ -23,9 +22,6 @@
     using Templating;
     using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
-    using System.Globalization;
-    using System.Text;
-    using System.Security.Permissions;
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
