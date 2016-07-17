@@ -1,4 +1,4 @@
-﻿### 3.9.0 / 4.4.0
+﻿### 3.9.0 / 4.4.0-rc1
 
  * Fix memory leak in CompilerServiceBase by removing event handler in dispose, thanks campersau (https://github.com/Antaris/RazorEngine/pull/388)
  * support AspNetCore.Razor 1.0.0, thanks campersau (https://github.com/Antaris/RazorEngine/pull/402)
