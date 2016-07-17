@@ -6,7 +6,6 @@
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
 #if RAZOR4
     using Microsoft.AspNetCore.Razor;
     using Microsoft.AspNetCore.Razor.CodeGenerators;
@@ -23,9 +22,6 @@
     using Templating;
     using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
-    using System.Globalization;
-    using System.Text;
-    using System.Security.Permissions;
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
@@ -380,13 +376,11 @@
                     context,
                     IncludeAssemblies()
                         .Select(RazorEngine.Compilation.ReferenceResolver.CompilerReference.From)
-                        .Concat(IncludeReferences()));
+                        .Concat(IncludeReferences()))
 #pragma warning restore 0618 // Backwards Compat.
-            foreach (var reference in references)
-            {
-                context.References.Add(reference);
-                yield return reference;
-            }
+                .ToList();
+            context.AddReferences(references);
+            return references;
         }
 
 #if !RAZOR4
