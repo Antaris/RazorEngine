@@ -252,7 +252,7 @@ namespace RazorEngine.Templating
                                     // Push the current body instance onto the stack for later execution.
                                     while ( !reader.EndOfStream)
                                     {
-                                        tw.Write(reader.ReadLine());
+                                        tw.WriteLine(reader.ReadLine());
                                     }
                                 }
                             });
@@ -274,10 +274,9 @@ namespace RazorEngine.Templating
                     // Push the current body instance onto the stack for later execution.
                     while (!reader.EndOfStream)
                     {
-                        outputWriter.Write(reader.ReadLine());
+                        outputWriter.WriteLine(reader.ReadLine());
                     }
                 }
-
             }
             finally
             {
