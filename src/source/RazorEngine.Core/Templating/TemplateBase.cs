@@ -1,3 +1,5 @@
+using System.IO.IsolatedStorage;
+
 namespace RazorEngine.Templating
 {
     using System;
@@ -217,11 +219,20 @@ namespace RazorEngine.Templating
         {
             _context = context;
 
-            string tempFilePath = Path.GetTempFileName();
+            var storage = IsolatedStorageFile.GetUserStoreForApplication();
+
+            if (storage.DirectoryExists("temp") == false)
+            {
+                storage.CreateDirectory("temp");
+            }
+
+            string tempFilePath = Path.Combine("temp", string.Concat("RazorTempFilePath", Guid.NewGuid()));
 
             try
             {
-                using (var writer = new StreamWriter(tempFilePath))
+
+                using (var stream = new IsolatedStorageFileStream(tempFilePath, FileMode.Create))
+                using(var writer = new StreamWriter(stream))
                 {
                     _context.CurrentWriter = writer;
 #if RAZOR4
@@ -248,8 +259,8 @@ namespace RazorEngine.Templating
                         tw =>
                         {
                             var buffer = new char[2000];
-                            using (var reader = new StreamReader(tempFilePath))
-                            {
+                            using (var stream = new IsolatedStorageFileStream(tempFilePath, FileMode.Open))
+                            using(var reader = new StreamReader(stream)) {
                                 // Push the current body instance onto the stack for later execution.
                                 while (!reader.EndOfStream)
                                 {
@@ -271,8 +282,8 @@ namespace RazorEngine.Templating
                     return;
                 }
 
-                using (var reader = new StreamReader(tempFilePath))
-                {
+                using (var stream = new IsolatedStorageFileStream(tempFilePath, FileMode.Open))
+                using(var reader = new StreamReader(stream)) {
                     var buffer = new char[2000];
                     // Push the current body instance onto the stack for later execution.
                     while (!reader.EndOfStream)
@@ -284,7 +295,7 @@ namespace RazorEngine.Templating
             }
             finally
             {
-                File.Delete(tempFilePath);
+                storage.DeleteFile(tempFilePath);
             }
         }
 
