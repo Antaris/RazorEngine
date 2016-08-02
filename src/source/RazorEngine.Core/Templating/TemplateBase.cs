@@ -247,12 +247,14 @@ namespace RazorEngine.Templating
                     var body = new TemplateWriter(
                         tw =>
                             {
+                                var buffer = new char[2000];
                                 using (var reader = new StreamReader(tempFilePath))
                                 {
                                     // Push the current body instance onto the stack for later execution.
                                     while ( !reader.EndOfStream)
                                     {
-                                        tw.WriteLine(reader.ReadLine());
+                                        var charsRead = reader.Read(buffer, 0, 1000);
+                                        tw.Write(buffer, 0, charsRead);
                                     }
                                 }
                             });
@@ -271,10 +273,12 @@ namespace RazorEngine.Templating
 
                 using (var reader = new StreamReader(tempFilePath))
                 {
+                    var buffer = new char[2000];
                     // Push the current body instance onto the stack for later execution.
                     while (!reader.EndOfStream)
                     {
-                        outputWriter.WriteLine(reader.ReadLine());
+                        var charsRead = reader.Read(buffer, 0, 1000);
+                        outputWriter.Write(buffer, 0, charsRead);
                     }
                 }
             }
