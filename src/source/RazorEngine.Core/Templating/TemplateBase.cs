@@ -135,7 +135,7 @@ namespace RazorEngine.Templating
         /// <returns>The template writer helper.</returns>
         public virtual TemplateWriter Include(string name, object model = null, Type modelType = null)
         {
-            var instance = InternalTemplateService.Resolve(name, model, modelType, (DynamicViewBag) ViewBag, ResolveType.Include);
+            var instance = InternalTemplateService.Resolve(name, model, modelType, (DynamicViewBag)ViewBag, ResolveType.Include);
             if (instance == null)
                 throw new ArgumentException("No template could be resolved with name '" + name + "'");
 
@@ -146,7 +146,7 @@ namespace RazorEngine.Templating
 #if RAZOR4
                     .Wait()
 #endif
-                    );
+);
         }
 
         /// <summary>
@@ -246,21 +246,21 @@ namespace RazorEngine.Templating
 
                     var body = new TemplateWriter(
                         tw =>
+                        {
+                            var buffer = new char[2000];
+                            using (var reader = new StreamReader(tempFilePath))
                             {
-                                var buffer = new char[2000];
-                                using (var reader = new StreamReader(tempFilePath))
+                                // Push the current body instance onto the stack for later execution.
+                                while (!reader.EndOfStream)
                                 {
-                                    // Push the current body instance onto the stack for later execution.
-                                    while ( !reader.EndOfStream)
-                                    {
-                                        var charsRead = reader.Read(buffer, 0, 1000);
-                                        tw.Write(buffer, 0, charsRead);
-                                    }
+                                    var charsRead = reader.Read(buffer, 0, 2000);
+                                    tw.Write(buffer, 0, charsRead);
                                 }
-                            });
-                        
-                        context.PushBody(body);
-                    
+                            }
+                        });
+
+                    context.PushBody(body);
+
                     context.PushSections();
 
 #if RAZOR4
@@ -277,7 +277,7 @@ namespace RazorEngine.Templating
                     // Push the current body instance onto the stack for later execution.
                     while (!reader.EndOfStream)
                     {
-                        var charsRead = reader.Read(buffer, 0, 1000);
+                        var charsRead = reader.Read(buffer, 0, 2000);
                         outputWriter.Write(buffer, 0, charsRead);
                     }
                 }
@@ -303,14 +303,15 @@ namespace RazorEngine.Templating
             if (action == null && required)
                 throw new ArgumentException("No section has been defined with name '" + name + "'");
 
-            if (action == null) 
+            if (action == null)
 #if RAZOR4
                 action = (tw) => { };
 #else
                 action = () => { };
 #endif
 
-            return new TemplateWriter(tw => {
+            return new TemplateWriter(tw =>
+            {
                 _context.PopSections(action, tw);
             });
         }
