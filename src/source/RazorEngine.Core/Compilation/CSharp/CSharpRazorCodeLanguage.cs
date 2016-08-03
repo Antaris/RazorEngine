@@ -2,9 +2,9 @@
 {
     using System.Security;
 #if RAZOR4
-    using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.Chunks.Generators;
-    using OriginalCSharpRazorCodeLanguage = Microsoft.AspNet.Razor.CSharpRazorCodeLanguage;
+    using Microsoft.AspNetCore.Razor;
+    using Microsoft.AspNetCore.Razor.Chunks.Generators;
+    using OriginalCSharpRazorCodeLanguage = Microsoft.AspNetCore.Razor.CSharpRazorCodeLanguage;
 #else
     using System.Web.Razor;
     using System.Web.Razor.Generator;

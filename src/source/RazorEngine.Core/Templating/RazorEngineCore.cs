@@ -1,10 +1,6 @@
-﻿using System.Runtime.Remoting.Contexts;
-
-namespace RazorEngine.Templating
+﻿namespace RazorEngine.Templating
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
@@ -12,12 +8,10 @@ namespace RazorEngine.Templating
     using Compilation;
     using Compilation.Inspectors;
     using Configuration;
-    using Parallel;
-    using Text;
     using System.Security;
-    using System.Security.Permissions;
     using System.Threading.Tasks;
     using RazorEngine.Compilation.ReferenceResolver;
+
     internal class RazorEngineCore : IDisposable
     {
         private readonly ReadOnlyTemplateServiceConfiguration _config;
@@ -26,12 +20,9 @@ namespace RazorEngine.Templating
         /// </summary>
         private readonly RazorEngineService _cached;
 
-        private bool disposed;
+        private bool _disposed;
 
-        /// <summary>
-        /// All references we used until now.
-        /// </summary>
-        private HashSet<CompilerReference> references = new HashSet<CompilerReference>();
+        private readonly ReferencesListForDynamicAssemblyResolution _references = new ReferencesListForDynamicAssemblyResolution();
 
         [SecuritySafeCritical]
         internal RazorEngineCore(ReadOnlyTemplateServiceConfiguration config, RazorEngineService cached)
@@ -48,7 +39,7 @@ namespace RazorEngine.Templating
 
         private Assembly AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            return CompilerReference.Resolve(args.Name, references);
+            return CompilerReference.Resolve(args.Name, _references.GetCurrentReferences());
         }
 
         /// <summary>
@@ -110,12 +101,11 @@ namespace RazorEngine.Templating
         [Pure][SecuritySafeCritical] // This should not be SecuritySafeCritical (make the template classes SecurityCritical instead)
         public virtual Tuple<Type, CompilationData> CreateTemplateType(ITemplateSource razorTemplate, Type modelType)
         {
-            var context = new TypeContext
+            var context = new TypeContext(_references.AddReferences)
             {
                 ModelType = modelType ?? typeof(System.Dynamic.DynamicObject),
                 TemplateContent = razorTemplate,
-                TemplateType = (_config.BaseTemplateType) ?? typeof(TemplateBase<>),
-                References = references
+                TemplateType = (_config.BaseTemplateType) ?? typeof(TemplateBase<>)
             };
 
             foreach (string ns in _config.Namespaces)
@@ -137,6 +127,7 @@ namespace RazorEngine.Templating
                 return result;
             }
         }
+
 
 
         /// <summary>
@@ -205,10 +196,10 @@ namespace RazorEngine.Templating
         [SecuritySafeCritical]
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed && disposing)
+            if (!_disposed && disposing)
             {
                 AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
-                disposed = true;
+                _disposed = true;
             }
         }
     }

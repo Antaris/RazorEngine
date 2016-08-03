@@ -21,8 +21,7 @@ group Razor4
   condition: RAZOR4
   source https://nuget.org/api/v2
 
-// We should update to rc1, however they always break a lot... If you come here and have some time please update me
-  nuget Microsoft.AspNet.Razor = 4.0.0-beta7
+  nuget Microsoft.AspNetCore.Razor ~> 1.0
   nuget Microsoft.CodeAnalysis != 1.0.0-rc2
 
 group Test

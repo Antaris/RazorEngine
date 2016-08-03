@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 #if RAZOR4
-using Microsoft.AspNet.Razor.Parser;
-using Microsoft.AspNet.Razor;
+using Microsoft.AspNetCore.Razor.Parser;
+using Microsoft.AspNetCore.Razor;
 #else
 using System.Web.Razor.Parser;
 using System.Web.Razor;
@@ -30,7 +30,7 @@ namespace RazorEngine.Roslyn.CSharp
     {
         private class SelectMetadataReference : CompilerReference.ICompilerReferenceVisitor<MetadataReference>
         {
-            public MetadataReference Visit(System.Reflection.Assembly assembly)
+            public MetadataReference Visit(Assembly assembly)
             {
                 return MetadataReference.CreateFromAssembly(assembly);
             }
@@ -40,7 +40,7 @@ namespace RazorEngine.Roslyn.CSharp
                 return MetadataReference.CreateFromFile(file);
             }
 
-            public MetadataReference Visit(System.IO.Stream stream)
+            public MetadataReference Visit(Stream stream)
             {
                 return MetadataReference.CreateFromStream(stream);
             }
@@ -213,8 +213,8 @@ namespace RazorEngine.Roslyn.CSharp
             var assemblyPdbFile = Path.Combine(tempDir, String.Format("{0}.pdb", assemblyName));
             var compilationData = new CompilationData(sourceCode, tempDir);
             
-            using (var assemblyStream = File.OpenWrite(assemblyFile))
-            using (var pdbStream = File.OpenWrite(assemblyPdbFile))
+            using (var assemblyStream = File.Open(assemblyFile, FileMode.Create, FileAccess.ReadWrite))
+            using (var pdbStream = File.Open(assemblyPdbFile, FileMode.Create, FileAccess.ReadWrite))
             {
                 var opts = new EmitOptions().WithPdbFilePath(assemblyPdbFile);
                 var pdbStreamHelper = pdbStream;
@@ -235,7 +235,7 @@ namespace RazorEngine.Roslyn.CSharp
                                 lineSpan.StartLinePosition.Line, 
                                 lineSpan.StartLinePosition.Character, 
                                 diag.Id, 
-                                diag.Severity != DiagnosticSeverity.Error); ;
+                                diag.Severity != DiagnosticSeverity.Error);
                         });
                             
                     throw new Templating.TemplateCompilationException(errors, compilationData, context.TemplateContent);
