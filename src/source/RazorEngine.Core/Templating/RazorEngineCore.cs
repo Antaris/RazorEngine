@@ -198,6 +198,7 @@
         {
             if (!_disposed && disposing)
             {
+                _references.Dispose();
                 AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
                 _disposed = true;
             }
