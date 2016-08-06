@@ -56,7 +56,7 @@ let buildConfig =
  let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
  { BuildConfiguration.Defaults with
     ProjectName = "RazorEngine"
-    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2015"
+    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2016"
     ProjectSummary = "Simple templating using Razor syntax."
     ProjectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
     ProjectAuthors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
