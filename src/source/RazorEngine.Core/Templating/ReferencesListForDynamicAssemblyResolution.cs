@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using RazorEngine.Compilation.ReferenceResolver;
@@ -11,7 +12,7 @@ namespace RazorEngine.Templating
     /// the template the runtime will search for it and trigger an <see cref="System.AppDomain.AssemblyLoad"/> event.
     /// We can handle the event by searching in the already used list of references, which is managed by this class.
     /// </summary>
-    internal class ReferencesListForDynamicAssemblyResolution
+    internal class ReferencesListForDynamicAssemblyResolution : IDisposable
     {
         /// <summary>
         /// All references we used until now.
@@ -58,6 +59,14 @@ namespace RazorEngine.Templating
             {
                 if (_lock.IsReadLockHeld) _lock.ExitReadLock();
             }
-        } 
+        }
+
+        /// <summary>
+        /// Disposes the current instance.
+        /// </summary>
+        public void Dispose()
+        {
+            _lock.Dispose();
+        }
     }
 }
