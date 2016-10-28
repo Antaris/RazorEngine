@@ -36,7 +36,7 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.4.0-rc1"
+let version_razor4 = "4.4.1-rc1"
 let version_roslyn = "3.6.0-rc1"
 let version_roslyn_razor4 = "4.1.0-rc1"
 
