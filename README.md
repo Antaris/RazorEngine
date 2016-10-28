@@ -2,7 +2,10 @@
 
 [![Join the chat at https://gitter.im/Antaris/RazorEngine](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Antaris/RazorEngine?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+This project is searching for new maintainers, so if you want to help write on gitter or start sending PRs :)
+
 *latest* documentation available on https://antaris.github.io/RazorEngine/.
+
 
 ## Build status
 
