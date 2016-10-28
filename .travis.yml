@@ -2,6 +2,14 @@ language: csharp
 
 sudo: false
 
+mono:
+  - latest
+  - 4.4.2
+  
+matrix:
+  allow_failures:
+    - mono: latest
+
 script: 
   - ./build.sh All
   
