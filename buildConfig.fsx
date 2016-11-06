@@ -79,7 +79,7 @@ let buildConfig =
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
               Dependencies =
-                [ "Microsoft.AspNetCore.Razor", "1.0" |> RequireExactly ] })
+                [ "Microsoft.AspNetCore.Razor", "1.0" ] })
         "RazorEngine.Roslyn.nuspec", (fun config p ->
           { p with
               Project = projectName_roslyn
