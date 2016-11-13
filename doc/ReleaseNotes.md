@@ -1,6 +1,6 @@
 ﻿### 3.9.2 / 4.4.2-rc1
 
- * (PACKAGING) Fix version constraint.
+ * (PACKAGING) Fix version constraint, thanks campersau (https://github.com/Antaris/RazorEngine/pull/429)
 
 ### 3.9.1 / 4.4.1-rc1
 
