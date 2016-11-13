@@ -4,11 +4,11 @@ using System.Reflection;
 [assembly: AssemblyCompanyAttribute("RazorEngine")]
 [assembly: AssemblyProductAttribute("RazorEngine")]
 [assembly: AssemblyCopyrightAttribute("RazorEngine Copyright © RazorEngine Project 2011-2016")]
-[assembly: AssemblyVersionAttribute("4.4.1")]
-[assembly: AssemblyFileVersionAttribute("4.4.1")]
-[assembly: AssemblyInformationalVersionAttribute("4.4.1-rc1")]
+[assembly: AssemblyVersionAttribute("4.4.2")]
+[assembly: AssemblyFileVersionAttribute("4.4.2")]
+[assembly: AssemblyInformationalVersionAttribute("4.4.2-rc1")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "4.4.1";
+        internal const string Version = "4.4.2";
     }
 }
