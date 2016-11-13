@@ -1,4 +1,8 @@
-﻿### 3.9.1 / 4.4.1-rc1
+﻿### 3.9.2 / 4.4.2-rc1
+
+ * (PACKAGING) Fix version constraint.
+
+### 3.9.1 / 4.4.1-rc1
 
  * (BUGFIX) dispose ReaderWriterLockSlim lock in ReferencesListForDynamicAssemblyResolution, thanks campersau (https://github.com/Antaris/RazorEngine/pull/411)
  * (DOCS) update copyright year, thanks campersau (https://github.com/Antaris/RazorEngine/pull/412)
