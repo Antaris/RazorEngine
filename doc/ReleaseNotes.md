@@ -1,4 +1,8 @@
-﻿### 3.9.2 / 4.4.2-rc1
+﻿### 3.9.3 / 4.4.3-rc1
+
+ * (NEW) Added Support for .vbhtml files in ResolvePathTemplateManager, thanks AnderssonPeter (https://github.com/Antaris/RazorEngine/pull/426)
+
+ ### 3.9.2 / 4.4.2-rc1
 
  * (PACKAGING) Fix version constraint, thanks campersau (https://github.com/Antaris/RazorEngine/pull/429)
 
