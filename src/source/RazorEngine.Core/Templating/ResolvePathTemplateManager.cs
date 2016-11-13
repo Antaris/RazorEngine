@@ -78,10 +78,18 @@ namespace RazorEngine.Templating
                     return path;
                 }
 
-                path += ".cshtml";
-                if (File.Exists(path))
+                //Check if a file with the csharp extension exists
+                var csPath = path + ".cshtml";
+                if (File.Exists(csPath))
                 {
-                    return path;
+                    return csPath;
+                }
+
+                //Check if a file with the visual basic extension exists
+                var vbPath = path + ".vbhtml";
+                if (File.Exists(vbPath))
+                {
+                    return vbPath;
                 }
             }
 
