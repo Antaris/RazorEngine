@@ -108,6 +108,7 @@
     <Compile Include="CompilerServicesUtilityTestFixture.cs" />
     <Compile Include="RazorEngineCleanupTests.cs" />
     <Compile Include="Templating\EmbeddedResourceTemplateManagerTestFixture.cs" />
+    <Compile Include="Templating\TemplateRunnerTestFixture.cs" />
     <Compile Include="Templating\Templates\Model.cs" />
     <Compile Include="TestTypes\BaseTypes\AddLanguageInfo.cs" />
     <Compile Include="TestTypes\BaseTypes\NestedBaseClass.cs" />
