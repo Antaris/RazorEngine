@@ -1,11 +1,11 @@
 ﻿namespace RazorEngine.Compilation.CSharp
 {
 #if RAZOR4
-    using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.Chunks.Generators;
-    using Microsoft.AspNet.Razor.Text;
-    using Microsoft.AspNet.Razor.Parser;
-    using RazorCSharpCodeParser = Microsoft.AspNet.Razor.Parser.CSharpCodeParser;
+    using Microsoft.AspNetCore.Razor;
+    using Microsoft.AspNetCore.Razor.Chunks.Generators;
+    using Microsoft.AspNetCore.Razor.Text;
+    using Microsoft.AspNetCore.Razor.Parser;
+    using RazorCSharpCodeParser = Microsoft.AspNetCore.Razor.Parser.CSharpCodeParser;
 #else
     using System.Web.Razor.Generator;
     using System.Web.Razor.Text;
@@ -60,7 +60,11 @@
         {
             if (_modelStatementFound && _endInheritsLocation.HasValue)
             {
-                Context.OnError(_endInheritsLocation.Value, "The 'inherits' keyword is not allowed when a 'model' keyword is used.");
+                Context.OnError(_endInheritsLocation.Value, "The 'inherits' keyword is not allowed when a 'model' keyword is used."
+#if RAZOR4
+                    , 0
+#endif
+                );
             }
         }
 
@@ -82,7 +86,11 @@
 
             if (_modelStatementFound)
             {
-                Context.OnError(endModelLocation, "Only one 'model' statement is allowed in a file.");
+                Context.OnError(endModelLocation, "Only one 'model' statement is allowed in a file."
+#if RAZOR4
+                    , 0
+#endif
+                );
             }
 
             _modelStatementFound = true;

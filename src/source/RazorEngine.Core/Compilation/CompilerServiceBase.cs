@@ -8,12 +8,11 @@ namespace RazorEngine.Compilation
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
 #if RAZOR4
-    using Microsoft.AspNet.Razor;
-    using Microsoft.AspNet.Razor.CodeGenerators;
-    using Microsoft.AspNet.Razor.Chunks.Generators;
-    using Microsoft.AspNet.Razor.Parser;
+    using Microsoft.AspNetCore.Razor;
+    using Microsoft.AspNetCore.Razor.CodeGenerators;
+    using Microsoft.AspNetCore.Razor.Parser;
+    using Microsoft.AspNetCore.Razor.Parser.Internal;
 #else
     using System.Web.Razor;
     using System.Web.Razor.Generator;
@@ -25,9 +24,6 @@ namespace RazorEngine.Compilation
     using Templating;
     using RazorEngine.Compilation.ReferenceResolver;
     using System.Security;
-    using System.Globalization;
-    using System.Text;
-    using System.Security.Permissions;
 
     /// <summary>
     /// Provides a base implementation of a compiler service.
@@ -238,12 +234,12 @@ namespace RazorEngine.Compilation
                             ResolveUrlMethodName = "ResolveUrl"
                         }
 #endif
-            };
+                };
 
             return host;
         }
 
-        
+
         /// <summary>
         /// Gets the source code from Razor for the given template.
         /// </summary>
@@ -311,7 +307,7 @@ namespace RazorEngine.Compilation
 
             if (template == null)
                 throw new ArgumentException("Template is required.");
-            
+
             namespaceImports = namespaceImports ?? new HashSet<string>();
             templateType = templateType ?? ((modelType == null) ? typeof(TemplateBase) : typeof(TemplateBase<>));
 
@@ -391,13 +387,11 @@ namespace RazorEngine.Compilation
                     context,
                     IncludeAssemblies()
                         .Select(RazorEngine.Compilation.ReferenceResolver.CompilerReference.From)
-                        .Concat(IncludeReferences()));
+                        .Concat(IncludeReferences()))
 #pragma warning restore 0618 // Backwards Compat.
-            foreach (var reference in references)
-            {
-                context.References.Add(reference);
-                yield return reference;
-            }
+                .ToList();
+            context.AddReferences(references);
+            return references;
         }
 
 #if !RAZOR4

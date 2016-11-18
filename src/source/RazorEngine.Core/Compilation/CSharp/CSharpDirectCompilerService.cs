@@ -7,7 +7,7 @@ namespace RazorEngine.Compilation.CSharp
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 #if RAZOR4
-    using Microsoft.AspNet.Razor.Parser;
+    using Microsoft.AspNetCore.Razor.Parser;
 #else
     using System.Web.Razor.Parser;
 #endif

@@ -3,8 +3,8 @@
     using System;
     using System.Globalization;
 #if RAZOR4
-    using Microsoft.AspNet.Razor.Chunks.Generators;
-    using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+    using Microsoft.AspNetCore.Razor.Chunks.Generators;
+    using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
 #else
     using System.Web.Razor.Generator;
 #endif

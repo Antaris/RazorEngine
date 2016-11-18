@@ -36,9 +36,9 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.3.2-beta1"
-let version_roslyn = "3.5.5-beta1"
-let version_roslyn_razor4 = "4.0.5-beta1"
+let version_razor4 = "4.4.2-rc1"
+let version_roslyn = "3.6.0-rc1"
+let version_roslyn_razor4 = "4.1.0-rc1"
 
 // This is set to true when we want to update the roslyn packages via CI as well
 // (otherwise this value doesn't matter). You can always push manually!
@@ -56,7 +56,7 @@ let buildConfig =
  let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
  { BuildConfiguration.Defaults with
     ProjectName = "RazorEngine"
-    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2015"
+    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2016"
     ProjectSummary = "Simple templating using Razor syntax."
     ProjectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
     ProjectAuthors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
@@ -78,7 +78,8 @@ let buildConfig =
           { p with
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
-              Dependencies = [ "Microsoft.AspNet.Razor", "4.0.0-beta7" |> RequireExactly ] })
+              Dependencies =
+                [ "Microsoft.AspNetCore.Razor", "1.0" ] })
         "RazorEngine.Roslyn.nuspec", (fun config p ->
           { p with
               Project = projectName_roslyn
@@ -105,7 +106,7 @@ let buildConfig =
               Dependencies =
                 let exact =
                   [ config.ProjectName, version_razor4
-                    "Microsoft.AspNet.Razor", "4.0.0-beta1" ]
+                    "Microsoft.AspNetCore.Razor", "1.0"  ]
                 [ "Microsoft.CodeAnalysis" ]
                 |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "razor4") name))
                 |> List.append exact }) ]
