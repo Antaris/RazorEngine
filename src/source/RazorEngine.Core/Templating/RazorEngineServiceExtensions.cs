@@ -369,5 +369,36 @@ namespace RazorEngine.Templating
         {
             return WithWriter(writer => service.Run(name, writer, modelType, model, viewBag));
         }
+
+
+
+        /// <summary>
+        /// See <see cref="RazorEngineService.Parse"/>.
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="source"></param>
+        /// <param name="writer"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        public static void Parse(this IRazorEngineService service, ITemplateSource source, TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            service.Parse(service.GetKey(""), source, writer, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// See <see cref="RazorEngineService.Parse"/>.
+        /// Convenience method which creates a <see cref="TextWriter"/> and returns the result as string.
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="source"></param>
+        /// <param name="modelType"></param>
+        /// <param name="model"></param>
+        /// <param name="viewBag"></param>
+        /// <returns></returns>
+        public static string Parse(this IRazorEngineService service, ITemplateSource source, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
+        {
+            return WithWriter(writer => service.Parse(service.GetKey(""), source, writer, modelType, model, viewBag));
+        }
     }
 }

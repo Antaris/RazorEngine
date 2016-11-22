@@ -58,6 +58,7 @@
         public ITemplateServiceConfiguration Configuration { get { return _config; } }
 
 
+
         /// <summary>
         /// Compiles the specified template.
         /// </summary>
@@ -70,7 +71,22 @@
             var result = CreateTemplateType(source, modelType);
             return new CompiledTemplate(result.Item2, key, source, result.Item1, modelType);
         }
-        
+
+        /// <summary>
+        /// Compiles the specified template.
+        /// </summary>
+        /// <param name="key">The string template.</param>
+        /// <param name="source">The template content.</param>
+        /// <param name="modelType">The model type.</param>
+        public ICompiledTemplate Compile(ITemplateKey key, ITemplateSource source, Type modelType)
+        {
+            Contract.Requires(key != null);
+            Contract.Requires(source != null);
+
+            var result = CreateTemplateType(source, modelType);
+            return new CompiledTemplate(result.Item2, key, source, result.Item1, modelType);
+        }
+
         /// <summary>
         /// Creates an instance of <see cref="ITemplate"/> from the specified string template.
         /// </summary>
