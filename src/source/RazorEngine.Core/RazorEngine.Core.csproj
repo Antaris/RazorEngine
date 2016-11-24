@@ -279,11 +279,14 @@
     <Compile Include="Templating\DynamicWrapperService.cs" />
     <Compile Include="Templating\IsolatedRazorEngineService.cs" />
     <Compile Include="Templating\FullPathTemplateKey.cs" />
+    <Compile Include="Templating\ITemplateRunnerOfTModel.cs" />
     <Compile Include="Templating\ReferencesListForDynamicAssemblyResolution.cs" />
     <Compile Include="Templating\ResolvePathCheckModifiedTimeTemplateManager.cs" />
     <Compile Include="Templating\EmbeddedResourceTemplateManager.cs" />
     <Compile Include="Templating\ResolvePathTemplateManager.cs" />
     <Compile Include="Templating\TemplateLoadingException.cs" />
+    <Compile Include="Templating\TemplateRunnerExtensions.cs" />
+    <Compile Include="Templating\TemplateRunnerOfTModel.cs" />
     <Compile Include="Templating\WatchingResolvePathTemplateManager.cs" />
     <Compile Include="Templating\WrapperTemplateManager.cs" />
     <Compile Include="Configuration\Xml\XmlTemplateServiceConfiguration.cs" />
