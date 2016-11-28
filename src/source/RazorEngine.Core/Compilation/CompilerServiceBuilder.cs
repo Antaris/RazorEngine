@@ -34,6 +34,19 @@
         /// </summary>
         /// <param name="language">The code language.</param>
         /// <returns>The compiler service instance.</returns>
+        public static ICompilerService GetCompilerService(Language language)
+        {
+            lock (sync)
+            {
+                return _factory.CreateCompilerService(language);
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ICompilerService"/> for the specfied language.
+        /// </summary>
+        /// <param name="language">The code language.</param>
+        /// <returns>The compiler service instance.</returns>
         public static ICompilerService GetCompilerService(Language language, ITemplateServiceConfiguration config)
         {
             lock (sync)

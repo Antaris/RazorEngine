@@ -14,6 +14,13 @@ namespace RazorEngine.Compilation
         /// </summary>
         /// <param name="language">The <see cref="Language"/>.</param>
         /// <returns>An instance of <see cref="ICompilerService"/>.</returns>
+        ICompilerService CreateCompilerService(Language language);
+
+        /// <summary>
+        /// Creates a <see cref="ICompilerService"/> that supports the specified language.
+        /// </summary>
+        /// <param name="language">The <see cref="Language"/>.</param>
+        /// <returns>An instance of <see cref="ICompilerService"/>.</returns>
         ICompilerService CreateCompilerService(Language language, ITemplateServiceConfiguration config);
         #endregion
     }

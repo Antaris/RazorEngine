@@ -76,13 +76,24 @@ namespace RazorEngine.Compilation
         /// <param name="codeLanguage">The code language.</param>
         /// <param name="markupParserFactory">The markup parser factory.</param>
         [SecurityCritical]
-        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory, ITemplateServiceConfiguration config)
+        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory)
         {
             Contract.Requires(codeLanguage != null);
-            _config = config;
             CodeLanguage = codeLanguage;
             MarkupParserFactory = markupParserFactory ?? new ParserBaseCreator(null);
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
+        }
+
+        /// <summary>
+        /// Initialises a new instance of <see cref="CompilerServiceBase"/>
+        /// </summary>
+        /// <param name="codeLanguage">The code language.</param>
+        /// <param name="markupParserFactory">The markup parser factory.</param>
+        [SecurityCritical]
+        protected CompilerServiceBase(RazorCodeLanguage codeLanguage, ParserBaseCreator markupParserFactory, ITemplateServiceConfiguration config) : this(codeLanguage, markupParserFactory)
+        {
+            Contract.Requires(codeLanguage != null);
+            _config = config;
         }
         #endregion
 
@@ -136,6 +147,43 @@ namespace RazorEngine.Compilation
         /// Tries to create and return a unique temporary directory.
         /// </summary>
         /// <returns>the (already created) temporary directory</returns>
+        protected static string GetDefaultTemporaryDirectory()
+        {
+            var created = false;
+            var tried = 0;
+            string tempDirectory = "";
+            while (!created && tried < 10)
+            {
+                tried++;
+                try
+                {
+                    tempDirectory = Path.Combine(Path.GetTempPath(), "RazorEngine_" + Path.GetRandomFileName());
+
+                    if (!Directory.Exists(tempDirectory))
+                    {
+                        Directory.CreateDirectory(tempDirectory);
+                        created = Directory.Exists(tempDirectory);
+                    }
+                }
+                catch (IOException)
+                {
+                    if (tried > 8)
+                    {
+                        throw;
+                    }
+                }
+            }
+            if (!created)
+            {
+                throw new Exception("Could not create a temporary directory! Maybe all names are already used?");
+            }
+            return tempDirectory;
+        }
+
+        /// <summary>
+        /// Tries to create and return a unique temporary directory.
+        /// </summary>
+        /// <returns>the (already created) temporary directory</returns>
         protected static string GetDefaultTemporaryDirectory(ITemplateServiceConfiguration config)
         {
             var created = false;
@@ -173,6 +221,16 @@ namespace RazorEngine.Compilation
                 throw new Exception("Could not create a temporary directory! Maybe all names are already used?");
             }
             return tempDirectory;
+        }
+
+        /// <summary>
+        /// Returns a new temporary directory ready to be used.
+        /// This can be overwritten in subclases to change the created directories.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual string GetTemporaryDirectory()
+        {
+            return GetDefaultTemporaryDirectory();
         }
 
         /// <summary>
