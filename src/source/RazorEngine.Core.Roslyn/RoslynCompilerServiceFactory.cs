@@ -27,21 +27,7 @@ namespace RazorEngine.Roslyn
         [SecuritySafeCritical]
         public ICompilerService CreateCompilerService(Language language)
         {
-            switch (language)
-            {
-                case Language.CSharp:
-                    return new CSharpRoslynCompilerService();
-
-                case Language.VisualBasic:
-                    //#if RAZOR4
-                    throw new NotSupportedException("Razor4 doesn't support VB.net apparently.");
-                //#else
-                //                    return new VBRoslynCompilerService(config: config);
-                //#endif
-
-                default:
-                    throw new ArgumentException("Unsupported language: " + language);
-            }
+            return CreateCompilerService(language, null);
         }
 
         /// <summary>
@@ -59,11 +45,11 @@ namespace RazorEngine.Roslyn
                     return new CSharpRoslynCompilerService(config: config);
 
                 case Language.VisualBasic:
-//#if RAZOR4
+                    //#if RAZOR4
                     throw new NotSupportedException("Razor4 doesn't support VB.net apparently.");
-//#else
-//                    return new VBRoslynCompilerService(config: config);
-//#endif
+                //#else
+                //                    return new VBRoslynCompilerService(config: config);
+                //#endif
 
                 default:
                     throw new ArgumentException("Unsupported language: " + language);

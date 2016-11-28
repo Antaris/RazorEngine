@@ -141,7 +141,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// <param name="codeLanguage"></param>
         /// <param name="markupParserFactory"></param>
         public RoslynCompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory)
-            : base(codeLanguage, new ParserBaseCreator(markupParserFactory))
+            : this(codeLanguage, markupParserFactory, null)
         {
 
         }

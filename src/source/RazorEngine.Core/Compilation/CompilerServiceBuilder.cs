@@ -36,10 +36,7 @@
         /// <returns>The compiler service instance.</returns>
         public static ICompilerService GetCompilerService(Language language)
         {
-            lock (sync)
-            {
-                return _factory.CreateCompilerService(language);
-            }
+            return GetCompilerService(language, null);
         }
 
         /// <summary>

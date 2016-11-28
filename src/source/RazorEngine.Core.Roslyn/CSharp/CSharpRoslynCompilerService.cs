@@ -41,15 +41,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="strictMode"></param>
         /// <param name="markupParserFactory"></param>
-        public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
-            : base(
-                new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode),
-                markupParserFactory)
-        {
-#if !RAZOR4
-            _codeDomProvider = new Microsoft.CSharp.CSharpCodeProvider();
-#endif
-        }
+        public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null) : this(null, strictMode, markupParserFactory) { }
 
         /// <summary>
         /// Creates a new CSharpRoslynCompilerService instance.
@@ -57,9 +49,8 @@ namespace RazorEngine.Roslyn.CSharp
         /// <param name="strictMode"></param>
         /// <param name="markupParserFactory"></param>
         public CSharpRoslynCompilerService(ITemplateServiceConfiguration config, bool strictMode = true, Func<ParserBase> markupParserFactory = null)
-            : base(
-                new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode),
-                markupParserFactory, config) {
+            : base(new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode), markupParserFactory, config)
+        {
 #if !RAZOR4
             _codeDomProvider = new Microsoft.CSharp.CSharpCodeProvider(); 
 #endif
