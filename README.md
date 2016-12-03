@@ -106,7 +106,7 @@ config.Debug = true;
 
 When `Debug` is true you can straight up debug into the generated code. 
 RazorEngine also supports debugging directly into the template files (normally `.cshtml` files).
-As as you might see in the above code there is no file to debug into.
+As you might see in the above code there is no file to debug into.
 To provide RazorEngine with the necessary information you need to tell where the file can be found:
 
 ```csharp
