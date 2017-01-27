@@ -36,7 +36,7 @@ let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEn
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.4.0-rc1"
+let version_razor4 = "4.4.2-rc1"
 let version_roslyn = "3.6.0-rc1"
 let version_roslyn_razor4 = "4.1.0-rc1"
 
@@ -56,7 +56,7 @@ let buildConfig =
  let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
  { BuildConfiguration.Defaults with
     ProjectName = "RazorEngine"
-    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2015"
+    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2016"
     ProjectSummary = "Simple templating using Razor syntax."
     ProjectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
     ProjectAuthors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
@@ -79,7 +79,7 @@ let buildConfig =
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
               Dependencies =
-                [ "Microsoft.AspNetCore.Razor", "1.0" |> RequireExactly ] })
+                [ "Microsoft.AspNetCore.Razor", "1.0" ] })
         "RazorEngine.Roslyn.nuspec", (fun config p ->
           { p with
               Project = projectName_roslyn

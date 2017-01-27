@@ -369,5 +369,36 @@ namespace RazorEngine.Templating
         {
             return WithWriter(writer => service.Run(name, writer, modelType, model, viewBag));
         }
+
+        /// <summary>
+        /// Adds and compiles a new template using the specified <paramref name="templateSource"/> and returns a <see cref="TemplateRunner{TModel}"/>.
+        /// </summary>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <param name="service"></param>
+        /// <param name="templateSource"></param>
+        /// <returns></returns>
+        public static ITemplateRunner<TModel> CompileRunner<TModel>(this IRazorEngineService service, string templateSource)
+        {
+            var name = $"{typeof(TModel).Name}_{Guid.NewGuid()}";
+            return service.CompileRunner<TModel>(templateSource, name);
+        }
+
+        /// <summary>
+        /// Adds and compiles a new template using the specified <paramref name="templateSource"/> and returns a <see cref="TemplateRunner{TModel}"/>.
+        /// </summary>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <param name="service"></param>
+        /// <param name="templateSource"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static ITemplateRunner<TModel> CompileRunner<TModel>(this IRazorEngineService service, string templateSource, string name)
+        {
+            var key = service.GetKey(name);
+
+            service.AddTemplate(key, templateSource);
+            service.Compile(key, typeof(TModel));
+
+            return new TemplateRunner<TModel>(service, key);
+        }
     }
 }

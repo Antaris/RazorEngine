@@ -1,4 +1,14 @@
-﻿### 3.9.0 / 4.4.0-rc1
+﻿### 3.9.2 / 4.4.2-rc1
+
+ * (PACKAGING) Fix version constraint, thanks campersau (https://github.com/Antaris/RazorEngine/pull/429)
+
+### 3.9.1 / 4.4.1-rc1
+
+ * (BUGFIX) dispose ReaderWriterLockSlim lock in ReferencesListForDynamicAssemblyResolution, thanks campersau (https://github.com/Antaris/RazorEngine/pull/411)
+ * (DOCS) update copyright year, thanks campersau (https://github.com/Antaris/RazorEngine/pull/412)
+ * (DOCS) Update template.cshtml, thanks (https://github.com/Antaris/RazorEngine/pull/413)
+ 
+### 3.9.0 / 4.4.0-rc1
 
  * Fix memory leak in CompilerServiceBase by removing event handler in dispose, thanks campersau (https://github.com/Antaris/RazorEngine/pull/388)
  * support AspNetCore.Razor 1.0.0, thanks campersau (https://github.com/Antaris/RazorEngine/pull/402)

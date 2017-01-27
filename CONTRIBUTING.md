@@ -9,6 +9,8 @@ If you want to discuss the changes beforehand you can open a new issue.
 Even better when there is already an open issue marked as [up-for-grabs](https://github.com/Antaris/RazorEngine/labels/up-for-grabs).
 Please send the pull request against the `master` branch and mention an already existing issue (if present).
 
+This project is searching for new maintainers, so if you want to help write on gitter or start sending PRs :)
+
 ## Contributing Documentation
 
 As the documentation is generated from the repository you can help improving the documentation by editing the files in the `/doc` folder.
