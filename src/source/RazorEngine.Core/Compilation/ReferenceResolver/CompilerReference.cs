@@ -303,7 +303,7 @@ namespace RazorEngine.Compilation.ReferenceResolver
                 var file = assembly.Location;
                 if (string.IsNullOrEmpty(file))
                 {
-                    throw this.exceptionCreator("Could not get location from assembly!");
+                    throw this.exceptionCreator(string.Format("Could not get location from assembly {0}!", assembly.FullName));
                 }
                 return file;
             }
