@@ -16,7 +16,7 @@
         /// <summary>
         /// Initialises a new instance of <see cref="DelegateActivator"/>.
         /// </summary>
-        /// <param name="activator">The delegated used to create an instance of the template.</param>
+        /// <param name="activator">The delegate used to create an instance of the template.</param>
         public DelegateActivator(Func<InstanceContext, ITemplate> activator)
         {
             Contract.Requires(activator != null);
