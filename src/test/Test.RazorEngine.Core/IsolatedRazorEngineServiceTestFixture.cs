@@ -661,7 +661,13 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null);
                 foreach (var reference in loadedAssemblies)
                     yield return reference;
-                yield return CompilerReference.From("test/TestHelper.dll");
+
+                var testHelper = Path.Combine(
+                    Path.GetDirectoryName(typeof(ReferenceResolverConfigCreator).Assembly.Location),
+                    "test",
+                    "TestHelper.dll");
+
+                yield return CompilerReference.From(testHelper);
             }
         }
 

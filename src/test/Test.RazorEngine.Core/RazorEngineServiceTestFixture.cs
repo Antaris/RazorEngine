@@ -286,7 +286,13 @@ namespace Test.RazorEngine
                 var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null);
                 foreach (var reference in loadedAssemblies)
                     yield return reference;
-                yield return CompilerReference.From("test/TestHelper.dll");
+
+                var testHelper = Path.Combine(
+                    Path.GetDirectoryName(typeof(TestHelperReferenceResolver).Assembly.Location),
+                    "test",
+                    "TestHelper.dll");
+
+                yield return CompilerReference.From(testHelper);
             }
         }
 
@@ -296,9 +302,14 @@ namespace Test.RazorEngine
         [Test]
         public void RazorEngineService_CheckThatWeCanUseUnknownTypes()
         {
+            var testHelper = Path.Combine(
+                    Path.GetDirectoryName(typeof(RazorEngineServiceTestFixture).Assembly.Location),
+                    "test",
+                    "TestHelper.dll");
+
             RunTestHelper(service =>
             {
-                var assembly = Assembly.LoadFrom("test/TestHelper.dll");
+                var assembly = Assembly.LoadFrom(testHelper);
                 Type modelType = assembly.GetType("TestHelper.TestClass", true);
                 var model = Activator.CreateInstance(modelType);
                 var template = @"
