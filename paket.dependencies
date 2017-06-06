@@ -27,8 +27,8 @@ group Razor4
 group Test
   source https://nuget.org/api/v2
 
-  nuget NUnit ~> 2
-  nuget NUnit.Runners ~> 2
+  nuget NUnit ~> 3.6
+  nuget NUnit.Console ~> 3.6
   nuget Moq
 
 // Locked, because 4.0.2 has breaking changes. If you have some time you can try to fix it.
