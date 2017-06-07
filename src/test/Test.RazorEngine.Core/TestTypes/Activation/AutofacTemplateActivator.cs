@@ -2,25 +2,25 @@
 {
     using System;
 #if NET45
-    using Microsoft.Practices.Unity;
+    using Autofac;
 
     using Templating;
 
     /// <summary>
     /// Defines an activator that supports Unity.
     /// </summary>
-    public class UnityTemplateActivator : IActivator
+    public class AutofacTemplateActivator : IActivator
     {
         #region Fields
-        private readonly UnityContainer _container;
+        private readonly IContainer _container;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// Initialises a new instance of <see cref="UnityTemplateActivator"/>.
+        /// Initialises a new instance of <see cref="AutofacTemplateActivator"/>.
         /// </summary>
         /// <param name="container">The unity container.</param>
-        public UnityTemplateActivator(UnityContainer container)
+        public AutofacTemplateActivator(IContainer container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");

@@ -14,7 +14,9 @@
     using TestTypes.Activation;
     using Text;
 #if NET45
-    using Microsoft.Practices.Unity;
+    using Autofac;
+    using Autofac.Features.ResolveAnything;
+
     /// <summary>
     /// Defines a test fixture that provides tests for the <see cref="IActivator"/> type.
     /// </summary>
@@ -33,12 +35,14 @@
             Assert.Ignore("We need to add roslyn to generate custom constructors!");
 #endif
 
-            var container = new UnityContainer();
-            container.RegisterType(typeof(ITextFormatter), typeof(ReverseTextFormatter));
-
+            var container = new ContainerBuilder();
+            container.RegisterType<ReverseTextFormatter>()
+                .AsSelf()
+                .As<ITextFormatter>();
+            container.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             var config = new TemplateServiceConfiguration
                              {
-                                 Activator = new UnityTemplateActivator(container),
+                                 Activator = new AutofacTemplateActivator(container.Build()),
                                  BaseTemplateType = typeof(CustomTemplateBase<>)
                              };
 

@@ -38,5 +38,4 @@ group Test
 // Locked, because support for .NET 40 and Silverlight 5 are dropped in versions 4.5 +
   nuget Moq 4.2.1510.2205
 
-// Locked, because 4.0.2 has breaking changes. If you have some time you can try to fix it.
-  nuget Unity 4.0.1
+  nuget Autofac ~> 3.5

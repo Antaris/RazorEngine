@@ -10,4 +10,4 @@ group Razor4
 group Test
   Moq
   NUnit
-  Unity
+  Autofac

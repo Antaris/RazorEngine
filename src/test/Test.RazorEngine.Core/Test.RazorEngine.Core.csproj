@@ -125,7 +125,7 @@
     <Compile Include="TemplateServiceTestFixture.cs" />
     <Compile Include="TestTypes\Activation\ITextFormatter.cs" />
     <Compile Include="TestTypes\Activation\ReverseTextFormatter.cs" />
-    <Compile Include="TestTypes\Activation\UnityTemplateActivator.cs" />
+    <Compile Include="TestTypes\Activation\AutofacTemplateActivator.cs" />
     <Compile Include="TestTypes\Animal.cs" />
     <Compile Include="TestTypes\Activation\CustomTemplateBase.cs" />
     <Compile Include="TestTypes\AnimalViewModel.cs" />
