@@ -1,10 +1,12 @@
-version 5.0.0-rc011
+version 5.0.0
 source https://nuget.org/api/v2
 source https://ci.appveyor.com/nuget/fsharp-formatting
 
 nuget Nuget.CommandLine
 nuget FAKE
 nuget FSharp.Formatting prerelease
+nuget System.ValueTuple
+nuget Microsoft.AspNet.Razor
 
 group Net45
   condition: NET45

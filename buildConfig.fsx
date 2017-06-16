@@ -112,6 +112,7 @@ let buildConfig =
                 |> List.append exact }) ]
     UseNuget = false
     DisableMSTest = true
+    DisableNUnit = true
     GeneratedFileList =
       [ "RazorEngine.dll"; "RazorEngine.xml"
         "RazorEngine.Roslyn.dll"; "RazorEngine.Roslyn.xml" ]
