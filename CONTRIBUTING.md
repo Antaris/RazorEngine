@@ -36,7 +36,6 @@ You can find licenses of the programs this project depends on in either the "lib
 2. Update `buildConfig.fsx` (versions)
    Roslyn Package versions only need to increased when we changed public API or when we made changes there.
 
-
 3. Run `yaaf_merge_master=true PUSH_ROSLYN=true nugetkey=<accesskey> ./build.sh Release`
    - `yaaf_merge_master` -> can be used on build servers to force-switch on develop branch for the version bump commit.
    - `PUSH_ROSLYN` -> push the roslyn packages (if you increased their versions above)

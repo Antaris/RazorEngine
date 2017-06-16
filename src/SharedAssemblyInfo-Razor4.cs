@@ -3,13 +3,13 @@ using System.Reflection;
 
 [assembly: AssemblyCompanyAttribute("RazorEngine")]
 [assembly: AssemblyProductAttribute("RazorEngine")]
-[assembly: AssemblyCopyrightAttribute("RazorEngine Copyright © RazorEngine Project 2011-2016")]
-[assembly: AssemblyVersionAttribute("4.4.2")]
-[assembly: AssemblyFileVersionAttribute("4.4.2")]
-[assembly: AssemblyInformationalVersionAttribute("4.4.2-rc1")]
+[assembly: AssemblyCopyrightAttribute("RazorEngine Copyright © RazorEngine Project 2011-2017")]
+[assembly: AssemblyVersionAttribute("4.5.0")]
+[assembly: AssemblyFileVersionAttribute("4.5.0")]
+[assembly: AssemblyInformationalVersionAttribute("4.5.0-rc1")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "4.4.2";
-        internal const string InformationalVersion = "4.4.2-rc1";
+        internal const string Version = "4.5.0";
+        internal const string InformationalVersion = "4.5.0-rc1";
     }
 }
