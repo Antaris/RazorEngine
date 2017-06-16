@@ -111,7 +111,6 @@ let runTests (buildParams:BuildParams) =
             true
           with
           | NUnitNotFoundException s ->
-            traceEndTask "NUnit" (files |> separated ", ") // Workaround for https://github.com/fsharp/FAKE/issues/1079
             let msg = sprintf "NUNIT COULD NOT BE RUN, because it was not found. Please disable NUnit in your buildConfigDef.fsx with 'DisableNUnit = true'.\n\nDetails: %s" s
             if not config.DisableNUnit3 && File.Exists Fake.Testing.NUnit3.NUnit3Defaults.ToolPath then
               traceFAKE "%s\n\nThis is a warning only because we will be running NUnit3 as well" msg
@@ -306,7 +305,7 @@ let rec private publish (parameters:NuGetParams) =
         if isNullOrEmpty key then text
         else text.Replace(key, "PRIVATEKEY")
     let nuspec = sprintf "%s.%s.nupkg" parameters.Project parameters.Version
-    traceStartTask "MyNuGetPublish" nuspec
+    use t = traceStartTaskUsing "MyNuGetPublish" nuspec
     let tracing = enableProcessTracing
     enableProcessTracing <- false
     let source =

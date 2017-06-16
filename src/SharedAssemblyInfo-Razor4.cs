@@ -9,7 +9,11 @@ using System.Reflection;
 [assembly: AssemblyInformationalVersionAttribute("4.5.0-rc1")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "4.5.0";
-        internal const string InformationalVersion = "4.5.0-rc1";
+        internal const System.String AssemblyCompany = "RazorEngine";
+        internal const System.String AssemblyProduct = "RazorEngine";
+        internal const System.String AssemblyCopyright = "RazorEngine Copyright © RazorEngine Project 2011-2017";
+        internal const System.String AssemblyVersion = "4.5.0";
+        internal const System.String AssemblyFileVersion = "4.5.0";
+        internal const System.String AssemblyInformationalVersion = "4.5.0-rc1";
     }
 }
