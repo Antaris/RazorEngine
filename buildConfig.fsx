@@ -170,5 +170,9 @@ let buildConfig =
       { p with
           //NUnitParams.WorkingDir = working
           ExcludeCategory = if isMono then "VBNET" else "" })
+    SetupNUnit3 = (fun p ->
+      { p with
+          //NUnit3Params.WorkingDir = working
+          Where = if isMono then "cat!=VBNET" else "" })
   }
 

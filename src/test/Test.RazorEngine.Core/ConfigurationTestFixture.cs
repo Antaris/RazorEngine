@@ -50,7 +50,7 @@
                 Assert.AreEqual(expected.ToString(), result);
             }
         }
-        
+
 #if !RAZOR4
         /// <summary>
         /// Tests that the fluent configuration can configure a template service with a specific code language.
@@ -58,12 +58,12 @@
         /// <remarks>
         /// For this test, we're switching to VB, and using a @Code section:
         ///     <code>
-        ///         @Code Dim name = "Matt" End Code
+        ///         @Code Dim name As String = "Matt" End Code
         ///         @name
         ///     </code>
         /// ... which should result in:
         ///     <code>
-        ///         
+        ///
         ///         Matt
         ///     </code>
         /// </remarks>
@@ -78,7 +78,7 @@
             using (var service = new TemplateService(config))
 #pragma warning restore 0618 // TODO: Update test.
             {
-                const string template = "@Code Dim name = \"Matt\" End Code\n@name";
+                const string template = "@Code Dim name As String = \"Matt\" End Code\n@name";
                 const string expected = "\nMatt";
 
                 string result = service.Parse(template, null, null, null);
