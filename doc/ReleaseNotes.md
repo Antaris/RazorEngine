@@ -1,4 +1,16 @@
-﻿### 3.9.2 / 4.4.2-rc1
+﻿### 3.10.0 / 4.5.0-rc1
+
+ * (NEW) Add a simple way to create typed, runnable templates, thanks ocoanet (https://github.com/Antaris/RazorEngine/pull/431)
+ * (DOCS) Fix typo in README.md, thanks a510 (https://github.com/Antaris/RazorEngine/pull/435)
+ * (ENHANCEMENT) Add FullName to Exception when Assembly is not found, thanks zamojski (https://github.com/Antaris/RazorEngine/pull/448)
+ * (BUGFIX) Fix RazorDynamicObject dispose automatically created RazorDynamicObjects, thanks campersau (https://github.com/Antaris/RazorEngine/pull/438)
+ * (BUILD) Updates NUnit to 3.6.1, thanks conniey (https://github.com/Antaris/RazorEngine/pull/465)
+
+### 3.9.3 / 4.4.3-rc1
+
+ * (NEW) Added Support for .vbhtml files in ResolvePathTemplateManager, thanks AnderssonPeter (https://github.com/Antaris/RazorEngine/pull/426)
+
+### 3.9.2 / 4.4.2-rc1
 
  * (PACKAGING) Fix version constraint, thanks campersau (https://github.com/Antaris/RazorEngine/pull/429)
 
