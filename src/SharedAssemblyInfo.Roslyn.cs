@@ -3,12 +3,17 @@ using System.Reflection;
 
 [assembly: AssemblyCompanyAttribute("RazorEngine.Roslyn")]
 [assembly: AssemblyProductAttribute("RazorEngine.Roslyn")]
-[assembly: AssemblyCopyrightAttribute("RazorEngine Copyright © RazorEngine Project 2011-2016")]
-[assembly: AssemblyVersionAttribute("3.6.0")]
-[assembly: AssemblyFileVersionAttribute("3.6.0")]
-[assembly: AssemblyInformationalVersionAttribute("3.6.0-rc1")]
+[assembly: AssemblyCopyrightAttribute("RazorEngine Copyright © RazorEngine Project 2011-2017")]
+[assembly: AssemblyVersionAttribute("3.6.1")]
+[assembly: AssemblyFileVersionAttribute("3.6.1")]
+[assembly: AssemblyInformationalVersionAttribute("3.6.1-rc1")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "3.6.0";
+        internal const System.String AssemblyCompany = "RazorEngine.Roslyn";
+        internal const System.String AssemblyProduct = "RazorEngine.Roslyn";
+        internal const System.String AssemblyCopyright = "RazorEngine Copyright © RazorEngine Project 2011-2017";
+        internal const System.String AssemblyVersion = "3.6.1";
+        internal const System.String AssemblyFileVersion = "3.6.1";
+        internal const System.String AssemblyInformationalVersion = "3.6.1-rc1";
     }
 }

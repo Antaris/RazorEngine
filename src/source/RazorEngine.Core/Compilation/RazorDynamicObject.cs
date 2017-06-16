@@ -31,6 +31,7 @@
             private object _component;
             private bool _allowMissing;
             private Type _runtimeType;
+            private List<IDisposable> _disposables;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MarshalWrapper"/> class.
@@ -42,6 +43,7 @@
                 _allowMissing = allowMissingMembers;
                 _component = wrapped;
                 _runtimeType = wrapped.GetType();
+                _disposables = new List<IDisposable>();
             }
 
             /// <summary>
@@ -210,8 +212,19 @@
                 }
                 else
                 {
-                    return RazorDynamicObject.Create(result, _allowMissing);
+                    return RazorDynamicObject.Create(result, _disposables.Add, _allowMissing);
                 }
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                foreach (var disposable in _disposables)
+                {
+                    disposable.Dispose();
+                }
+                _disposables.Clear();
+
+                base.Dispose(disposing);
             }
         }
 
@@ -318,6 +331,26 @@
             return false;
         }
 
+        internal static object Create(object wrapped, Action<RazorDynamicObject> created, bool allowMissingMembers = false)
+        {
+            if (IsWrapped(wrapped))
+            {
+                return wrapped;
+            }
+            var wrapper = new RazorDynamicObject(wrapped, allowMissingMembers);
+            created(wrapper);
+            var interfaces =
+                wrapped.GetType().GetInterfaces()
+                // remove IDynamicMetaObjectProvider and ISerializable interfaces because ActLikeProxy does already implement them
+                .Where(t => t.IsPublic && t != typeof(IDynamicMetaObjectProvider) && t != typeof(ISerializable))
+                .Select(MapInterface).ToArray();
+            if (interfaces.Length > 0)
+            {
+                return Impromptu.DynamicActLike(wrapper, interfaces);
+            }
+            return wrapper;
+        }
+
         /// <summary>
         /// Create a wrapper around an dynamic object.
         /// This wrapper ensures that we can cross the <see cref="AppDomain"/>, 
@@ -329,21 +362,7 @@
         /// <returns>the wrapped object.</returns>
         public static object Create(object wrapped, bool allowMissingMembers = false)
         {
-            if (IsWrapped(wrapped))
-            {
-                return wrapped;
-            }
-            var wrapper = new RazorDynamicObject(wrapped, allowMissingMembers);
-            var interfaces =
-                wrapped.GetType().GetInterfaces()
-                // remove IDynamicMetaObjectProvider and ISerializable interfaces because ActLikeProxy does already implement them
-                .Where(t => t.IsPublic && t != typeof(IDynamicMetaObjectProvider) && t != typeof(ISerializable))
-                .Select(MapInterface).ToArray();
-            if (interfaces.Length > 0)
-            {
-                return Impromptu.DynamicActLike(wrapper, interfaces);
-            }
-            return wrapper;
+            return Create(wrapped, r => { }, allowMissingMembers);
         }
 
         /// <summary>

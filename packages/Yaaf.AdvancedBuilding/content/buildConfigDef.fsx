@@ -15,6 +15,7 @@ open System.IO
 open System
 
 open Fake
+open Fake.Testing.NUnit3
 open Fake.MSTest
 open AssemblyInfoFile
 
@@ -80,6 +81,41 @@ type BuildParams =
       FindProjectFiles = fun _ -> Seq.empty
       FindTestFiles = fun _ -> Seq.empty }
 
+/// see http://tpetricek.github.io/FSharp.Formatting/diagnostics.html
+type FSharpFormattingLogging =
+  /// Disable all logging. F# Formatting will not print anything to the console and it will also not produce a log file (this is not recomended, but you might need this if you want to suppress all output).
+  | DisableFSFLogging
+  /// Enables detailed logging to a file FSharp.Formatting.svclog and keeps printing of basic information to console too.
+  | AllFSFLogging
+  /// Enables detailed logging to a file FSharp.Formatting.svclog but disables printing of basic information to console.
+  | FileOnlyFSFLogging
+  /// Any other value (default) - Print basic information to console and do not produce a detailed log file.
+  | ConsoleOnlyFSFLogging
+
+type NuGetPackage =
+  { /// The version of the package (null = use global version)
+    Version : string
+    /// The filename of the nuspec (template) file, in the config.NugetDir folder
+    FileName : string
+    /// The prefix for the created tag (null = no tag will be created)
+    TagPrefix : string
+    /// identifier for this package
+    SimpleName : string
+
+    ConfigFun : (NuGetParams -> NuGetParams) } 
+  static member Empty =
+    { Version = null
+      FileName = null
+      TagPrefix = null
+      SimpleName = null
+      ConfigFun = id }
+  member x.Name =
+    if isNull x.SimpleName then x.TagPrefix else x.SimpleName
+  member x.TagName =
+    if isNull x.TagPrefix then failwith "no TagPrefix is specified!"
+    sprintf "%s%s" x.TagPrefix x.Version
+  member x.VersionLine =
+    sprintf "%s_%s" x.SimpleName (if isNull x.TagPrefix then x.Version else x.TagName)
 
 type BuildConfiguration =
   { // Metadata
@@ -106,6 +142,12 @@ type BuildConfiguration =
     /// Defaults to sprintf "https://www.nuget.org/packages/%s/" x.ProjectName
     NugetUrl : string
     NugetTags : string
+    /// The directory for the nuspec (template) files.
+    NugetDir : string
+    /// Like NugetPackages but allows to define different versions (which will create tags)
+    NugetVersionPackages : BuildConfiguration -> NuGetPackage list
+    // [<Obsolete("Use NugetVersionPackages instead")>] 
+    // see https://fslang.uservoice.com/forums/245727-f-language/suggestions/12826233-hide-obsolete-warnings-on-record-initializer-not-u
     NugetPackages : (string * (BuildConfiguration -> NuGetParams -> NuGetParams)) list
     // Defaults to "./release/nuget/"
     OutNugetDir : string
@@ -114,10 +156,6 @@ type BuildConfiguration =
     Version : string
     /// Defaults to setting up a "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs"
     SetAssemblyFileVersions : BuildConfiguration -> unit
-    /// Enables to convert pdb to mdb or mdb to pdb after paket restore.
-    /// This improves cross platform development and creates pdb files 
-    /// on unix (to create nuget packages on linux with integrated pdb files)
-    EnableDebugSymbolConversion : bool
 
     /// Makes "./build.sh Release" fail when not executed on a windows machine
     /// Use this if you want to include .pdb in your nuget packge 
@@ -144,6 +182,9 @@ type BuildConfiguration =
     DisableNUnit : bool
     SetupNUnit : (NUnitParams -> NUnitParams)
 
+    DisableNUnit3 : bool
+    SetupNUnit3 : (NUnit3Params -> NUnit3Params)
+
     DisableMSTest : bool
     SetupMSTest : (MSTestParams -> MSTestParams)
 
@@ -152,6 +193,7 @@ type BuildConfiguration =
     OutDocDir : string
     /// Defaults to "./doc/templates/"
     DocTemplatesDir : string
+    DocLogging : FSharpFormattingLogging
     LayoutRoots : string list
     /// Specify the list of references used for (razor) documentation generation.
     DocRazorReferences : string list option }
@@ -163,7 +205,6 @@ type BuildConfiguration =
       ProjectDescription = ""
       UseNuget = false
       EnableGithub = true
-      EnableDebugSymbolConversion = false
       RestrictReleaseToWindows = true
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]
@@ -172,6 +213,7 @@ type BuildConfiguration =
       PageAuthor = ""
       GithubUser = ""
       GithubProject = ""
+      DocLogging = AllFSFLogging
       SetAssemblyFileVersions = (fun config ->
         let info =
           [ Attribute.Company config.Company
@@ -186,9 +228,13 @@ type BuildConfiguration =
       IssuesUrl = ""
       FileNewIssueUrl = ""
       SourceReproUrl = ""
+      NugetDir = "nuget"
+      NugetVersionPackages = fun _ -> []
       NugetPackages = []
       DisableNUnit = false
       SetupNUnit = id
+      DisableNUnit3 = false
+      SetupNUnit3 = id
       DisableMSTest = isLinux
       SetupMSTest = id
       GeneratedFileList = []
@@ -218,6 +264,35 @@ type BuildConfiguration =
           |> Some
         else None}
   member x.GithubUrl = sprintf "https://github.com/%s/%s" x.GithubUser x.GithubProject
+  member x.AllNugetPackages =
+    let versionPackages = x.NugetVersionPackages x
+    let otherPackages = x.NugetPackages |> List.map (fun (s, func) -> { NuGetPackage.Empty with FileName = s; ConfigFun = func x })
+    versionPackages @ otherPackages
+  member x.GetPackageByName name =
+    x.AllNugetPackages |> Seq.find (fun p -> p.Name = name)
+  member x.SpecialVersionPackages =
+    x.AllNugetPackages |> List.filter (fun p -> not (isNull p.Version))
+  member x.VersionInfoLine =
+    let packages = x.SpecialVersionPackages
+    if packages.Length = 0 then
+      x.Version
+    else
+      sprintf "%s (%s)" x.Version (String.Join(", ", packages |> Seq.map (fun p -> p.VersionLine)))
+  member x.CheckValid() =
+    match x.AllNugetPackages |> Seq.tryFind (fun p -> isNull p.FileName) with
+    | Some p ->
+      failwithf "found a package with a FileName of null: %A" p
+    | None -> ()
+    let packages = x.SpecialVersionPackages
+    match packages |> Seq.tryFind (fun p -> isNull p.Name) with
+    | Some p ->
+      failwithf "package '%s' has a version '%s' but SimpleName and TagPrefix are both null!" p.FileName p.Version
+    | None -> ()
+    match x.AllNugetPackages |> Seq.tryFind (fun p -> isNull p.Version && not (isNull p.TagPrefix)) with
+    | Some p ->
+      failwithf "package '%s' has a TagPrefix set but it's version is not set (eg it is null)" p.FileName
+    | None -> ()
+
   member x.FillDefaults () =
     let x =
       { x with
@@ -233,9 +308,12 @@ type BuildConfiguration =
             if not x.LayoutRoots.IsEmpty then x.LayoutRoots
             else [ x.DocTemplatesDir; x.DocTemplatesDir @@ "reference" ] }
     // GithubUrl is now available
-    { x with
-          SourceReproUrl =
-            if String.IsNullOrEmpty x.SourceReproUrl then x.GithubUrl + "/blob/master/" else x.SourceReproUrl
-          IssuesUrl = if String.IsNullOrEmpty x.IssuesUrl then sprintf "%s/issues" x.GithubUrl else x.IssuesUrl
-          FileNewIssueUrl =
-            if String.IsNullOrEmpty x.FileNewIssueUrl then sprintf "%s/issues/new" x.GithubUrl else x.FileNewIssueUrl }
+    let final =
+      { x with
+            SourceReproUrl =
+              if String.IsNullOrEmpty x.SourceReproUrl then x.GithubUrl + "/blob/master/" else x.SourceReproUrl
+            IssuesUrl = if String.IsNullOrEmpty x.IssuesUrl then sprintf "%s/issues" x.GithubUrl else x.IssuesUrl
+            FileNewIssueUrl =
+              if String.IsNullOrEmpty x.FileNewIssueUrl then sprintf "%s/issues/new" x.GithubUrl else x.FileNewIssueUrl }
+    final.CheckValid()
+    final
