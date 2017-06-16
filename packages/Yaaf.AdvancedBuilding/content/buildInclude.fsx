@@ -26,11 +26,7 @@ let config = BuildConfig.buildConfig.FillDefaults ()
 // #I @"../../FSharp.Compiler.Service/lib/net40/" // included in FAKE, but to be able to use the latest
 // Bundled
 //#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
-#I "../tools/"
-#r "Yaaf.AdvancedBuilding.dll"
 
-
-open Yaaf.AdvancedBuilding
 open System.IO
 open System
 
