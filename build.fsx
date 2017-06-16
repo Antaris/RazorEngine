@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 #load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"
 #load @"buildConfig.fsx"
-#load "buildInclude.fsx"
+#load "packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx"
 
 open System.IO
 open Fake
