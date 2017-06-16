@@ -7,11 +7,7 @@ set nuget_path=NuGet.CommandLine/tools/NuGet.exe
 set fake_path=FAKE/tools/FAKE.exe
 
 REM resore paket build dependencies
-if exist ".paket/paket.bootstrapper.exe" (
-  echo Bootstrap paket
-  .paket\paket.bootstrapper.exe %PAKET_VERSION%
-  if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
-
+if exist ".paket/paket.exe" (
   REM Batch is just a useless shit
   if "%PAKET_UPDATE%" == "y" (
     echo Running paket update - as requested by PAKET_UPDATE=y

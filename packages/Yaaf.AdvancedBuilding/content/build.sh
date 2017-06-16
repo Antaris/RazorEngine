@@ -23,15 +23,9 @@ function do_build {
   fake_path="FAKE/tools/FAKE.exe"
 
   # Restore paket build dependencies
-  if [ -f ".paket/paket.bootstrapper.exe" ];
+  if [ -f ".paket/paket.exe" ];
   then
-    echo "Bootstrap paket"
-    $MONO .paket/paket.bootstrapper.exe $PAKET_VERSION
-    exit_code=$?
-    if [ $exit_code -ne 0 ]; then
-      exit $exit_code
-    fi
-
+  
     if [ "$PAKET_UPDATE" == "y" ] || [ "$PAKET_UPDATE" == "true" ]; then
       echo "run paket update (as requested by PAKET_UPDATE=y)"
       $MONO .paket/paket.exe update
