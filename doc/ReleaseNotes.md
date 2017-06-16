@@ -1,4 +1,9 @@
-﻿### 3.9.3 / 4.4.3-rc1
+﻿### 3.10.0 / 4.5.0-rc1
+
+ * (NEW) Add a simple way to create typed, runnable templates, thanks ocoanet (https://github.com/Antaris/RazorEngine/pull/431)
+ * (NEW) Adding in temporary file path configuration, thanks brentonlamar (https://github.com/Antaris/RazorEngine/pull/400)
+
+### 3.9.3 / 4.4.3-rc1
 
  * (NEW) Added Support for .vbhtml files in ResolvePathTemplateManager, thanks AnderssonPeter (https://github.com/Antaris/RazorEngine/pull/426)
 
