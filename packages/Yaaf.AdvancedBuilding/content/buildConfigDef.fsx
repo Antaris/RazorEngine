@@ -156,10 +156,6 @@ type BuildConfiguration =
     Version : string
     /// Defaults to setting up a "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs"
     SetAssemblyFileVersions : BuildConfiguration -> unit
-    /// Enables to convert pdb to mdb or mdb to pdb after paket restore.
-    /// This improves cross platform development and creates pdb files 
-    /// on unix (to create nuget packages on linux with integrated pdb files)
-    EnableDebugSymbolConversion : bool
 
     /// Makes "./build.sh Release" fail when not executed on a windows machine
     /// Use this if you want to include .pdb in your nuget packge 
@@ -209,7 +205,6 @@ type BuildConfiguration =
       ProjectDescription = ""
       UseNuget = false
       EnableGithub = true
-      EnableDebugSymbolConversion = false
       RestrictReleaseToWindows = true
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]

@@ -53,27 +53,6 @@ if config.UseNuget then
     else
       failwith "you set UseNuget to true but there is no \"./src/.nuget/NuGet.targets\" or \"./src/.nuget/NuGet.Config\"! Please copy them from ./packages/Yaaf.AdvancedBuilding/scaffold/nuget"
 
-let createMissingSymbolFiles assembly =
-  try
-    match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (assembly + ".mdb") with
-    | true, false when not isLinux ->
-      // create mdb
-      trace (sprintf "Creating mdb for %s" assembly)
-      DebugSymbolHelper.writeMdbFromPdb assembly
-    | true, false ->
-      trace (sprintf "Cannot create mdb for %s because we are not on windows :(" assembly) 
-    | false, true when not isLinux ->
-      // create pdb
-      trace (sprintf "Creating pdb for %s" assembly)
-      DebugSymbolHelper.writePdbFromMdb assembly
-    | false, true ->
-      trace (sprintf "Cannot create pdb for %s because we are not on windows :(" assembly) 
-    | _, _ -> 
-      // either no debug symbols available or already both.
-      ()
-  with exn -> traceError (sprintf "Error creating symbols: %s" exn.Message)
-
-
 let buildWithFiles msg dir projectFileFinder (buildParams:BuildParams) =
     let files = projectFileFinder buildParams |> Seq.toList
     let buildDir = 
@@ -279,13 +258,6 @@ MyTarget "RestorePackages" (fun _ ->
                 OutputPath = config.NugetPackageDir }))
 )
 
-MyTarget "CreateDebugFiles" (fun _ ->
-    // creates .mdb from .pdb files and the other way around
-    !! (config.GlobalPackagesDir + "/**/*.exe")
-    ++ (config.GlobalPackagesDir + "/**/*.dll")
-    |> Seq.iter createMissingSymbolFiles  
-)
-
 MyTarget "SetVersions" (fun _ -> 
     config.SetAssemblyFileVersions config
 )
@@ -327,16 +299,9 @@ MyTarget "CopyToRelease" (fun _ ->
         )
 )
 
-MyTarget "CreateReleaseSymbolFiles" (fun _ ->
-    // creates .mdb from .pdb files and the other way around
-    !! (config.OutLibDir + "/**/*.exe")
-    ++ (config.OutLibDir + "/**/*.dll")
-    |> Seq.iter createMissingSymbolFiles  
-)
-
 /// push package (and try again if something fails), FAKE Version doesn't work on mono
 /// From https://raw.githubusercontent.com/fsharp/FAKE/master/src/app/FakeLib/NuGet/NugetHelper.fs
-let rec private publish parameters =
+let rec private publish (parameters:NuGetParams) =
     let replaceAccessKey key (text : string) =
         if isNullOrEmpty key then text
         else text.Replace(key, "PRIVATEKEY")
@@ -346,7 +311,7 @@ let rec private publish parameters =
     enableProcessTracing <- false
     let source =
         let uri = if isNullOrEmpty parameters.PublishUrl then "https://www.nuget.org/api/v2/package" else parameters.PublishUrl
-        sprintf "-s %s" uri
+        sprintf "-source %s" uri
 
     let args = sprintf "push \"%s\" %s %s" (parameters.OutputPath @@ nuspec) parameters.AccessKey source
     tracefn "%s %s in WorkingDir: %s Trials left: %d" parameters.ToolPath (replaceAccessKey parameters.AccessKey args)
@@ -556,7 +521,6 @@ Target "AfterBuild" ignore
 
 "Clean"
   =?> ("RestorePackages", config.UseNuget)
-  =?> ("CreateDebugFiles", config.EnableDebugSymbolConversion)
   ==> "SetVersions"
   ==> "ReadyForBuild"
 
@@ -574,7 +538,6 @@ config.BuildTargets
 // Dependencies
 "AfterBuild" 
   ==> "CopyToRelease"
-  =?> ("CreateReleaseSymbolFiles", config.EnableDebugSymbolConversion)
   ==> "NuGetPack"
   ==> "AllDocs"
   ==> "All"
