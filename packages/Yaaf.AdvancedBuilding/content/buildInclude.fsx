@@ -316,29 +316,26 @@ let rec private publish (parameters:NuGetParams) =
     tracefn "%s %s in WorkingDir: %s Trials left: %d" parameters.ToolPath (replaceAccessKey parameters.AccessKey args)
         (FullName parameters.WorkingDir) parameters.PublishTrials
     try
-      try
-        let result =
-            ExecProcess (fun info ->
-                info.FileName <- parameters.ToolPath
-                info.WorkingDirectory <- FullName parameters.WorkingDir
-                info.Arguments <- args) parameters.TimeOut
-        enableProcessTracing <- tracing
-        if result <> 0 then failwithf "Error during NuGet push. %s %s" parameters.ToolPath args
-        true
-      with exn ->
-        let existsError = exn.Message.Contains("already exists and cannot be modified")
-        if existsError then
-          trace exn.Message
-          false
+      let result =
+          ExecProcess (fun info ->
+              info.FileName <- parameters.ToolPath
+              info.WorkingDirectory <- FullName parameters.WorkingDir
+              info.Arguments <- args) parameters.TimeOut
+      enableProcessTracing <- tracing
+      if result <> 0 then failwithf "Error during NuGet push. %s %s" parameters.ToolPath args
+      true
+    with exn ->
+      let existsError = exn.Message.Contains("already exists and cannot be modified")
+      if existsError then
+        trace exn.Message
+        false
+      else
+        if parameters.PublishTrials > 0 then publish { parameters with PublishTrials = parameters.PublishTrials - 1 }
         else
-          if parameters.PublishTrials > 0 then publish { parameters with PublishTrials = parameters.PublishTrials - 1 }
-          else
-            (if not (isNull exn.InnerException) then exn.Message + "\r\n" + exn.InnerException.Message
-             else exn.Message)
-            |> replaceAccessKey parameters.AccessKey
-            |> failwith
-    finally
-      traceEndTask "MyNuGetPublish" nuspec
+          (if not (isNull exn.InnerException) then exn.Message + "\r\n" + exn.InnerException.Message
+           else exn.Message)
+          |> replaceAccessKey parameters.AccessKey
+          |> failwith
 
 let packSetup version config p =
   { p with
