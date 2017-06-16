@@ -696,7 +696,7 @@ NUGET
       System.Threading (>= 4.3) - restriction: || (&& (< net45) (>= netstandard13) (< monoandroid) (< monotouch) (< xamarinios) (< xamarinmac) (< win8) (< wpa81)) (>= dnxcore50)
       System.Xml.ReaderWriter (>= 4.3) - restriction: || (&& (< net45) (>= netstandard10) (< netstandard13) (< win8) (< wp8) (< wpa81)) (&& (< net45) (>= netstandard13) (< monoandroid) (< monotouch) (< xamarinios) (< xamarinmac) (< win8) (< wpa81)) (>= dnxcore50)
   remote: https://ci.appveyor.com/nuget/fsharp-formatting
-    FSharp.Formatting (3.0.0-beta05)
+    FSharp.Formatting (3.0.0-beta06)
       FSharp.Compiler.Service (>= 12.0.5 < 13.0)
 
 GROUP Net40
