@@ -43,9 +43,12 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Proxies Calls allows subclasser to override do extra actions before or after base invocation
-            </br></div>
+            </p><h2>Remarks</h2><p class='remarks'>
+            This may not be as efficient as other proxies that can work on just static objects or just dynamic objects...
+            Consider this when using.
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -63,9 +66,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new instance of the <a href="razorengine-compilation-impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a> class.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -79,9 +82,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new instance of the <a href="razorengine-compilation-impromptuinterface-dynamic-impromptuforwarder.html">ImpromptuForwarder</a> class.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -104,9 +107,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Gets the call target.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -120,9 +123,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Equals the specified other.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -137,9 +140,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Checks if the objects are equal.
-            </br>
+            </p><p class='returns'>Returns: true when the current instance is equal to the given one.</p>
         </td>
       </tr>
       <tr>
@@ -154,9 +157,11 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Returns the enumeration of all dynamic member names.
-            </br>
+            </p><p class='returns'>Returns: 
+            A sequence that contains dynamic member names.
+            </p>
         </td>
       </tr>
       <tr>
@@ -171,9 +176,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Gets the hashcode of the current instance.
-            </br>
+            </p><p class='returns'>Returns: the hash code.</p>
         </td>
       </tr>
       <tr>
@@ -188,9 +193,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Populates a <a href="http://msdn.microsoft.com/en-us/library/System.Runtime.Serialization.SerializationInfo">SerializationInfo</a> with the data needed to serialize the target object.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -204,9 +209,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Gets or sets the target.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -221,9 +226,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the Binary operation
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -238,9 +243,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the convert operation.
-            </br>
+            </p><p class='returns'>Returns: true when successfull</p>
         </td>
       </tr>
       <tr>
@@ -255,9 +260,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the invoke operation.
-            </br>
+            </p><p class='returns'>Returns: true when successfull</p>
         </td>
       </tr>
       <tr>
@@ -272,9 +277,11 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Provides the implementation for operations that get member values. Classes derived from the <a href="http://msdn.microsoft.com/en-us/library/System.Dynamic.DynamicObject">DynamicObject</a> class can override this method to specify dynamic behavior for operations such as getting a value for a property.
-            </br>
+            </p><p class='returns'>Returns: 
+            true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a run-time exception is thrown.)
+            </p>
         </td>
       </tr>
       <tr>
@@ -289,9 +296,11 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Provides the implementation for operations that invoke an object. Classes derived from the <a href="http://msdn.microsoft.com/en-us/library/System.Dynamic.DynamicObject">DynamicObject</a> class can override this method to specify dynamic behavior for operations such as invoking an object or a delegate.
-            </br>
+            </p><p class='returns'>Returns: 
+            true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a language-specific run-time exception is thrown.
+            </p>
         </td>
       </tr>
       <tr>
@@ -306,9 +315,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the invoke operation.
-            </br>
+            </p><p class='returns'>Returns: true when successfull</p>
         </td>
       </tr>
       <tr>
@@ -323,9 +332,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the invoke operation.
-            </br>
+            </p><p class='returns'>Returns: true when successfull</p>
         </td>
       </tr>
       <tr>
@@ -340,9 +349,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the invoke operation.
-            </br>
+            </p><p class='returns'>Returns: true when successfull</p>
         </td>
       </tr>
       <tr>
@@ -357,9 +366,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the unary operation.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

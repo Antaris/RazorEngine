@@ -37,17 +37,13 @@
         <div class="span9" id="main">
           
 <h1><a name="Layout-and-Partial-templates" class="anchor" href="#Layout-and-Partial-templates">Layout and Partial templates</a></h1>
-
 <p>This section explains how you can use Layout templates and embed templates one in another.</p>
-
 <h2><a name="Layout-template" class="anchor" href="#Layout-template">Layout template</a></h2>
-
 <p>Defining a layout is quite simple.
 First make sure to set the <code>Layout</code> property in the template using the layout template name.
 Note that using <code>Layout</code> within a layout template is supported.
 Second make sure the <code>string</code> you set for the Layout property can actually resolved by the template manager.
 For the default manager this means you added the template (with <code>AddTemplate</code>):</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">using RazorEngine;
 using RazorEngine.Templating;
 using System;
@@ -69,22 +65,15 @@ namespace TestRunnerHelper
     }
 }
 </code></pre>
-
 <blockquote>
-  <p>The code will print <code>&lt;h1&gt;my template&lt;/h1&gt;</code>.</p>
+<p>The code will print <code>&lt;h1&gt;my template&lt;/h1&gt;</code>.</p>
 </blockquote>
-
 <p>but other managers resolve template differently, please read <a href="http://antaris.github.io/RazorEngine/TemplateManager.html">http://antaris.github.io/RazorEngine/TemplateManager.html</a> for details!
 As you can see, all you need to do in the layout template is call <code>@RenderBody()</code> on the place you want your child template to appear.</p>
-
 <h2><a name="Partial-templates" class="anchor" href="#Partial-templates">Partial templates</a></h2>
-
 <p>All there is to do is to make a <code>@Include</code> call from within the template:</p>
-
 <p><code>Include(string cacheName, object model = null, Type modelType = null)</code></p>
-
 <p>As for layouts you need to ensure that the first string parameter can be resolved to a template:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">using RazorEngine;
 using RazorEngine.Templating;
 using System;
@@ -123,9 +112,7 @@ namespace TestRunnerHelper
     }
 }
 </code></pre>
-
 <h2><a name="General-considerations" class="anchor" href="#General-considerations">General considerations</a></h2>
-
 <p>As the above code showed a way to fully type all the templates you should consider adding <code>@inherits</code>
 directives to the templates as explained in <a href="https://antaris.github.io/RazorEngine/IntellisenseAndResharper.html">https://antaris.github.io/RazorEngine/IntellisenseAndResharper.html</a></p>
 

@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
              Does most of the work buiding and caching proxies
-            </br></div>
+            </p></div>
   <h3>Static members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -63,9 +63,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Builds the type for the static proxy or returns from cache
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -79,9 +79,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Builds the type.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -95,9 +95,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Emits new delegate type of the call site func.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -111,9 +111,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Preloads proxies that ActLike uses from assembly.
-            </br>
+            </p><p class='returns'>Returns: Returns false if there already is a proxy registered for the same type.</p>
         </td>
       </tr>
       <tr>
@@ -127,9 +127,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Preloads a proxy for ActLike to use.
-            </br>
+            </p><p class='returns'>Returns: Returns false if there already is a proxy registered for the same type.</p>
         </td>
       </tr>
       <tr>
@@ -143,9 +143,9 @@
                           <strong>Type parameters:</strong> 'TInterface          </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Calls ActLike on the given object.
-            </br>
+            </p><p class='returns'>Returns: the wrapper.</p>
         </td>
       </tr>
       <tr>
@@ -159,9 +159,12 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Writes the out DLL of types created between this call and being closed used for debugging of emitted IL code
-            </br>
+            </p><p class='returns'>Returns: </p><h2>Remarks</h2><p class='remarks'>
+                This may be used for generating an assembly for preloading proxies, however you must be very careful when doing so as 
+                changes could make the emitted asssembly out of date very easily.
+            </p>
         </td>
       </tr>
     </tbody>

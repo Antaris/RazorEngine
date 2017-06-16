@@ -43,7 +43,7 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             An memory leaking invalidating caching provider (See <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>).
             This implementation does a very simple in-memory caching and allows you to release templates
             by trading with memory. File modification time is used to check if cached template is valid.
@@ -51,7 +51,7 @@
             Use this caching provider only on AppDomains you recycle regularly, or to
             improve the debugging experience.
             Never use this in production without any recycle strategy.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -61,33 +61,33 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '751', 751)" onmouseover="showTip(event, '751', 751)">
+          <code onmouseout="hideTip(event, '752', 752)" onmouseover="showTip(event, '752', 752)">
             new()
           </code>
-          <div class="tip" id="751">
+          <div class="tip" id="752">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new instance
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '752', 752)" onmouseover="showTip(event, '752', 752)">
+          <code onmouseout="hideTip(event, '753', 753)" onmouseover="showTip(event, '753', 753)">
             new(registerForCleanup)
           </code>
-          <div class="tip" id="752">
+          <div class="tip" id="753">
             <strong>Signature:</strong> registerForCleanup:Action&lt;string&gt; -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new instance
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -101,19 +101,19 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '753', 753)" onmouseover="showTip(event, '753', 753)">
+          <code onmouseout="hideTip(event, '754', 754)" onmouseover="showTip(event, '754', 754)">
             TryRetrieveTemplate(...)
           </code>
-          <div class="tip" id="753">
+          <div class="tip" id="754">
             <strong>Signature:</strong> (templateKey:ITemplateKey * modelType:Type * compiledTemplate:byref&lt;ICompiledTemplate&gt;) -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Try to retrieve a template from the cache. See <a href="razorengine-templating-icachingprovider.html">ICachingProvider.TryRetrieveTemplate</a>.
             If cached template has different modification time, then the cache is invalidated.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

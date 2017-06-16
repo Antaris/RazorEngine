@@ -35,218 +35,182 @@
       <div class="row">
         <div class="span9" id="main">
           
-<h3><a name="3-9-3-4-4-3-rc1" class="anchor" href="#3-9-3-4-4-3-rc1">3.9.3 / 4.4.3-rc1</a></h3>
-
+<h3><a name="3-10-0-4-5-0-rc1" class="anchor" href="#3-10-0-4-5-0-rc1">3.10.0 / 4.5.0-rc1</a></h3>
 <ul>
-<li><p>(NEW) Added Support for .vbhtml files in ResolvePathTemplateManager, thanks AnderssonPeter (<a href="https://github.com/Antaris/RazorEngine/pull/426)">https://github.com/Antaris/RazorEngine/pull/426)</a></p>
-<h3><a name="3-9-2-4-4-2-rc1" class="anchor" href="#3-9-2-4-4-2-rc1">3.9.2 / 4.4.2-rc1</a></h3></li>
-<li><p>(PACKAGING) Fix version constraint, thanks campersau (<a href="https://github.com/Antaris/RazorEngine/pull/429)">https://github.com/Antaris/RazorEngine/pull/429)</a></p></li>
+<li>(NEW) Add a simple way to create typed, runnable templates, thanks ocoanet (<a href="https://github.com/Antaris/RazorEngine/pull/431)">https://github.com/Antaris/RazorEngine/pull/431)</a></li>
+<li>(DOCS) Fix typo in README.md, thanks a510 (<a href="https://github.com/Antaris/RazorEngine/pull/435)">https://github.com/Antaris/RazorEngine/pull/435)</a></li>
+<li>(ENHANCEMENT) Add FullName to Exception when Assembly is not found, thanks zamojski (<a href="https://github.com/Antaris/RazorEngine/pull/448)">https://github.com/Antaris/RazorEngine/pull/448)</a></li>
+<li>(BUGFIX) Fix RazorDynamicObject dispose automatically created RazorDynamicObjects, thanks campersau (<a href="https://github.com/Antaris/RazorEngine/pull/438)">https://github.com/Antaris/RazorEngine/pull/438)</a></li>
+<li>(BUILD) Updates NUnit to 3.6.1, thanks conniey (<a href="https://github.com/Antaris/RazorEngine/pull/465)">https://github.com/Antaris/RazorEngine/pull/465)</a></li>
 </ul>
-
+<h3><a name="3-9-3-4-4-3-rc1" class="anchor" href="#3-9-3-4-4-3-rc1">3.9.3 / 4.4.3-rc1</a></h3>
+<ul>
+<li>(NEW) Added Support for .vbhtml files in ResolvePathTemplateManager, thanks AnderssonPeter (<a href="https://github.com/Antaris/RazorEngine/pull/426)">https://github.com/Antaris/RazorEngine/pull/426)</a></li>
+</ul>
+<h3><a name="3-9-2-4-4-2-rc1" class="anchor" href="#3-9-2-4-4-2-rc1">3.9.2 / 4.4.2-rc1</a></h3>
+<ul>
+<li>(PACKAGING) Fix version constraint, thanks campersau (<a href="https://github.com/Antaris/RazorEngine/pull/429)">https://github.com/Antaris/RazorEngine/pull/429)</a></li>
+</ul>
 <h3><a name="3-9-1-4-4-1-rc1" class="anchor" href="#3-9-1-4-4-1-rc1">3.9.1 / 4.4.1-rc1</a></h3>
-
 <ul>
 <li>(BUGFIX) dispose ReaderWriterLockSlim lock in ReferencesListForDynamicAssemblyResolution, thanks campersau (<a href="https://github.com/Antaris/RazorEngine/pull/411)">https://github.com/Antaris/RazorEngine/pull/411)</a></li>
 <li>(DOCS) update copyright year, thanks campersau (<a href="https://github.com/Antaris/RazorEngine/pull/412)">https://github.com/Antaris/RazorEngine/pull/412)</a></li>
 <li>(DOCS) Update template.cshtml, thanks (<a href="https://github.com/Antaris/RazorEngine/pull/413)">https://github.com/Antaris/RazorEngine/pull/413)</a></li>
 </ul>
-
 <h3><a name="3-9-0-4-4-0-rc1" class="anchor" href="#3-9-0-4-4-0-rc1">3.9.0 / 4.4.0-rc1</a></h3>
-
 <ul>
 <li>Fix memory leak in CompilerServiceBase by removing event handler in dispose, thanks campersau (<a href="https://github.com/Antaris/RazorEngine/pull/388)">https://github.com/Antaris/RazorEngine/pull/388)</a></li>
 <li>support AspNetCore.Razor 1.0.0, thanks campersau (<a href="https://github.com/Antaris/RazorEngine/pull/402)">https://github.com/Antaris/RazorEngine/pull/402)</a></li>
 </ul>
-
 <h3><a name="3-8-2-4-3-2-beta1" class="anchor" href="#3-8-2-4-3-2-beta1">3.8.2 / 4.3.2-beta1</a></h3>
-
 <ul>
 <li>support models which implement ISerializable with IsolatedRazorEngineService (<a href="https://github.com/Antaris/RazorEngine/pull/376)">https://github.com/Antaris/RazorEngine/pull/376)</a></li>
 <li>fix vb.net generic type parameter list (<a href="https://github.com/Antaris/RazorEngine/pull/375)">https://github.com/Antaris/RazorEngine/pull/375)</a></li>
 <li>Added documentation for EmbeddedResourceTemplateManager (<a href="https://github.com/Antaris/RazorEngine/pull/374)">https://github.com/Antaris/RazorEngine/pull/374)</a></li>
 </ul>
-
 <h3><a name="3-8-1-4-3-1-beta1" class="anchor" href="#3-8-1-4-3-1-beta1">3.8.1 / 4.3.1-beta1</a></h3>
-
 <ul>
 <li>Added EmbeddedResource Template Manager (<a href="https://github.com/Antaris/RazorEngine/pull/371)">https://github.com/Antaris/RazorEngine/pull/371)</a></li>
 <li>(breaking) Renamed optional isRequired parameter of RenderSection method to required (<a href="https://github.com/Antaris/RazorEngine/pull/372)">https://github.com/Antaris/RazorEngine/pull/372)</a></li>
-<li>Use file modification time to check if cached template is valid (<a href="https://github.com/Antaris/RazorEngine/pull/353)
+<li>
+Use file modification time to check if cached template is valid (<a href="https://github.com/Antaris/RazorEngine/pull/353)
 Contains">https://github.com/Antaris/RazorEngine/pull/353)
-Contains</a> InvalidatingByModifiedTimeCachingProvider and ResolvePathCheckModifiedTimeTemplateManager.</li>
+Contains</a> InvalidatingByModifiedTimeCachingProvider and ResolvePathCheckModifiedTimeTemplateManager.
+</li>
 </ul>
-
 <h3><a name="3-8-0-4-3-0-beta1" class="anchor" href="#3-8-0-4-3-0-beta1">3.8.0 / 4.3.0-beta1</a></h3>
-
 <ul>
 <li>See 3.8.1. Rereleased as a change was missing in the release notes.</li>
 </ul>
-
 <h3><a name="3-7-7-4-2-7-beta1" class="anchor" href="#3-7-7-4-2-7-beta1">3.7.7 / 4.2.7-beta1</a></h3>
-
 <ul>
 <li>Fixed bug, thanks @Greooo (<a href="https://github.com/Antaris/RazorEngine/issues/244#issuecomment-173322177)">https://github.com/Antaris/RazorEngine/issues/244#issuecomment-173322177)</a></li>
 </ul>
-
 <h3><a name="3-7-6-4-2-6-beta1" class="anchor" href="#3-7-6-4-2-6-beta1">3.7.6 / 4.2.6-beta1</a></h3>
-
 <ul>
 <li>Fix <a href="https://github.com/Antaris/RazorEngine/pull/348">https://github.com/Antaris/RazorEngine/pull/348</a></li>
 </ul>
-
 <h3><a name="3-7-5-4-2-5-beta1" class="anchor" href="#3-7-5-4-2-5-beta1">3.7.5 / 4.2.5-beta1</a></h3>
-
 <ul>
 <li>Fix <a href="https://github.com/Antaris/RazorEngine/issues/275">https://github.com/Antaris/RazorEngine/issues/275</a></li>
 <li>Fix <a href="https://github.com/Antaris/RazorEngine/issues/343">https://github.com/Antaris/RazorEngine/issues/343</a></li>
 </ul>
-
 <h3><a name="3-7-4-4-2-4-beta1" class="anchor" href="#3-7-4-4-2-4-beta1">3.7.4 / 4.2.4-beta1</a></h3>
-
 <ul>
 <li>make implementation thread-safe, fixes #325 and #331. <a href="https://github.com/Antaris/RazorEngine/pull/339">https://github.com/Antaris/RazorEngine/pull/339</a></li>
 <li>add documentation for partial templates and layouts (<a href="https://github.com/Antaris/RazorEngine/issues/338)">https://github.com/Antaris/RazorEngine/issues/338)</a></li>
 <li>fix a serialization bug when using the isolation API on mono for current versions (NOTE: this version is no longer compatible with older mono versions in isolation scenarios, because an older workaround was removed).</li>
 </ul>
-
 <h3><a name="3-7-3-4-2-3-beta1" class="anchor" href="#3-7-3-4-2-3-beta1">3.7.3 / 4.2.3-beta1</a></h3>
-
 <ul>
 <li>Template Run performance optimizations (<a href="https://github.com/Antaris/RazorEngine/pull/328)">https://github.com/Antaris/RazorEngine/pull/328)</a></li>
 <li>Update to Razor4-beta7 (<a href="https://github.com/Antaris/RazorEngine/pull/319)">https://github.com/Antaris/RazorEngine/pull/319)</a></li>
 </ul>
-
 <h3><a name="3-7-2-4-2-2-beta1" class="anchor" href="#3-7-2-4-2-2-beta1">3.7.2 / 4.2.2-beta1</a></h3>
-
 <ul>
 <li>Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.</li>
 </ul>
-
 <h3><a name="3-7-1-4-2-1-beta1" class="anchor" href="#3-7-1-4-2-1-beta1">3.7.1 / 4.2.1-beta1</a></h3>
-
 <ul>
 <li>Validate and safe-copy the configuration. Changing the configuration after creating a RazorEngineService instance is not (and was never) supported.</li>
 </ul>
-
 <h3><a name="3-7-1-beta1-4-2-0-beta3" class="anchor" href="#3-7-1-beta1-4-2-0-beta3">3.7.1-beta1 / 4.2.0-beta3</a></h3>
-
 <ul>
 <li>Build version 4 against Mircrosoft.AspNet.Razor 4.</li>
 </ul>
-
 <h3><a name="3-7-0-4-2-0-beta2" class="anchor" href="#3-7-0-4-2-0-beta2">3.7.0 / 4.2.0-beta2</a></h3>
-
 <ul>
 <li>add InvalidatingCachingProvider, ResolvePathTemplateManager and WatchingResolvePathTemplateManager, fixes <a href="https://github.com/Antaris/RazorEngine/issues/250">https://github.com/Antaris/RazorEngine/issues/250</a></li>
 <li>Switched to Apache 2: <a href="https://github.com/Antaris/RazorEngine/issues/190">https://github.com/Antaris/RazorEngine/issues/190</a></li>
 <li>Missing feature (compared to 3.6): Configuration fallback to XML.</li>
 </ul>
-
 <h3><a name="3-6-6-4-1-6-beta1" class="anchor" href="#3-6-6-4-1-6-beta1">3.6.6 / 4.1.6-beta1</a></h3>
-
 <ul>
 <li>Another attempt to fix <a href="https://github.com/Antaris/RazorEngine/issues/267">https://github.com/Antaris/RazorEngine/issues/267</a></li>
 </ul>
-
 <h3><a name="3-6-5-4-1-5-beta1" class="anchor" href="#3-6-5-4-1-5-beta1">3.6.5 / 4.1.5-beta1</a></h3>
-
 <ul>
 <li>Fix <a href="https://github.com/Antaris/RazorEngine/issues/267">https://github.com/Antaris/RazorEngine/issues/267</a></li>
 </ul>
-
 <h3><a name="3-6-4-4-1-4-beta1" class="anchor" href="#3-6-4-4-1-4-beta1">3.6.4 / 4.1.4-beta1</a></h3>
-
 <ul>
 <li>Use /nostdlib when we find a mscorlib (improves mono support)</li>
-<li>Added <code>DisableTempFileLocking</code> to load assemblies in memory (to prevent temp file locking), 
+<li>
+Added <code>DisableTempFileLocking</code> to load assemblies in memory (to prevent temp file locking), 
 this is only recommended in a very limited amount of scenarios.
 Please be aware of the consequences before using it.
 Please read <a href="https://github.com/Antaris/RazorEngine/issues/244">https://github.com/Antaris/RazorEngine/issues/244</a> for details.
-Note that this can introduce memory leaks to your application.</li>
+Note that this can introduce memory leaks to your application.
+</li>
 </ul>
-
 <h3><a name="3-6-3-4-1-3-beta2" class="anchor" href="#3-6-3-4-1-3-beta2">3.6.3 / 4.1.3-beta2</a></h3>
-
 <ul>
 <li>Cleanup temporary files when RazorEngine is not used in the default AppDomain</li>
 <li>Write to stderr when cleanup is not successful.</li>
 <li>Add an API to change the temporary directory (by subclassing CompilerService)</li>
 <li>Fix <a href="https://github.com/Antaris/RazorEngine/issues/253">https://github.com/Antaris/RazorEngine/issues/253</a></li>
 </ul>
-
 <h3><a name="3-6-3-beta2" class="anchor" href="#3-6-3-beta2">3.6.3-beta2</a></h3>
-
 <ul>
 <li>Fix some race conditions in cleanup.</li>
 <li>Fix <a href="https://github.com/Antaris/RazorEngine/issues/253">https://github.com/Antaris/RazorEngine/issues/253</a></li>
 </ul>
-
 <h3><a name="3-6-3-beta1-4-1-3-beta1" class="anchor" href="#3-6-3-beta1-4-1-3-beta1">3.6.3-beta1 / 4.1.3-beta1</a></h3>
-
 <ul>
 <li>Cleanup temporary files when RazorEngine is not used in the default AppDomain</li>
 <li>Add an API to change the temporary directory (by subclassing CompilerService)</li>
 </ul>
-
 <h3><a name="3-6-2-4-1-2-beta1" class="anchor" href="#3-6-2-4-1-2-beta1">3.6.2 / 4.1.2-beta1</a></h3>
-
 <ul>
-<li>Add support for escaping the dynamic wrapper in certain situations
+<li>
+Add support for escaping the dynamic wrapper in certain situations
 <ul>
 <li>Implicit or explicit casts</li>
 <li>By using <code>RazorEngine.Compilation.RazorDynamicObject.Unwrap(Model.ToUnwrap)</code></li>
-</ul></li>
+</ul>
+</li>
 <li>Wrapper now supports binary and unary operations (thanks devteamexpress): <a href="https://github.com/Antaris/RazorEngine/issues/248">https://github.com/Antaris/RazorEngine/issues/248</a></li>
 </ul>
-
 <h3><a name="3-6-1-4-1-1-beta1" class="anchor" href="#3-6-1-4-1-1-beta1">3.6.1 / 4.1.1-beta1</a></h3>
-
 <ul>
 <li>Add support for nested model types as well</li>
 <li>Fix a bug with non-generic nested template base classes.</li>
 </ul>
-
 <h3><a name="3-6-0-4-1-0-beta1" class="anchor" href="#3-6-0-4-1-0-beta1">3.6.0 / 4.1.0-beta1</a></h3>
-
 <ul>
 <li>ICodeInspector API is now obsolete (it has been removed in 4.0.0).</li>
 <li>Nested classes can now be used as template-base-class.</li>
-<li>ViewBag data can now be used in overwritten SetModel calls
+<li>
+ViewBag data can now be used in overwritten SetModel calls
 Viewbag is set like the model on template creation (not in the ExecuteContext)
 This leads to some minor breaking changes
 <ul>
 <li>Creating a ExecuteContext with a non-null viewbag throws a NotSupportedException (obsolete API)</li>
 <li>added a DynamicViewBag parameter to IInternalTemplateService.Resolve (you should not need to use that API)</li>
 <li>ITemplate.SetModel has changed to ITemplate.SetData (you are not affected if you use TemplateBase or TemplateBase<T> as base class, which is recommended)</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>These changes are strictly speaking breaking, but they shouldn't practically affect anyone.
 Watch out for new Obsolete warnings and fix them.</p>
-
 <h3><a name="3-5-3-4-0-3-beta1" class="anchor" href="#3-5-3-4-0-3-beta1">3.5.3 / 4.0.3-beta1</a></h3>
-
 <ul>
 <li>Fixed a SecurityException when the template is broken.</li>
 <li>RazorEngine is now compatible with ImpromptuInterface (thanks kipwilliams).</li>
 </ul>
-
 <h3><a name="3-5-2-4-0-2-beta1" class="anchor" href="#3-5-2-4-0-2-beta1">3.5.2 / 4.0.2-beta1</a></h3>
-
 <ul>
-<li>If you use assemblies in your template which are not referenced in your hosting code 
+<li>
+If you use assemblies in your template which are not referenced in your hosting code 
 RazorEngine will load them for you automatically if they are required.
-See <a href="https://github.com/Antaris/RazorEngine/issues/218">https://github.com/Antaris/RazorEngine/issues/218</a> for details.</li>
+See <a href="https://github.com/Antaris/RazorEngine/issues/218">https://github.com/Antaris/RazorEngine/issues/218</a> for details.
+</li>
 </ul>
-
 <h3><a name="3-5-1-4-0-1-beta1" class="anchor" href="#3-5-1-4-0-1-beta1">3.5.1 / 4.0.1-beta1</a></h3>
-
 <ul>
 <li>Fixed <a href="https://github.com/Antaris/RazorEngine/issues/217">https://github.com/Antaris/RazorEngine/issues/217</a></li>
 </ul>
-
 <h3><a name="3-5-0-4-0-0-beta2" class="anchor" href="#3-5-0-4-0-0-beta2">3.5.0 / 4.0.0-beta2</a></h3>
-
 <ul>
 <li>documentation website based on FSharp.Formatting (<a href="https://Antaris.github.io/RazorEngine),">https://Antaris.github.io/RazorEngine),</a> can be build locally</li>
 <li>travis and appveyor build systems to automatically build on mono and windows.</li>
@@ -260,21 +224,15 @@ See <a href="https://github.com/Antaris/RazorEngine/issues/218">https://github.c
 <li>Roslyn Support (via RazorEngine.Roslyn, not supported on net40)</li>
 <li>Please report breaking changes in 3.5.0 (from 3.4.x) and open an issue!</li>
 </ul>
-
 <h3><a name="3-5-0-beta3-4-0-0-beta2" class="anchor" href="#3-5-0-beta3-4-0-0-beta2">3.5.0-beta3 / 4.0.0-beta2</a></h3>
-
 <ul>
 <li>Fix a missing [SecurityCritical] attribute on TemplateParsingException.GetObjectData</li>
 </ul>
-
 <h3><a name="3-5-0-beta2" class="anchor" href="#3-5-0-beta2">3.5.0-beta2</a></h3>
-
 <ul>
 <li>Relax nuget Razor dependency</li>
 </ul>
-
 <h3><a name="New-in-3-5-0-beta1-4-0-0-beta1-To-be-released" class="anchor" href="#New-in-3-5-0-beta1-4-0-0-beta1-To-be-released">New in 3.5.0-beta1 / 4.0.0-beta1 (To be released)</a></h3>
-
 <ul>
 <li>documentation website based on FSharp.Formatting (<a href="https://Antaris.github.io/RazorEngine),">https://Antaris.github.io/RazorEngine),</a> can be build locally</li>
 <li>travis and appveyor build systems to automatically build on mono and windows.</li>

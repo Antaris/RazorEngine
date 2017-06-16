@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Provides a base implementation of a template with a model.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,17 +55,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '883', 883)" onmouseover="showTip(event, '883', 883)">
+          <code onmouseout="hideTip(event, '886', 886)" onmouseover="showTip(event, '886', 886)">
             new()
           </code>
-          <div class="tip" id="883">
+          <div class="tip" id="886">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initialises a new instance of <a href="razorengine-templating-templatebase-1.html">TemplateBase`1</a>.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -79,102 +79,102 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '884', 884)" onmouseover="showTip(event, '884', 884)">
+          <code onmouseout="hideTip(event, '887', 887)" onmouseover="showTip(event, '887', 887)">
             HasDynamicModel()
           </code>
-          <div class="tip" id="884">
+          <div class="tip" id="887">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Determines whether this template has a dynamic model.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '885', 885)" onmouseover="showTip(event, '885', 885)">
-            Include(name, model, modelType)
-          </code>
-          <div class="tip" id="885">
-            <strong>Signature:</strong> (name:string * model:obj * modelType:Type) -&gt; TemplateWriter<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Includes the template with the specified name.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '886', 886)" onmouseover="showTip(event, '886', 886)">
-            Include(name, model)
-          </code>
-          <div class="tip" id="886">
-            <strong>Signature:</strong> (name:string * model:obj) -&gt; TemplateWriter<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Includes the template with the specified name.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '887', 887)" onmouseover="showTip(event, '887', 887)">
-            Include(name)
-          </code>
-          <div class="tip" id="887">
-            <strong>Signature:</strong> name:string -&gt; TemplateWriter<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Includes the template with the specified name, uses the current model and model-type.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '888', 888)" onmouseover="showTip(event, '888', 888)">
-            Model()
+            Include(name, model, modelType)
           </code>
           <div class="tip" id="888">
-            <strong>Signature:</strong> unit -&gt; unit<br />
+            <strong>Signature:</strong> (name:string * model:obj * modelType:Type) -&gt; TemplateWriter<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Gets or sets the model.
-            </br>
+          </br><p class='summary'>
+            Includes the template with the specified name.
+            </p><p class='returns'>Returns: The template writer helper.</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '889', 889)" onmouseover="showTip(event, '889', 889)">
-            SetModel(model)
+            Include(name, model)
           </code>
           <div class="tip" id="889">
+            <strong>Signature:</strong> (name:string * model:obj) -&gt; TemplateWriter<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            Includes the template with the specified name.
+            </p><p class='returns'>Returns: The template writer helper.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '890', 890)" onmouseover="showTip(event, '890', 890)">
+            Include(name)
+          </code>
+          <div class="tip" id="890">
+            <strong>Signature:</strong> name:string -&gt; TemplateWriter<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            Includes the template with the specified name, uses the current model and model-type.
+            </p><p class='returns'>Returns: The template writer helper.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '891', 891)" onmouseover="showTip(event, '891', 891)">
+            Model()
+          </code>
+          <div class="tip" id="891">
+            <strong>Signature:</strong> unit -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            Gets or sets the model.
+            </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '892', 892)" onmouseover="showTip(event, '892', 892)">
+            SetModel(model)
+          </code>
+          <div class="tip" id="892">
             <strong>Signature:</strong> model:obj -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Set the model.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>

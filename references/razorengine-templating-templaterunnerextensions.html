@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CSharpRazorCodeLanguage - RazorEngine</title>
+    <title>TemplateRunnerExtensions - RazorEngine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthew Abbott">
@@ -38,75 +38,34 @@
 
 
 
-<h1>CSharpRazorCodeLanguage </h1>
+<h1>TemplateRunnerExtensions </h1>
 <div class="xmldoc">
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
 </br><p class='summary'>
-            Provides a razor code language that supports the C# language.
+            Extensions for the <a href="razorengine-templating-itemplaterunner-1.html">ITemplateRunner`1</a>.
             </p></div>
-  <h3>Constructors</h3>
+  <h3>Static members</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Constructor</td><td>Description</td></tr>
+      <tr><td>Static member</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '156', 156)" onmouseover="showTip(event, '156', 156)">
-            new(strictMode)
+          <code onmouseout="hideTip(event, '905', 905)" onmouseover="showTip(event, '905', 905)">
+            Run(templateRunner, model, viewBag)
           </code>
-          <div class="tip" id="156">
-            <strong>Signature:</strong> strictMode:bool -&gt; unit<br />
-                      </div>
+          <div class="tip" id="905">
+            <strong>Signature:</strong> (templateRunner:ITemplateRunner&lt;&#39;TModel&gt; * model:&#39;TModel * viewBag:DynamicViewBag) -&gt; string<br />
+                          <strong>Type parameters:</strong> 'TModel          </div>
         </td>
         <td class="xmldoc">
           </br><p class='summary'>
-            Initialises a new instance
-            </p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3>Instance members</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Instance member</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '157', 157)" onmouseover="showTip(event, '157', 157)">
-            CreateCodeGenerator(...)
-          </code>
-          <div class="tip" id="157">
-            <strong>Signature:</strong> (className:string * rootNamespaceName:string * sourceFileName:string * host:RazorEngineHost) -&gt; RazorCodeGenerator<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          </br><p class='summary'>
-            Creates the code generator.
-            </p>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '158', 158)" onmouseover="showTip(event, '158', 158)">
-            StrictMode()
-          </code>
-          <div class="tip" id="158">
-            <strong>Signature:</strong> unit -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          </br><p class='summary'>
-            Gets whether strict mode is enabled.
-            </p>
+            Runs the template using the specified .
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

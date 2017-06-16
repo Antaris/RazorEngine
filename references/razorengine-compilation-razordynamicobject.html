@@ -43,10 +43,10 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Wraps a dynamic object for serialization of dynamic objects and anonymous type support.
             But this type will also make (static) types work which are not serializable.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -64,9 +64,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new instance of the <a href="razorengine-compilation-razordynamicobject.html">RazorDynamicObject</a> class.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -89,9 +89,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Disposes the current instance.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -106,9 +106,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Populates a <a href="http://msdn.microsoft.com/en-us/library/System.Runtime.Serialization.SerializationInfo">SerializationInfo</a> with the data needed to serialize the target object.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -123,9 +123,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Override ToString and remotely invoke our wrapped instance.
-            </br>
+            </p><p class='returns'>Returns: Whatever our wrapped instance returns.</p>
         </td>
       </tr>
       <tr>
@@ -140,9 +140,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwards the binary operation
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -157,9 +157,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Tries to convert the current instance.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -174,9 +174,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Tries the index of the get.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -191,9 +191,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Tries to get the member.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -208,9 +208,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Tries the invoke member.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -225,9 +225,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Tries the index of the set.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -242,9 +242,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Tries to set the member.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -259,9 +259,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Forwads the unary operation
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>
@@ -283,9 +283,9 @@
                           <strong>Type parameters:</strong> 'T          </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             A simple generic cast method. Used for the DynamicCast implementation.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -299,9 +299,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Checks if the fiven ParameterInfo array is compatible with the given type array.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -315,12 +315,12 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Create a wrapper around an dynamic object.
             This wrapper ensures that we can cross the <a href="http://msdn.microsoft.com/en-us/library/System.AppDomain">AppDomain</a>, 
             call internal methods (to make Anonymous types work), 
             or call missing methods (when allowMissingMembers is true).
-            </br>
+            </p><p class='returns'>Returns: the wrapped object.</p>
         </td>
       </tr>
       <tr>
@@ -334,9 +334,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             A tricky dynamic cast (Cast in the runtime with dynamic types).
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -350,10 +350,10 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Returnes true when the type of the given result is primitive.
             (ie should not be wrapped in another <a href="razorengine-compilation-razordynamicobject.html">RazorDynamicObject</a> instance)
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -367,9 +367,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Check if an instance is already wrapped with <a href="razorengine-compilation-razordynamicobject.html">RazorDynamicObject</a>.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -383,10 +383,10 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Convert the given interface type instance in another interface 
             type instance which is free of anonymous types.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -400,10 +400,10 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Try to find a type instance which has no references to anonymous types.
             Either we use the type or create a new one which implements the same interfaces.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -417,9 +417,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Unwraps the current dynamic object.
-            </br>
+            </p><p class='returns'>Returns: the unwrapped object.</p>
         </td>
       </tr>
     </tbody>

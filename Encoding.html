@@ -37,21 +37,16 @@
         <div class="span9" id="main">
           
 <h1><a name="Encoding-Values" class="anchor" href="#Encoding-Values">Encoding Values</a></h1>
-
 <h2><a name="Encoding" class="anchor" href="#Encoding">Encoding:</a></h2>
-
 <p>By default RazorEngine is configured to encode as Html. This sometimes this presents problems were certain characters are encoded as Html but what you want is to output them as-is. To output something in raw format use the <code>@Raw()</code> built-in method as shown in the following example:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">string template = &quot;@Raw(Model.Data)&quot;;
 var model = new { Data = &quot;My raw double quotes appears here \&quot;hello!\&quot;&quot; };
 
 string result = Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, model);
 </code></pre>
-
 <p>Which should result in:</p>
-
 <blockquote>
-  <p><code>My raw double quotes appears here "hello!"</code></p>
+<p><code>My raw double quotes appears here "hello!"</code></p>
 </blockquote>
 
 

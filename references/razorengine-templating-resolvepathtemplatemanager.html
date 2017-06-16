@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             A TemplateManager resolving templates by path, given a list of folders to look into.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,17 +55,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '853', 853)" onmouseover="showTip(event, '853', 853)">
+          <code onmouseout="hideTip(event, '856', 856)" onmouseover="showTip(event, '856', 856)">
             new(layoutRoots)
           </code>
-          <div class="tip" id="853">
+          <div class="tip" id="856">
             <strong>Signature:</strong> layoutRoots:IEnumerable&lt;string&gt; -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new TemplateManager.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -79,52 +79,52 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '854', 854)" onmouseover="showTip(event, '854', 854)">
+          <code onmouseout="hideTip(event, '857', 857)" onmouseover="showTip(event, '857', 857)">
             AddDynamic(key, source)
           </code>
-          <div class="tip" id="854">
+          <div class="tip" id="857">
             <strong>Signature:</strong> (key:ITemplateKey * source:ITemplateSource) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Throws NotSupportedException.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '855', 855)" onmouseover="showTip(event, '855', 855)">
+          <code onmouseout="hideTip(event, '858', 858)" onmouseover="showTip(event, '858', 858)">
             GetKey(name, resolveType, context)
           </code>
-          <div class="tip" id="855">
+          <div class="tip" id="858">
             <strong>Signature:</strong> (name:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Get the given key.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '856', 856)" onmouseover="showTip(event, '856', 856)">
+          <code onmouseout="hideTip(event, '859', 859)" onmouseover="showTip(event, '859', 859)">
             Resolve(key)
           </code>
-          <div class="tip" id="856">
+          <div class="tip" id="859">
             <strong>Signature:</strong> key:ITemplateKey -&gt; ITemplateSource<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Resolve the given key
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

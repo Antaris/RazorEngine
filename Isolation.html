@@ -37,13 +37,11 @@
         <div class="span9" id="main">
           
 <h1><a name="RazorEngine-Isolation-API" class="anchor" href="#RazorEngine-Isolation-API">RazorEngine Isolation API</a></h1>
-
 <p>RazorEngine provides an additional layer of security by allowing you to run the generated code within an secured sandbox.
-All you need to do is use <code>IsolatedRazorEngineService.Create</code> instead of <code>RazorEngineService.Create</code>. 
+All you need to do is use <code>IsolatedRazorEngineService.Create</code> instead of <code>RazorEngineService.Create</code>.
 This will immediately switch the compilation and execution to another AppDomain.
-However this new AppDomain still has no permission restrictions so what you want to do is provide either your own IAppDomainFactory 
+However this new AppDomain still has no permission restrictions so what you want to do is provide either your own IAppDomainFactory
 or use the Func<AppDomain> overloads of <code>IsolatedRazorEngineService.Create</code>:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">public static AppDomain SandboxCreator()
 {
     Evidence ev = new Evidence();
@@ -67,9 +65,7 @@ or use the Func<AppDomain> overloads of <code>IsolatedRazorEngineService.Create<
     return newDomain;
 }
 </code></pre>
-
 <p>You can use the above method like this to create an AppDomain with partial trust (internet security zone):</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">public void IsolatedRazorEngineService_BadTemplate_InSandbox()
 {
     using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
@@ -90,38 +86,27 @@ File.WriteAllText(&quot;&quot;$file$&quot;&quot;, &quot;&quot;BAD DATA&quot;&quo
     }
 }
 </code></pre>
-
 <p>As you can see this template will throw a <code>SecurityException</code> as there is no way for it
 to write into a file of the local harddrive.</p>
-
 <h2><a name="SecurityException-and-MethodAccessException" class="anchor" href="#SecurityException-and-MethodAccessException">SecurityException and MethodAccessException.</a></h2>
-
 <p>One important thing to understand is how .NET handles partial trust scenarios.
 You should definitely read <a href="http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional">http://msdn.microsoft.com/en-us/library/vstudio/dd233102%28v=vs.100%29.aspx#additional</a> .
 However to give some RazorEngine specific hints/additions:</p>
-
 <p>If your assembly is running with full trust all your code (types/members) will be SecurityCritical!
 If you add your own assembly to the list of full trust assemblies the template is not able to use types within that assembly as model.
 You can work around that by extracting the types to another assembly (with partial trust)
 or work with the <code>AllowPartiallyTrustedCallers</code> attribute.</p>
-
 <p>Another way is to use <code>dynamic</code> and wrap your instance in an <code>RazorDynamicObject</code>.
 Of course you can also just remove your assembly from the full trust list if you dont need full trust within the sandbox.</p>
-
 <h2><a name="SerializationException" class="anchor" href="#SerializationException">SerializationException</a></h2>
-
 <p>Whenever you are in an isolation scenario all your models need to traverse into another AppDomain, that means your model needs to be serializable!
 When you call methods on your model and you use an MarshalByRef scenario all your parameters and return types must be serializable as well!</p>
-
-<p>If you want to use a model instance which is not serializable you can use <code>dynamic</code> and wrap it in an <code>RazorDynamicObject</code> 
+<p>If you want to use a model instance which is not serializable you can use <code>dynamic</code> and wrap it in an <code>RazorDynamicObject</code>
 this should magically take care of everything for you.
 The only thing not supported is to cast the model within the template in its type (all interfaces will work however).
 You can even call methods with serializable parameters (return type must not be serializable).</p>
-
 <h2><a name="Configuration" class="anchor" href="#Configuration">Configuration</a></h2>
-
 <p>RazorEngine provides an <code>IConfigCreator</code> interface to configure an <code>IsolatedRazorEngineService</code>.</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">/// &lt;summary&gt;
 /// A helper interface to get a custom configuration into a new AppDomain.
 /// Classes inheriting this interface should be Serializable 
@@ -171,7 +156,6 @@ public class LanguageEncodingConfigCreator : IConfigCreator
     }
 }
 </code></pre>
-
 <p>The only thing to mention here is that the implementation must be serializable but not inherit from <code>MarshalByRefObject</code>.</p>
 
 

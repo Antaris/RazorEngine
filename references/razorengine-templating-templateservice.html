@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Defines a template service.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,32 +55,32 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '902', 902)" onmouseover="showTip(event, '902', 902)">
+          <code onmouseout="hideTip(event, '906', 906)" onmouseover="showTip(event, '906', 906)">
             new(config)
           </code>
-          <div class="tip" id="902">
+          <div class="tip" id="906">
             <strong>Signature:</strong> config:ITemplateServiceConfiguration -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Initialises a new instance of <a href="razorengine-templating-templateservice.html">TemplateService</a></br>
+          </br><p class='summary'>
+            Initialises a new instance of <a href="razorengine-templating-templateservice.html">TemplateService</a></p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '903', 903)" onmouseover="showTip(event, '903', 903)">
+          <code onmouseout="hideTip(event, '907', 907)" onmouseover="showTip(event, '907', 907)">
             new()
           </code>
-          <div class="tip" id="903">
+          <div class="tip" id="907">
             <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initialises a new instance of <a href="razorengine-templating-templateservice.html">TemplateService</a>.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -94,283 +94,215 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '904', 904)" onmouseover="showTip(event, '904', 904)">
+          <code onmouseout="hideTip(event, '908', 908)" onmouseover="showTip(event, '908', 908)">
             AddNamespace(ns)
           </code>
-          <div class="tip" id="904">
+          <div class="tip" id="908">
             <strong>Signature:</strong> ns:string -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Adds a namespace that will be imported into the template.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '905', 905)" onmouseover="showTip(event, '905', 905)">
-            Compile(razorTemplate, modelType, name)
-          </code>
-          <div class="tip" id="905">
-            <strong>Signature:</strong> (razorTemplate:string * modelType:Type * name:string) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Compiles the specified template.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '906', 906)" onmouseover="showTip(event, '906', 906)">
-            Configuration
-          </code>
-          <div class="tip" id="906">
-            <strong>Signature:</strong> ITemplateServiceConfiguration<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Gets the template service configuration.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '907', 907)" onmouseover="showTip(event, '907', 907)">
-            CreateExecuteContext(viewBag)
-          </code>
-          <div class="tip" id="907">
-            <strong>Signature:</strong> viewBag:DynamicViewBag -&gt; ExecuteContext<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Creates a ExecuteContext
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '908', 908)" onmouseover="showTip(event, '908', 908)">
-            CreateTemplate(...)
-          </code>
-          <div class="tip" id="908">
-            <strong>Signature:</strong> (razorTemplate:string * staticType:Type * model:obj) -&gt; ITemplate<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Creates an instance of <a href="razorengine-templating-itemplate.html">ITemplate</a> from the specified string template.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '909', 909)" onmouseover="showTip(event, '909', 909)">
-            CreateTemplates(...)
+            Compile(razorTemplate, modelType, name)
           </code>
           <div class="tip" id="909">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * types:IEnumerable&lt;Type&gt; * models:IEnumerable&lt;obj&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
+            <strong>Signature:</strong> (razorTemplate:string * modelType:Type * name:string) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Creates a set of templates from the specified string templates and models.
-            </br>
+          </br><p class='summary'>
+            Compiles the specified template.
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '910', 910)" onmouseover="showTip(event, '910', 910)">
-            CreateTemplateType(...)
+            Configuration
           </code>
           <div class="tip" id="910">
-            <strong>Signature:</strong> (razorTemplate:string * modelType:Type) -&gt; Type<br />
+            <strong>Signature:</strong> ITemplateServiceConfiguration<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Creates a <a href="http://msdn.microsoft.com/en-us/library/System.Type">Type</a> that can be used to instantiate an instance of a template.
-            </br>
+          </br><p class='summary'>
+            Gets the template service configuration.
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '911', 911)" onmouseover="showTip(event, '911', 911)">
-            CreateTemplateTypes(...)
+            CreateExecuteContext(viewBag)
           </code>
           <div class="tip" id="911">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * types:IEnumerable&lt;Type&gt; * parallel:bool) -&gt; IEnumerable&lt;Type&gt;<br />
+            <strong>Signature:</strong> viewBag:DynamicViewBag -&gt; ExecuteContext<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Creates a set of template types from the specfied string templates.
-            </br>
+          </br><p class='summary'>
+            Creates a ExecuteContext
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '912', 912)" onmouseover="showTip(event, '912', 912)">
-            EncodedStringFactory
+            CreateTemplate(...)
           </code>
           <div class="tip" id="912">
-            <strong>Signature:</strong> IEncodedStringFactory<br />
+            <strong>Signature:</strong> (razorTemplate:string * staticType:Type * model:obj) -&gt; ITemplate<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Gets the encoded string factory.
-            </br>
+          </br><p class='summary'>
+            Creates an instance of <a href="razorengine-templating-itemplate.html">ITemplate</a> from the specified string template.
+            </p><p class='returns'>Returns: An instance of .</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '913', 913)" onmouseover="showTip(event, '913', 913)">
-            GetTemplate(razorTemplate, model, name)
+            CreateTemplates(...)
           </code>
           <div class="tip" id="913">
-            <strong>Signature:</strong> (razorTemplate:string * model:obj * name:string) -&gt; ITemplate<br />
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * types:IEnumerable&lt;Type&gt; * models:IEnumerable&lt;obj&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Gets an instance of the template using the cached compiled type, or compiles the template type
-            if it does not exist in the cache.
-            </br>
+          </br><p class='summary'>
+            Creates a set of templates from the specified string templates and models.
+            </p><p class='returns'>Returns: The enumerable set of template instances.</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '914', 914)" onmouseover="showTip(event, '914', 914)">
-            GetTemplate(razorTemplate, model, name)
+            CreateTemplateType(...)
           </code>
           <div class="tip" id="914">
-            <strong>Signature:</strong> (razorTemplate:string * model:obj * name:string) -&gt; ITemplate<br />
+            <strong>Signature:</strong> (razorTemplate:string * modelType:Type) -&gt; Type<br />
               <strong>Modifiers:</strong> abstract<br />
-                          <strong>Type parameters:</strong> 'T          </div>
+                      </div>
         </td>
         <td class="xmldoc">
-          
-            Gets an instance of the template using the cached compiled type, or compiles the template type
-            if it does not exist in the cache.
-            </br>
+          </br><p class='summary'>
+            Creates a <a href="http://msdn.microsoft.com/en-us/library/System.Type">Type</a> that can be used to instantiate an instance of a template.
+            </p><p class='returns'>Returns: An instance of .</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '915', 915)" onmouseover="showTip(event, '915', 915)">
-            GetTemplates(...)
+            CreateTemplateTypes(...)
           </code>
           <div class="tip" id="915">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * names:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * types:IEnumerable&lt;Type&gt; * parallel:bool) -&gt; IEnumerable&lt;Type&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Gets the set of template instances for the specified string templates. Cached templates will be considered
-            and if they do not exist, new types will be created and instantiated.
-            </br>
+          </br><p class='summary'>
+            Creates a set of template types from the specfied string templates.
+            </p><p class='returns'>Returns: The set of  instances.</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '916', 916)" onmouseover="showTip(event, '916', 916)">
-            HasTemplate(name)
+            EncodedStringFactory
           </code>
           <div class="tip" id="916">
-            <strong>Signature:</strong> name:string -&gt; bool<br />
+            <strong>Signature:</strong> IEncodedStringFactory<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Returns whether or not a template by the specified name has been created already.
-            </br>
+          </br><p class='summary'>
+            Gets the encoded string factory.
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '917', 917)" onmouseover="showTip(event, '917', 917)">
-            Parse(...)
+            GetTemplate(razorTemplate, model, name)
           </code>
           <div class="tip" id="917">
-            <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * name:string) -&gt; ITemplate<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Parses and returns the result of the specified string template.
-            </br>
+          </br><p class='summary'>
+            Gets an instance of the template using the cached compiled type, or compiles the template type
+            if it does not exist in the cache.
+            </p><p class='returns'>Returns: An instance of .</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '918', 918)" onmouseover="showTip(event, '918', 918)">
-            Parse(...)
+            GetTemplate(razorTemplate, model, name)
           </code>
           <div class="tip" id="918">
-            <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * name:string) -&gt; ITemplate<br />
               <strong>Modifiers:</strong> abstract<br />
                           <strong>Type parameters:</strong> 'T          </div>
         </td>
         <td class="xmldoc">
-          
-            Parses and returns the result of the specified string template.
-            </br>
+          </br><p class='summary'>
+            Gets an instance of the template using the cached compiled type, or compiles the template type
+            if it does not exist in the cache.
+            </p><p class='returns'>Returns: An instance of .</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '919', 919)" onmouseover="showTip(event, '919', 919)">
-            ParseMany(...)
+            GetTemplates(...)
           </code>
           <div class="tip" id="919">
-            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * viewBags:IEnumerable&lt;DynamicViewBag&gt; * names:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;string&gt;<br />
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * names:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;ITemplate&gt;<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Parses the specified set of templates.
-            </br>
+          </br><p class='summary'>
+            Gets the set of template instances for the specified string templates. Cached templates will be considered
+            and if they do not exist, new types will be created and instantiated.
+            </p><p class='returns'>Returns: The set of  instances.</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '920', 920)" onmouseover="showTip(event, '920', 920)">
-            RemoveTemplate(name)
+            HasTemplate(name)
           </code>
           <div class="tip" id="920">
             <strong>Signature:</strong> name:string -&gt; bool<br />
@@ -378,60 +310,128 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
-            NOT SUPPORTED.
-            </br>
+          </br><p class='summary'>
+            Returns whether or not a template by the specified name has been created already.
+            </p><p class='returns'>Returns: Whether or not the template has been created.</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '921', 921)" onmouseover="showTip(event, '921', 921)">
-            Resolve(name, model)
+            Parse(...)
           </code>
           <div class="tip" id="921">
-            <strong>Signature:</strong> (name:string * model:obj) -&gt; ITemplate<br />
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Resolves the template with the specified name.
-            </br>
+          </br><p class='summary'>
+            Parses and returns the result of the specified string template.
+            </p><p class='returns'>Returns: The string result of the template.</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '922', 922)" onmouseover="showTip(event, '922', 922)">
-            Run(name, model, viewBag)
+            Parse(...)
           </code>
           <div class="tip" id="922">
-            <strong>Signature:</strong> (name:string * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (razorTemplate:string * model:obj * viewBag:DynamicViewBag * cacheName:string) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
-                      </div>
+                          <strong>Type parameters:</strong> 'T          </div>
         </td>
         <td class="xmldoc">
-          
-            Runs the template with the specified name.
-            </br>
+          </br><p class='summary'>
+            Parses and returns the result of the specified string template.
+            </p><p class='returns'>Returns: The string result of the template.</p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '923', 923)" onmouseover="showTip(event, '923', 923)">
-            Run(template, viewBag)
+            ParseMany(...)
           </code>
           <div class="tip" id="923">
+            <strong>Signature:</strong> (razorTemplates:IEnumerable&lt;string&gt; * models:IEnumerable&lt;obj&gt; * viewBags:IEnumerable&lt;DynamicViewBag&gt; * names:IEnumerable&lt;string&gt; * parallel:bool) -&gt; IEnumerable&lt;string&gt;<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            Parses the specified set of templates.
+            </p><p class='returns'>Returns: The set of parsed template results.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '924', 924)" onmouseover="showTip(event, '924', 924)">
+            RemoveTemplate(name)
+          </code>
+          <div class="tip" id="924">
+            <strong>Signature:</strong> name:string -&gt; bool<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            NOT SUPPORTED.
+            </p><p class='returns'>Returns: </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '925', 925)" onmouseover="showTip(event, '925', 925)">
+            Resolve(name, model)
+          </code>
+          <div class="tip" id="925">
+            <strong>Signature:</strong> (name:string * model:obj) -&gt; ITemplate<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            Resolves the template with the specified name.
+            </p><p class='returns'>Returns: The resolved template.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '926', 926)" onmouseover="showTip(event, '926', 926)">
+            Run(name, model, viewBag)
+          </code>
+          <div class="tip" id="926">
+            <strong>Signature:</strong> (name:string * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            Runs the template with the specified name.
+            </p><p class='returns'>Returns: The string result of the template.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '927', 927)" onmouseover="showTip(event, '927', 927)">
+            Run(template, viewBag)
+          </code>
+          <div class="tip" id="927">
             <strong>Signature:</strong> (template:ITemplate * viewBag:DynamicViewBag) -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Runs the template with the specified name.
-            </br>
+            </p><p class='returns'>Returns: The string result of the template.</p>
         </td>
       </tr>
     </tbody>

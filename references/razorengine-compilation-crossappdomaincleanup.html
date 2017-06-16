@@ -43,10 +43,10 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Helper class to cleanup locked files and folders after the current AppDomain has been unloaded.
             (Because of locking they can't be deleted while the current AppDomain is up, see https://github.com/Antaris/RazorEngine/issues/244)
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -64,9 +64,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Create a new CrossAppDomainCleanUp object for the current AppDomain.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -89,9 +89,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Dispose the current instance.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -105,9 +105,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Register the given path for cleanup.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -129,9 +129,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             A cleanup instance for the current AppDomain
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -145,12 +145,12 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Gets or sets the printer that is used by default when creating new CrossAppDomainCleanUp objects.
             Do not use this property unless you know what you are doing.
             Settings this to a serializable object is safe, however setting this to a marshalbyrefobject
             can lead to errors if the object lives in the domain that is watched for unloading
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -164,9 +164,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Get the StrongName of the given assembly.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -180,9 +180,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             A helper method to register items to cleanup for the current AppDomain.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>

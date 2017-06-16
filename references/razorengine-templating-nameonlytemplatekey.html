@@ -43,11 +43,11 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             A simple <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a> implementation inheriting from <a href="razorengine-templating-basetemplatekey.html">BaseTemplateKey</a>.
             This implementation assumes that the template-names are unique and returns the name as unique key.
             (So this implementation is used by <a href="razorengine-templating-delegatetemplatemanager.html">DelegateTemplateManager</a> and <a href="razorengine-configuration-xml-wrappertemplatemanager.html">WrapperTemplateManager</a>.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -57,17 +57,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '807', 807)" onmouseover="showTip(event, '807', 807)">
+          <code onmouseout="hideTip(event, '808', 808)" onmouseover="showTip(event, '808', 808)">
             new(name, resolveType, context)
           </code>
-          <div class="tip" id="807">
+          <div class="tip" id="808">
             <strong>Signature:</strong> (name:string * resolveType:ResolveType * context:ITemplateKey) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new instance of the <a href="razorengine-templating-nameonlytemplatekey.html">NameOnlyTemplateKey</a> class.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -81,52 +81,52 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '808', 808)" onmouseover="showTip(event, '808', 808)">
+          <code onmouseout="hideTip(event, '809', 809)" onmouseover="showTip(event, '809', 809)">
             Equals(obj)
           </code>
-          <div class="tip" id="808">
+          <div class="tip" id="809">
             <strong>Signature:</strong> obj:obj -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Checks if the names are equal.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '809', 809)" onmouseover="showTip(event, '809', 809)">
-            GetHashCode()
-          </code>
-          <div class="tip" id="809">
-            <strong>Signature:</strong> unit -&gt; int<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Returns a hashcode for the current instance.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '810', 810)" onmouseover="showTip(event, '810', 810)">
-            GetUniqueKeyString()
+            GetHashCode()
           </code>
           <div class="tip" id="810">
+            <strong>Signature:</strong> unit -&gt; int<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            Returns a hashcode for the current instance.
+            </p><p class='returns'>Returns: </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '811', 811)" onmouseover="showTip(event, '811', 811)">
+            GetUniqueKeyString()
+          </code>
+          <div class="tip" id="811">
             <strong>Signature:</strong> unit -&gt; string<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Returns the name.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

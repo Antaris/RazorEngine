@@ -43,10 +43,10 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Defines a template service and the main API for running templates.
             Implements the <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> interface.
-            </br></div>
+            </p></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -56,94 +56,77 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '818', 818)" onmouseover="showTip(event, '818', 818)">
+          <code onmouseout="hideTip(event, '819', 819)" onmouseover="showTip(event, '819', 819)">
             AddTemplate(key, templateSource)
           </code>
-          <div class="tip" id="818">
+          <div class="tip" id="819">
             <strong>Signature:</strong> (key:ITemplateKey * templateSource:ITemplateSource) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Adds a given template to the <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> as dynamic template.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '819', 819)" onmouseover="showTip(event, '819', 819)">
-            Compile(key, modelType)
-          </code>
-          <div class="tip" id="819">
-            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; unit<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Compiles the specified template and caches it.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '820', 820)" onmouseover="showTip(event, '820', 820)">
-            GetKey(cacheName, resolveType, context)
+            Compile(key, modelType)
           </code>
           <div class="tip" id="820">
-            <strong>Signature:</strong> (cacheName:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
+            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Gets a given key from the <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> implementation.
-            See <a href="razorengine-templating-itemplatemanager.html">ITemplateManager.GetKey</a>.
-            </br>
+          </br><p class='summary'>
+            Compiles the specified template and caches it.
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '821', 821)" onmouseover="showTip(event, '821', 821)">
-            IsTemplateCached(key, modelType)
+            GetKey(cacheName, resolveType, context)
           </code>
           <div class="tip" id="821">
-            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; bool<br />
+            <strong>Signature:</strong> (cacheName:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Checks if a given template is already cached in the <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>.
-            </br>
+          </br><p class='summary'>
+            Gets a given key from the <a href="razorengine-templating-itemplatemanager.html">ITemplateManager</a> implementation.
+            See <a href="razorengine-templating-itemplatemanager.html">ITemplateManager.GetKey</a>.
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '822', 822)" onmouseover="showTip(event, '822', 822)">
-            Run(...)
+            IsTemplateCached(key, modelType)
           </code>
           <div class="tip" id="822">
-            <strong>Signature:</strong> (key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (key:ITemplateKey * modelType:Type) -&gt; bool<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Runs the given cached template.
-            </br>
+          </br><p class='summary'>
+            Checks if a given template is already cached in the <a href="razorengine-templating-icachingprovider.html">ICachingProvider</a>.
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '823', 823)" onmouseover="showTip(event, '823', 823)">
-            RunCompile(...)
+            Run(...)
           </code>
           <div class="tip" id="823">
             <strong>Signature:</strong> (key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
@@ -151,11 +134,28 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
+            Runs the given cached template.
+            </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '824', 824)" onmouseover="showTip(event, '824', 824)">
+            RunCompile(...)
+          </code>
+          <div class="tip" id="824">
+            <strong>Signature:</strong> (key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
             Runs the given cached template.
             When the cache does not contain the template 
             it will be compiled and cached beforehand.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -169,33 +169,33 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '824', 824)" onmouseover="showTip(event, '824', 824)">
+          <code onmouseout="hideTip(event, '825', 825)" onmouseover="showTip(event, '825', 825)">
             Create()
           </code>
-          <div class="tip" id="824">
+          <div class="tip" id="825">
             <strong>Signature:</strong> unit -&gt; IRazorEngineService<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '825', 825)" onmouseover="showTip(event, '825', 825)">
+          <code onmouseout="hideTip(event, '826', 826)" onmouseover="showTip(event, '826', 826)">
             Create(config)
           </code>
-          <div class="tip" id="825">
+          <div class="tip" id="826">
             <strong>Signature:</strong> config:ITemplateServiceConfiguration -&gt; IRazorEngineService<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Creates a new <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a> instance with the given configuration.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Extensions for the <a href="razorengine-templating-irazorengineservice.html">IRazorEngineService</a>.
-            </br></div>
+            </p></div>
   <h3>Static members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,33 +55,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '826', 826)" onmouseover="showTip(event, '826', 826)">
-            AddTemplate(...)
-          </code>
-          <div class="tip" id="826">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * templateSource:ITemplateSource) -&gt; unit<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            Adds a given template to the template manager as dynamic template.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
           <code onmouseout="hideTip(event, '827', 827)" onmouseover="showTip(event, '827', 827)">
             AddTemplate(...)
           </code>
           <div class="tip" id="827">
-            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * templateSource:string) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * templateSource:ITemplateSource) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Adds a given template to the template manager as dynamic template.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -91,46 +75,45 @@
             AddTemplate(...)
           </code>
           <div class="tip" id="828">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * templateSource:string) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * templateSource:string) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Adds a given template to the template manager as dynamic template.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '829', 829)" onmouseover="showTip(event, '829', 829)">
-            Compile(service, name, modelType)
+            AddTemplate(...)
           </code>
           <div class="tip" id="829">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * templateSource:string) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            </br>
+          </br><p class='summary'>
+            Adds a given template to the template manager as dynamic template.
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '830', 830)" onmouseover="showTip(event, '830', 830)">
-            Compile(...)
+            Compile(service, name, modelType)
           </code>
           <div class="tip" id="830">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -140,14 +123,14 @@
             Compile(...)
           </code>
           <div class="tip" id="831">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
             Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -157,14 +140,14 @@
             Compile(...)
           </code>
           <div class="tip" id="832">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
             Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -174,130 +157,129 @@
             Compile(...)
           </code>
           <div class="tip" id="833">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * modelType:Type) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
             Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '834', 834)" onmouseover="showTip(event, '834', 834)">
-            IsTemplateCached(...)
+            Compile(...)
           </code>
           <div class="tip" id="834">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type) -&gt; bool<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * modelType:Type) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            Checks if a given template is already cached.
-            </br>
+          </br><p class='summary'>
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Compile</a>.
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '835', 835)" onmouseover="showTip(event, '835', 835)">
-            Run(...)
+            CompileRunner(service, templateSource)
           </code>
           <div class="tip" id="835">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
-                      </div>
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string) -&gt; ITemplateRunner&lt;&#39;TModel&gt;<br />
+                          <strong>Type parameters:</strong> 'TModel          </div>
         </td>
         <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Run</a>.
-            </br>
+          </br><p class='summary'>
+            Adds and compiles a new template using the specified  and returns a <a href="razorengine-templating-templaterunner-1.html">TemplateRunner`1</a>.
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '836', 836)" onmouseover="showTip(event, '836', 836)">
-            Run(...)
+            CompileRunner(...)
           </code>
           <div class="tip" id="836">
-            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
-                      </div>
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string) -&gt; ITemplateRunner&lt;&#39;TModel&gt;<br />
+                          <strong>Type parameters:</strong> 'TModel          </div>
         </td>
         <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Run</a>.
-            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+          </br><p class='summary'>
+            Adds and compiles a new template using the specified  and returns a <a href="razorengine-templating-templaterunner-1.html">TemplateRunner`1</a>.
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '837', 837)" onmouseover="showTip(event, '837', 837)">
-            Run(...)
+            IsTemplateCached(...)
           </code>
           <div class="tip" id="837">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type) -&gt; bool<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Run</a>.
-            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+          </br><p class='summary'>
+            Checks if a given template is already cached.
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '838', 838)" onmouseover="showTip(event, '838', 838)">
-            RunCompile(...)
+            Run(...)
           </code>
           <div class="tip" id="838">
             <strong>Signature:</strong> (service:IRazorEngineService * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            </br>
+          </br><p class='summary'>
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Run</a>.
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '839', 839)" onmouseover="showTip(event, '839', 839)">
-            RunCompile(...)
+            Run(...)
           </code>
           <div class="tip" id="839">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            </br>
+          </br><p class='summary'>
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Run</a>.
+            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '840', 840)" onmouseover="showTip(event, '840', 840)">
-            RunCompile(...)
+            Run(...)
           </code>
           <div class="tip" id="840">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
-            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            </br>
+          </br><p class='summary'>
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.Run</a>.
+            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -307,14 +289,13 @@
             RunCompile(...)
           </code>
           <div class="tip" id="841">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -324,14 +305,14 @@
             RunCompile(...)
           </code>
           <div class="tip" id="842">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
             Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -341,14 +322,14 @@
             RunCompile(...)
           </code>
           <div class="tip" id="843">
-            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            </p>
         </td>
       </tr>
       <tr>
@@ -358,14 +339,14 @@
             RunCompile(...)
           </code>
           <div class="tip" id="844">
-            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            </p>
         </td>
       </tr>
       <tr>
@@ -375,15 +356,14 @@
             RunCompile(...)
           </code>
           <div class="tip" id="845">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * writer:TextWriter * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
             Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -393,15 +373,14 @@
             RunCompile(...)
           </code>
           <div class="tip" id="846">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
             Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -411,15 +390,14 @@
             RunCompile(...)
           </code>
           <div class="tip" id="847">
-            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+            <strong>Signature:</strong> (service:IRazorEngineService * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
-            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
             Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
@@ -429,15 +407,69 @@
             RunCompile(...)
           </code>
           <div class="tip" id="848">
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
+            </p><p class='returns'>Returns: </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '849', 849)" onmouseover="showTip(event, '849', 849)">
+            RunCompile(...)
+          </code>
+          <div class="tip" id="849">
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * key:ITemplateKey * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
+            </p><p class='returns'>Returns: </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '850', 850)" onmouseover="showTip(event, '850', 850)">
+            RunCompile(...)
+          </code>
+          <div class="tip" id="850">
+            <strong>Signature:</strong> (service:IRazorEngineService * templateSource:ITemplateSource * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
+            See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
+            Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
+            </p><p class='returns'>Returns: </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '851', 851)" onmouseover="showTip(event, '851', 851)">
+            RunCompile(...)
+          </code>
+          <div class="tip" id="851">
             <strong>Signature:</strong> (service:IRazorEngineService * templateSource:string * name:string * modelType:Type * model:obj * viewBag:DynamicViewBag) -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             See <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
             Convenience method which calls <a href="razorengine-templating-razorengineservice.html">RazorEngineService.AddTemplate</a> before calling <a href="razorengine-templating-razorengineservice.html">RazorEngineService.RunCompile</a>.
             Convenience method which creates a <a href="http://msdn.microsoft.com/en-us/library/System.IO.TextWriter">TextWriter</a> and returns the result as string.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

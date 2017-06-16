@@ -37,140 +37,133 @@
         <div class="span9" id="main">
           
 <h1><a name="Upgrading-RazorEngine" class="anchor" href="#Upgrading-RazorEngine">Upgrading RazorEngine.</a></h1>
-
 <h2><a name="Upgrading-to-4-x" class="anchor" href="#Upgrading-to-4-x">Upgrading to 4.x.</a></h2>
-
 <p>While Razor 4 is still beta we do not recommend upgrading to 4.x on production systems.
 4.x releases will have the same features/API of 3.x releases but will use Razor-4 instead of Razor-2 and Razor-3.
 Some obsolete APIs will be removed so see the <code>Upgrading to 3.5.0</code> guide.</p>
-
 <p>Razor 4 changed quite a bit of its internals,
 see <a href="https://github.com/aspnet/Razor/releases">https://github.com/aspnet/Razor/releases</a> for a complete list of changes.</p>
-
 <p>Some important changes hitting RazorEngine users:</p>
-
 <ul>
 <li><code>@helper</code> is no longer available (<a href="https://github.com/aspnet/Razor/issues/281)">https://github.com/aspnet/Razor/issues/281)</a></li>
-<li>Urls like <code>~/index.html</code> are no longer resolved.
-See <a href="https://github.com/aspnet/Razor/issues/427">https://github.com/aspnet/Razor/issues/427</a> and <a href="https://github.com/aspnet/Mvc/issues/2807">https://github.com/aspnet/Mvc/issues/2807</a></li>
+<li>
+Urls like <code>~/index.html</code> are no longer resolved.
+See <a href="https://github.com/aspnet/Razor/issues/427">https://github.com/aspnet/Razor/issues/427</a> and <a href="https://github.com/aspnet/Mvc/issues/2807">https://github.com/aspnet/Mvc/issues/2807</a>
+</li>
 </ul>
-
 <h2><a name="Upgrading-to-3-5-0" class="anchor" href="#Upgrading-to-3-5-0">Upgrading to 3.5.0.</a></h2>
-
-<p>First of all 3.5.0 should be fully (binary) backwards compatible with 3.4.x releases. 
+<p>First of all 3.5.0 should be fully (binary) backwards compatible with 3.4.x releases.
 So if you have bugs after upgrading (missing method exceptions etc.) please open an issue!</p>
-
 <p>All documentation is now based on the latest API. If you find the need for documentation please consider upgrading.
 To give you time to adapt we will support the old API in the 3.x releases.
 An obsolete warning means that this API will be removed (possibly already in 4.x!), but stays in the 3.x releases.
 Here are some suggestions and bad practices you should get rid of after upgrading to 3.5.0:</p>
-
 <h3><a name="Upgrade-to-the-new-API" class="anchor" href="#Upgrade-to-the-new-API">Upgrade to the new API.</a></h3>
-
 <p>Here are the biggest changes:</p>
-
 <ul>
 <li><p>Instead of using the static <code>Razor</code> class use <code>Engine.Razor</code></p></li>
-<li><code>ITemplateService</code> is now replaced by <code>IRazorEngineService</code>
+<li>
+<p><code>ITemplateService</code> is now replaced by <code>IRazorEngineService</code></p>
 <ul>
-<li><code>new TemplateService(*)</code> is now replaced by <code>RazorEngineService.Create(*)</code></li>
+<li><p><code>new TemplateService(*)</code> is now replaced by <code>RazorEngineService.Create(*)</code></p></li>
 <li><p><code>new IsolatedTemplateService(*)</code> is now replaced by <code>IsolatedRazorEngineService.Create(*)</code></p></li>
-</ul></li>
+</ul>
+</li>
 <li><p><code>ITemplateResolver</code> is now replaced by <code>ITemplateManager</code> (see separate section).</p></li>
-<li><p>The Caching API can now be replaced by implementing <code>ICachingProvider</code> and caching depends on the template-key and the model-type used for compilation.</p>
+<li>
+<p>The Caching API can now be replaced by implementing <code>ICachingProvider</code> and caching depends on the template-key and the model-type used for compilation.</p>
 <blockquote>
-  <p>In previous versions RazorEngine would throw subtle exceptions when different types are used for the same template.
+<p>In previous versions RazorEngine would throw subtle exceptions when different types are used for the same template.
 This can happen in different scenarios (for example multiple templates with the same layout but different types).
 Note just because <em>it just works</em> with 3.5.0 you probably don't want to compile templates (Layouts or Includes) multiple times (as compiling is pretty slow compared to just running).
 Your application probably runs faster with using <code>dynamic</code> instead of multiple compiles.
 This can reverse when you run a compiled template very often, you could be faster by compiling the layout multiple times with static types.
 You can <em>kind of</em> revert to the old behavior by providing an <code>ICachingProvider</code> implementation that throws when someone tries to compile a template multiple times with different types.</p>
-</blockquote></li>
-</ul>
-
-<p>The new <code>IRazorEngineService</code> interface, which replaces the old <code>ITemplateService</code> interface has a lot of extension methods which can be summarized:</p>
-
-<blockquote>
-  <p>You need to open the <code>RazorEngine.Templating</code> namespace to be able to use the extension methods.</p>
 </blockquote>
-
+</li>
+</ul>
+<p>The new <code>IRazorEngineService</code> interface, which replaces the old <code>ITemplateService</code> interface has a lot of extension methods which can be summarized:</p>
+<blockquote>
+<p>You need to open the <code>RazorEngine.Templating</code> namespace to be able to use the extension methods.</p>
+</blockquote>
 <ul>
 <li><p><code>Parse</code> is now called <code>RunCompile</code></p></li>
-<li><p>The default methods (<code>Run</code>, <code>Compile</code> and <code>RunCompile</code>) have <code>ITemplateKey</code> and <code>TextWriter</code> parameters.</p>
+<li>
+<p>The default methods (<code>Run</code>, <code>Compile</code> and <code>RunCompile</code>) have <code>ITemplateKey</code> and <code>TextWriter</code> parameters.</p>
 <ul>
-<li><p><code>TextWriter</code> parameters allow to stream the output into a <code>TextWriter</code>. 
+<li>
+<p><code>TextWriter</code> parameters allow to stream the output into a <code>TextWriter</code>.
 If you just want the output as <code>string</code> there is an extension method without the <code>TextWriter</code> parameter and a
-<code>string</code> return type.</p></li>
-<li><p><code>ITemplateKey</code> specifies the key of the template. 
+<code>string</code> return type.</p>
+</li>
+<li>
+<p><code>ITemplateKey</code> specifies the key of the template.
 The meaning of <code>ITemplateKey</code> depends on the concrete <code>ITemplateManager</code> implementation (see below).
 The default implementation only uses the name (a simple <code>string</code>) of the template for resolving.</p>
 <blockquote>
-  <p>By default resolving will always fail if the template was not added with <code>AddTemplate</code>.</p>
+<p>By default resolving will always fail if the template was not added with <code>AddTemplate</code>.</p>
 </blockquote>
 <p>You almost always want to use the extension methods which have a <code>string</code> parameter
 instead of an <code>ITemplateKey</code> parameter.</p>
 <blockquote>
-  <p>You only <em>really</em> need the <code>ITemplateKey</code> overload when you have a resolver which loads nested templates (includes/layouts) in another way as
+<p>You only <em>really</em> need the <code>ITemplateKey</code> overload when you have a resolver which loads nested templates (includes/layouts) in another way as
 global templates, but you want to precompile some nested templates.
-For example to precompile a layout you would use the <code>IRazorEngineService.GetKey</code> method with a parameter of <code>ResolveType.Layout</code> to get the 
+For example to precompile a layout you would use the <code>IRazorEngineService.GetKey</code> method with a parameter of <code>ResolveType.Layout</code> to get the
 <code>ITemplateKey</code> instance and then use this instance to call the <code>Compile</code> method.</p>
-</blockquote></li>
-</ul></li>
-<li><p>There are more extension methods (for <code>Compile</code> and <code>RunCompile</code>) which take an additional <code>ITemplateSource</code> parameter. 
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>There are more extension methods (for <code>Compile</code> and <code>RunCompile</code>) which take an additional <code>ITemplateSource</code> parameter.
 Those methods just call <code>IRazorEngineService.AddTemplate</code> beforehand.</p>
 <blockquote>
-  <p>You need to open the <code>RazorEngine.Templating</code> namespace to be able to use the extension methods.</p>
+<p>You need to open the <code>RazorEngine.Templating</code> namespace to be able to use the extension methods.</p>
 </blockquote>
 <ul>
-<li><p>for every (extension) method taking a <code>ITemplateSource</code> parameter there is another extension method which takes a simple <code>string</code>
+<li>
+<p>for every (extension) method taking a <code>ITemplateSource</code> parameter there is another extension method which takes a simple <code>string</code>
 (the source code of the template).
 Those will simply call the <code>ITemplateSource</code> overload with <code>new LoadedTemplateSource(templateSource)</code>.</p>
 <blockquote>
-  <p>To improve debugging you should use <code>new LoadedTemplateSource(templateSource, templateFile)</code> instead (see the debugging section in the Quickstart tutorial).</p>
-</blockquote></li>
-</ul></li>
+<p>To improve debugging you should use <code>new LoadedTemplateSource(templateSource, templateFile)</code> instead (see the debugging section in the Quickstart tutorial).</p>
+</blockquote>
+</li>
 </ul>
-
+</li>
+</ul>
 <ul>
 <li><p><code>AddTemplate</code> also has the above extension methods (to specify <code>ITemplateKey</code> or <code>ITemplateSource</code> via <code>string</code>).</p></li>
-<li><p><code>modelType</code> now has to be specified explicitly on all methods. <code>null</code> means we compile the model with <code>dynamic</code> if applicable.</p>
+<li>
+<p><code>modelType</code> now has to be specified explicitly on all methods. <code>null</code> means we compile the model with <code>dynamic</code> if applicable.</p>
 <blockquote>
-  <p>In previous releases we tried to figure out the modelType from the given model. 
+<p>In previous releases we tried to figure out the modelType from the given model.
 However sometimes you want to use a static instance but compile the template with dynamic (to prevent multiple compilations for example).
 You can now do that by specifing <code>null</code>.
 Another thing you can do now is specify a base type instead of the given instance type and then use the compiled template for multiple sub-type instances.</p>
 </blockquote>
 <p>The parameter will be ignored for compilation when the template has a <code>@Inherits</code> or a <code>@model</code> directive.</p>
 <blockquote>
-  <p>The parameter could be used by the caching layer, so make sure you use the same type instance every time to prevent re-compilations.
+<p>The parameter could be used by the caching layer, so make sure you use the same type instance every time to prevent re-compilations.
 Caching is another reason why this parameter now always has to be specified.</p>
 </blockquote>
-<p>The modelType parameter must be <code>null</code> for anonymous types (and therefore <code>dynamic</code> will be used). 
-Using <code>model.GetType()</code> is not possible with anonymous types as the compiler generated classes are marked as internal.</p></li>
+<p>The modelType parameter must be <code>null</code> for anonymous types (and therefore <code>dynamic</code> will be used).
+Using <code>model.GetType()</code> is not possible with anonymous types as the compiler generated classes are marked as internal.</p>
+</li>
 </ul>
-
 <h3><a name="Use-or-add-all-your-templates-before-usage" class="anchor" href="#Use-or-add-all-your-templates-before-usage">Use <code>ITemplateManager</code> or add all your templates before usage.</a></h3>
-
 <p>If you can you should resolve your templates via an <code>ITemplateManager</code> implementation (see the Quickstart tutorial) and convert your exisiting
 <code>ITemplateResolver</code> implementations to the new interface.</p>
-
 <p>This way you can get rid of all <code>IRazorEngineService</code> extension methods with an <code>templatesource</code> (<code>string</code> and <code>ITemplateSource</code>) parameter, which will simplify your code.</p>
-
-<p>If you want to have the template-source-code within your application-source-code for some reason you should call <code>AddTemplate</code> on app-startup 
+<p>If you want to have the template-source-code within your application-source-code for some reason you should call <code>AddTemplate</code> on app-startup
 and again get rid of all methods with a <code>templatesource</code> (<code>string</code> and <code>ITemplateSource</code>) parameter.</p>
-
 <p>The extensions methods with a <code>templatesource</code> (<code>string</code> and <code>ITemplateSource</code>) parameter are provided to get started with <code>RazorEngine</code> very quickly.
 But they could block you in the long run when you want a <code>ITemplateManager</code> implementation with a <code>AddTemplate</code> method that throws <code>NotSupportedException</code>.</p>
-
 <h3><a name="Code-examples" class="anchor" href="#Code-examples">Code examples</a></h3>
-
 <p>For example</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">var result = Razor.Parse(razorTemplate, model, cache_name)
 </code></pre>
-
 <p>is now either (when the modeltype is known or you want to precompile on startup)</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">// Once at startup (not required when using an ITemplateManager which knows how to resolve cache_name)
 Engine.Razor.AddTemplate(cache_name, razorTemplate)
 // On startup
@@ -179,30 +172,22 @@ Engine.Razor.Compile(cache_name, typeof(MyModel) /* or model.GetType() or null f
 // instead of the Razor.Parse call
 var result = Engine.Razor.Run(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/, model)
 </code></pre>
-
 <p>or (when you want lazy compilation, like <code>Parse</code>)</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">// Once at startup (not required when using an ITemplateManager which knows how to resolve cache_name)
 Engine.Razor.AddTemplate(cache_name, razorTemplate)
-    
+	
 // instead of the Razor.Parse call
 var result = Engine.Razor.RunCompile(cache_name, typeof(MyModel) /* or model.GetType() or null for &#39;dynamic&#39;*/, model)
 </code></pre>
-
 <p>The semantic equivalent one-liner would be (only to be used to get started with <code>RazorEngine</code> quickly):</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">// This will just call AddTemplate for you (every time), note that the ITemplateManager has to support AddTemplate
 // and it has to handle multiple calls to AddTemplate gracefully to make this work.
 // The default implementation will throw an exception when you use the same cache_name for different templates.
 var result = Engine.Razor.RunCompile(razorTemplate, cache_name, model.GetType() /* typeof(MyModel) or or null for &#39;dynamic&#39;*/, model)
 </code></pre>
-
 <h3><a name="Mono-support" class="anchor" href="#Mono-support">Mono support</a></h3>
-
 <p>If you need support on the mono platform you should provide a <code>IReferenceResolver</code> implementation (see the Quickstart tutorial).</p>
-
 <h3><a name="Roslyn-support-beta" class="anchor" href="#Roslyn-support-beta">Roslyn support (beta)</a></h3>
-
 <p>See the Roslyn support page (on the right).</p>
 
 

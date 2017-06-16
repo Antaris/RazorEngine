@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             A simple <a href="razorengine-templating-itemplatesource.html">ITemplateSource</a> implementation which represents an in-memory string.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -55,17 +55,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '803', 803)" onmouseover="showTip(event, '803', 803)">
+          <code onmouseout="hideTip(event, '804', 804)" onmouseover="showTip(event, '804', 804)">
             new(template, templateFile)
           </code>
-          <div class="tip" id="803">
+          <div class="tip" id="804">
             <strong>Signature:</strong> (template:string * templateFile:string) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Initializes a new <a href="razorengine-templating-loadedtemplatesource.html">LoadedTemplateSource</a> instance.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -79,42 +79,25 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '804', 804)" onmouseover="showTip(event, '804', 804)">
+          <code onmouseout="hideTip(event, '805', 805)" onmouseover="showTip(event, '805', 805)">
             GetTemplateReader()
           </code>
-          <div class="tip" id="804">
+          <div class="tip" id="805">
             <strong>Signature:</strong> unit -&gt; TextReader<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Creates a new <a href="http://msdn.microsoft.com/en-us/library/System.IO.StringReader">StringReader</a> to read the in-memory stream.
-            </br>
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '805', 805)" onmouseover="showTip(event, '805', 805)">
-            Template
-          </code>
-          <div class="tip" id="805">
-            <strong>Signature:</strong> string<br />
-              <strong>Modifiers:</strong> abstract<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-          
-            The in-memory template sourcecode.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '806', 806)" onmouseover="showTip(event, '806', 806)">
-            TemplateFile
+            Template
           </code>
           <div class="tip" id="806">
             <strong>Signature:</strong> string<br />
@@ -122,9 +105,26 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
+            The in-memory template sourcecode.
+            </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '807', 807)" onmouseover="showTip(event, '807', 807)">
+            TemplateFile
+          </code>
+          <div class="tip" id="807">
+            <strong>Signature:</strong> string<br />
+              <strong>Modifiers:</strong> abstract<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          </br><p class='summary'>
             The template file or null if none exists.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>

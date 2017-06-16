@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             Defines the required contract for implementing a template-manager.
-            </br></div>
+            </p></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -64,9 +64,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Adds a template dynamically to the current manager.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -81,11 +81,15 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Get the key of a template.
             This method has to be implemented so that the manager can control the <a href="razorengine-templating-itemplatekey.html">ITemplateKey</a> implementation.
             This way the cache api can rely on the unique string given by <a href="razorengine-templating-itemplatekey.html">ITemplateKey.GetUniqueKeyString</a>.
-            </br>
+            </p><p class='returns'>Returns: the key for the template</p><h2>Remarks</h2><p class='remarks'>
+            For example one template manager reads all template from a single folder, then the <a href="razorengine-templating-itemplatekey.html">ITemplateKey.GetUniqueKeyString</a> can simply return the template name.
+            Another template manager can read from different folders depending whether we include a layout or including a template.
+            In that situation the <a href="razorengine-templating-itemplatekey.html">ITemplateKey.GetUniqueKeyString</a> has to take that into account so that templates with the same name can not be confused.
+            </p>
         </td>
       </tr>
       <tr>
@@ -100,9 +104,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Resolves the template with the specified key.
-            </br>
+            </p><p class='returns'>Returns: The template content.</p>
         </td>
       </tr>
     </tbody>

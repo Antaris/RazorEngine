@@ -37,22 +37,16 @@
         <div class="span9" id="main">
           
 <h1><a name="ITemplateManager-and-ICachingProvider" class="anchor" href="#ITemplateManager-and-ICachingProvider">ITemplateManager and ICachingProvider</a></h1>
-
-<p>This section explains how <code>ITemplateManager</code> and <code>ICachingProvider</code> work and play together, 
+<p>This section explains how <code>ITemplateManager</code> and <code>ICachingProvider</code> work and play together,
 which implementations are available by default and how to write your own.</p>
-
 <h2><a name="Template-resolving" class="anchor" href="#Template-resolving">Template resolving</a></h2>
-
 <p>There are 3 situations where RazorEngine needs to resolve templates:</p>
-
 <ul>
 <li>Layouts</li>
 <li>Includes</li>
 <li><code>RunCompile</code>/<code>Compile</code> (for <code>Run</code> it needs to be cached already)</li>
 </ul>
-
 <p>RazorEngine unifies this process with the <code>ITemplateManager</code> interface and does the following:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -69,44 +63,43 @@ which implementations are available by default and how to write your own.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>The <code>GetKey</code> step enables a <code>TemplateManager</code> to add customized data to the key for the caching layer to take into account.</p>
-
 <h2><a name="Available-TemplateManagers" class="anchor" href="#Available-TemplateManagers">Available TemplateManagers</a></h2>
-
 <ul>
 <li><code>DelegateTemplateManager</code>: (default) Used as the default for historical reasons, easy solution when using dynamic template razor strings.</li>
-<li><code>ResolvePathTemplateManager</code>: Used to resolve templates from a given list of directory paths. 
-Doesn't support adding templates dynamically via string. You can use a full path instead of a template name.</li>
-<li><code>EmbeddedResourceTemplateManager</code>: Used to resolve templates from assembly embedded resources.
-Uses <a href="https://msdn.microsoft.com/en-us/library/5kx66y1a(v=vs.110).aspx"><code>Assembly.GetManifestResourceStream(Type, string)</code></a> to load the template based on the type provided.</li>
-<li><code>WatchingResolvePathTemplateManager</code>: Same as ResolvePathTemplateManager but watches the filesystem and invalidates the cache.
+<li>
+<code>ResolvePathTemplateManager</code>: Used to resolve templates from a given list of directory paths. 
+Doesn't support adding templates dynamically via string. You can use a full path instead of a template name.
+</li>
+<li>
+<code>EmbeddedResourceTemplateManager</code>: Used to resolve templates from assembly embedded resources.
+Uses <a href="https://msdn.microsoft.com/en-us/library/5kx66y1a(v=vs.110).aspx"><code>Assembly.GetManifestResourceStream(Type, string)</code></a> to load the template based on the type provided.
+</li>
+<li>
+<code>WatchingResolvePathTemplateManager</code>: Same as ResolvePathTemplateManager but watches the filesystem and invalidates the cache.
 Note that this introduces a memory leak to your application, so only use this is you have an AppDomain recycle strategy in place
-or for debugging purposes.</li>
+or for debugging purposes.
+</li>
 </ul>
-
 <blockquote>
-  <p>Mono doesn't always detect changes, if you have problems report a bug to mono and try to use 
- <code>Environment.SetEnvironmentVariable("MONO_MANAGED_WATCHER", "enabled");</code><br />
- Related:<br />
- <a href="http://stackoverflow.com/questions/16859372/why-doesnt-the-servicestack-razor-filesystemwatcher-work-on-mono-mac-os-x">http://stackoverflow.com/questions/16859372/why-doesnt-the-servicestack-razor-filesystemwatcher-work-on-mono-mac-os-x</a><br />
- <a href="http://stackoverflow.com/questions/16519000/filesystemwatcher-under-mono-watching-subdirs">http://stackoverflow.com/questions/16519000/filesystemwatcher-under-mono-watching-subdirs</a><br />
- <code>&lt;Insert your bug report here&gt;</code></p>
+<p>Mono doesn't always detect changes, if you have problems report a bug to mono and try to use
+<code>Environment.SetEnvironmentVariable("MONO_MANAGED_WATCHER", "enabled");</code><br />
+Related:<br />
+<a href="http://stackoverflow.com/questions/16859372/why-doesnt-the-servicestack-razor-filesystemwatcher-work-on-mono-mac-os-x">http://stackoverflow.com/questions/16859372/why-doesnt-the-servicestack-razor-filesystemwatcher-work-on-mono-mac-os-x</a><br />
+<a href="http://stackoverflow.com/questions/16519000/filesystemwatcher-under-mono-watching-subdirs">http://stackoverflow.com/questions/16519000/filesystemwatcher-under-mono-watching-subdirs</a><br />
+<code>&lt;Insert your bug report here&gt;</code></p>
 </blockquote>
-
 <h2><a name="Available-CachingProviders" class="anchor" href="#Available-CachingProviders">Available CachingProviders</a></h2>
-
 <ul>
 <li><code>DefaultCachingProvider</code>: (default) Simple in-memory caching strategy.</li>
-<li><code>InvalidatingCachingProvider</code>: Same as <code>DefaultCachingProvider</code> but with additional methods to invalidate cached templates.
+<li>
+<code>InvalidatingCachingProvider</code>: Same as <code>DefaultCachingProvider</code> but with additional methods to invalidate cached templates.
 Note that invalidating cached templates doesn't actually free the memory (loaded assemblies), so only use this
-for debugging purposes or if you have an <code>AppDomain</code> recycle strategy in place.</li>
+for debugging purposes or if you have an <code>AppDomain</code> recycle strategy in place.
+</li>
 </ul>
-
 <h2><a name="Writing-your-own" class="anchor" href="#Writing-your-own">Writing your own <code>ITemplateManager</code></a></h2>
-
 <p>If the above implementations don't fit your needs you can roll your own:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">config.TemplateManager = new MyTemplateManager(); 
 
 public class MyTemplateManager : ITemplateManager
@@ -114,7 +107,7 @@ public class MyTemplateManager : ITemplateManager
     public ITemplateSource Resolve(ITemplateKey key)
     {
         // Resolve your template here (ie read from disk)
-        // if the same templates are often read from disk you propably want to do some caching here.
+		// if the same templates are often read from disk you propably want to do some caching here.
         string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
         // Provide a non-null file to improve debugging
         return new LoadedTemplateSource(template, null);
@@ -139,21 +132,16 @@ public class MyTemplateManager : ITemplateManager
     }
 }
 </code></pre>
-
 <p>Contributing your implementation back to RazorEngine is highly appreciated.</p>
-
 <h2><a name="Writing-your-own-1" class="anchor" href="#Writing-your-own-1">Writing your own <code>ICachingProvider</code></a></h2>
-
 <p>RazorEngine provides a robust caching layer out of the box which should suite most use-cases.
-If you use "Compile" on application startup and "Run" on every use of the application you can be 
+If you use "Compile" on application startup and "Run" on every use of the application you can be
 sure that caching works (as "Run" would throw if there is no cached template).
 If you want "lazy"-compilation of the templates you would just use "RunCompile".</p>
-
 <p>However if you need some custom features (like caching across multiple runs of the application)
 you want to run your own caching implementation.
 All you need to do is implement the <code>ICachingProvider</code> interface and set an instance of your implementation in the configuration.
 As starting point you can use the DefaultCachingProvider (latest code is in the repository):</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">config.CachingProvider = new DefaultCachingProvider();
 
 /// &lt;summary&gt;
@@ -277,7 +265,6 @@ public class DefaultCachingProvider : ICachingProvider
     }
 }
 </code></pre>
-
 <p>Contributing your implementation back to RazorEngine is highly appreciated.</p>
 
 <div class="tip" id="fs1">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>

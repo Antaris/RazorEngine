@@ -36,139 +36,101 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: cd6a936ae046534c04a4ea68b8f6193b0a4760b1 -->
+<!-- GENERATED FROM COMMIT: dd22f4bb7c4bb239679f8bc146bdab466ee79194 -->
 <h1><a name="RazorEngine" class="anchor" href="#RazorEngine">RazorEngine</a></h1>
-
 <p><a href="https://gitter.im/Antaris/RazorEngine?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/Antaris/RazorEngine" /></a></p>
-
 <p>This project is searching for new maintainers, so if you want to help write on gitter or start sending PRs :)</p>
-
 <p><em>latest</em> documentation available on <a href="https://antaris.github.io/RazorEngine/.">https://antaris.github.io/RazorEngine/.</a></p>
-
 <h2><a name="Build-status" class="anchor" href="#Build-status">Build status</a></h2>
-
 <p>Develop Branch (<code>master</code>)</p>
-
 <p><a href="https://travis-ci.org/Antaris/RazorEngine"><img src="https://travis-ci.org/Antaris/RazorEngine.svg?branch=master" alt="Build Status" /></a>
 <a href="https://ci.appveyor.com/project/Antaris/razorengine/branch/master"><img src="https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/master?svg=true" alt="Build status" /></a></p>
-
 <p>Release Branch (<code>releases</code>)</p>
-
 <p><a href="https://travis-ci.org/Antaris/RazorEngine"><img src="https://travis-ci.org/Antaris/RazorEngine.svg?branch=releases" alt="Build Status" /></a>
 <a href="https://ci.appveyor.com/project/Antaris/razorengine/branch/releases"><img src="https://ci.appveyor.com/api/projects/status/39bi38wonhwolrgy/branch/releases?svg=true" alt="Build status" /></a></p>
-
 <h2><a name="Quickstart" class="anchor" href="#Quickstart">Quickstart</a></h2>
-
 <p>First install the nuget package (&gt;=3.5.0).</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="i">Install</span><span class="o">-</span><span class="i">Package</span> <span class="i">RazorEngine</span>
 </code></pre></td>
 </tr>
 </table>
-
 <p>A templating engine built on Microsoft's Razor parsing engine, RazorEngine allows you to use Razor syntax to build dynamic templates.
 You can find an introduction <a href="http://www.asp.net/web-pages/overview/getting-started/introducing-razor-syntax-%28c%29">here</a>.
 All you need to do is use the static <code>Engine</code> class (the <code>Engine.Razor</code> instance) in the 'RazorEngine' namespace:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">using RazorEngine;
 using RazorEngine.Templating; // For extension methods.
 
 string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
 var result =
-    Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
+	Engine.Razor.RunCompile(template, &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
 </code></pre>
-
 <blockquote>
-  <p>The <code>RunCompile</code> method used here is an extension method and you need to open the <code>RazorEngine.Templating</code> namespace.</p>
+<p>The <code>RunCompile</code> method used here is an extension method and you need to open the <code>RazorEngine.Templating</code> namespace.</p>
 </blockquote>
-
 <p>The <code>"templateKey"</code> must be unique and after running the above example you can re-run the cached template with this key.</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
 var result =
-    Engine.Razor.Run(&quot;templateKey&quot;, null, new { Name = &quot;Max&quot; });
+	Engine.Razor.Run(&quot;templateKey&quot;, null, new { Name = &quot;Max&quot; });
 </code></pre>
-
 <p>The null parameter is the <code>modelType</code> and <code>null</code> in this case means we use <code>dynamic</code> as the type of the model.
 You can use a static model as well by providing a type object.</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
 var result =
-    Engine.Razor.RunCompile(&quot;templateKey&quot;, typeof(Person), new Person { Name = &quot;Max&quot; });
+	Engine.Razor.RunCompile(&quot;templateKey&quot;, typeof(Person), new Person { Name = &quot;Max&quot; });
 </code></pre>
-
-<p>Note that we now re-compile the model with a different type. 
+<p>Note that we now re-compile the model with a different type.
 When you do not run the same template a lot of times (like several 1000 times), compiling uses the most time.
 So the benefit you get from a static type will most likely not compensate the additional compile time.
 Therefore you should either stick to one type for a template (best of both worlds) or just use (the slower) <code>dynamic</code> (<code>null</code>).
-You can specify the <code>modelType</code> of a template with the <code>@model</code> directive. 
-When you do this the <code>modelType</code> parameter is ignored, but you should use the same type instance (or <code>null</code>) 
+You can specify the <code>modelType</code> of a template with the <code>@model</code> directive.
+When you do this the <code>modelType</code> parameter is ignored, but you should use the same type instance (or <code>null</code>)
 on every call to prevent unnecessary re-compilations because of type mismatches in the caching layer.</p>
-
 <h2><a name="Configuration" class="anchor" href="#Configuration">Configuration</a></h2>
-
 <p>You can configure RazorEngine with the <code>TemplateServiceConfiguration</code> class.</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">var config = new TemplateServiceConfiguration();
 // .. configure your instance
 
 var service = RazorEngineService.Create(config);
 </code></pre>
-
 <p>If you want to use the static <code>Engine</code> class with this new configuration:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">Engine.Razor = service;
 </code></pre>
-
 <h3><a name="General-Configuration" class="anchor" href="#General-Configuration">General Configuration</a></h3>
-
-<p>By default RazorEngine is configured to encode using Html. 
-This supports the majority of users but with some configuration changes you can also set it to encode using Raw format 
+<p>By default RazorEngine is configured to encode using Html.
+This supports the majority of users but with some configuration changes you can also set it to encode using Raw format
 which is better suited for templates that generate things like javascript, php, C# and others.</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">config.Language = Language.VisualBasic; // VB.NET as template language.
 config.EncodedStringFactory = new RawStringFactory(); // Raw string encoding.
 config.EncodedStringFactory = new HtmlEncodedStringFactory(); // Html encoding.
 </code></pre>
-
 <h3><a name="Debugging" class="anchor" href="#Debugging">Debugging</a></h3>
-
 <p>One thing you might want to enable is the debugging feature:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">config.Debug = true;
 </code></pre>
-
-<p>When <code>Debug</code> is true you can straight up debug into the generated code. 
+<p>When <code>Debug</code> is true you can straight up debug into the generated code.
 RazorEngine also supports debugging directly into the template files (normally <code>.cshtml</code> files).
-As as you might see in the above code there is no file to debug into.
+As you might see in the above code there is no file to debug into.
 To provide RazorEngine with the necessary information you need to tell where the file can be found:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">// using RazorEngine.Templating; // Dont forget to include this.
 string template = &quot;Hello @Model.Name, welcome to RazorEngine!&quot;;
 string templateFile = &quot;C:/mytemplate.cshtml&quot;
 var result =
-    Engine.Razor.RunCompile(new LoadedTemplateSource(template, templateFile), &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
+	Engine.Razor.RunCompile(new LoadedTemplateSource(template, templateFile), &quot;templateKey&quot;, null, new { Name = &quot;World&quot; });
 </code></pre>
-
 <p>This time when debugging the template you will jump right into the template file.</p>
-
 <h3><a name="Set-a-template-manager" class="anchor" href="#Set-a-template-manager">Set a template manager</a></h3>
-
-<p>The API is designed around the idea that you do not have the templates sitting around in the source code 
+<p>The API is designed around the idea that you do not have the templates sitting around in the source code
 (while you can do that as seen above).
-The main interface to provide RazorEngine with templates is the <code>ITemplateManager</code> interface. <br />
+The main interface to provide RazorEngine with templates is the <code>ITemplateManager</code> interface.	
 You should either pick one of the available implementations or write your own.
 See <a href="http://antaris.github.io/RazorEngine/TemplateManager.html">TemplateManager and Caching documentation</a> for details.</p>
-
 <h2><a name="Temporary-files" class="anchor" href="#Temporary-files">Temporary files</a></h2>
-
 <p>RazorEngine tries hard to delete the temporary files it creates, but this is not always possible.
 This is especially true if you run RazorEngine from the default <code>AppDomain</code>.
-RazorEngine will warn you in this situation by writing to the stderr. 
+RazorEngine will warn you in this situation by writing to the stderr.
 One way to switch into a new AppDomain is to use the following snippet:</p>
-
 <pre class="line-numbers language-csharp"><code class="language-csharp">static int Main(string[] args)
 {
     if (AppDomain.CurrentDomain.IsDefaultAppDomain())
@@ -193,26 +155,19 @@ One way to switch into a new AppDomain is to use the following snippet:</p>
     // Continue with your code.
 }
 </code></pre>
-
 <p>Depending on your scenario you probably need to edit it to your needs.
 Note that you need to <code>Unload</code> the domain to trigger cleanup.</p>
-
 <p>For the following scenario:</p>
-
 <ul>
 <li>Your templates are limited in number.</li>
 <li>You fully trust your templates / don't need isolation.</li>
 <li>You don't need any kind of debugging support.</li>
 <li>Your templates do not change in runtime.</li>
 </ul>
-
 <p>You can use <code>config.DisableTempFileLocking = true</code> as well. This will work in any AppDomain (including the default one).
 To remove the RazorEngine warnings you can additionally use <code>config.CachingProvider = new DefaultCachingProvider(t =&gt; {})</code>.</p>
-
 <p>See also <a href="https://github.com/Antaris/RazorEngine/issues/244">https://github.com/Antaris/RazorEngine/issues/244</a> for more details.</p>
-
 <h2><a name="More" class="anchor" href="#More">More</a></h2>
-
 <p>On the right side you can find links to advanced topics and additional <a href="http://antaris.github.io/RazorEngine/">documentation</a>.
 You should definitely read "About Razor" and "Template basics".</p>
 

@@ -43,14 +43,14 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             A ResolvePathTemplateManager which watches for changes in the 
             filesytem and invalides the corresponding cache entries.
             WARNING:
             Use this only on AppDomains you recycle regularly, or to
             improve the debugging experience.
             Never use this in production without any recycle strategy.
-            </br></div>
+            </p></div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -60,17 +60,17 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '930', 930)" onmouseover="showTip(event, '930', 930)">
+          <code onmouseout="hideTip(event, '934', 934)" onmouseover="showTip(event, '934', 934)">
             new(layoutRoot, cache)
           </code>
-          <div class="tip" id="930">
+          <div class="tip" id="934">
             <strong>Signature:</strong> (layoutRoot:IEnumerable&lt;string&gt; * cache:InvalidatingCachingProvider) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Creates a new WatchingResolvePathTemplateManager.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
@@ -84,69 +84,69 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '931', 931)" onmouseover="showTip(event, '931', 931)">
+          <code onmouseout="hideTip(event, '935', 935)" onmouseover="showTip(event, '935', 935)">
             AddDynamic(key, source)
           </code>
-          <div class="tip" id="931">
+          <div class="tip" id="935">
             <strong>Signature:</strong> (key:ITemplateKey * source:ITemplateSource) -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Add a dynamic template (throws an exception)
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '932', 932)" onmouseover="showTip(event, '932', 932)">
+          <code onmouseout="hideTip(event, '936', 936)" onmouseover="showTip(event, '936', 936)">
             Dispose()
           </code>
-          <div class="tip" id="932">
+          <div class="tip" id="936">
             <strong>Signature:</strong> unit -&gt; unit<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Dispose the current manager.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '933', 933)" onmouseover="showTip(event, '933', 933)">
+          <code onmouseout="hideTip(event, '937', 937)" onmouseover="showTip(event, '937', 937)">
             GetKey(name, resolveType, context)
           </code>
-          <div class="tip" id="933">
+          <div class="tip" id="937">
             <strong>Signature:</strong> (name:string * resolveType:ResolveType * context:ITemplateKey) -&gt; ITemplateKey<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Gets a key for the given template.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '934', 934)" onmouseover="showTip(event, '934', 934)">
+          <code onmouseout="hideTip(event, '938', 938)" onmouseover="showTip(event, '938', 938)">
             Resolve(key)
           </code>
-          <div class="tip" id="934">
+          <div class="tip" id="938">
             <strong>Signature:</strong> key:ITemplateKey -&gt; ITemplateSource<br />
               <strong>Modifiers:</strong> abstract<br />
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Resolve a template.
-            </br>
+            </p><p class='returns'>Returns: </p>
         </td>
       </tr>
     </tbody>

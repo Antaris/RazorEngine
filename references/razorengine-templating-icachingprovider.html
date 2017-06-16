@@ -43,9 +43,9 @@
     Defined in RazorEngine.dll.
 </div>
 <div class="xmldoc">
-
+</br><p class='summary'>
             This interface represents the caching layer.
-            </br></div>
+            </p></div>
   <h3>Instance members</h3>
   <table class="table table-bordered member-list">
     <thead>
@@ -64,9 +64,9 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Request that a given template should be cached.
-            </br>
+            </p>
         </td>
       </tr>
       <tr>
@@ -81,9 +81,12 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Try to resolve a template within the cache.
-            </br>
+            </p><p class='returns'>Returns: true if a template was found.</p><h2>Remarks</h2><p class='remarks'>
+            Implementations MUST decide if they allow multiple model-types for the 
+            same template key and SHOULD throw a exception when a template is requested with the wrong type!
+            </p>
         </td>
       </tr>
       <tr>
@@ -98,10 +101,10 @@
                       </div>
         </td>
         <td class="xmldoc">
-          
+          </br><p class='summary'>
             Every caching provider must manage a <a href="razorengine-templating-icachingprovider.html">ICachingProvider.TypeLoader</a> instance.
             This instance makes sure that all assemblies can be resolved properly.
-            </br>
+            </p>
         </td>
       </tr>
     </tbody>
