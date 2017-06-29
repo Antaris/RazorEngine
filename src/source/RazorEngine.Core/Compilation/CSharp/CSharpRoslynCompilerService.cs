@@ -3,29 +3,27 @@ using Microsoft.AspNetCore.Razor.Parser;
 #else
 using System.Web.Razor.Parser;
 #endif
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Text;
 using RazorEngine.Compilation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security;
 using System.Text;
-using System.Threading.Tasks;
 #if !RAZOR4
 using System.CodeDom.Compiler;
 using System.Web.Razor;
 using System.IO;
 using System.Globalization;
 #endif
-using RazorEngine.Compilation.CSharp;
 using RazorEngine.Compilation.ReferenceResolver;
-using Microsoft.CodeAnalysis;
 
 namespace RazorEngine.Roslyn.CSharp
 {
     /// <summary>
     /// A concrete <see cref="ICompilerService"/> implementation for C# by using the Roslyn compiler.
     /// </summary>
+    [SecurityCritical]
     public class CSharpRoslynCompilerService : RoslynCompilerServiceBase
     {
 #if !RAZOR4
@@ -40,6 +38,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="strictMode"></param>
         /// <param name="markupParserFactory"></param>
+        [SecurityCritical]
         public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
             : base(
                 new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode),
@@ -54,6 +53,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         public override string SourceFileExtension
         {
+            [SecuritySafeCritical]
             get { return "cs"; }
         }
 
@@ -64,6 +64,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// <param name="results"></param>
         /// <param name="context"></param>
         /// <returns></returns>
+        [SecurityCritical]
         public override string InspectSource(GeneratorResults results, TypeContext context)
         {
             string generatedCode;
@@ -83,6 +84,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// <param name="templateType"></param>
         /// <param name="modelType"></param>
         /// <returns></returns>
+        [SecuritySafeCritical]
         public override string BuildTypeName(Type templateType, Type modelType)
         {
             if (templateType == null)
@@ -98,6 +100,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// <param name="sourceCode"></param>
         /// <param name="sourceCodePath"></param>
         /// <returns></returns>
+        [SecurityCritical]
         public override Microsoft.CodeAnalysis.SyntaxTree GetSyntaxTree(string sourceCode, string sourceCodePath)
         {
             return CSharpSyntaxTree.ParseText(sourceCode, path: sourceCodePath, encoding: System.Text.Encoding.UTF8);
@@ -108,6 +111,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="assemblyName"></param>
         /// <returns></returns>
+        [SecurityCritical]
         public override Microsoft.CodeAnalysis.Compilation GetEmptyCompilation(string assemblyName)
         {
             return CSharpCompilation.Create(assemblyName);
@@ -117,6 +121,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
+        [SecurityCritical]
         public override CompilationOptions CreateOptions(TypeContext context)
         {
             return 
@@ -128,6 +133,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// Returns a set of assemblies that must be referenced by the compiled template.
         /// </summary>
         /// <returns>The set of assemblies.</returns>
+        [SecuritySafeCritical]
         public override IEnumerable<CompilerReference> IncludeReferences()
         {
             // Ensure the Microsoft.CSharp assembly is referenced to support dynamic typing.

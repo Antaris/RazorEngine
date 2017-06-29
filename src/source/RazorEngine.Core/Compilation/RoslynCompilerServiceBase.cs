@@ -26,25 +26,31 @@ namespace RazorEngine.Roslyn.CSharp
     /// <summary>
     /// Base compiler service class for roslyn compilers
     /// </summary>
+    [SecurityCritical]
     public abstract class RoslynCompilerServiceBase : CompilerServiceBase
     {
+        [SecuritySafeCritical]
         private class SelectMetadataReference : CompilerReference.ICompilerReferenceVisitor<MetadataReference>
         {
+            [SecuritySafeCritical]
             public MetadataReference Visit(Assembly assembly)
             {
                 return Visit(assembly.Location);
             }
 
+            [SecuritySafeCritical]
             public MetadataReference Visit(string file)
             {
                 return MetadataReference.CreateFromFile(file);
             }
 
+            [SecuritySafeCritical]
             public MetadataReference Visit(Stream stream)
             {
                 return MetadataReference.CreateFromStream(stream);
             }
 
+            [SecuritySafeCritical]
             public MetadataReference Visit(byte[] byteArray)
             {
                 return MetadataReference.CreateFromImage(byteArray);
@@ -54,6 +60,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// <summary>
         /// Required for #line pragmas
         /// </summary>
+        [SecurityCritical]
         protected class RazorEngineSourceReferenceResolver : SourceReferenceResolver
         {
             private string _sourceCodeFile;
@@ -71,6 +78,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// </summary>
             /// <param name="other"></param>
             /// <returns></returns>
+            [SecuritySafeCritical]
             public override bool Equals(object other)
             {
                 return object.Equals(this, other);
@@ -80,6 +88,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// Calculates a hashcode for the current instance.
             /// </summary>
             /// <returns></returns>
+            [SecuritySafeCritical]
             public override int GetHashCode()
             {
                 return 0;
@@ -91,6 +100,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// <param name="path"></param>
             /// <param name="baseFilePath"></param>
             /// <returns></returns>
+            [SecurityCritical]
             public override string NormalizePath(string path, string baseFilePath)
             {
                 if (File.Exists(path))
@@ -117,6 +127,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// </summary>
             /// <param name="resolvedPath"></param>
             /// <returns></returns>
+            [SecurityCritical]
             public override Stream OpenRead(string resolvedPath)
             {
                 throw new NotImplementedException();
@@ -128,6 +139,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// <param name="path"></param>
             /// <param name="baseFilePath"></param>
             /// <returns></returns>
+            [SecurityCritical]
             public override string ResolveReference(string path, string baseFilePath)
             {
                 throw new NotImplementedException();
@@ -139,6 +151,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="codeLanguage"></param>
         /// <param name="markupParserFactory"></param>
+        [SecuritySafeCritical]
         public RoslynCompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory)
             : base(codeLanguage, new ParserBaseCreator(markupParserFactory))
         {
@@ -181,6 +194,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
+        [SecurityCritical]
         public override Tuple<Type, CompilationData> CompileType(TypeContext context)
         {
             var sourceCode = GetCodeCompileUnit(context);
@@ -198,7 +212,7 @@ namespace RazorEngine.Roslyn.CSharp
                 GetEmptyCompilation(assemblyName)
                 .AddSyntaxTrees(
                     GetSyntaxTree(sourceCode, sourceCodeFile))
-                .AddReferences(references.Select(reference => reference.Visit(new SelectMetadataReference())));
+                .AddReferences(GetMetadataReferences(references));
 
             compilation =
                 compilation
@@ -261,6 +275,12 @@ namespace RazorEngine.Roslyn.CSharp
             }
             var type = assembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
             return Tuple.Create(type, compilationData);
+        }
+
+        [SecurityCritical]
+        private MetadataReference[] GetMetadataReferences(IEnumerable<CompilerReference> references)
+        {
+            return references.Select(reference => reference.Visit(new SelectMetadataReference())).ToArray();
         }
     }
 }
