@@ -200,6 +200,11 @@
       </ItemGroup>
     </Otherwise>
   </Choose>
+  <ItemGroup Condition="'$(Platform)' != 'Net40'">
+    <Compile Include="Compilation\CSharp\CSharpRoslynCompilerService.cs" />
+    <Compile Include="Compilation\RoslynCompilerServiceBase.cs" />
+    <Compile Include="Compilation\RoslynCompilerServiceFactory.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeValue.cs" />
     <Compile Include="CodeGenerators\SetModelTypeCodeGenerator.cs" />
