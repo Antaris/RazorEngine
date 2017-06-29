@@ -90,8 +90,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{77852C68
 	ProjectSection(SolutionItems) = preProject
 		..\nuget\RazorEngine-razor4.nuspec = ..\nuget\RazorEngine-razor4.nuspec
 		..\nuget\RazorEngine.nuspec = ..\nuget\RazorEngine.nuspec
-		..\nuget\RazorEngine.Roslyn-razor4.nuspec = ..\nuget\RazorEngine.Roslyn-razor4.nuspec
-		..\nuget\RazorEngine.Roslyn.nuspec = ..\nuget\RazorEngine.Roslyn.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.RazorEngine.Core.Roslyn", "test\Test.RazorEngine.Core.Roslyn\Test.RazorEngine.Core.Roslyn.csproj", "{7CB02F9F-7E88-448B-A25B-7985058296C5}"
@@ -196,7 +194,7 @@ Global
 		{6B0E2ECB-01EE-482B-951C-9E0F0D80F030} = {AE7E811A-2B9F-45BC-9752-0FB4D1DEE12D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {87BAAA5F-5CFE-4284-91D8-C3C5F4083599}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal
