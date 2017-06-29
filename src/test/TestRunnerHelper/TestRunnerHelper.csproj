@@ -48,10 +48,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\source\RazorEngine.Core.Roslyn\RazorEngine.Core.Roslyn.csproj">
-      <Project>{4213ae6e-a75d-431c-8f7c-3cbdc713fea9}</Project>
-      <Name>RazorEngine.Core.Roslyn</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\source\RazorEngine.Core\RazorEngine.Core.csproj">
       <Project>{d268f86d-2dab-4329-a75f-3bcf6d5bcdc4}</Project>
       <Name>RazorEngine.Core</Name>
