@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.IO;
     using System.Linq;
 
     using NUnit.Framework;
@@ -15,7 +16,6 @@
     /// Defines a test fixture that provides tests for the <see cref="TemplateBase"/> type.
     /// </summary>
     [TestFixture]
-    [System.Obsolete("Needs to be updated/replaced with RazorEngineService.")]
     public class TemplateBaseTestFixture
     {
         #region Tests
@@ -29,15 +29,21 @@
         [Test]
         public void TemplateBase_CanUseRawOutput_WithHtmlEncoding()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string template = "<h1>Hello @Raw(Model.Name)</h1>";
                 const string expected = "<h1>Hello <</h1>";
 
                 var model = new { Name = "<" };
-                string result = service.Parse(template, model, null, null);
+                var key = service.GetKey("test");
 
-                Assert.That(result == expected, "Result does not match expected: " + result);
+                service.AddTemplate(key, template);
+                service.RunCompile(key, writer, model: model);
+
+                string result = writer.ToString();
+
+                Assert.AreEqual(expected, result);
             }
         }
 
@@ -47,7 +53,8 @@
         [Test]
         public void TemplateBase_CanRenderWithLayout_WithSimpleLayout()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string parent = @"<div>@RenderSection(""TestSection"")</div>@RenderBody()";
                 const string template = @"@{Layout = ""Parent"";}@section TestSection {<span>Hello</span>}<h1>Hello World</h1>";
@@ -55,10 +62,20 @@
 
                 /* GetTemplate is the simplest method for compiling and caching a template without using a 
                  * resolver to locate the layout template at a later time in exection. */
-                service.GetTemplate(parent, null, "Parent");
-                string result = service.Parse(template, null, null, null);
+                var key = service.GetKey("Parent");
+                var key2 = service.GetKey("Child");
+                var parentTemplate = new LoadedTemplateSource(parent);
+                var childTemplate = new LoadedTemplateSource(template);
 
-                Assert.That(result == expected, "Result does not match expected: " + result);
+                service.AddTemplate(key, parentTemplate);
+                service.AddTemplate(key2, childTemplate);
+                service.Compile(key);
+                service.Compile(key2);
+
+                service.Run(key2, writer);
+                string result = writer.ToString();
+
+                Assert.AreEqual(expected, result);
             }
         }
 
@@ -104,16 +121,19 @@
         [Test]
         public void TemplateBase_CanRenderWithLayout_WithComplexLayout()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
             {
-                const string grandparent = @"<div>Message from Child Template (section): @RenderSection(""ChildMessage"")</div><div>Message from Parent Template (section): @RenderSection(""ParentMessage"")</div><div>Content from Parent Template (body): @RenderBody()</div>";
-                const string parent = @"@{Layout = ""GrandParent"";}@section ParentMessage {<span>Hello from Parent</span>}<p>Child content: @RenderBody()</p>";
+                const string GrandParent = @"<div>Message from Child Template (section): @RenderSection(""ChildMessage"")</div><div>Message from Parent Template (section): @RenderSection(""ParentMessage"")</div><div>Content from Parent Template (body): @RenderBody()</div>";
+                const string Parent = @"@{Layout = ""GrandParent"";}@section ParentMessage {<span>Hello from Parent</span>}<p>Child content: @RenderBody()</p>";
                 const string template = @"@{Layout = ""Parent"";}@section ChildMessage {<span>Hello from Child</span>}<p>This is child content</p>";
                 const string expected = "<div>Message from Child Template (section): <span>Hello from Child</span></div><div>Message from Parent Template (section): <span>Hello from Parent</span></div><div>Content from Parent Template (body): <p>Child content: <p>This is child content</p></p></div>";
 
-                service.GetTemplate(parent, null, "Parent");
-                service.GetTemplate(grandparent, null, "GrandParent");
-                string result = service.Parse(template, null, null, null);
+                var keyGrandparent = service.GetKey(nameof(GrandParent));
+                var keyParent = service.GetKey(nameof(Parent));
+                service.AddTemplate(keyGrandparent, new LoadedTemplateSource(GrandParent));
+                service.AddTemplate(keyParent, new LoadedTemplateSource(Parent));
+
+                string result = service.RunCompile(templateSource: template, name: nameof(template));
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -125,14 +145,20 @@
         [Test]
         public void TemplateBase_CanRenderWithInclude_SimpleInclude()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string child = "<div>Content from child</div>";
                 const string template = "@Include(\"Child\")";
                 const string expected = "<div>Content from child</div>";
 
-                service.GetTemplate(child, null, "Child");
-                string result = service.Parse(template, null, null, null);
+                var keyChild = service.GetKey("Child");
+                var key = service.GetKey(nameof(template));
+
+                service.AddTemplate(keyChild, child);
+                service.AddTemplate(key, template);
+                service.RunCompile(key, writer);
+                string result = writer.ToString();
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -144,34 +170,43 @@
         [Test]
         public void TemplateBase_CanRenderWithInclude_WithCurrentModel()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string child = "@model RazorEngine.Tests.TestTypes.Person\n<div>Content from child for @Model.Forename</div>";
                 const string template = "@model RazorEngine.Tests.TestTypes.Person\n@Include(\"Child\")";
                 const string expected = "<div>Content from child for Test</div>";
                 var person = new Person { Forename = "Test" };
 
-                service.GetTemplate(child, person, "Child");
-                string result = service.Parse(template, person, null, null);
+                var childKey = service.GetKey("Child");
+                service.AddTemplate(childKey, child);
+                service.RunCompile(childKey, model: person);
 
+                //string result = service.Parse(template, person, null, null);
+                string result = service.RunCompile(templateSource: template, name: nameof(template), model: person);
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
-        } 
-        
+        }
+
         /// <summary>
         /// Tests that a template service can include another template with current templete model if it was not specified.
         /// </summary>
         [Test]
         public void TemplateBase_CanRenderWithInclude_WithCustomModel()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
             {
-                const string child = "@model RazorEngine.Tests.TestTypes.Person\n<div>Content from child for @Model.Forename</div>";
+                const string Child = "@model RazorEngine.Tests.TestTypes.Person\n<div>Content from child for @Model.Forename</div>";
                 const string template = "@Include(\"Child\", new RazorEngine.Tests.TestTypes.Person { Forename = \"Test\" })";
                 const string expected = "<div>Content from child for Test</div>";
 
-                service.GetTemplate(child, null, "Child");
-                string result = service.Parse(template, null, null, null);
+                var childKey = service.GetKey(nameof(Child));
+                var templateKey = service.GetKey(nameof(template));
+
+                service.AddTemplate(childKey, Child);
+                service.AddTemplate(templateKey, template);
+
+                string result = service.RunCompile(templateSource: template, key: templateKey);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -184,7 +219,8 @@
         [Test]
         public void TemplateBase_CanRenderInclude_WithInlineTemplate()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string child = "@model RazorEngine.Tests.TestTypes.InlineTemplateModel\n@Model.InlineTemplate(Model)";
                 const string template = "@model RazorEngine.Tests.TestTypes.InlineTemplateModel\n@{ Model.InlineTemplate = @<h1>@ViewBag.Name</h1>; }@Include(\"Child\", Model)";
@@ -193,8 +229,14 @@
                 dynamic bag = new DynamicViewBag();
                 bag.Name = "Matt";
 
-                service.GetTemplate(child, null, "Child");
-                string result = service.Parse(template, new InlineTemplateModel(), bag, null);
+                var childKey = service.GetKey("Child");
+                var templateKey = service.GetKey(nameof(template));
+                service.AddTemplate(childKey, child);
+                service.AddTemplate(templateKey, template);
+
+                service.RunCompile(templateKey, writer, model: new InlineTemplateModel(), viewBag: bag);
+                string result = writer.ToString();
+
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
