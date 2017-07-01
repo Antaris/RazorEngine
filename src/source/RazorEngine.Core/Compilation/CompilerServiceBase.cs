@@ -417,7 +417,12 @@
         /// <param name="disposing">true when Dispose() was called manually.</param>
         protected virtual void Dispose(bool disposing)
         {
+            if (_disposed)
+            {
+                return;
+            }
 
+            _disposed = true;
         }
 
         #endregion

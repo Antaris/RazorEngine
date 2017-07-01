@@ -4,6 +4,7 @@ namespace RazorEngine.Tests
 {
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.IO;
     using System.Linq;
 
     using NUnit.Framework;
@@ -18,7 +19,6 @@ namespace RazorEngine.Tests
     /// Defines a test fixture that provides tests for the <see cref="TemplateBase"/> type.
     /// </summary>
     [TestFixture]
-    [System.Obsolete("Needs to be updated to RazorEngineService")]
     public class RazorEngineHostTestFixture
     {
         #region Tests
@@ -33,13 +33,19 @@ namespace RazorEngine.Tests
         [Test]
         public void RazorEngineHost_SupportsModelSpan_UsingCSharpCodeParser()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string template = "@model List<RazorEngine.Tests.TestTypes.Person>\n@Model.Count";
                 const string expected = "1";
 
                 var model = new List<Person> { new Person() { Forename = "Matt", Age = 27 } };
-                string result = service.Parse(template, (object)model, null, null);
+                var key = service.GetKey(nameof(template));
+
+                service.AddTemplate(key, template);
+                service.RunCompile(key, writer, modelType: model.GetType(), model: model);
+
+                string result = writer.ToString();
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -63,13 +69,17 @@ namespace RazorEngine.Tests
                                  Language = Language.VisualBasic
                              };
 
-            using (var service = new TemplateService(config))
+            using (var service = RazorEngineService.Create(config))
             {
                 const string template = "@ModelType List(Of RazorEngine.Tests.TestTypes.Person)\n@Model.Count";
                 const string expected = "1";
 
                 var model = new List<Person> { new Person() { Forename = "Matt", Age = 27 } };
-                string result = service.Parse(template, (object)model, null, null);
+                var key = service.GetKey("template");
+
+                service.AddTemplate(key, new LoadedTemplateSource(template));
+
+                string result = service.RunCompile(key, modelType: typeof(object), model: model);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
