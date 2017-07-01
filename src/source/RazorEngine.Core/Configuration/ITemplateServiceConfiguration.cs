@@ -95,6 +95,11 @@
         /// Gets the template resolver.
         /// </summary>
         ITemplateManager TemplateManager { get; }
+
+        /// <summary>
+        /// Sets the Temporary Directory where temp files will be written.
+        /// </summary>
+        string TemporaryDirectory { get; }
         #endregion
 
     }

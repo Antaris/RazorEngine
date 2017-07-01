@@ -36,9 +36,19 @@
         /// <returns>The compiler service instance.</returns>
         public static ICompilerService GetCompilerService(Language language)
         {
+            return GetCompilerService(language, null);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ICompilerService"/> for the specfied language.
+        /// </summary>
+        /// <param name="language">The code language.</param>
+        /// <returns>The compiler service instance.</returns>
+        public static ICompilerService GetCompilerService(Language language, ITemplateServiceConfiguration config)
+        {
             lock (sync)
             {
-                return _factory.CreateCompilerService(language);
+                return _factory.CreateCompilerService(language, config);
             }
         }
 
@@ -51,9 +61,9 @@
         {
             var config = RazorEngineConfigurationSection.GetConfiguration();
             if (config == null)
-                return GetCompilerService(Language.CSharp);
+                return GetCompilerService(Language.CSharp, null);
 
-            return GetCompilerService(config.DefaultLanguage);
+            return GetCompilerService(config.DefaultLanguage, null);
         }
         #endregion
     }

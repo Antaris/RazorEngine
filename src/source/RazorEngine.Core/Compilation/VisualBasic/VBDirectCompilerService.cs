@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Compilation.VisualBasic
+﻿using RazorEngine.Configuration;
+
+namespace RazorEngine.Compilation.VisualBasic
 {
 #if !RAZOR4 // no support for VB.net in Razor4?
     using System;
@@ -26,11 +28,11 @@
         /// <param name="markupParserFactory">The markup parser to use.</param>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed in base class: DirectCompilerServiceBase")]
         [SecurityCritical]
-        public VBDirectCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
+        public VBDirectCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null, ITemplateServiceConfiguration config = null)
             : base(
                 new VBRazorCodeLanguage(strictMode),
                 new VBCodeProvider(),
-                markupParserFactory) { }
+                markupParserFactory, config) { }
     #endregion
 
         /// <summary>

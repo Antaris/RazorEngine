@@ -20,6 +20,7 @@ using System.Globalization;
 using RazorEngine.Compilation.CSharp;
 using RazorEngine.Compilation.ReferenceResolver;
 using Microsoft.CodeAnalysis;
+using RazorEngine.Configuration;
 
 namespace RazorEngine.Roslyn.CSharp
 {
@@ -33,17 +34,23 @@ namespace RazorEngine.Roslyn.CSharp
         /// We need a CodeDom instance as pre Razor4 uses CodeDom 
         /// internally and we need to generate the source code file...
         /// </summary>
-        private Microsoft.CSharp.CSharpCodeProvider _codeDomProvider; 
+        private Microsoft.CSharp.CSharpCodeProvider _codeDomProvider;
 #endif
         /// <summary>
         /// Creates a new CSharpRoslynCompilerService instance.
         /// </summary>
         /// <param name="strictMode"></param>
         /// <param name="markupParserFactory"></param>
-        public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null)
-            : base(
-                new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode),
-                markupParserFactory) {
+        public CSharpRoslynCompilerService(bool strictMode = true, Func<ParserBase> markupParserFactory = null) : this(null, strictMode, markupParserFactory) { }
+
+        /// <summary>
+        /// Creates a new CSharpRoslynCompilerService instance.
+        /// </summary>
+        /// <param name="strictMode"></param>
+        /// <param name="markupParserFactory"></param>
+        public CSharpRoslynCompilerService(ITemplateServiceConfiguration config, bool strictMode = true, Func<ParserBase> markupParserFactory = null)
+            : base(new RazorEngine.Compilation.CSharp.CSharpRazorCodeLanguage(strictMode), markupParserFactory, config)
+        {
 #if !RAZOR4
             _codeDomProvider = new Microsoft.CSharp.CSharpCodeProvider(); 
 #endif
