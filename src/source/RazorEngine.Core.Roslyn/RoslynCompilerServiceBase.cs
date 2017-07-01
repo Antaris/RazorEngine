@@ -32,7 +32,7 @@ namespace RazorEngine.Roslyn.CSharp
         {
             public MetadataReference Visit(Assembly assembly)
             {
-                return MetadataReference.CreateFromAssembly(assembly);
+                return Visit(assembly.Location);
             }
 
             public MetadataReference Visit(string file)
