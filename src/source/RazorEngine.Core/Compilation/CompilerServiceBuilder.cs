@@ -10,7 +10,12 @@
     public static class CompilerServiceBuilder
     {
         #region Fields
-        private static ICompilerServiceFactory _factory = new DefaultCompilerServiceFactory();
+        private static ICompilerServiceFactory _factory =
+#if RAZOR4
+            new Roslyn.RoslynCompilerServiceFactory();
+#else
+            new DefaultCompilerServiceFactory();
+#endif
         private static readonly object sync = new object();
         #endregion
 
