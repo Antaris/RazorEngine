@@ -25,11 +25,11 @@
     {
         #region Tests
         /// <summary>
-        /// Tests that a custom activator can be used. In this test case, we're using Unity
+        /// Tests that a custom activator can be used. In this test case, we're using Autofac
         /// to handle a instantiation of a custom activator.
         /// </summary>
         [Test]
-        public void TemplateService_CanSupportCustomActivator_WithUnity()
+        public void TemplateService_CanSupportCustomActivator_WithAutofac()
         {
 #if RAZOR4
             Assert.Ignore("We need to add roslyn to generate custom constructors!");
@@ -40,10 +40,15 @@
                 .AsSelf()
                 .As<ITextFormatter>();
             container.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+
+            // TODO: We are forcing it to use the DefaultCompilerServiceFactory
+            // because there has not been supported added for Roslyn to generate
+            // custom constructors.
             var config = new TemplateServiceConfiguration
                              {
                                  Activator = new AutofacTemplateActivator(container.Build()),
-                                 BaseTemplateType = typeof(CustomTemplateBase<>)
+                                 BaseTemplateType = typeof(CustomTemplateBase<>),
+                                 CompilerServiceFactory = new DefaultCompilerServiceFactory()
                              };
 
             using (var service = RazorEngineService.Create(config))

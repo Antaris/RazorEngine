@@ -651,6 +651,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
             {
                 var config = new TemplateServiceConfiguration();
                 config.ReferenceResolver = this;
+                config.CompilerServiceFactory = new DefaultCompilerServiceFactory();
                 return config;
             }
 

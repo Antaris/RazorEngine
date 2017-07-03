@@ -87,7 +87,16 @@
             /// <returns></returns>
             public ITemplateServiceConfiguration CreateConfiguration()
             {
-                return new TemplateServiceConfiguration();
+                // We need to use the DefaultCompilerServiceFactory because we
+                // get conflicting TypeLoadExceptions in RazorEngineSourceReferenceResolver
+                // that cannot be resolved.
+                // ie) When not used inside the IsolatedRazorEngineService, we
+                // need [SecuritySafeCritical] for the methods. However, inside
+                // the Isolated service, it requires everything to be [SecurityCritical].
+                return new TemplateServiceConfiguration()
+                {
+                    CompilerServiceFactory = new DefaultCompilerServiceFactory()
+                };
             }
         }
 
