@@ -2,6 +2,7 @@ group Net45
   Microsoft.AspNet.Razor
   Microsoft.CodeAnalysis
   System.Collections.Immutable
+  System.Reflection.Metadata
 
 group Net40
   Microsoft.AspNet.Razor
@@ -10,3 +11,4 @@ group Razor4
   Microsoft.AspNetCore.Razor
   Microsoft.CodeAnalysis
   System.Collections.Immutable
+  System.Reflection.Metadata

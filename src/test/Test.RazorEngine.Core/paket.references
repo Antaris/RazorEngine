@@ -1,11 +1,13 @@
 group Net45
   Microsoft.AspNet.Razor
+  System.Reflection.Metadata
 
 group Net40
   Microsoft.AspNet.Razor
 
 group Razor4
   Microsoft.AspNetCore.Razor
+  System.Reflection.Metadata
 
 group Test
   Moq

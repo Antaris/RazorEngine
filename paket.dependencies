@@ -15,6 +15,7 @@ group Net45
   nuget Microsoft.AspNet.Razor ~> 3.0
   nuget Microsoft.CodeAnalysis ~> 1.3
   nuget System.Collections.Immutable ~> 1.2
+  nuget System.Reflection.Metadata ~> 1.4
 
 group Net40
   condition: NET40
@@ -30,6 +31,7 @@ group Razor4
   nuget Microsoft.AspNetCore.Razor ~> 1.0
   nuget Microsoft.CodeAnalysis ~> 1.3
   nuget System.Collections.Immutable ~> 1.2
+  nuget System.Reflection.Metadata ~> 1.4
 
 group Test
   source https://nuget.org/api/v2
