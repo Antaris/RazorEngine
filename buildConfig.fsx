@@ -71,8 +71,15 @@ let buildConfig =
           { p with
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
-              Dependencies =
-                [ "Microsoft.AspNetCore.Razor", "1.0" ] })
+              DependenciesByFramework =
+                [ { FrameworkVersion = "net451";
+                    Dependencies =
+                      [ "Microsoft.AspNetCore.Razor", "1.1.2"
+                        "System.Collections.Immutable", "1.2.0"
+                        "System.Reflection.Metadata", "1.4.2"
+                      ] }
+                ]
+          })
       ]
     UseNuget = false
     DisableMSTest = true
