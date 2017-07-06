@@ -115,7 +115,7 @@ namespace RazorEngine.Roslyn.CSharp
                         return _sourceCodeFile;
                     }
                     return path;
-                } 
+                }
                 else
                 {
                     return baseFilePath;
@@ -181,7 +181,8 @@ namespace RazorEngine.Roslyn.CSharp
         public abstract CompilationOptions CreateOptions(TypeContext context);
 
         /// <summary>
-        /// Check for mono runtime as Roslyn doesn't support generating debug symbols on mono/unix
+        /// Check for mono runtime as Roslyn needs to generate portable PDBs for
+        /// proper execution on Mono/Unix.
         /// </summary>
         /// <returns></returns>
         private static bool IsMono()
@@ -205,7 +206,7 @@ namespace RazorEngine.Roslyn.CSharp
 
             var sourceCodeFile = Path.Combine(tempDir, String.Format("{0}.{1}", assemblyName, SourceFileExtension));
             File.WriteAllText(sourceCodeFile, sourceCode);
-            
+
             var references = GetAllReferences(context);
 
             var compilation =
@@ -221,21 +222,24 @@ namespace RazorEngine.Roslyn.CSharp
                     .WithOutputKind(OutputKind.DynamicallyLinkedLibrary)
                     .WithPlatform(Platform.AnyCpu)
                     .WithSourceReferenceResolver(new RazorEngineSourceReferenceResolver(sourceCodeFile)));
-            
+
             var assemblyFile = Path.Combine(tempDir, String.Format("{0}.dll", assemblyName));
-         
+
             var assemblyPdbFile = Path.Combine(tempDir, String.Format("{0}.pdb", assemblyName));
             var compilationData = new CompilationData(sourceCode, tempDir);
-            
+
             using (var assemblyStream = File.Open(assemblyFile, FileMode.Create, FileAccess.ReadWrite))
             using (var pdbStream = File.Open(assemblyPdbFile, FileMode.Create, FileAccess.ReadWrite))
             {
-                var opts = new EmitOptions().WithPdbFilePath(assemblyPdbFile);
+                var opts = new EmitOptions()
+                    .WithPdbFilePath(assemblyPdbFile);
                 var pdbStreamHelper = pdbStream;
+
                 if (IsMono())
                 {
-                    pdbStreamHelper = null;
+                    opts = opts.WithDebugInformationFormat(DebugInformationFormat.PortablePdb);
                 }
+
                 var result = compilation.Emit(assemblyStream, pdbStreamHelper, options: opts);
                 if (!result.Success)
                 {
@@ -245,20 +249,15 @@ namespace RazorEngine.Roslyn.CSharp
                             var lineSpan = diag.Location.GetLineSpan();
                             return new Templating.RazorEngineCompilerError(
                                 string.Format("{0}", diag.GetMessage()),
-                                lineSpan.Path, 
-                                lineSpan.StartLinePosition.Line, 
-                                lineSpan.StartLinePosition.Character, 
-                                diag.Id, 
+                                lineSpan.Path,
+                                lineSpan.StartLinePosition.Line,
+                                lineSpan.StartLinePosition.Character,
+                                diag.Id,
                                 diag.Severity != DiagnosticSeverity.Error);
                         });
-                            
+
                     throw new Templating.TemplateCompilationException(errors, compilationData, context.TemplateContent);
                 }
-            }
-
-            if (IsMono() && File.Exists(assemblyPdbFile))
-            {
-                File.Delete(assemblyPdbFile);
             }
 
             // load file and return loaded type.
