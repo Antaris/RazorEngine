@@ -41,9 +41,6 @@
                 .As<ITextFormatter>();
             container.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
-            // TODO: We are forcing it to use the DefaultCompilerServiceFactory
-            // because there has not been supported added for Roslyn to generate
-            // custom constructors.
             var config = new TemplateServiceConfiguration
                              {
                                  Activator = new AutofacTemplateActivator(container.Build()),
