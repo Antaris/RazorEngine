@@ -93,17 +93,19 @@ namespace Test.RazorEngine
             // This is because we apply AllowPartiallyTrustedCallers to RazorEngine, because
             // We need the untrusted (transparent) code to be able to inherit TemplateBase.
             // Because in the normal environment/appdomain we run as full trust and the Razor assembly has no security attributes
-            // it will be completely SecurityCritical. 
+            // it will be completely SecurityCritical.
             // This means we have to mark a lot of our members SecurityCritical (which is fine).
             // However in the sandbox domain we have partial trust and because razor has no Security attributes that means the
             // code will be transparent (this is where we get a lot of exceptions, because we now have different security attributes)
             // To work around this we give Razor full trust in the sandbox as well.
             StrongName razorAssembly = typeof(RazorTemplateEngine).Assembly.Evidence.GetHostEvidence<StrongName>();
+            StrongName codeAnalysis = typeof(Microsoft.CodeAnalysis.SourceReferenceResolver).Assembly.Evidence.GetHostEvidence<StrongName>();
+            StrongName codeAnalysisCsharp = typeof(Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode).Assembly.Evidence.GetHostEvidence<StrongName>();
             // We trust ourself as well
             StrongName testAssembly = typeof(IsolatedRazorEngineServiceTestFixture).Assembly.Evidence.GetHostEvidence<StrongName>();
             AppDomainSetup adSetup = new AppDomainSetup();
             adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            AppDomain newDomain = AppDomain.CreateDomain("Sandbox", null, adSetup, permSet, razorEngineAssembly, razorAssembly, testAssembly);
+            AppDomain newDomain = AppDomain.CreateDomain("Sandbox", null, adSetup, permSet, razorEngineAssembly, razorAssembly, testAssembly, codeAnalysis, codeAnalysisCsharp);
             return newDomain;
 #endif
         }

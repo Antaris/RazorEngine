@@ -37,9 +37,16 @@
             AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
         }
 
+        [SecurityCritical]
         private Assembly AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            return CompilerReference.Resolve(args.Name, _references.GetCurrentReferences());
+            var resolved = CompilerReference.Resolve(args.Name, _references.GetCurrentReferences());
+            if (resolved != null)
+            {
+                return resolved;
+            }
+
+            return CompilerReference.Resolve(args.Name, _config.ReferenceResolver.GetReferences(null));
         }
 
         /// <summary>
@@ -121,7 +128,7 @@
 #pragma warning restore 0618 // Backwards Compat.
 #endif
                 service.ReferenceResolver = _config.ReferenceResolver ?? new UseCurrentAssembliesReferenceResolver();
-                
+
                 var result = service.CompileType(context);
 
                 return result;

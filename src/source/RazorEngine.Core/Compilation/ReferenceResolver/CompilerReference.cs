@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -135,10 +137,13 @@ namespace RazorEngine.Compilation.ReferenceResolver
         /// <param name="assemblyName">name of the assembly to resolve</param>
         /// <param name="references">references to check</param>
         /// <returns>the resolved assembly or null</returns>
+        [SecurityCritical]
         internal static Assembly Resolve(string assemblyName, IEnumerable<CompilerReference> references)
         {
+            (new PermissionSet(PermissionState.Unrestricted)).Assert();
             // First try the loaded ones
-            foreach (var reference in references)
+            var refList = references.ToList();
+            foreach (var reference in refList)
             {
                 var assemblyReference = reference as DirectAssemblyReference;
                 if (assemblyReference != null && assemblyReference.Assembly.GetName().FullName == assemblyName)
@@ -147,7 +152,7 @@ namespace RazorEngine.Compilation.ReferenceResolver
                 }
             }
             // Then try the files
-            foreach (var reference in references)
+            foreach (var reference in refList)
             {
                 var fileReference = reference as FileReference;
                 if (fileReference != null && AssemblyName.GetAssemblyName(fileReference.File).FullName == assemblyName)
@@ -155,7 +160,42 @@ namespace RazorEngine.Compilation.ReferenceResolver
                     return Assembly.LoadFrom(fileReference.File);
                 }
             }
+
+            // accept newer versions of direct assemblies
+            var assname = new AssemblyName(assemblyName);
+            foreach (var reference in refList)
+            {
+                var assemblyReference = reference as DirectAssemblyReference;
+                if (assemblyReference != null)
+                {
+                    var curName = assemblyReference.Assembly.GetName();
+                    if (MatchOrNewer(curName, assname))
+                    {
+                        return assemblyReference.Assembly;
+                    }
+                }
+            }
+            // accept newer versions of files
+            foreach (var reference in refList)
+            {
+                var fileReference = reference as FileReference;
+                if (fileReference != null)
+                {
+                    var curName = AssemblyName.GetAssemblyName(fileReference.File);
+                    if (MatchOrNewer(curName, assname))
+                    {
+                        return Assembly.LoadFrom(fileReference.File);
+                    }
+                }
+            }
+
             return null;
+        }
+
+        [SecurityCritical]
+        private static bool MatchOrNewer(AssemblyName curName, AssemblyName assname)
+        {
+            return curName.Name == assname.Name && curName.Version >= assname.Version;
         }
 
         /// <summary>

@@ -36,7 +36,7 @@
                 new DefaultCompilerServiceFactory();
 #endif
             EncodedStringFactory = new HtmlEncodedStringFactory();
-            
+
 #if !RAZOR4
 #pragma warning disable 0618 // Backwards Compat.
             CodeInspectors = new List<ICodeInspector>();
@@ -50,11 +50,11 @@
 
             Namespaces = new HashSet<string>
                              {
-                                 "System", 
-                                 "System.Collections.Generic", 
+                                 "System",
+                                 "System.Collections.Generic",
                                  "System.Linq"
                              };
-            
+
             var config = RazorEngineConfigurationSection.GetConfiguration();
             Language = (config == null)
                            ? Language.CSharp

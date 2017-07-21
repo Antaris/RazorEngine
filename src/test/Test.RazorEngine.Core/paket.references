@@ -1,6 +1,8 @@
 group Razor4
   Microsoft.AspNetCore.Razor
   System.Reflection.Metadata
+  Microsoft.CodeAnalysis
+  Microsoft.CodeAnalysis.CSharp
 
   Moq
   NUnit
