@@ -30,13 +30,6 @@ open AssemblyInfoFile
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
 
-// !!!!!!!!!!!!!!!!!!!
-// UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
-// !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.5.0-rc1"
-let version_roslyn = "3.6.1-rc1"
-let version_roslyn_razor4 = "4.1.1-rc1"
-
 let unitTestFinder (testDir, (buildParams:BuildParams)) =
     let items = !! (testDir + "/Test.*.dll")
     (if not isMono then items else
@@ -63,23 +56,16 @@ let buildConfig =
               Version = config.Version
               ReleaseNotes = toLines release.Notes
               DependenciesByFramework =
-                [ { FrameworkVersion = "net40"; 
+                [ { FrameworkVersion = "net40";
                     Dependencies = [ "Microsoft.AspNet.Razor", "2.0.30506.0" |> RequireExactly ] }
-                  { FrameworkVersion = "net45"; 
-                    Dependencies = [ "Microsoft.AspNet.Razor", "3.0.0" ] } ] })
-        "RazorEngine-razor4.nuspec", (fun config p ->
-          { p with
-              Version = version_razor4
-              ReleaseNotes = toLines release.Notes
-              DependenciesByFramework =
-                [ { FrameworkVersion = "net451";
+                  { FrameworkVersion = "net45";
+                    Dependencies = [ "Microsoft.AspNet.Razor", "3.0.0" ] } 
+                  { FrameworkVersion = "net451";
                     Dependencies =
                       [ "Microsoft.AspNetCore.Razor", "1.1.2"
                         "System.Collections.Immutable", "1.2.0"
                         "System.Reflection.Metadata", "1.4.2"
-                      ] }
-                ]
-          })
+                      ] } ] })
       ]
     UseNuget = false
     DisableMSTest = true
@@ -95,31 +81,13 @@ let buildConfig =
           Attribute.FileVersion config.Version
           Attribute.InformationalVersion config.Version ]
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
-      let info_razor4 =
-        [ Attribute.Company config.ProjectName
-          Attribute.Product config.ProjectName
-          Attribute.Copyright config.CopyrightNotice
-          Attribute.Version version_razor4
-          Attribute.FileVersion version_razor4
-          Attribute.InformationalVersion version_razor4 ]
-      CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo-Razor4.cs" info_razor4
      )
     DocRazorReferences = None
     BuildTargets =
      [ { BuildParams.WithSolution with
-          // The net40 (razor2) build
-          PlatformName = "Net40"
-          SimpleBuildName = "net40"
-          FindUnitTestDlls = unitTestFinder }
-       { BuildParams.WithSolution with
-          // The razor4 (net45) build
+          // The razor4 (net451) build
           PlatformName = "Razor4"
-          SimpleBuildName = "razor4"
-          FindUnitTestDlls = unitTestFinder }
-       { BuildParams.WithSolution with
-          // The net45 (razor3) build
-          PlatformName = "Net45"
-          SimpleBuildName = "net45"
+          SimpleBuildName = "net451"
           FindUnitTestDlls = unitTestFinder } ]
     SetupNUnit = (fun p ->
       { p with

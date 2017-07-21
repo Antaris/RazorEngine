@@ -8,38 +8,23 @@ nuget FSharp.Formatting prerelease
 nuget System.ValueTuple
 nuget Microsoft.AspNet.Razor
 
-group Net45
-  condition: NET45
-  source https://nuget.org/api/v2
-
-  nuget Microsoft.AspNet.Razor ~> 3.0
-  nuget Microsoft.CodeAnalysis ~> 1.3
-  nuget System.Collections.Immutable ~> 1.2
-  nuget System.Reflection.Metadata ~> 1.4
-
-group Net40
-  condition: NET40
-  source https://nuget.org/api/v2
-  framework: net40
-
-  nuget Microsoft.AspNet.Razor ~> 2.0
-
 group Razor4
-  condition: RAZOR4
   source https://nuget.org/api/v2
 
   nuget Microsoft.AspNetCore.Razor ~> 1.0
   nuget Microsoft.CodeAnalysis ~> 1.3
   nuget System.Collections.Immutable ~> 1.2
   nuget System.Reflection.Metadata ~> 1.4
-
-group Test
-  source https://nuget.org/api/v2
+  nuget Microsoft.AspNet.Mvc
 
   nuget NUnit ~> 3.6
   nuget NUnit.Console ~> 3.6
 
-// Locked, because support for .NET 40 and Silverlight 5 are dropped in versions 4.5 +
-  nuget Moq 4.2.1510.2205
+  nuget Moq
 
   nuget Autofac ~> 3.5
+
+// Get old packages to bundle old builds with the nuget package.
+group NET45
+  source https://nuget.org/api/v2
+  nuget RazorEngine 3.10.0 
