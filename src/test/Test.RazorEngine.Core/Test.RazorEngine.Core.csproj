@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="ActivatorTestFixture.cs" />
     <Compile Include="CompilerServicesUtilityTestFixture.cs" />
+    <Compile Include="Helpers\WorkingDir.cs" />
     <Compile Include="RazorEngineCleanupTests.cs" />
     <Compile Include="Templating\EmbeddedResourceTemplateManagerTestFixture.cs" />
     <Compile Include="Templating\TemplateRunnerTestFixture.cs" />

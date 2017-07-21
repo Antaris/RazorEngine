@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RazorEngine.Configuration;
 using RazorEngine.Compilation.ReferenceResolver;
+using Test.RazorEngine.Helpers;
 #if RAZOR4
 using Microsoft.AspNetCore.Razor;
 #else
@@ -168,19 +169,22 @@ namespace Test.RazorEngine
         {
             using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
             {
-                string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var dir = WorkingDir.Create())
+                {
+                    string file = dir.GetTempFile();
 
-                string template = @"
+                    string template = @"
 @using System.IO
 @{
 File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
-                Assert.Throws<SecurityException>(() =>
-                {
-                    service.RunCompile(template, "test");
-                });
+                    Assert.Throws<SecurityException>(() =>
+                    {
+                        service.RunCompile(template, "test");
+                    });
 
-                Assert.IsFalse(File.Exists(file));
+                    Assert.IsFalse(File.Exists(file));
+                }
             }
         }
 
@@ -274,9 +278,11 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         {
             using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
             {
-                string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var dir = WorkingDir.Create())
+                {
+                    string file = dir.GetTempFile();
 
-                string template = @"
+                    string template = @"
 @using System.IO
 @using System.Security
 @using System.Security.Permissions
@@ -284,12 +290,13 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 (new PermissionSet(PermissionState.Unrestricted)).Assert();
 File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
-                Assert.Throws<InvalidOperationException>(() =>
-                { // cannot create a file in template
-                    service.RunCompile(template, "test");
-                });
+                    Assert.Throws<InvalidOperationException>(() =>
+                    { // cannot create a file in template
+                        service.RunCompile(template, "test");
+                    });
 
-                Assert.IsFalse(File.Exists(file));
+                    Assert.IsFalse(File.Exists(file));
+                }
             }
         }
 
@@ -301,9 +308,11 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         {
             RazorEngineServiceTestFixture.RunTestHelper(service =>
             {
-                string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var dir = WorkingDir.Create())
+                {
+                    string file = dir.GetTempFile();
 
-                string template = @"
+                    string template = @"
 @using System.IO
 @using System.Security
 @using System.Security.Permissions
@@ -311,10 +320,11 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 (new PermissionSet(PermissionState.Unrestricted)).Assert();
 File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
-                var test = service.RunCompile(template, "test");
+                    var test = service.RunCompile(template, "test");
 
-                Assert.IsTrue(File.Exists(file));
-                File.Delete(file);
+                    Assert.IsTrue(File.Exists(file));
+                    File.Delete(file);
+                }
             });
         }
 

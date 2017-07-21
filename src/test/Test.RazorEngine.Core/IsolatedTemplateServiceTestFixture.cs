@@ -14,6 +14,7 @@
     using Test.RazorEngine;
     using System.IO;
     using System.Security;
+    using Test.RazorEngine.Helpers;
 
     /// <summary>
     /// Defines a test fixture that provides tests for the <see cref="IsolatedTemplateService"/> type.
@@ -32,19 +33,22 @@
         {
             using (var service = new IsolatedTemplateService(IsolatedRazorEngineServiceTestFixture.SandboxCreator))
             {
-                string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var dir = WorkingDir.Create())
+                {
+                    string file = dir.GetTempFile();
 
-                string template = @"
+                    string template = @"
 @using System.IO
 @{
 File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
-                Assert.Throws<SecurityException>(() =>
-                {
-                    service.Parse(template, null, null, "test");
-                });
+                    Assert.Throws<SecurityException>(() =>
+                    {
+                        service.Parse(template, null, null, "test");
+                    });
 
-                Assert.IsFalse(File.Exists(file));
+                    Assert.IsFalse(File.Exists(file));
+                }
             }
         }
 
@@ -56,9 +60,11 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
         {
             using (var service = new IsolatedTemplateService(IsolatedRazorEngineServiceTestFixture.SandboxCreator))
             {
-                string file = Path.Combine(Environment.CurrentDirectory, Path.GetRandomFileName());
+                using (var dir = WorkingDir.Create())
+                {
+                    string file = dir.GetTempFile();
 
-                string template = @"
+                    string template = @"
 @using System.IO
 @using System.Security
 @using System.Security.Permissions
@@ -66,12 +72,13 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
 (new PermissionSet(PermissionState.Unrestricted)).Assert();
 File.WriteAllText(""$file$"", ""BAD DATA"");
 }".Replace("$file$", file.Replace("\\", "\\\\"));
-                Assert.Throws<InvalidOperationException>(() =>
-                { // cannot create a file in template
-                    service.Parse(template, null, null, "test");
-                });
+                    Assert.Throws<InvalidOperationException>(() =>
+                    { // cannot create a file in template
+                        service.Parse(template, null, null, "test");
+                    });
 
-                Assert.IsFalse(File.Exists(file));
+                    Assert.IsFalse(File.Exists(file));
+                }
             }
         }
 
