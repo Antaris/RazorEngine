@@ -206,10 +206,11 @@ let buildDocumentationTarget target =
       | AllFSFLogging -> "ALL"
       | FileOnlyFSFLogging -> "FILE_ONLY"
       | ConsoleOnlyFSFLogging -> "CONSOLE_ONLY"
-    execute
-      (sprintf "Building documentation (%s), this could take some time, please wait..." target)
-      "generating reference documentation failed"
-      (fakeStartInfo "generateDocs.fsx" "." documentationFAKEArgs ["target", target; "FSHARP_FORMATTING_LOG", loggingValue])
+    ()
+    //execute
+    //  (sprintf "Building documentation (%s), this could take some time, please wait..." target)
+    //  "generating reference documentation failed"
+    //  (fakeStartInfo "generateDocs.fsx" "." documentationFAKEArgs ["target", target; "FSHARP_FORMATTING_LOG", loggingValue])
 
 let tryDelete dir =
     try
@@ -432,6 +433,7 @@ MyTarget "VersionBump" (fun _ ->
       else ""
       
     let doBranchUpdates = not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true"
+    
     if doBranchUpdates then
       // Make sure we are on develop (commit will fail otherwise)
       Stash.push workingDir ""
@@ -441,18 +443,17 @@ MyTarget "VersionBump" (fun _ ->
       try Stash.pop workingDir
       with e -> trace (sprintf "stash pop failed %O" e)
 
-    // Commit updates the SharedAssemblyInfo.cs files.
-    let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy workingDir "HEAD" |> Seq.toList
-    if changedFiles |> Seq.isEmpty |> not then
-        for (status, file) in changedFiles do
-            printfn "File %s changed (%A)" file status
+      // Commit updates the SharedAssemblyInfo.cs files.
+      let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy workingDir "HEAD" |> Seq.toList
+      if changedFiles |> Seq.isEmpty |> not then
+          for (status, file) in changedFiles do
+              printfn "File %s changed (%A)" file status
+  
+          let line = readLine "version bump commit? (y,n): " "y"
+          if line = "y" then
+              StageAll workingDir
+              Commit workingDir (sprintf "Bump version to %s" config.VersionInfoLine)
 
-        let line = readLine "version bump commit? (y,n): " "y"
-        if line = "y" then
-            StageAll workingDir
-            Commit workingDir (sprintf "Bump version to %s" config.VersionInfoLine)
-
-    if doBranchUpdates then
       try Branches.deleteBranch workingDir true "master"
       with e -> trace (sprintf "deletion of master branch failed %O" e)
       Branches.checkout workingDir false "origin/master"
@@ -498,6 +499,24 @@ MyTarget "VersionBump" (fun _ ->
       Branches.pushTag workingDir "origin" config.Version
       Branches.pushBranch workingDir "origin" "develop"
       Branches.pushBranch workingDir "origin" "master"
+    else
+      // local release  
+      let remote =
+        Git.CommandHelper.getGitResult workingDir "remote -v"
+        |> Seq.filter (fun (s: string) -> s.EndsWith("(push)"))
+        |> Seq.tryFind (fun (s: string) -> s.Contains(config.GithubUser + "/" + config.ProjectName))
+        |> function None -> "https://github.com/" + config.GithubUser + "/" + config.ProjectName | Some (s: string) -> s.Split().[0]
+  
+      StageAll workingDir
+      Git.Commit.Commit workingDir (sprintf "Bump version to %s" config.Version)
+      Branches.pushBranch workingDir remote (Information.getBranchName workingDir)
+
+      let razorTag = sprintf "roslyn-%s" BuildConfig.version_razor4
+      Branches.tag workingDir config.Version
+      Branches.tag workingDir razorTag
+      Branches.pushTag workingDir remote config.Version
+      Branches.pushTag workingDir remote razorTag
+
     CleanDir repositoryHelperDir
     DeleteDir repositoryHelperDir
 )

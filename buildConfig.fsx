@@ -33,9 +33,7 @@ if isMono then
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.5.0-rc1"
-let version_roslyn = "3.6.1-rc1"
-let version_roslyn_razor4 = "4.1.1-rc1"
+let version_razor4 = "4.5.1-alpha001"
 
 let unitTestFinder (testDir, (buildParams:BuildParams)) =
     let items = !! (testDir + "/Test.*.dll")
