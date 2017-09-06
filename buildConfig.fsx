@@ -6,7 +6,7 @@
 (*
     This file handles the configuration of the Yaaf.AdvancedBuilding build script.
 
-    The first step is handled in build.sh and build.cmd by restoring either paket dependencies or bootstrapping a NuGet.exe and 
+    The first step is handled in build.sh and build.cmd by restoring either paket dependencies or bootstrapping a NuGet.exe and
     executing NuGet to resolve all build dependencies (dependencies required for the build to work, for example FAKE).
 
     The secound step is executing build.fsx which loads this file (for configuration), builds the solution and executes all unit tests.
@@ -40,7 +40,7 @@ let unitTestFinder (testDir, (buildParams:BuildParams)) =
     (if not isMono then items else
      items
      -- (testDir + "/Test.*.Roslyn.dll"))
-    :> _ seq 
+    :> _ seq
 
 let buildConfig =
  // Read release notes document
@@ -61,9 +61,9 @@ let buildConfig =
               Version = config.Version
               ReleaseNotes = toLines release.Notes
               DependenciesByFramework =
-                [ { FrameworkVersion = "net40"; 
+                [ { FrameworkVersion = "net40";
                     Dependencies = [ "Microsoft.AspNet.Razor", "2.0.30506.0" |> RequireExactly ] }
-                  { FrameworkVersion = "net45"; 
+                  { FrameworkVersion = "net45";
                     Dependencies = [ "Microsoft.AspNet.Razor", "3.0.0" ] } ] })
         "RazorEngine-razor4.nuspec", (fun config p ->
           { p with
@@ -73,7 +73,8 @@ let buildConfig =
                 [ { FrameworkVersion = "net451";
                     Dependencies =
                       [ "Microsoft.AspNetCore.Razor", "1.1.2"
-                        "System.Collections.Immutable", "1.2.0"
+                        "Microsoft.CodeAnalysis", "1.3.2"
+                        "System.Collections.Immutable", "1.3.1"
                         "System.Reflection.Metadata", "1.4.2"
                       ] }
                 ]
