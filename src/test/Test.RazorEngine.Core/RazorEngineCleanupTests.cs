@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Test.RazorEngine
@@ -101,6 +103,58 @@ namespace Test.RazorEngine
             Assert.IsTrue(Directory.Exists(folder));
             data.DeleteAll();
             Assert.IsFalse(Directory.Exists(folder));
+        }
+
+        [Serializable]
+        public class TemplateModel
+        {
+            public string Name { get; set; }
+        }
+
+        [Test]
+        public void RazorEngineService_CleanupDomainIsUnloaded()
+        {
+            Func<bool> CleanupDomainExists = () =>
+              GetAppDomains()
+                .Any(x => x.FriendlyName.StartsWith("CleanupHelperDomain_"));
+
+            Assert.False(CleanupDomainExists(), "Cleanup helper app domain should not exist before test is run.");
+            using (var service = IsolatedRazorEngineService.Create())
+            {
+                service.AddTemplate("TestTemplate",
+                  "Hello @Model.Name " + new String(Enumerable.Repeat('A', 100000).ToArray()));
+                service.Compile("TestTemplate", typeof(TemplateModel));
+
+                Assert.True(CleanupDomainExists(), "Cleanup helper app domain should exist after a template is compiled");
+            }
+
+            Thread.Sleep(300);
+            Assert.False(CleanupDomainExists(), "Cleanup helper app domain must be properly unloaded after service is disposed");
+        }
+
+        private static IList<AppDomain> GetAppDomains()
+        {
+            IList<AppDomain> _IList = new List<AppDomain>();
+            IntPtr enumHandle = IntPtr.Zero;
+            mscoree.ICorRuntimeHost host = new mscoree.CorRuntimeHost();
+            try
+            {
+                host.EnumDomains(out enumHandle);
+                object domain = null;
+                while (true)
+                {
+                    host.NextDomain(enumHandle, out domain);
+                    if (domain == null) break;
+                    AppDomain appDomain = (AppDomain)domain;
+                    _IList.Add(appDomain);
+                }
+                return _IList;
+            }
+            finally
+            {
+                host.CloseEnum(enumHandle);
+                Marshal.ReleaseComObject(host);
+            }
         }
     }
 }
