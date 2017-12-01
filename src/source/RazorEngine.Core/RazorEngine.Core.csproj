@@ -208,6 +208,7 @@
   <ItemGroup>
     <Compile Include="AttributeValue.cs" />
     <Compile Include="CodeGenerators\SetModelTypeCodeGenerator.cs" />
+    <Compile Include="Common\CrossAppDomainDictionary.cs" />
     <Compile Include="Compilation\CompilerServiceBase.cs" />
     <Compile Include="Compilation\CompilerServiceBuilder.cs" />
     <Compile Include="Compilation\CompilerServicesUtility.cs" />
