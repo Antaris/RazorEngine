@@ -33,7 +33,7 @@ if isMono then
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.5.1-alpha001"
+let version_razor4 = "4.5.1-alpha003"
 
 let unitTestFinder (testDir, (buildParams:BuildParams)) =
     let items = !! (testDir + "/Test.*.dll")
@@ -72,7 +72,7 @@ let buildConfig =
               DependenciesByFramework =
                 [ { FrameworkVersion = "net451";
                     Dependencies =
-                      [ "Microsoft.AspNetCore.Razor", "1.1.2"
+                      [ "Microsoft.AspNetCore.Razor", "1.1.2" |> RequireExactly
                         "Microsoft.CodeAnalysis", "1.3.2"
                         "System.Collections.Immutable", "1.3.1"
                         "System.Reflection.Metadata", "1.4.2"
