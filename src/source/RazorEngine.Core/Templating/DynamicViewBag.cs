@@ -1,5 +1,6 @@
 ﻿namespace RazorEngine.Templating
 {
+    using RazorEngine.Common;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -13,7 +14,7 @@
     {
         #region Fields
         private readonly IDictionary<string, object> _dict = 
-            new System.Collections.Generic.Dictionary<string, object>();
+            new CrossAppDomainDictionary<string, object>();
         #endregion
         /// <summary>
         /// Create a new DynamicViewBag.
