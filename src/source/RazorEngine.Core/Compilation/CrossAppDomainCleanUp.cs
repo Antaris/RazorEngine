@@ -365,7 +365,7 @@ namespace RazorEngine.Compilation
                         }
                     }
                     // We are not needed anymore.
-                    //AppDomain.Unload(AppDomain.CurrentDomain);
+                    AppDomain.Unload(AppDomain.CurrentDomain);
                 });
                 t.IsBackground = false;
                 t.Start();
