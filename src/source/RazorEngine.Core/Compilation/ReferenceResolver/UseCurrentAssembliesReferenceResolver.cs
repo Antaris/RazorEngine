@@ -22,10 +22,23 @@ namespace RazorEngine.Compilation.ReferenceResolver
         {
             return CompilerServicesUtility
                    .GetLoadedAssemblies()
-                   .Where(a => !a.IsDynamic && File.Exists(a.Location) && !a.Location.Contains(CompilerServiceBase.DynamicTemplateNamespace))
+                   .Where(IsValidAssembly)
                    .GroupBy(a => a.GetName().Name).Select(grp => grp.First(y => y.GetName().Version == grp.Max(x => x.GetName().Version))) // only select distinct assemblies based on FullName to avoid loading duplicate assemblies
                    .Select(a => CompilerReference.From(a))
                    .Concat(includeAssemblies ?? Enumerable.Empty<CompilerReference>());
         }
+
+        private static bool IsValidAssembly(System.Reflection.Assembly a)
+        {
+            try
+            {
+                return !a.IsDynamic && File.Exists(a.Location) && !a.Location.Contains(CompilerServiceBase.DynamicTemplateNamespace);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }
