@@ -217,11 +217,15 @@ namespace RazorEngine.Templating
         /// <returns></returns>
         private static string WithWriter(Action<TextWriter> withWriter)
         {
-            using (var writer = new System.IO.StringWriter())
-            {
+            // There seems to be something wrong with using a StringWriter when marshalling it to the other AppDomain. 
+            // The internal StringBuilder instance inside StringWriter will not get GC:ed until several minutes later, 
+            // resulting in OutOfMemoryException on high load. If we use a StreamWriter instead, the problem will go away.
+            var ms = new MemoryStream();
+
+            using (var writer = new StreamWriter(ms))
                 withWriter(writer);
-                return writer.ToString();
-            }
+
+            return System.Text.Encoding.UTF8.GetString(ms.ToArray());
         }
 
         /// <summary>
