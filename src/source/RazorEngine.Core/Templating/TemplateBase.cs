@@ -1,3 +1,5 @@
+using System.IO.IsolatedStorage;
+
 namespace RazorEngine.Templating
 {
     using System;
@@ -150,7 +152,7 @@ namespace RazorEngine.Templating
 #if RAZOR4
                     .Wait()
 #endif
-                    );
+);
         }
 
         /// <summary>
@@ -211,28 +213,40 @@ namespace RazorEngine.Templating
         /// Runs the template and returns the result.
         /// </summary>
         /// <param name="context">The current execution context.</param>
-        /// <param name="reader"></param>
+        /// <param name="outputWriter"></param>
         /// <returns>The merged result of the template.</returns>
 #if RAZOR4
-        public async Task Run(ExecuteContext context, TextWriter reader)
+        public async Task Run(ExecuteContext context, TextWriter outputWriter)
 #else
-        void ITemplate.Run(ExecuteContext context, TextWriter reader)
+        void ITemplate.Run(ExecuteContext context, TextWriter outputWriter)
 #endif
         {
             _context = context;
 
-            StringBuilder builder = new StringBuilder();
-            using (var writer = new StringWriter(builder))
+            var storage = IsolatedStorageFile.GetUserStoreForApplication();
+
+            if (storage.DirectoryExists("temp") == false)
             {
-                _context.CurrentWriter = writer;
+                storage.CreateDirectory("temp");
+            }
+
+            string tempFilePath = Path.Combine("temp", string.Concat("RazorTempFilePath", Guid.NewGuid()));
+
+            try
+            {
+
+                using (var stream = new IsolatedStorageFileStream(tempFilePath, FileMode.Create))
+                using(var writer = new StreamWriter(stream))
+                {
+                    _context.CurrentWriter = writer;
 #if RAZOR4
                 await Execute();
 #else
-                Execute();
+                    Execute();
 #endif
-                writer.Flush();
-                _context.CurrentWriter = null;
-
+                    writer.Flush();
+                    _context.CurrentWriter = null;
+                }
 
                 if (Layout != null)
                 {
@@ -241,23 +255,51 @@ namespace RazorEngine.Templating
 
                     if (layout == null)
                     {
-                        throw new ArgumentException("Template you are trying to run uses layout, but no layout found in cache or by resolver.");
+                        throw new ArgumentException(
+                            "Template you are trying to run uses layout, but no layout found in cache or by resolver.");
                     }
 
-                    // Push the current body instance onto the stack for later execution.
-                    var body = new TemplateWriter(tw => tw.Write(builder.ToString()));
+                    var body = new TemplateWriter(
+                        tw =>
+                        {
+                            var buffer = new char[2000];
+                            using (var stream = new IsolatedStorageFileStream(tempFilePath, FileMode.Open))
+                            using(var reader = new StreamReader(stream)) {
+                                // Push the current body instance onto the stack for later execution.
+                                while (!reader.EndOfStream)
+                                {
+                                    var charsRead = reader.Read(buffer, 0, 2000);
+                                    tw.Write(buffer, 0, charsRead);
+                                }
+                            }
+                        });
+
                     context.PushBody(body);
+
                     context.PushSections();
 
 #if RAZOR4
-                    await layout.Run(context, reader);
+                    await layout.Run(context, outputWriter);
 #else
-                    layout.Run(context, reader);
+                    layout.Run(context, outputWriter);
 #endif
                     return;
                 }
 
-                reader.Write(builder.ToString());
+                using (var stream = new IsolatedStorageFileStream(tempFilePath, FileMode.Open))
+                using(var reader = new StreamReader(stream)) {
+                    var buffer = new char[2000];
+                    // Push the current body instance onto the stack for later execution.
+                    while (!reader.EndOfStream)
+                    {
+                        var charsRead = reader.Read(buffer, 0, 2000);
+                        outputWriter.Write(buffer, 0, charsRead);
+                    }
+                }
+            }
+            finally
+            {
+                storage.DeleteFile(tempFilePath);
             }
         }
 
