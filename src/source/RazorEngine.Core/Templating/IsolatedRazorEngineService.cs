@@ -104,7 +104,7 @@
         /// A simple sandbox helper to create the <see cref="IRazorEngineService"/>
         /// in the new <see cref="AppDomain"/>.
         /// </summary>
-        public class SanboxHelper : CrossAppDomainObject
+        public class SandboxHelper : CrossAppDomainObject
         {
             /// <summary>
             /// Create the <see cref="IRazorEngineService"/> in the new <see cref="AppDomain"/>.
@@ -138,11 +138,11 @@
             
             ObjectHandle handle = 
                 Activator.CreateInstanceFrom(
-                    _appDomain, typeof(SanboxHelper).Assembly.ManifestModule.FullyQualifiedName,
-                    typeof(SanboxHelper).FullName
+                    _appDomain, typeof(SandboxHelper).Assembly.ManifestModule.FullyQualifiedName,
+                    typeof(SandboxHelper).FullName
                 );
 
-            using (var helper = (SanboxHelper)handle.Unwrap())
+            using (var helper = (SandboxHelper)handle.Unwrap())
             {
                 _proxy = helper.CreateEngine(config);
             }
