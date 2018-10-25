@@ -83,8 +83,8 @@ namespace RazorEngine.Templating
 
         void watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            watcher_Changed(sender, new FileSystemEventArgs(WatcherChangeTypes.Deleted, e.OldFullPath, e.OldName));
-            watcher_Changed(sender, new FileSystemEventArgs(WatcherChangeTypes.Created, e.FullPath, e.Name));
+            watcher_Changed(sender, new FileSystemEventArgs(WatcherChangeTypes.Deleted, Path.GetDirectoryName(e.OldFullPath) ?? e.OldFullPath, e.OldName));
+            watcher_Changed(sender, new FileSystemEventArgs(WatcherChangeTypes.Created, Path.GetDirectoryName(e.FullPath) ?? e.FullPath, e.Name));
         }
 
         /// <summary>
