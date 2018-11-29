@@ -64,7 +64,7 @@ namespace RazorEngine.Extensions
 			var templateKeySuffix = ".cshtml"; // TODO this is also used in Resolve(), so move it to consts
 
 			return this
-                .RootType
+				.RootType
 				.Assembly
 				.GetManifestResourceNames()
 				.Where(key => key.StartsWith(templateKeyPrefix) && key.EndsWith(templateKeySuffix))
