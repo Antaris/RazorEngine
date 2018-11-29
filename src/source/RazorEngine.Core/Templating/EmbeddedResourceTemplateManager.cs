@@ -33,7 +33,7 @@ namespace RazorEngine.Extensions
 		public static string RemovePrefix(this string s, string prefix)
 		{
 			return s.StartsWith(prefix)
-				? s.Substring(0, prefix.Length)
+				? s.Substring(prefix.Length)
 				: s;
 		}
 
