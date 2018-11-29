@@ -25,6 +25,52 @@ namespace RazorEngine.Templating
         /// </summary>
         public Type RootType { get; }
 
+/* Add this where appropriate
+namespace RazorEngine.Extensions
+{
+	public static class StringExtensions
+	{
+		public static string RemovePrefix(this string s, string prefix)
+		{
+			return s.StartsWith(prefix)
+				? s.Substring(prefix.Length)
+				: s;
+		}
+
+		public static string RemoveSuffix(this string s, string suffix)
+		{
+			return s.EndsWith(suffix)
+				? s.Substring(0, s.Length - suffix.Length)
+				: s;
+		}
+	}
+}
+*/
+
+        /*
+            This method helps to enumerate all the embedded resources in a given assembly, identified by RootType.
+            A common scenario for EmbeddedResourceTemplateManager usage would be to enumerate all the
+            embedded resources and Resolve/Cache them with Razor Engine, for future use.
+            Not sure if it needs to be moved to the interface as well.
+        */
+		/// <summary>
+		/// Enumerate all the keys from available embedded resources.
+		/// </summary>
+		/// <param name="rootType"></param>
+		/// <returns></returns>
+		public IEnumerable<string> GetAllTemplatKeys()
+		{
+			var templateKeyPrefix = rootType.Namespace ?? "";
+			var templateKeySuffix = ".cshtml"; // TODO this is also used in Resolve(), so move it to consts
+
+			return this
+				.RootType
+				.Assembly
+				.GetManifestResourceNames()
+				.Where(key => key.StartsWith(templateKeyPrefix) && key.EndsWith(templateKeySuffix))
+				.Select(key => key.RemovePrefix(templateKeyPrefix).RemoveSuffix(templateKeySuffix));
+		}
+
         /// <summary>
         /// Resolve the given key
         /// </summary>
