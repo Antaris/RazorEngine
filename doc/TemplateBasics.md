@@ -105,7 +105,7 @@ public class MyHtmlHelper
 
 public abstract class HtmlSupportTemplateBase<T> : TemplateBase<T>
 {
-    public MyClassImplementingTemplateBase()
+    public HtmlSupportTemplateBase()
     {
         Html = new MyHtmlHelper();
     }
