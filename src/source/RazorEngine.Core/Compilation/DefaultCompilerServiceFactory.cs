@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Compilation
+﻿using RazorEngine.Configuration;
+
+namespace RazorEngine.Compilation
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -23,16 +25,28 @@
         [SecuritySafeCritical]
         public ICompilerService CreateCompilerService(Language language)
         {
+            return CreateCompilerService(language, null);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ICompilerService"/> that supports the specified language.
+        /// </summary>
+        /// <param name="language">The <see cref="Language"/>.</param>
+        /// <returns>An instance of <see cref="ICompilerService"/>.</returns>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
+        [SecuritySafeCritical]
+        public ICompilerService CreateCompilerService(Language language, ITemplateServiceConfiguration config)
+        {
             switch (language)
             {
                 case Language.CSharp:
-                    return new CSharpDirectCompilerService();
+                    return new CSharpDirectCompilerService(config: config);
 
                 case Language.VisualBasic:
 #if RAZOR4
                     throw new NotSupportedException("Razor4 doesn't support VB.net apparently.");
 #else
-                    return new VBDirectCompilerService();
+                    return new VBDirectCompilerService(config: config);
 #endif
 
                 default:

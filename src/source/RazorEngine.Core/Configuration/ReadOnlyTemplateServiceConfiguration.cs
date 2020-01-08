@@ -34,6 +34,7 @@ namespace RazorEngine.Configuration
         [Obsolete("Use TemplateManager instead")]
         private readonly ITemplateResolver _resolver;
         private readonly ITemplateManager _templateManager;
+        private readonly string _temporaryDirectory;
 
         /// <summary>
         /// Create a new readonly view (and copy) of the given configuration.
@@ -122,6 +123,7 @@ namespace RazorEngine.Configuration
             }
 #pragma warning restore 0618 // Backwards Compat.
 
+            _temporaryDirectory = config.TemporaryDirectory;
         }
 
         /// <summary>
@@ -287,6 +289,13 @@ namespace RazorEngine.Configuration
             {
                 return _templateManager;
             }
+        }
+        /// <summary>
+        /// Gets the temporary directory
+        /// </summary>
+        public string TemporaryDirectory
+        {
+            get { return _temporaryDirectory; }
         }
     }
 }

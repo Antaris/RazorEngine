@@ -162,6 +162,12 @@
         /// Gets or sets the template resolver.
         /// </summary>
         public ITemplateManager TemplateManager { get; set; }
+
+        /// <summary>
+        /// Gets or sets the temporary directory.
+        /// </summary>
+        public string TemporaryDirectory { get; set; }
+
         #endregion
     }
 }
