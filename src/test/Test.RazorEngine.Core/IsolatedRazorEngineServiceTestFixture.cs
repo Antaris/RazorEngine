@@ -143,6 +143,23 @@ namespace Test.RazorEngine
         }
 
         /// <summary>
+        /// Tests that exchanging values on the viewbag works across app domains
+        /// </summary>
+        [Test]
+        public void IsolatedRazorEngineService_DynamicViewBag_FromSandBox()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "@{ ViewBag.Test = \"TestItem\"; }";
+                const string expected = "TestItem";
+                dynamic viewbag = new DynamicViewBag();
+
+                string result = service.RunCompile(template, "test", (Type)null, (object)null, (DynamicViewBag)viewbag);
+                Assert.AreEqual(expected, viewbag.Test);
+            }
+        }
+
+        /// <summary>
         /// Tests that a simple viewbag is working.
         /// </summary>
         [Test]
@@ -651,6 +668,7 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
             {
                 var config = new TemplateServiceConfiguration();
                 config.ReferenceResolver = this;
+                config.CompilerServiceFactory = new DefaultCompilerServiceFactory();
                 return config;
             }
 
@@ -661,7 +679,13 @@ File.WriteAllText(""$file$"", ""BAD DATA"");
                 var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null);
                 foreach (var reference in loadedAssemblies)
                     yield return reference;
-                yield return CompilerReference.From("test/TestHelper.dll");
+
+                var testHelper = Path.Combine(
+                    Path.GetDirectoryName(typeof(ReferenceResolverConfigCreator).Assembly.Location),
+                    "test",
+                    "TestHelper.dll");
+
+                yield return CompilerReference.From(testHelper);
             }
         }
 

@@ -1,22 +1,18 @@
 ﻿namespace RazorEngine.Tests.TestTypes.Issues
 {
-    using System;
+    using System.IO;
     using System.Linq;
     using System.Collections.Generic;
-    using Microsoft.CSharp.RuntimeBinder;
 
     using NUnit.Framework;
 
-    using Configuration;
     using Templating;
-    using System.Dynamic;
     using Test.RazorEngine;
 
     /// <summary>
     /// Provides tests for the Release 3.6
     /// </summary>
     [TestFixture]
-    [Obsolete("Needs to be updated to RazorEngineService")]
     public class Release_3_6_TestFixture
     {
         /// <summary>
@@ -114,7 +110,7 @@
         [Test]
         public void Issue181_RawDoesntWork()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
             {
                 const string link = "http://home.mysite.com/?a=b&c=1&new=1&d=3&e=0&g=1";
                 const string template_1 = "@Raw(Model.Data)";
@@ -123,10 +119,16 @@
                 string expected_2 = string.Format("<a href=\"{0}\">{0}</a>", link);
 
                 var model = new { Data = link };
+                var template1Key = service.GetKey(nameof(template_1));
+                var template2Key = service.GetKey(nameof(template_2));
 
-                var result_1 = service.Parse(template_1, model, null, null);
+                service.AddTemplate(template1Key, template_1);
+                service.AddTemplate(template2Key, template_2);
+
+                var result_1 = service.RunCompile(template1Key, model: model);
+                var result_2 = service.RunCompile(template2Key, model: model);
+
                 Assert.AreEqual(expected_1, result_1);
-                var result_2 = service.Parse(template_2, model, null, null);
                 Assert.AreEqual(expected_2, result_2);
             }
         }
@@ -141,7 +143,7 @@
         [Test]
         public void Issue93_SectionParsing()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
             {
                 string parent = @"@RenderSection(""MySection"", false)";
                 string section_test_1 = "@{ Layout = \"ParentLayout\"; }@section MySection { My section content }";
@@ -150,11 +152,12 @@
                 string expected_1 = " My section content ";
                 string expected_2 = "\nMy section content\n";
                 string expected_3 = "\nMy section content\na";
-                service.Compile(parent, null, "ParentLayout");
-                
-                var result_1 = service.Parse(section_test_1, null, null, null);
-                var result_2 = service.Parse(section_test_2, null, null, null);
-                var result_3 = service.Parse(section_test_3, null, null, null);
+                var parentKey = service.GetKey("ParentLayout");
+                service.AddTemplate(parentKey, parent);
+
+                var result_1 = service.RunCompile(section_test_1, nameof(section_test_1));
+                var result_2 = service.RunCompile(section_test_2, nameof(section_test_2));
+                var result_3 = service.RunCompile(section_test_3, nameof(section_test_3));
 
                 Assert.AreEqual(expected_1, result_1);
                 Assert.AreEqual(expected_2, result_2);
@@ -171,27 +174,51 @@
         [Test]
         public void Issue163_SectionRedefinition()
         {
-            TemplateServiceTestFixture.RunTestHelper(service =>
+            RazorEngineServiceTestFixture.RunTestHelper(service =>
             {
                 string parentLayoutTemplate = @"<script scr=""/Scripts/jquery.js""></script>@RenderSection(""Scripts"", false)";
                 string childLayoutTemplate =
                     @"@{ Layout = ""ParentLayout""; }@section Scripts {<script scr=""/Scripts/childlayout.js""></script>@RenderSection(""Scripts"", false)}";
-                service.Compile(parentLayoutTemplate, null, "ParentLayout");
-                service.Compile(childLayoutTemplate, null, "ChildLayout");
+
+                var parentKey = service.GetKey("ParentLayout");
+                var childKey = service.GetKey("ChildLayout");
+
+                service.AddTemplate(parentKey, parentLayoutTemplate);
+                service.AddTemplate(childKey, childLayoutTemplate);
+
+                service.Compile(parentKey);
+                service.Compile(childKey);
 
                 // Page with no section defined (e.g. page has no own scripts)
                 string pageWithoutOwnScriptsTemplate = @"@{ Layout = ""ChildLayout""; }";
                 string expectedPageWithoutOwnScriptsResult =
                     @"<script scr=""/Scripts/jquery.js""></script><script scr=""/Scripts/childlayout.js""></script>";
-                string actualPageWithoutOwnScriptsResult = service.Parse(pageWithoutOwnScriptsTemplate, null, null, null);
-                Assert.AreEqual(expectedPageWithoutOwnScriptsResult, actualPageWithoutOwnScriptsResult);
+
+                using (var writer = new StringWriter())
+                {
+                    var pageKey = service.GetKey(nameof(pageWithoutOwnScriptsTemplate));
+
+                    service.AddTemplate(pageKey, pageWithoutOwnScriptsTemplate);
+                    string actualPageWithoutOwnScriptsResult = service.RunCompile(pageKey);
+
+                    Assert.AreEqual(expectedPageWithoutOwnScriptsResult, actualPageWithoutOwnScriptsResult);
+                }
 
                 // Page with section redefenition (page has own additional scripts)
                 string pageWithOwnScriptsTemplate = @"@{ Layout = ""ChildLayout""; }@section Scripts {<script scr=""/Scripts/page.js""></script>}";
                 string expectedPageWithOwnScriptsResult =
                     @"<script scr=""/Scripts/jquery.js""></script><script scr=""/Scripts/childlayout.js""></script><script scr=""/Scripts/page.js""></script>";
-                string actualPageWithOwnScriptsResult = service.Parse(pageWithOwnScriptsTemplate, null, null, null);
-                Assert.AreEqual(expectedPageWithOwnScriptsResult, actualPageWithOwnScriptsResult);
+
+                using (var writer = new StringWriter())
+                {
+                    var pageKey2 = service.GetKey(nameof(pageWithOwnScriptsTemplate));
+
+                    service.AddTemplate(pageKey2, pageWithOwnScriptsTemplate);
+                    service.RunCompile(pageKey2, writer);
+
+                    string actualPageWithOwnScriptsResult = writer.ToString();
+                    Assert.AreEqual(expectedPageWithOwnScriptsResult, actualPageWithOwnScriptsResult);
+                }
             });
         }
 

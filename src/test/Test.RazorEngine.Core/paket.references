@@ -1,13 +1,15 @@
 group Net45
   Microsoft.AspNet.Razor
+  System.Reflection.Metadata
 
 group Net40
   Microsoft.AspNet.Razor
 
 group Razor4
-  Microsoft.AspNet.Razor
+  Microsoft.AspNetCore.Razor
+  System.Reflection.Metadata
 
 group Test
   Moq
   NUnit
-  Unity
+  Autofac

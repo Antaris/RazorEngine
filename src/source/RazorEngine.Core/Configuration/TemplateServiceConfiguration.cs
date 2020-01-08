@@ -29,7 +29,12 @@
         public TemplateServiceConfiguration()
         {
             Activator = new DefaultActivator();
-            CompilerServiceFactory = new DefaultCompilerServiceFactory();
+            CompilerServiceFactory =
+#if RAZOR4
+              new Roslyn.RoslynCompilerServiceFactory();
+#else
+                new DefaultCompilerServiceFactory();
+#endif
             EncodedStringFactory = new HtmlEncodedStringFactory();
             
 #if !RAZOR4

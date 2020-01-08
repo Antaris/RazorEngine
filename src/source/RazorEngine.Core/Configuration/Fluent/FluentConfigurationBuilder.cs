@@ -270,7 +270,12 @@
         /// <returns>The current configuration builder.</returns>
         public IConfigurationBuilder UseDefaultCompilerServiceFactory()
         {
-            _config.CompilerServiceFactory = new DefaultCompilerServiceFactory();
+            _config.CompilerServiceFactory =
+#if RAZOR4
+                new Roslyn.RoslynCompilerServiceFactory();
+#else
+                new DefaultCompilerServiceFactory();
+#endif
             return this;
         }
 

@@ -27,25 +27,31 @@ namespace RazorEngine.Roslyn.CSharp
     /// <summary>
     /// Base compiler service class for roslyn compilers
     /// </summary>
+    [SecurityCritical]
     public abstract class RoslynCompilerServiceBase : CompilerServiceBase
     {
+        [SecuritySafeCritical]
         private class SelectMetadataReference : CompilerReference.ICompilerReferenceVisitor<MetadataReference>
         {
+            [SecuritySafeCritical]
             public MetadataReference Visit(Assembly assembly)
             {
-                return MetadataReference.CreateFromAssembly(assembly);
+                return Visit(assembly.Location);
             }
 
+            [SecuritySafeCritical]
             public MetadataReference Visit(string file)
             {
                 return MetadataReference.CreateFromFile(file);
             }
 
+            [SecuritySafeCritical]
             public MetadataReference Visit(Stream stream)
             {
                 return MetadataReference.CreateFromStream(stream);
             }
 
+            [SecuritySafeCritical]
             public MetadataReference Visit(byte[] byteArray)
             {
                 return MetadataReference.CreateFromImage(byteArray);
@@ -55,6 +61,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// <summary>
         /// Required for #line pragmas
         /// </summary>
+        [SecurityCritical]
         protected class RazorEngineSourceReferenceResolver : SourceReferenceResolver
         {
             private string _sourceCodeFile;
@@ -72,6 +79,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// </summary>
             /// <param name="other"></param>
             /// <returns></returns>
+            [SecuritySafeCritical]
             public override bool Equals(object other)
             {
                 return object.Equals(this, other);
@@ -81,6 +89,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// Calculates a hashcode for the current instance.
             /// </summary>
             /// <returns></returns>
+            [SecuritySafeCritical]
             public override int GetHashCode()
             {
                 return 0;
@@ -92,6 +101,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// <param name="path"></param>
             /// <param name="baseFilePath"></param>
             /// <returns></returns>
+            [SecurityCritical]
             public override string NormalizePath(string path, string baseFilePath)
             {
                 if (File.Exists(path))
@@ -106,7 +116,7 @@ namespace RazorEngine.Roslyn.CSharp
                         return _sourceCodeFile;
                     }
                     return path;
-                } 
+                }
                 else
                 {
                     return baseFilePath;
@@ -118,6 +128,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// </summary>
             /// <param name="resolvedPath"></param>
             /// <returns></returns>
+            [SecurityCritical]
             public override Stream OpenRead(string resolvedPath)
             {
                 throw new NotImplementedException();
@@ -129,6 +140,7 @@ namespace RazorEngine.Roslyn.CSharp
             /// <param name="path"></param>
             /// <param name="baseFilePath"></param>
             /// <returns></returns>
+            [SecurityCritical]
             public override string ResolveReference(string path, string baseFilePath)
             {
                 throw new NotImplementedException();
@@ -140,6 +152,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="codeLanguage"></param>
         /// <param name="markupParserFactory"></param>
+        [SecuritySafeCritical]
         public RoslynCompilerServiceBase(RazorCodeLanguage codeLanguage, Func<ParserBase> markupParserFactory)
             : this(codeLanguage, markupParserFactory, null)
         {
@@ -180,7 +193,8 @@ namespace RazorEngine.Roslyn.CSharp
         public abstract CompilationOptions CreateOptions(TypeContext context);
 
         /// <summary>
-        /// Check for mono runtime as Roslyn doesn't support generating debug symbols on mono/unix
+        /// Check for mono runtime as Roslyn needs to generate portable PDBs for
+        /// proper execution on Mono/Unix.
         /// </summary>
         /// <returns></returns>
         private static bool IsMono()
@@ -193,6 +207,7 @@ namespace RazorEngine.Roslyn.CSharp
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
+        [SecurityCritical]
         public override Tuple<Type, CompilationData> CompileType(TypeContext context)
         {
             var sourceCode = GetCodeCompileUnit(context);
@@ -203,14 +218,14 @@ namespace RazorEngine.Roslyn.CSharp
 
             var sourceCodeFile = Path.Combine(tempDir, String.Format("{0}.{1}", assemblyName, SourceFileExtension));
             File.WriteAllText(sourceCodeFile, sourceCode);
-            
+
             var references = GetAllReferences(context);
 
             var compilation =
                 GetEmptyCompilation(assemblyName)
                 .AddSyntaxTrees(
                     GetSyntaxTree(sourceCode, sourceCodeFile))
-                .AddReferences(references.Select(reference => reference.Visit(new SelectMetadataReference())));
+                .AddReferences(GetMetadataReferences(references));
 
             compilation =
                 compilation
@@ -219,21 +234,24 @@ namespace RazorEngine.Roslyn.CSharp
                     .WithOutputKind(OutputKind.DynamicallyLinkedLibrary)
                     .WithPlatform(Platform.AnyCpu)
                     .WithSourceReferenceResolver(new RazorEngineSourceReferenceResolver(sourceCodeFile)));
-            
+
             var assemblyFile = Path.Combine(tempDir, String.Format("{0}.dll", assemblyName));
-         
+
             var assemblyPdbFile = Path.Combine(tempDir, String.Format("{0}.pdb", assemblyName));
             var compilationData = new CompilationData(sourceCode, tempDir);
-            
+
             using (var assemblyStream = File.Open(assemblyFile, FileMode.Create, FileAccess.ReadWrite))
             using (var pdbStream = File.Open(assemblyPdbFile, FileMode.Create, FileAccess.ReadWrite))
             {
-                var opts = new EmitOptions().WithPdbFilePath(assemblyPdbFile);
+                var opts = new EmitOptions()
+                    .WithPdbFilePath(assemblyPdbFile);
                 var pdbStreamHelper = pdbStream;
+
                 if (IsMono())
                 {
-                    pdbStreamHelper = null;
+                    opts = opts.WithDebugInformationFormat(DebugInformationFormat.PortablePdb);
                 }
+
                 var result = compilation.Emit(assemblyStream, pdbStreamHelper, options: opts);
                 if (!result.Success)
                 {
@@ -243,20 +261,15 @@ namespace RazorEngine.Roslyn.CSharp
                             var lineSpan = diag.Location.GetLineSpan();
                             return new Templating.RazorEngineCompilerError(
                                 string.Format("{0}", diag.GetMessage()),
-                                lineSpan.Path, 
-                                lineSpan.StartLinePosition.Line, 
-                                lineSpan.StartLinePosition.Character, 
-                                diag.Id, 
+                                lineSpan.Path,
+                                lineSpan.StartLinePosition.Line,
+                                lineSpan.StartLinePosition.Character,
+                                diag.Id,
                                 diag.Severity != DiagnosticSeverity.Error);
                         });
-                            
+
                     throw new Templating.TemplateCompilationException(errors, compilationData, context.TemplateContent);
                 }
-            }
-
-            if (IsMono() && File.Exists(assemblyPdbFile))
-            {
-                File.Delete(assemblyPdbFile);
             }
 
             // load file and return loaded type.
@@ -273,6 +286,12 @@ namespace RazorEngine.Roslyn.CSharp
             }
             var type = assembly.GetType(DynamicTemplateNamespace + "." + context.ClassName);
             return Tuple.Create(type, compilationData);
+        }
+
+        [SecurityCritical]
+        private MetadataReference[] GetMetadataReferences(IEnumerable<CompilerReference> references)
+        {
+            return references.Select(reference => reference.Visit(new SelectMetadataReference())).ToArray();
         }
     }
 }

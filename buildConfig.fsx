@@ -6,7 +6,7 @@
 (*
     This file handles the configuration of the Yaaf.AdvancedBuilding build script.
 
-    The first step is handled in build.sh and build.cmd by restoring either paket dependencies or bootstrapping a NuGet.exe and 
+    The first step is handled in build.sh and build.cmd by restoring either paket dependencies or bootstrapping a NuGet.exe and
     executing NuGet to resolve all build dependencies (dependencies required for the build to work, for example FAKE).
 
     The secound step is executing build.fsx which loads this file (for configuration), builds the solution and executes all unit tests.
@@ -30,33 +30,24 @@ open AssemblyInfoFile
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
 
-let projectName_roslyn = "RazorEngine.Roslyn"
-let projectSummary_roslyn = "Roslyn extensions for RazorEngine."
-let projectDescription_roslyn = "RazorEngine.Roslyn - Roslyn support for RazorEngine."
 // !!!!!!!!!!!!!!!!!!!
 // UPDATE RELEASE NOTES AS WELL! (set 'nugetkey' environment variable to push directly.)
 // !!!!!!!!!!!!!!!!!!!
-let version_razor4 = "4.4.2-rc1"
-let version_roslyn = "3.6.0-rc1"
-let version_roslyn_razor4 = "4.1.0-rc1"
-
-// This is set to true when we want to update the roslyn packages via CI as well
-// (otherwise this value doesn't matter). You can always push manually!
-let roslyn_publish = System.Boolean.Parse (getBuildParamOrDefault "PUSH_ROSLYN" "false")
+let version_razor4 = "4.5.1-alpha003"
 
 let unitTestFinder (testDir, (buildParams:BuildParams)) =
     let items = !! (testDir + "/Test.*.dll")
     (if not isMono then items else
      items
      -- (testDir + "/Test.*.Roslyn.dll"))
-    :> _ seq 
+    :> _ seq
 
 let buildConfig =
  // Read release notes document
  let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
  { BuildConfiguration.Defaults with
     ProjectName = "RazorEngine"
-    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2016"
+    CopyrightNotice = "RazorEngine Copyright © RazorEngine Project 2011-2017"
     ProjectSummary = "Simple templating using Razor syntax."
     ProjectDescription = "RazorEngine - A Templating Engine based on the Razor parser."
     ProjectAuthors = ["Matthew Abbott"; "Ben Dornis"; "Matthias Dittrich"]
@@ -70,51 +61,30 @@ let buildConfig =
               Version = config.Version
               ReleaseNotes = toLines release.Notes
               DependenciesByFramework =
-                [ { FrameworkVersion = "net40"; 
+                [ { FrameworkVersion = "net40";
                     Dependencies = [ "Microsoft.AspNet.Razor", "2.0.30506.0" |> RequireExactly ] }
-                  { FrameworkVersion = "net45"; 
+                  { FrameworkVersion = "net45";
                     Dependencies = [ "Microsoft.AspNet.Razor", "3.0.0" ] } ] })
         "RazorEngine-razor4.nuspec", (fun config p ->
           { p with
               Version = version_razor4
               ReleaseNotes = toLines release.Notes
-              Dependencies =
-                [ "Microsoft.AspNetCore.Razor", "1.0" ] })
-        "RazorEngine.Roslyn.nuspec", (fun config p ->
-          { p with
-              Project = projectName_roslyn
-              Summary = projectSummary_roslyn
-              Description = projectDescription_roslyn
-              Version = version_roslyn
-              Publish = roslyn_publish
-              ReleaseNotes = toLines release.Notes
-              Dependencies =
-                let exact =
-                  [ config.ProjectName, config.Version
-                    "Microsoft.AspNet.Razor", "3.0.0" ]
-                [ "Microsoft.CodeAnalysis" ]
-                |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "net45") name))
-                |> List.append exact })
-        "RazorEngine.Roslyn-razor4.nuspec", (fun config p ->
-          { p with
-              Project = projectName_roslyn
-              Summary = projectSummary_roslyn
-              Description = projectDescription_roslyn
-              Version = version_roslyn_razor4
-              ReleaseNotes = toLines release.Notes
-              Publish = roslyn_publish
-              Dependencies =
-                let exact =
-                  [ config.ProjectName, version_razor4
-                    "Microsoft.AspNetCore.Razor", "1.0"  ]
-                [ "Microsoft.CodeAnalysis" ]
-                |> List.map (fun name -> name, (GetPackageVersion ("packages" @@ "razor4") name))
-                |> List.append exact }) ]
+              DependenciesByFramework =
+                [ { FrameworkVersion = "net451";
+                    Dependencies =
+                      [ "Microsoft.AspNetCore.Razor", "1.1.2" |> RequireExactly
+                        "Microsoft.CodeAnalysis", "1.3.2"
+                        "System.Collections.Immutable", "1.3.1"
+                        "System.Reflection.Metadata", "1.4.2"
+                      ] }
+                ]
+          })
+      ]
     UseNuget = false
     DisableMSTest = true
+    DisableNUnit = true
     GeneratedFileList =
-      [ "RazorEngine.dll"; "RazorEngine.xml"
-        "RazorEngine.Roslyn.dll"; "RazorEngine.Roslyn.xml" ]
+      [ "RazorEngine.dll"; "RazorEngine.xml" ]
     SetAssemblyFileVersions = (fun config ->
       let info =
         [ Attribute.Company config.ProjectName
@@ -132,22 +102,6 @@ let buildConfig =
           Attribute.FileVersion version_razor4
           Attribute.InformationalVersion version_razor4 ]
       CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo-Razor4.cs" info_razor4
-      let info_roslyn =
-        [ Attribute.Company projectName_roslyn
-          Attribute.Product projectName_roslyn
-          Attribute.Copyright config.CopyrightNotice
-          Attribute.Version version_roslyn
-          Attribute.FileVersion version_roslyn
-          Attribute.InformationalVersion version_roslyn ]
-      CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn.cs" info_roslyn
-      let info_roslyn_razor4 =
-        [ Attribute.Company projectName_roslyn
-          Attribute.Product projectName_roslyn
-          Attribute.Copyright config.CopyrightNotice
-          Attribute.Version version_roslyn_razor4
-          Attribute.FileVersion version_roslyn_razor4
-          Attribute.InformationalVersion version_roslyn_razor4 ]
-      CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.Roslyn-Razor4.cs" info_roslyn_razor4
      )
     DocRazorReferences = None
     BuildTargets =
@@ -170,5 +124,9 @@ let buildConfig =
       { p with
           //NUnitParams.WorkingDir = working
           ExcludeCategory = if isMono then "VBNET" else "" })
+    SetupNUnit3 = (fun p ->
+      { p with
+          //NUnit3Params.WorkingDir = working
+          Where = if isMono then "cat!=VBNET" else "" })
   }
 

@@ -38,19 +38,23 @@
         {
             var config = new FluentTemplateServiceConfiguration(
                 c => c.IncludeNamespaces("System.IO"));
-#pragma warning disable 0618 // TODO: Update test.
-            using (var service = new TemplateService(config))
-#pragma warning restore 0618 // TODO: Update test.
+            using (var service = RazorEngineService.Create(config))
+            using (var writer = new StringWriter())
             {
                 const string template = @"@Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), ""*.*"").Length";
 
                 int expected = Directory.GetFiles(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal)), "*.*").Length;
-                string result = service.Parse(template, null, null, null);
 
+                var key = service.GetKey("testTemplate");
+                var source = new LoadedTemplateSource(template);
+                service.AddTemplate(key, source);
+                service.Compile(key);
+                service.Run(key, writer);
+                var result = writer.ToString();
                 Assert.AreEqual(expected.ToString(), result);
             }
         }
-        
+
 #if !RAZOR4
         /// <summary>
         /// Tests that the fluent configuration can configure a template service with a specific code language.
@@ -58,12 +62,12 @@
         /// <remarks>
         /// For this test, we're switching to VB, and using a @Code section:
         ///     <code>
-        ///         @Code Dim name = "Matt" End Code
+        ///         @Code Dim name As String = "Matt" End Code
         ///         @name
         ///     </code>
         /// ... which should result in:
         ///     <code>
-        ///         
+        ///
         ///         Matt
         ///     </code>
         /// </remarks>
@@ -74,14 +78,12 @@
             var config = new FluentTemplateServiceConfiguration(
                 c => c.WithCodeLanguage(Language.VisualBasic));
 
-#pragma warning disable 0618 // TODO: Update test.
-            using (var service = new TemplateService(config))
-#pragma warning restore 0618 // TODO: Update test.
+            using (var service = RazorEngineService.Create(config))
             {
-                const string template = "@Code Dim name = \"Matt\" End Code\n@name";
+                const string template = "@Code Dim name As String = \"Matt\" End Code\n@name";
                 const string expected = "\nMatt";
 
-                string result = service.Parse(template, null, null, null);
+                string result = service.RunCompile(templateSource: template, name: "template");
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -97,17 +99,22 @@
             var config = new FluentTemplateServiceConfiguration(
                 c => c.WithEncoding(Encoding.Raw));
 
-#pragma warning disable 0618 // TODO: Update test.
-            using (var service = new TemplateService(config))
-#pragma warning restore 0618 // TODO: Update test.
+            using (var service = RazorEngineService.Create(config))
+            using (var writer = new StringWriter())
             {
                 const string template = "<h1>Hello @Model.String</h1>";
                 const string expected = "<h1>Hello Matt & World</h1>";
 
                 var model = new { String = "Matt & World" };
-                string result = service.Parse(template, model, null, null);
+                var source = new LoadedTemplateSource(template);
+                var key = service.GetKey("testTemplate");
 
-                Assert.That(result == expected, "Result does not match expected: " + result);
+                service.Compile(source, key);
+                service.Run(key, writer, model: model);
+
+                var contents = writer.ToString();
+
+                Assert.AreEqual(expected, contents);
             }
         }
 

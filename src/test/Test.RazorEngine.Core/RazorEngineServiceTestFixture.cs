@@ -89,7 +89,7 @@ namespace Test.RazorEngine
 
         /// <summary>
         /// Test that DynamicActLike also gives access to all previous method.
-        /// This is a remainder that we changed the Impromptu code and make 
+        /// This is a remainder that we changed the Impromptu code and make
         /// ActLikeProxy inherit from ImpromptuForwarder (and setting the Target property).
         /// If this test ever fails make sure to fix that because we need this behavior.
         /// </summary>
@@ -119,12 +119,12 @@ namespace Test.RazorEngine
         /// Check that xml configuration has a template manager.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RazorEngineService_CheckConfiguration()
         {
             var config = new TemplateServiceConfiguration();
             config.TemplateManager = null;
-            RazorEngineService.Create(config);
+
+            Assert.Throws<ArgumentNullException>(() => RazorEngineService.Create(config));
         }
 
         /// <summary>
@@ -218,11 +218,11 @@ namespace Test.RazorEngine
                 });
                 exn.CompilationData.DeleteAll();
                 var msg = exn.Message;
-                var errorMessage = 
+                var errorMessage =
                     string.Format(
                         "An expected substring ({{0}}) was not found in: {0}",
                         msg.Replace("{", "{{").Replace("}", "}}"));
-                
+
                 // Compiler error
                 Assert.IsTrue(
                     msg.Contains("does not contain a definition for"),
@@ -262,7 +262,7 @@ namespace Test.RazorEngine
                     var expected = file.ToLowerInvariant();
                     Assert.IsTrue(
                         stack.Contains(expected),
-                        "Could not find reference to template (" + expected + ") in stacktrace: \n" + 
+                        "Could not find reference to template (" + expected + ") in stacktrace: \n" +
                         stack);
                 }
                 finally
@@ -286,7 +286,13 @@ namespace Test.RazorEngine
                 var loadedAssemblies = (new UseCurrentAssembliesReferenceResolver()).GetReferences(null);
                 foreach (var reference in loadedAssemblies)
                     yield return reference;
-                yield return CompilerReference.From("test/TestHelper.dll");
+
+                var testHelper = Path.Combine(
+                    Path.GetDirectoryName(typeof(TestHelperReferenceResolver).Assembly.Location),
+                    "test",
+                    "TestHelper.dll");
+
+                yield return CompilerReference.From(testHelper);
             }
         }
 
@@ -296,9 +302,14 @@ namespace Test.RazorEngine
         [Test]
         public void RazorEngineService_CheckThatWeCanUseUnknownTypes()
         {
+            var testHelper = Path.Combine(
+                    Path.GetDirectoryName(typeof(RazorEngineServiceTestFixture).Assembly.Location),
+                    "test",
+                    "TestHelper.dll");
+
             RunTestHelper(service =>
             {
-                var assembly = Assembly.LoadFrom("test/TestHelper.dll");
+                var assembly = Assembly.LoadFrom(testHelper);
                 Type modelType = assembly.GetType("TestHelper.TestClass", true);
                 var model = Activator.CreateInstance(modelType);
                 var template = @"
@@ -307,7 +318,7 @@ namespace Test.RazorEngine
 }
 @t.TestProperty";
                 string compiled = service.RunCompile(template, Guid.NewGuid().ToString(), modelType, model);
-                
+
             }, config =>
             {
                 config.ReferenceResolver = new TestHelperReferenceResolver();
@@ -474,7 +485,7 @@ namespace Test.RazorEngine
             RunTestHelper(service =>
             {
                 var template = @"@Model.TestProperty";
-                string result = service.RunCompile(template, "key", typeof(HostingClass.NestedClass), 
+                string result = service.RunCompile(template, "key", typeof(HostingClass.NestedClass),
                     new HostingClass.NestedClass() { TestProperty = "test" });
                 Assert.AreEqual("test", result);
             });
@@ -603,7 +614,7 @@ var p = (RazorEngine.Tests.TestTypes.Person)Model.Person;
             /// <summary>
             /// State 1
             /// </summary>
-            State1, 
+            State1,
             /// <summary>
             /// State 2
             /// </summary>
@@ -628,7 +639,7 @@ if (RazorDynamicObject.Unwrap(Model.State) == Test.RazorEngine.RazorEngineServic
                 Assert.AreEqual("correct", result.TrimStart());
             });
         }
-        
+
         /// <summary>
         /// Tests that we can compare dynamic object with an enum.
         /// </summary>
@@ -776,7 +787,7 @@ if ((Test.RazorEngine.RazorEngineServiceTestFixture.MyEnum)Model.State == Test.R
             var template = @"
 @try {
   // save all properties which might be missing beforehand in variables (otherwise there will be partial ouput).
-  var link = Model.Foo.Link; 
+  var link = Model.Foo.Link;
   // Use them as you would normally.
   <a href=""@link"">@Model.Foo.Text</a>
 }
@@ -789,17 +800,17 @@ catch (RuntimeBinderException) {
                 dynamic model = new { Foo = new { Link = "link", Text = "text"} };
                 string result = service.Run("key", null, (object)model);
                 Assert.AreEqual("<a href=\"link\">text</a>", result.Trim());
-                
+
                 model = new { Foo = new { Text = "text" } };
                 result = service.Run("key", null, (object)model);
                 Assert.AreEqual("<p>text</p>", result.Trim());
             }, config => {
                 config.Namespaces.Add("RazorEngine.Compilation");
                 config.Namespaces.Add("Microsoft.CSharp.RuntimeBinder");
-                //config.AllowMissingPropertiesOnDynamic = true; 
+                //config.AllowMissingPropertiesOnDynamic = true;
                 config.Debug = true; });
         }
-        
+
         /// <summary>
         /// Test that we can check for missing properties with empty string.
         /// </summary>
@@ -827,7 +838,7 @@ else {
             {
                 config.Namespaces.Add("RazorEngine.Compilation");
                 config.Namespaces.Add("Microsoft.CSharp.RuntimeBinder");
-                config.AllowMissingPropertiesOnDynamic = true; 
+                config.AllowMissingPropertiesOnDynamic = true;
                 config.Debug = true;
             });
         }
@@ -978,7 +989,6 @@ else {
         /// Test that we can use Include with null
         /// </summary>
         [Test]
-        [ExpectedException(typeof(NullReferenceException))] // Access to @Model.Forename when @Model is null
         public void RazorEngineService_CanRenderWithInclude_WithCustomModel_WithNull()
         {
             RunTestHelper(service =>
@@ -992,9 +1002,14 @@ else {
                 //model.Subject = new Person() { Forename = "" };
 
                 service.Compile(child, "Child", typeof(Person));
-                string result = service.RunCompile(template, "parent", typeof(ComplexModel), model);
 
-                Assert.AreEqual(expected, result);
+                string result = null;
+
+                // Access to @Model.Forename when @Model is null
+                Assert.Throws<NullReferenceException>(() => {
+                    result = service.RunCompile(template, "parent", typeof(ComplexModel), model);
+                    Assert.AreEqual(expected, result);
+                });
             });
         }
 

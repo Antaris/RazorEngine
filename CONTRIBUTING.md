@@ -21,13 +21,21 @@ See also https://help.github.com/articles/editing-files-in-your-repository/
 ## Branching model
 
 The branching model in http://nvie.com/posts/a-successful-git-branching-model/ is used (which you do not need to read to send a pull request).
-However the naming differs: `develop`is called `master` and `master` is called `releases` in RazorEngine.
+However the naming differs: `develop` is called `master` and `master` is called `releases` in RazorEngine.
 
 ## Licensing
 
 This project is subject to the terms and conditions defined in file ['LICENSE.md'](https://github.com/Antaris/RazorEngine/blob/master/LICENSE.md), which is part of this source code package.
 
-We try to switch to Apache 2 License ([#190](https://github.com/Antaris/RazorEngine/issues/190)), so please make your contribution is available as such.
-(You can drop a line on the linked issue or the commit message for example).
-
 You can find licenses of the programs this project depends on in either the "lib/$Project" folder or on their nuget page.
+
+
+## Releasing
+
+1. Update `ReleaseNotes.md`
+2. Update `buildConfig.fsx` (versions)
+   Roslyn Package versions only need to increased when we changed public API or when we made changes there.
+
+3. Run `yaaf_merge_master=true PUSH_ROSLYN=true nugetkey=<accesskey> ./build.sh Release`
+   - `yaaf_merge_master` -> can be used on build servers to force-switch on develop branch for the version bump commit.
+   - `PUSH_ROSLYN` -> push the roslyn packages (if you increased their versions above)

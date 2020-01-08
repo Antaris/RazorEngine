@@ -27,11 +27,11 @@
             var config = new TemplateServiceConfiguration();
             config.CodeInspectors.Add(new ThrowExceptionCodeInspector());
 
-            using (var service = new TemplateService(config))
+            using (var service = RazorEngineService.Create(config))
             {
                 const string template = "Hello World";
 
-                Assert.Throws<InvalidOperationException>(() => service.Parse(template, null, null, null));
+                Assert.Throws<InvalidOperationException>(() => service.RunCompile(templateSource: template, name: "template"));
             }
         }
         #endregion

@@ -1,6 +1,7 @@
 ﻿namespace RazorEngine.Tests.TestTypes.Issues
 {
     using System;
+    using System.IO;
     using Microsoft.CSharp.RuntimeBinder;
 
     using NUnit.Framework;
@@ -12,7 +13,6 @@
     /// Provides tests for the Release 3.0
     /// </summary>
     [TestFixture]
-    [Obsolete("Needs to be updated to the new API")]
     public class Release_3_0_TestFixture
     {
         #region Tests
@@ -24,7 +24,7 @@
         [Test]
         public void Issue6_ModelShouldBePassedToLayout()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
             {
                 const string layoutTemplate = "<h1>@Model.PageTitle</h1> @RenderSection(\"Child\")";
                 const string childTemplate = "@{ Layout = \"Parent\"; }@section Child {<h2>@Model.PageDescription</h2>}";
@@ -35,11 +35,13 @@
                                     PageDescription = "Test Page Description"
                                 };
 
-                var type = model.GetType();
+                var key = service.GetKey("Parent");
+                var childKey = service.GetKey("Child");
 
-                service.Compile(layoutTemplate, type, "Parent");
+                service.AddTemplate(key, layoutTemplate);
+                service.Compile(key);
 
-                string result = service.Parse(childTemplate, model, null, null);
+                string result = service.RunCompile(templateSource: childTemplate, key: childKey, model: model);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -54,14 +56,22 @@
         [Test]
         public void Issue7_ViewBagShouldPersistThroughLayout()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string layoutTemplate = "<h1>@ViewBag.Title</h1>@RenderSection(\"Child\")";
                 const string childTemplate = "@{ Layout =  \"Parent\"; ViewBag.Title = \"Test\"; }@section Child {}";
 
-                service.Compile(layoutTemplate, null, "Parent");
+                var key = service.GetKey("Parent");
+                var childKey = service.GetKey(nameof(childTemplate));
 
-                string result = service.Parse(childTemplate, null, null, null);
+                service.AddTemplate(key, layoutTemplate);
+                service.AddTemplate(childKey, childTemplate);
+
+                service.Compile(key);
+                service.Compile(childKey);
+                service.Run(childKey, writer);
+                string result = writer.ToString();
 
                 Assert.That(result.StartsWith("<h1>Test</h1>"));
             }
@@ -134,11 +144,14 @@
         [Test]
         public void Issue11_TemplateServiceShouldCompileModellessTemplate()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
             {
                 const string template = "<h1>Hello World</h1>";
 
-                service.Compile(template, null, "issue11");
+                var key = service.GetKey(nameof(template));
+                var result = service.RunCompile(templateSource: template, key: key);
+
+                Assert.AreEqual(template, result);
             }
         }
 
@@ -151,13 +164,14 @@
         [Test]
         public void Issue16_LastNullValueShouldReturnEmptyString()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
             {
                 const string template = "<h1>Hello @Model.Person.Forename</h1>";
                 const string expected = "<h1>Hello </h1>";
 
                 var model = new { Person = new Person { Forename = null } };
-                string result = service.Parse(template, model, null, null);
+                var key = service.GetKey(nameof(template));
+                var result = service.RunCompile(templateSource: template, key: key, model: model);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -171,15 +185,20 @@
         [Test]
         public void TemplateService_ShouldAllowTypeOverrideForNonGenericCompile()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string template = "@Model.Name";
                 const string expected = "Matt";
 
                 object model = new { Name = "Matt" };
-                Type modelType = model.GetType();
 
-                string result = service.Parse(template, model, null, null);
+                var key = service.GetKey(nameof(template));
+
+                service.AddTemplate(key, template);
+                service.RunCompile(key, writer, model: model);
+
+                string result = writer.ToString();
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
@@ -194,14 +213,19 @@
         [Test]
         public void TemplateService_ShouldEnableNullableValueTypes()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
                 const string template = "<h1>Hello @Model.Number</h1>";
                 const string expected = "<h1>Hello </h1>";
 
                 var model = new { Number = (int?)null };
-                string result = service.Parse(template, model, null, null);
+                var key = service.GetKey(nameof(template));
 
+                service.AddTemplate(key, template);
+                service.RunCompile(key, writer, model: model);
+
+                string result = writer.ToString();
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }
@@ -214,10 +238,15 @@
         [Test]
         public void Issue21_SubclassModelShouldBeSupportedInLayout()
         {
-            using (var service = new TemplateService())
+            using (var service = RazorEngineService.Create())
+            using (var writer = new StringWriter())
             {
-                const string parent = "@model RazorEngine.Tests.TestTypes.Person\n<h1>@Model.Forename</h1>@RenderSection(\"Child\")";
-                service.Compile(parent, null, "Parent");
+                const string Parent = "@model RazorEngine.Tests.TestTypes.Person\n<h1>@Model.Forename</h1>@RenderSection(\"Child\")";
+
+                var key = service.GetKey(nameof(Parent));
+
+                service.AddTemplate(key, Parent);
+                service.Compile(key);
 
                 const string child = "@{ Layout = \"Parent\"; }\n@section Child { <h2>@Model.Department</h2> }";
                 const string expected = "<h1>Matt</h1> <h2>IT</h2> ";
@@ -230,8 +259,12 @@
                     Surname = "Abbott"
                 };
 
-                string result = service.Parse(child, model, null, null);
+                var childKey = service.GetKey(nameof(child));
 
+                service.AddTemplate(childKey, child);
+                service.RunCompile(childKey, writer, model.GetType(), model: model);
+
+                string result = writer.ToString();
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
         }

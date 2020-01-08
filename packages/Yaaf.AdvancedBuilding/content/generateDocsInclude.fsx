@@ -17,6 +17,7 @@ open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
 
 #load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
+#r "System.Web"
 
 open System.Collections.Generic
 open System.IO
@@ -30,6 +31,7 @@ open AssemblyInfoFile
 open FSharp.Markdown
 open FSharp.Literate
 open FSharp.MetadataFormat
+open FSharp.Formatting.Razor
 
 open RazorEngine.Compilation
 
@@ -43,18 +45,20 @@ let commitHash = lazy Information.getCurrentSHA1(".")
 
 //let website_root = "file://" + Path.GetFullPath (config.OutDocDir @@ "html")
 
-let formattingContext templateFile format generateAnchors replacements layoutRoots =
-    { TemplateFile = templateFile 
-      Replacements = defaultArg replacements []
+let formattingContext format generateAnchors replacements =
+    { Replacements = defaultArg replacements []
       GenerateLineNumbers = true
       IncludeSource = false
       Prefix = "fs"
       OutputKind = defaultArg format OutputKind.Html
-      GenerateHeaderAnchors = defaultArg generateAnchors false
-      LayoutRoots = defaultArg layoutRoots [] }
+      GenerateHeaderAnchors = defaultArg generateAnchors false }
 
 let rec replaceCodeBlocks ctx = function
-    | Matching.LiterateParagraph(special) -> 
+    | Matching.LiterateParagraph(special) as mkd -> 
+        let range =
+          match mkd with
+          | EmbedParagraphs (range = range) -> range
+          | _ -> failwith "Expected EmbedParagraphs"
         match special with
         | LanguageTaggedCode(lang, code) -> 
             let inlined = 
@@ -65,8 +69,8 @@ let rec replaceCodeBlocks ctx = function
                   sprintf "<pre class=\"line-numbers %s\"><code class=\"%s\">%s</code></pre>" codeHtmlKey codeHtmlKey code
               | OutputKind.Latex ->
                   sprintf "\\begin{lstlisting}\n%s\n\\end{lstlisting}" code
-            Some(InlineBlock(inlined))
-        | _ -> Some (EmbedParagraphs special)
+            Some(InlineBlock(inlined, range))
+        | _ -> Some (EmbedParagraphs(special, range))
     | Matching.ParagraphNested(pn, nested) ->
         let nested = List.map (List.choose (replaceCodeBlocks ctx)) nested
         Some(Matching.ParagraphNested(pn, nested))
@@ -74,6 +78,13 @@ let rec replaceCodeBlocks ctx = function
 
 let editLiterateDocument ctx (doc:LiterateDocument) =
   doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
+
+let printAssemblies msg =
+  printfn "%s. Loaded Assemblies:" msg
+  System.AppDomain.CurrentDomain.GetAssemblies()
+    |> Seq.choose (fun a -> try Some (a.GetName().FullName, a.Location) with _ -> None)
+  //|> Seq.filter (fun l -> l.Contains ("Razor"))
+    |> Seq.iter (fun (n, l) -> printfn "\t- %s: %s" n l)
 
 // ITS VERY IMPORTANT TO CREATE THE EVALUATOR LAZY (see https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5)
 let evalutator = lazy (Some <| (FsiEvaluator() :> IFsiEvaluator))
@@ -104,7 +115,8 @@ let buildAllDocumentation outDocDir website_root =
       //CopyRecursive (formatting @@ "styles") (output @@ "content") true 
       //  |> Log "Copying styles and scripts: "
 
-      
+
+
     let processDocumentationFiles(outputKind) =
       let indexTemplate, template, outDirName, indexName, extension =
         match outputKind with
@@ -115,8 +127,13 @@ let buildAllDocumentation outDocDir website_root =
       let outDir = outDocDir @@ outDirName
       let handleDoc template (doc:LiterateDocument) outfile =
         // prismjs support
-        let ctx = formattingContext (Some template) (Some outputKind) (Some true) (Some projInfo) (Some config.LayoutRoots)
-        Templating.processFile references (editLiterateDocument ctx doc) outfile ctx 
+        //  (Some template)  (Some config.LayoutRoots)
+        let ctx = formattingContext (Some outputKind) (Some true) (Some projInfo)
+        // references
+        //let out = Templating.processFile () outfile ctx 
+        let newDoc = editLiterateDocument ctx doc
+        RazorLiterate.ProcessDocument(newDoc, outfile, templateFile = template, layoutRoots = config.LayoutRoots,
+            generateAnchors = true, replacements = projInfo)
 
       let processMarkdown template infile outfile =
         let doc = Literate.ParseMarkdownFile( infile, ?fsiEvaluator = evalutator.Value )
@@ -126,7 +143,7 @@ let buildAllDocumentation outDocDir website_root =
         handleDoc template doc outfile
         
       let rec processDirectory template indir outdir = 
-        Literate.ProcessDirectory(
+        RazorLiterate.ProcessDirectory(
           indir, template, outdir, outputKind, generateAnchors = true, replacements = projInfo, 
           layoutRoots = config.LayoutRoots, customizeDocument = editLiterateDocument,
           processRecursive = true, includeSource = true, ?fsiEvaluator = evalutator.Value,
@@ -167,7 +184,7 @@ let buildAllDocumentation outDocDir website_root =
             referenceBinaries
             |> List.map (fun lib -> libDir @@ lib)
 
-        MetadataFormat.Generate
+        RazorMetadataFormat.Generate
            (binaries, Path.GetFullPath outDir, config.LayoutRoots,
             parameters = projInfo,
             libDirs = [ libDir ],
@@ -181,10 +198,14 @@ let buildAllDocumentation outDocDir website_root =
     CleanDirs [ outDocDir ]
     copyDocContentFiles()
 
-    // FIRST build the reference documentation, see https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5
-    buildReference()
-    processDocumentationFiles OutputKind.Html
-    processDocumentationFiles OutputKind.Latex
+    try
+      // FIRST build the reference documentation, see https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5
+      buildReference()
+      processDocumentationFiles OutputKind.Html
+      processDocumentationFiles OutputKind.Latex
+    with e ->
+      printAssemblies "(DIAGNOSTICS) Documentation failed"
+      reraise()
     
 let MyTarget name body =
     Target name (fun _ -> body false)

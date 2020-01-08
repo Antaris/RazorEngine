@@ -11,6 +11,8 @@
     <AssemblyName>TestRunnerHelper</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Net45' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,10 +50,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\source\RazorEngine.Core.Roslyn\RazorEngine.Core.Roslyn.csproj">
-      <Project>{4213ae6e-a75d-431c-8f7c-3cbdc713fea9}</Project>
-      <Name>RazorEngine.Core.Roslyn</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\source\RazorEngine.Core\RazorEngine.Core.csproj">
       <Project>{d268f86d-2dab-4329-a75f-3bcf6d5bcdc4}</Project>
       <Name>RazorEngine.Core</Name>
@@ -74,7 +72,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

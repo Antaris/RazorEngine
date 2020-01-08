@@ -14,7 +14,9 @@
     using TestTypes.Activation;
     using Text;
 #if NET45
-    using Microsoft.Practices.Unity;
+    using Autofac;
+    using Autofac.Features.ResolveAnything;
+
     /// <summary>
     /// Defines a test fixture that provides tests for the <see cref="IActivator"/> type.
     /// </summary>
@@ -23,34 +25,36 @@
     {
         #region Tests
         /// <summary>
-        /// Tests that a custom activator can be used. In this test case, we're using Unity
+        /// Tests that a custom activator can be used. In this test case, we're using Autofac
         /// to handle a instantiation of a custom activator.
         /// </summary>
         [Test]
-        public void TemplateService_CanSupportCustomActivator_WithUnity()
+        public void TemplateService_CanSupportCustomActivator_WithAutofac()
         {
 #if RAZOR4
             Assert.Ignore("We need to add roslyn to generate custom constructors!");
 #endif
 
-            var container = new UnityContainer();
-            container.RegisterType(typeof(ITextFormatter), typeof(ReverseTextFormatter));
+            var container = new ContainerBuilder();
+            container.RegisterType<ReverseTextFormatter>()
+                .AsSelf()
+                .As<ITextFormatter>();
+            container.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             var config = new TemplateServiceConfiguration
                              {
-                                 Activator = new UnityTemplateActivator(container),
-                                 BaseTemplateType = typeof(CustomTemplateBase<>)
+                                 Activator = new AutofacTemplateActivator(container.Build()),
+                                 BaseTemplateType = typeof(CustomTemplateBase<>),
+                                 CompilerServiceFactory = new DefaultCompilerServiceFactory()
                              };
 
-#pragma warning disable 0618 // Fine because we still want to test if
-            using (var service = new TemplateService(config))
-#pragma warning restore 0618 // Fine because we still want to test if
+            using (var service = RazorEngineService.Create(config))
             {
                 const string template = "<h1>Hello @Format(Model.Forename)</h1>";
                 const string expected = "<h1>Hello ttaM</h1>";
 
                 var model = new Person { Forename = "Matt" };
-                string result = service.Parse(template, model, null, null);
+                string result = service.RunCompile(templateSource: template, name: "template", model: model);
 
                 Assert.That(result == expected, "Result does not match expected: " + result);
             }
