@@ -147,38 +147,8 @@ namespace RazorEngine.Compilation
         /// Tries to create and return a unique temporary directory.
         /// </summary>
         /// <returns>the (already created) temporary directory</returns>
-        protected static string GetDefaultTemporaryDirectory()
-        {
-            var created = false;
-            var tried = 0;
-            string tempDirectory = "";
-            while (!created && tried < 10)
-            {
-                tried++;
-                try
-                {
-                    tempDirectory = Path.Combine(Path.GetTempPath(), "RazorEngine_" + Path.GetRandomFileName());
-
-                    if (!Directory.Exists(tempDirectory))
-                    {
-                        Directory.CreateDirectory(tempDirectory);
-                        created = Directory.Exists(tempDirectory);
-                    }
-                }
-                catch (IOException)
-                {
-                    if (tried > 8)
-                    {
-                        throw;
-                    }
-                }
-            }
-            if (!created)
-            {
-                throw new Exception("Could not create a temporary directory! Maybe all names are already used?");
-            }
-            return tempDirectory;
-        }
+        ///protected static string GetDefaultTemporaryDirectory() => GetDefaultTemporaryDirectory(null);
+        protected static string GetDefaultTemporaryDirectory() => GetDefaultTemporaryDirectory(null);
 
         /// <summary>
         /// Tries to create and return a unique temporary directory.
