@@ -151,7 +151,7 @@ static int Main(string[] args)
             "MyMainDomain", null,
             current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
             strongNames);
-        var exitCode = domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location);
+        var exitCode = domain.ExecuteAssembly(Assembly.GetExecutingAssembly().Location, args);
         // RazorEngine will cleanup. 
         AppDomain.Unload(domain);
         return exitCode;
