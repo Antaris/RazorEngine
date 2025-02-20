@@ -143,6 +143,133 @@ namespace Test.RazorEngine
         }
 
         /// <summary>
+        /// Tests that script tags are properly removed from the template.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_RemovesScriptTags()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Hello</h1><script>alert('xss')</script>";
+                const string expected = "<h1>Hello</h1>";
+
+                string result = SanitizeTemplate(template);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that JavaScript event handlers are properly removed from HTML elements.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_RemovesJavaScriptEvents()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<div onclick='alert(1)'>Click me</div>";
+                const string expected = "<div>Click me</div>";
+
+                string result = SanitizeTemplate(template);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that iframe elements and their content are properly removed from the template.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_RemovesIframeContent()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Content</h1><iframe src='evil.com'></iframe>";
+                const string expected = "<h1>Content</h1>";
+
+                string result = SanitizeTemplate(template);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that references to System namespaces are properly removed from the template.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_RemovesSystemNamespaces()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "@using System.IO\n<h1>Hello</h1>";
+                const string expected = "\n<h1>Hello</h1>";
+
+                string result = SanitizeTemplate(template);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that valid HTML content is preserved after sanitization.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_PreservesValidHtml()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<div><h1>Hello</h1><p>Valid content</p></div>";
+                const string expected = "<div><h1>Hello</h1><p>Valid content</p></div>";
+
+                string result = SanitizeTemplate(template);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that multiple unsafe elements are properly removed while preserving safe content.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_RemovesMultipleUnsafeElements()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "<h1>Title</h1><script>alert(1)</script><iframe src='evil.com'></iframe><form action='hack.php'></form>";
+                const string expected = "<h1>Title</h1>";
+
+                string result = SanitizeTemplate(template);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that the sanitization method handles empty input correctly.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_HandlesEmptyInput()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                const string template = "";
+                const string expected = "";
+
+                string result = SanitizeTemplate(template);
+                Assert.AreEqual(expected, result);
+            }
+        }
+
+        /// <summary>
+        /// Tests that the sanitization method handles null input correctly.
+        /// </summary>
+        [Test]
+        public void SanitizeTemplate_HandlesNullInput()
+        {
+            using (var service = IsolatedRazorEngineService.Create(SandboxCreator))
+            {
+                string template = null;
+                string result = SanitizeTemplate(template);
+                Assert.That(result == null || result == string.Empty);
+            }
+        }
+
+
+        /// <summary>
         /// Tests that exchanging values on the viewbag works across app domains
         /// </summary>
         [Test]

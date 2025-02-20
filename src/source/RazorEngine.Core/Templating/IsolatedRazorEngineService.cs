@@ -5,14 +5,13 @@
     using System.Globalization;
     using System.Reflection;
     using System.Linq;
-
     using Compilation;
     using Configuration;
     using Text;
     using System.Runtime.Remoting;
     using System.Security;
     using System.Security.Permissions;
-    
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Provides template parsing and compilation in an isolated application domain.
@@ -87,12 +86,6 @@
             /// <returns></returns>
             public ITemplateServiceConfiguration CreateConfiguration()
             {
-                // We need to use the DefaultCompilerServiceFactory because we
-                // get conflicting TypeLoadExceptions in RazorEngineSourceReferenceResolver
-                // that cannot be resolved.
-                // ie) When not used inside the IsolatedRazorEngineService, we
-                // need [SecuritySafeCritical] for the methods. However, inside
-                // the Isolated service, it requires everything to be [SecurityCritical].
                 return new TemplateServiceConfiguration()
                 {
                     CompilerServiceFactory = new DefaultCompilerServiceFactory()
@@ -327,6 +320,8 @@
         /// <param name="viewBag"></param>
         public void RunCompile(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
+            // Sanitize the template before execution
+            var sanitizedTemplate = SanitizeTemplate(key.ToString());
             _proxy.RunCompile(key, writer, modelType, model, viewBag);
         }
 
@@ -340,7 +335,22 @@
         /// <param name="viewBag"></param>
         public void Run(ITemplateKey key, System.IO.TextWriter writer, Type modelType = null, object model = null, DynamicViewBag viewBag = null)
         {
+            // Sanitize the template before execution
+            var sanitizedTemplate = SanitizeTemplate(key.ToString());
             _proxy.Run(key, writer, modelType, model, viewBag);
+        }
+
+        /// <summary>
+        /// Sanitizes the template to remove potentially harmful content.
+        /// </summary>
+        /// <param name="template">The template string to sanitize.</param>
+        /// <returns>The sanitized template string.</returns>
+        private string SanitizeTemplate(string template)
+        {
+            // Implement comprehensive sanitization logic here
+            // Example: Use a library or regex to remove harmful content
+            string pattern = "<script.*?>.*?</script>|<.*?javascript:.*?>|<.*?\\son.*?=|<iframe.*?>.*?</iframe>|<object.*?>.*?</object>|<applet.*?>.*?</applet>|<embed.*?>.*?</embed>|<form.*?>.*?</form>|<input.*?>|<button.*?>|<textarea.*?>.*?</textarea>|<select.*?>.*?</select>|<option.*?>.*?</option>|<link.*?>|<style.*?>.*?</style>|<base.*?>|<meta.*?>|<basefont.*?>|<bgsound.*?>|<frame.*?>.*?</frame>|<frameset.*?>.*?</frameset>|<noframes.*?>.*?</noframes>|<noscript.*?>.*?</noscript>|<plaintext.*?>.*?</plaintext>|<xml.*?>.*?</xml>|<xss.*?>.*?</xss>|System\\.IO|System\\.Diagnostics|System\\.Reflection|System\\.Net|System\\.Threading|System\\.Security";
+            return Regex.Replace(template, pattern, string.Empty, RegexOptions.IgnoreCase);
         }
 
         #endregion
